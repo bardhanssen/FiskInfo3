@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import androidx.navigation.Navigation;
 import no.sintef.fiskinfo.R;
 
 public class OverviewFragment extends Fragment {
@@ -35,4 +37,13 @@ public class OverviewFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button mapB = view.findViewById(R.id.proto_map_button);
+        mapB.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_overviewFragment_to_mapFragment, null));
+
+        Button toolsB = view.findViewById(R.id.proto_tools_button);
+        toolsB.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_overviewFragment_to_toolsFragment, null));
+    }
 }
