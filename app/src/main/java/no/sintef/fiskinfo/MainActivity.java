@@ -7,13 +7,18 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import no.sintef.fiskinfo.ui.overview.OverviewFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
+
+    AppBarConfiguration appBarConfiguration = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +31,16 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController controller = host.getNavController();
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        AppBarConfiguration configuration = new AppBarConfiguration.Builder(controller.getGraph()).setDrawerLayout(drawerLayout).build();
-        NavigationUI.setupActionBarWithNavController(this, controller, configuration);
-/*
-        AppBarConfiguration configuration = new AppBarConfiguration(
-                controller.getGraph(), drawerLayout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
-                (controller.getGraph());
-*/
+
+
+//        Arrays.asList(new Integer[][R.id.mapFragment, R.id.overviewFragment, R.id.toolsFragment])
+
+        appBarConfiguration = new AppBarConfiguration.Builder(controller.getGraph())
+                .setDrawerLayout(drawerLayout)
+                .build();
+        NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         setupNavigationMenu(controller);
 
 /*        if (savedInstanceState == null) {
@@ -44,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
         }*/
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
+    }
 
     protected void setupNavigationMenu(NavController navController) {
-        NavigationView view = findViewById(R.id.navigationView);
+        NavigationView view = findViewById(R.id.navigation_view);
         NavigationUI.setupWithNavController(view, navController);
 
     }

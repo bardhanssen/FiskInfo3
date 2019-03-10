@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/primary">
         <item
-            android:id="@id/overviewFragment"
+            android:id="@id/overview_fragment"
             android:icon="@drawable/ic_home"
             android:title="@string/overview_title" />
         <item
-            android:id="@id/toolsFragment"
+            android:id="@id/tools_fragment"
             android:icon="@drawable/ic_help"
             android:title="@string/tools_title" />
     </group>
     <!-- TODO STEP 9.8 - Add a menu item for settings_fragment -->
     <item
-        android:id="@id/userProfileFragment"
+        android:id="@id/user_profile_fragment"
         android:icon="@drawable/ic_settings"
         android:title="@string/user_profile_title" />
 </menu>
