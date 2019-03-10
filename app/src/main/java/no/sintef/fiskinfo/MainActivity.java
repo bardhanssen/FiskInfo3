@@ -1,8 +1,11 @@
 package no.sintef.fiskinfo;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,6 +18,7 @@ import no.sintef.fiskinfo.ui.overview.OverviewFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,14 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
+        HashSet<Integer> topLevelDests = new HashSet<>();
+        topLevelDests.add(R.id.map_fragment);
+        topLevelDests.add(R.id.overview_fragment);
+        topLevelDests.add(R.id.tools_fragment);
 
-
-//        Arrays.asList(new Integer[][R.id.mapFragment, R.id.overviewFragment, R.id.toolsFragment])
-
-        appBarConfiguration = new AppBarConfiguration.Builder(controller.getGraph())
+        appBarConfiguration = new AppBarConfiguration.Builder(topLevelDests) //controller.getGraph())
                 .setDrawerLayout(drawerLayout)
                 .build();
+
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.proto_open_drawer, R.string.proto_close_drawer);
+        toggle.syncState();
+
         setupNavigationMenu(controller);
 
 /*        if (savedInstanceState == null) {
@@ -50,6 +61,25 @@ public class MainActivity extends AppCompatActivity {
         }*/
     }
 
+/*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_nav_drawer, menu);
+        return true;
+*        boolean retVal = super.onCreateOptionsMenu(menu);
+        NavigationView navView = findViewById(R.id.navigation_view);
+        if (navView == null) {
+            getMenuInflater().inflate(R.menu.menu_nav_drawer, menu);
+            return true;
+        }
+        return retVal;*
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return NavigationUI.onNavDestinationSelected(item, Navigation.findNavController(this, R.id.nav_host_fragment));
+    }
+*/
     @Override
     public boolean onSupportNavigateUp() {
         return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();

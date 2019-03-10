@@ -8,4 +8,6 @@
     <string name="user_profile_title">User Profile</string>
     <string name="tools_title">Tools</string>
     <string name="overview_title">Overview</string>
+    <string name="proto_open_drawer">Open drawer</string>
+    <string name="proto_close_drawer">Close drawer</string>
 </resources>
