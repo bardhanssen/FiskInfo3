@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="coordinate_formats">
+        <item>D_M_S</item>
+        <item>D_DM</item>
+    </string-array>
+    <string-array name="coordinate_format_labels">
+        <item>Degrees, minutes, and seconds</item>
+        <item>Degrees and decimal minutes</item>
+    </string-array>
+    <string-array name="tool_types">
+        <item>LONG_LINE</item>
+        <item>NETS</item>
+        <item>CRAB_POTS</item>
+        <item>SEISMIC</item>
+        <item>SENSOR_CABLE</item>
+        <item>DANISH_PURSE_SEINE</item>
+        <item>MOORING_SYSTEM</item>
+        <item>UNKNOWN</item>
+    </string-array>
+    <string-array name="tool_type_labels">
+        <item>Long line</item>
+        <item>Net</item>
+        <item>Crab pot</item>
+        <item>Seismic</item>
+        <item>Sensor cable</item>
+        <item>Danish purse seine</item>
+        <item>Mooring system</item>
+        <item>Unknown</item>
+    </string-array>
+</resources>
