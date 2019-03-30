@@ -15,4 +15,8 @@
         android:id="@id/user_profile_fragment"
         android:icon="@drawable/ic_settings"
         android:title="@string/user_profile_title" />
+    <item
+        android:id="@id/preferences_fragment"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/preferences_title" />
 </menu>

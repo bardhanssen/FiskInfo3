@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="App settings">
 
         <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/coordinate_formats"
+            android:defaultValue="D_M_S"
+            android:entries="@array/coordinate_format_labels"
             android:entryValues="@array/coordinate_formats"
-            android:key="list_preference_1"
+            app:useSimpleSummaryProvider="true"
+            android:key="coordinate_format"
             android:title="Coordinate format" />
         <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/default_tool_type"
-            android:entryValues="@array/default_tool_type"
-            android:key="list_preference_1"
+            android:defaultValue="LONG_LINE"
+            android:entries="@array/tool_type_labels"
+            android:entryValues="@array/tool_types"
+            app:useSimpleSummaryProvider="true"
+            android:key="default_tool_type"
             android:title="Default tool type" />
 
     </PreferenceCategory>
-    <Preference
-        android:key="consent"
-        android:title="Conditions for use and consent"
-        android:summary="Conditions, privacy, etc"/>
+
+    <PreferenceCategory android:title="Other settings">
+
+        <SwitchPreferenceCompat
+            android:key="remember_login"
+            android:title="Remember login information"/>
+
+        <Preference
+            android:key="consent"
+            android:title="Conditions for use and consent"
+            android:summary="Conditions, privacy, etc"/>
+    </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

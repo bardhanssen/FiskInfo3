@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_overview_fragment_to_snap_fragment"
             app:destination="@id/snap_fragment" />
+        <action
+            android:id="@+id/action_overview_fragment_to_userPreferencesFragment"
+            app:destination="@id/preferences_fragment" />
     </fragment>
     <fragment
         android:id="@+id/snap_fragment"
@@ -55,4 +58,8 @@
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"
         android:label="User Profile"
         tools:layout="@layout/user_profile_fragment" />
+    <fragment
+        android:id="@+id/preferences_fragment"
+        android:name="no.sintef.fiskinfo.ui.preferences.UserPreferencesFragment"
+        android:label="User Preferences" />
 </navigation>
