@@ -10,16 +10,13 @@ public class Snap {
     @PrimaryKey
     public int uid;
 
+    public int echogramUid;
+
     String sender;
     String[] receivers;
 
-    Date timestamp;
-    String location;
-    String biomass;
+    String title;
+    String comment;
 
-    byte[] thumbnail;
-    String echogram;
-    String localEchogram;
-
-
+    Date sendTimestamp;
 }

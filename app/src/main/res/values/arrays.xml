@@ -28,4 +28,9 @@
         <item>Mooring system</item>
         <item>Unknown</item>
     </string-array>
+    <string-array name="snap_tab_titles">
+        <item>Echogram</item>
+        <item>Received</item>
+        <item>Sent</item>
+    </string-array>
 </resources>

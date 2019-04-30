@@ -17,6 +17,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import no.sintef.fiskinfo.ui.overview.OverviewFragment;
+import no.sintef.fiskinfo.ui.snap.EchogramFragment;
+import no.sintef.fiskinfo.ui.snap.dummy.DummyContent;
+
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Arrays;
@@ -24,7 +27,7 @@ import java.util.HashSet;
 
 import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EchogramFragment.OnListFragmentInteractionListener {
 
     AppBarConfiguration appBarConfiguration = null;
     NavController controller;
@@ -135,4 +138,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
 }
