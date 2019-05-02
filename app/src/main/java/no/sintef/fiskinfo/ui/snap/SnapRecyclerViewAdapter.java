@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -26,12 +24,12 @@ import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
  * specified {@link OnEchogramInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRecyclerViewAdapter.ViewHolder> {
+public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder> {
 
     private final List<Echogram> echograms;
     private final OnEchogramInteractionListener mListener;
 
-    public EchogramRecyclerViewAdapter(List<Echogram> items, EchogramFragment.OnEchogramInteractionListener listener) {
+    public SnapRecyclerViewAdapter(List<Echogram> items, OnEchogramInteractionListener listener) {
         echograms = items;
         mListener = listener;
     }
@@ -39,7 +37,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.echogram_item, parent, false);
+                .inflate(R.layout.snap_item, parent, false);
         return new ViewHolder(view);
     }
 
