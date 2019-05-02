@@ -26,7 +26,7 @@ limitations under the License.
         android:layout_height="@dimen/list_item_icon_height"
         android:layout_marginStart="@dimen/list_margin"
         android:duplicateParentState="true"
-        android:background="@drawable/ic_snap"
+        android:background="@drawable/ic_photo"
         android:contentDescription="Test"
         />
     <!--"@string/tool_log_row_tool_type_image_view_content_description" -->
