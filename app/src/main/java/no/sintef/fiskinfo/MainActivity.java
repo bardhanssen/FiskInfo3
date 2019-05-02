@@ -1,33 +1,32 @@
 package no.sintef.fiskinfo;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import no.sintef.fiskinfo.ui.overview.OverviewFragment;
+
+import no.sintef.fiskinfo.model.Echogram;
 import no.sintef.fiskinfo.ui.snap.EchogramFragment;
 import no.sintef.fiskinfo.ui.snap.dummy.DummyContent;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
-public class MainActivity extends AppCompatActivity implements EchogramFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements EchogramFragment.OnEchogramInteractionListener {
 
     AppBarConfiguration appBarConfiguration = null;
     NavController controller;
@@ -138,8 +137,16 @@ public class MainActivity extends AppCompatActivity implements EchogramFragment.
         }
     }
 
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+    @Override
+    public void onViewEchogramClicked(Echogram echogram) {
+        Toast toast = Toast.makeText(this,"Show Echogram " + echogram.source + " " + echogram.timestamp.toString(),Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    @Override
+    public void onShareEchogramClicked(Echogram echogram) {
+        Toast toast = Toast.makeText(this,"Share Echogram " + echogram.source + " " + echogram.timestamp.toString(),Toast.LENGTH_LONG);
+        toast.show();
     }
 }

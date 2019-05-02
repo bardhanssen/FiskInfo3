@@ -8,22 +8,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.ui.snap.EchogramFragment.OnListFragmentInteractionListener;
+import no.sintef.fiskinfo.ui.snap.EchogramFragment.OnEchogramInteractionListener;
 import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link OnEchogramInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyEchogramRecyclerViewAdapter extends RecyclerView.Adapter<MyEchogramRecyclerViewAdapter.ViewHolder> {
+public class MyEchogramRecyclerViewAdapter { /*extends RecyclerView.Adapter<MyEchogramRecyclerViewAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnEchogramInteractionListener mListener;
 
-    public MyEchogramRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyEchogramRecyclerViewAdapter(List<DummyItem> items, OnEchogramInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -47,7 +47,7 @@ public class MyEchogramRecyclerViewAdapter extends RecyclerView.Adapter<MyEchogr
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onViewEchogramClicked(holder.mItem);
                 }
             }
         });
@@ -76,4 +76,5 @@ public class MyEchogramRecyclerViewAdapter extends RecyclerView.Adapter<MyEchogr
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+*/
 }

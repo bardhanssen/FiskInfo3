@@ -9,11 +9,12 @@ import java.util.Date;
 @Entity
 public class Echogram {
     @PrimaryKey
-    public int uid;
+    public long uid;
 
-    Date timestamp;
-    String location;
-    String biomass;
+    public Date timestamp;
+    public String location;
+    public String biomass;
+    public String source;
 
-    URL echogramURL;
+    public URL echogramURL;
 }
