@@ -8,15 +8,21 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Snap {
     @PrimaryKey
-    public int uid;
+    public long uid;
 
-    public int echogramUid;
+    //public int echogramUid;
 
-    String sender;
-    String[] receivers;
+    public String sender;
+    public String[] receivers;
 
-    String title;
-    String comment;
+    public String title;
+    public String comment;
 
-    Date sendTimestamp;
+    public Date sendTimestamp;
+
+    public Echogram echogram;
+
+    public Echogram getEchogram() {
+        return echogram;
+    }
 }

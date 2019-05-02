@@ -26,7 +26,7 @@ limitations under the License.
         android:layout_height="@dimen/list_item_icon_height"
         android:layout_marginStart="@dimen/list_margin"
         android:duplicateParentState="true"
-        android:background="@drawable/ic_photo"
+        android:background="@drawable/ic_person"
         android:contentDescription="Test"
         />
     <!--"@string/tool_log_row_tool_type_image_view_content_description" -->
@@ -43,7 +43,7 @@ limitations under the License.
             android:id="@+id/snap_item_title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Snap title or other main aspect"
+            android:text="From: Username"
             android:duplicateParentState="true"
             android:textStyle="bold"
             />
@@ -68,15 +68,15 @@ limitations under the License.
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/open_echogram_button"
+        android:id="@+id/open_snap_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/list_margin"
         app:srcCompat="@drawable/ic_open_in_browser" />
 
     <ImageButton
-        android:id="@+id/share_echogram_button"
+        android:id="@+id/show_snap_in_map_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_share" />
+        app:srcCompat="@drawable/ic_map" />
 </TableRow>

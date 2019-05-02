@@ -16,6 +16,7 @@ import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.Echogram;
+import no.sintef.fiskinfo.model.Snap;
 import no.sintef.fiskinfo.ui.snap.EchogramFragment.OnEchogramInteractionListener;
 import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
 
@@ -26,11 +27,11 @@ import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
  */
 public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Echogram> echograms;
+    private final List<Snap> snaps;
     private final OnEchogramInteractionListener mListener;
 
-    public SnapRecyclerViewAdapter(List<Echogram> items, OnEchogramInteractionListener listener) {
-        echograms = items;
+    public SnapRecyclerViewAdapter(List<Snap> items, OnEchogramInteractionListener listener) {
+        snaps = items;
         mListener = listener;
     }
 
@@ -43,22 +44,22 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = echograms.get(position);
+        holder.mItem = snaps.get(position);
 
-        holder.titleView.setText(holder.mItem.source);
+        holder.titleView.setText(holder.mItem.title);
 
         SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd HH:mm", Locale.getDefault());
 //        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.datetime_format_yyyy_mm_dd_t_hh_mm_ss), Locale.getDefault());
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
-        holder.detail1View.setText(sdf.format(holder.mItem.timestamp));
-        holder.detail2View.setText(holder.mItem.location);
+        holder.detail1View.setText(sdf.format(holder.mItem.getEchogram().timestamp));
+        holder.detail2View.setText(holder.mItem.getEchogram().location);
 
         holder.viewButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onViewEchogramClicked(holder.mItem);
+                    mListener.onViewEchogramClicked(holder.mItem.getEchogram());
                 }
             }
         });
@@ -66,7 +67,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onShareEchogramClicked(holder.mItem);
+                    mListener.onShareEchogramClicked(holder.mItem.getEchogram());
                 }
             }
         });
@@ -85,11 +86,11 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
 
     @Override
     public int getItemCount() {
-        return echograms.size();
+        return snaps.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public Echogram mItem;
+        public Snap mItem;
         public final View mView;
         public final TextView titleView;
         public final TextView detail1View;
@@ -105,8 +106,8 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
             detail1View = (TextView) view.findViewById(R.id.snap_item_detail_1_view);
             detail2View = (TextView) view.findViewById(R.id.snap_item_detail_2_view);
             // imageView = (ImageView) view.findViewById(R.id.snap_item_image_view);
-            shareButton = (ImageButton) view.findViewById(R.id.share_echogram_button);
-            viewButton = (ImageButton) view.findViewById(R.id.open_echogram_button);
+            shareButton = (ImageButton) view.findViewById(R.id.show_snap_in_map_button);
+            viewButton = (ImageButton) view.findViewById(R.id.open_snap_button);
         }
 
         @Override

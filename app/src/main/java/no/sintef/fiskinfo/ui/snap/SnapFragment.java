@@ -69,7 +69,12 @@ public class SnapFragment extends Fragment  {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            return EchogramFragment.newInstance(position + 1);
+            if (position == 0) {
+                return EchogramFragment.newInstance(position + 1);
+
+            } else {
+                return SnapInboxFragment.newInstance(position);
+            }
         }
 
         @Override
