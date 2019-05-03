@@ -52,7 +52,11 @@
         android:id="@+id/snap_fragment"
         android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
         android:label="Snapfish"
-        tools:layout="@layout/snap_fragment" />
+        tools:layout="@layout/snap_fragment" >
+        <action
+            android:id="@+id/action_snap_fragment_to_newSnapFragment"
+            app:destination="@id/new_snap_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/user_profile_fragment"
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"
@@ -62,4 +66,9 @@
         android:id="@+id/preferences_fragment"
         android:name="no.sintef.fiskinfo.ui.preferences.UserPreferencesFragment"
         android:label="User Preferences" />
+    <fragment
+        android:id="@+id/new_snap_fragment"
+        android:name="no.sintef.fiskinfo.ui.snap.NewSnapFragment"
+        android:label="New snap"
+        tools:layout="@layout/new_snap_fragment" />
 </navigation>

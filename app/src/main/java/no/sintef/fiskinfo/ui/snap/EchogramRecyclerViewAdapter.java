@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
@@ -67,9 +68,10 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onShareEchogramClicked(holder.mItem);
-                }
+                Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
+                // if (mListener != null) {
+                //    mListener.onShareEchogramClicked(holder.mItem);
+                // }
             }
         });
 
