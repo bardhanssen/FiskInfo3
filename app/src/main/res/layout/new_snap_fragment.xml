@@ -7,150 +7,122 @@
     android:layout_height="match_parent"
     tools:context=".ui.snap.NewSnapFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/echogramIcon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_photo"
+        app:layout_constraintTop_toTopOf="@id/guidelineTop"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"/>
+
+
+    <ImageView
+        android:id="@+id/timeIcon"
+        android:layout_width="@dimen/small_icon_width"
+        android:layout_height="@dimen/small_icon_height"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/timeTextView"
+        android:src="@drawable/ic_time" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp">
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toRightOf="@id/timeIcon"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
+        android:text="01.01 13:13" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
-            android:src="@drawable/ic_photo" />
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="@dimen/small_icon_width"
+        android:layout_height="@dimen/small_icon_height"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/positionTextView"
+        android:src="@drawable/ic_place" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/positionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toRightOf="@id/timeIcon"
+        app:layout_constraintTop_toBottomOf="@id/timeTextView"
+        android:text="Hello" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="@dimen/small_icon_width"
+        android:layout_height="@dimen/small_icon_height"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/sourceTextView"
+        android:src="@drawable/ic_snap" />
 
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="@dimen/small_icon_width"
-                    android:layout_height="@dimen/small_icon_height"
-                    android:src="@drawable/ic_time" />
-
-                <TextView
-                    android:id="@+id/timeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="01.01 13:13" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="@dimen/small_icon_width"
-                    android:layout_height="@dimen/small_icon_height"
-                    android:src="@drawable/ic_place" />
-
-                <TextView
-                    android:id="@+id/positionTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Hello" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="@dimen/small_icon_width"
-                    android:layout_height="@dimen/small_icon_height"
-                    android:src="@drawable/ic_snap" />
-
-                <TextView
-                    android:id="@+id/sourceTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/sourceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toRightOf="@id/timeIcon"
+        app:layout_constraintTop_toBottomOf="@id/positionTextView"
+        android:text="TextView" />
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/echogramIcon"/>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/snapTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
         android:layout_marginBottom="8dp"
         android:text="Title"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintBaseline_toBaselineOf="@id/editText3"/>
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintBaseline_toBaselineOf="@id/snapTitleEditText"/>
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/snapTitleEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-        app:layout_constraintStart_toStartOf="@+id/contentGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+        app:layout_constraintStart_toStartOf="@id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/divider3" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/contentGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="93dp" />
+        app:layout_constraintGuide_begin="100dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/snapCommentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="Comment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/editText4"
+        app:layout_constraintBaseline_toBaselineOf="@id/snapCommentEditText"
         tools:layout_editor_absoluteY="163dp" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/snapCommentEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="100dp"
@@ -160,8 +132,76 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/contentGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/snapTitleEditText"
         tools:layout_editor_absoluteY="163dp" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@+id/snapCommentEditText"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/snapReceiverTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Share with"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/snapReceiverEditText"
+        tools:layout_editor_absoluteY="163dp" />
+
+    <EditText
+        android:id="@+id/snapReceiverEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintStart_toStartOf="@id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/divider2" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select from contacts"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="8dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
