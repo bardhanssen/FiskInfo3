@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.repository.dummy;
 
+import android.net.Uri;
+
 import androidx.lifecycle.LiveData;
 
 import java.net.MalformedURLException;
@@ -18,12 +20,8 @@ public class DummyEchogram {
         echogram.uid = Math.round(Math.random()*100000000);
         echogram.timestamp = new Date(System.currentTimeMillis() - minutesOld*MILLIS_IN_MIN);
         echogram.biomass = "400.0";
-        try {
-            echogram.echogramURL = new URL("https://www.sintef.no");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        echogram.location = "N63" + "\u2103" + "24\'48\" E10" + "\u2103" + "24\'33\"";
+        echogram.echogramURL = Uri.parse("https://www.sintef.no");
+        echogram.location = "N63" + (char) 0x00B0 + "24\'48\" E10" + (char) 0x00B0 + "24\'33\"";
         echogram.source = "EK80";
         return echogram;
     }

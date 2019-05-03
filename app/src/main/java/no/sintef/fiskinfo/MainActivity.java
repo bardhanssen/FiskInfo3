@@ -3,6 +3,7 @@ package no.sintef.fiskinfo;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -140,8 +141,13 @@ public class MainActivity extends AppCompatActivity implements EchogramFragment.
 
     @Override
     public void onViewEchogramClicked(Echogram echogram) {
-        Toast toast = Toast.makeText(this,"Show Echogram " + echogram.source + " " + echogram.timestamp.toString(),Toast.LENGTH_LONG);
-        toast.show();
+
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(echogram.echogramURL);
+        startActivity(i);
+
+//        Toast toast = Toast.makeText(this,"Show Echogram " + echogram.source + " " + echogram.timestamp.toString(),Toast.LENGTH_LONG);
+//        toast.show();
     }
 
     @Override
