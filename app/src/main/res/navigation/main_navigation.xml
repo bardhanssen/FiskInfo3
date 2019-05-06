@@ -9,7 +9,7 @@
         android:id="@+id/tools_fragment"
         android:name="no.sintef.fiskinfo.ui.tools.ToolsFragment"
         android:label="Tools"
-        tools:layout="@layout/tools_fragment" >
+        tools:layout="@layout/fragment_tools" >
         <action
             android:id="@+id/action_tools_fragment_to_tool_details_fragment"
             app:destination="@id/tool_details_fragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/map_fragment"
         android:name="no.sintef.fiskinfo.ui.map.MapFragment"
         android:label="Map"
-        tools:layout="@layout/map_fragment" />
+        tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/tool_details_fragment"
         android:name="no.sintef.fiskinfo.ui.tools.ToolDetailsFragment"
@@ -28,7 +28,7 @@
         android:id="@+id/overview_fragment"
         android:name="no.sintef.fiskinfo.ui.overview.OverviewFragment"
         android:label="FiskInfo Overview"
-        tools:layout="@layout/overview_fragment" >
+        tools:layout="@layout/fragment_overview" >
         <action
             android:id="@+id/action_overview_fragment_to_tools_fragment"
             app:destination="@id/tools_fragment" />
@@ -52,7 +52,7 @@
         android:id="@+id/snap_fragment"
         android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
         android:label="Snapfish"
-        tools:layout="@layout/snap_fragment" >
+        tools:layout="@layout/fragment_snap" >
         <action
             android:id="@+id/action_snap_fragment_to_newSnapFragment"
             app:destination="@id/new_snap_fragment" />
@@ -61,7 +61,7 @@
         android:id="@+id/user_profile_fragment"
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"
         android:label="User Profile"
-        tools:layout="@layout/user_profile_fragment" />
+        tools:layout="@layout/fragment_user_profile" />
     <fragment
         android:id="@+id/preferences_fragment"
         android:name="no.sintef.fiskinfo.ui.preferences.UserPreferencesFragment"
@@ -70,5 +70,5 @@
         android:id="@+id/new_snap_fragment"
         android:name="no.sintef.fiskinfo.ui.snap.NewSnapFragment"
         android:label="New snap"
-        tools:layout="@layout/new_snap_fragment" />
+        tools:layout="@layout/fragment_new_snap" />
 </navigation>

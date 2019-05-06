@@ -16,7 +16,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.model.Echogram;
 import no.sintef.fiskinfo.model.Snap;
 import no.sintef.fiskinfo.ui.snap.EchogramFragment.OnEchogramInteractionListener;
 import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
@@ -39,7 +38,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.snap_item, parent, false);
+                .inflate(R.layout.list_item_snap, parent, false);
         return new ViewHolder(view);
     }
 

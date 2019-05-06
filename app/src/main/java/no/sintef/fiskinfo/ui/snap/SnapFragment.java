@@ -2,7 +2,6 @@ package no.sintef.fiskinfo.ui.snap;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.ui.snap.dummy.DummyContent;
 
 public class SnapFragment extends Fragment  {
 
@@ -34,7 +32,7 @@ public class SnapFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.snap_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_snap, container, false);
     }
 
     @Override

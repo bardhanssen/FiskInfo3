@@ -10,9 +10,7 @@ import android.widget.TextView;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -40,7 +38,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.echogram_item, parent, false);
+                .inflate(R.layout.list_item_echogram, parent, false);
         return new ViewHolder(view);
     }
 
