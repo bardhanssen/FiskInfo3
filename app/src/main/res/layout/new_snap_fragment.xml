@@ -7,6 +7,34 @@
     android:layout_height="match_parent"
     tools:context=".ui.snap.NewSnapFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="8dp" />
+
     <ImageView
         android:id="@+id/echogramIcon"
         android:layout_width="64dp"
@@ -167,6 +195,7 @@
         app:layout_constraintStart_toStartOf="@id/contentGuideline"
         app:layout_constraintTop_toBottomOf="@id/divider2" />
     <Button
+        android:id="@+id/selectFromContactsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select from contacts"
@@ -174,34 +203,13 @@
         app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText"
         />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineLeft"
+    <CheckBox
+        android:id="@+id/shareWithAllCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="8dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="8dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="8dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="8dp" />
-
-
+        android:text="Share publicly (with everyone)"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/selectFromContactsButton"
+     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
