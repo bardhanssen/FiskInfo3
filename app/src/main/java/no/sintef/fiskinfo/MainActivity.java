@@ -13,14 +13,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import no.sintef.fiskinfo.model.Echogram;
 import no.sintef.fiskinfo.ui.snap.EchogramFragment;
-import no.sintef.fiskinfo.ui.snap.dummy.DummyContent;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -56,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements EchogramFragment.
         drawerLayout = findViewById(R.id.drawer_layout);
 
         HashSet<Integer> topLevelDests = new HashSet<>();
-        topLevelDests.add(R.id.map_fragment);
-        topLevelDests.add(R.id.overview_fragment);
-        topLevelDests.add(R.id.tools_fragment);
+        topLevelDests.add(R.id.fragment_map);
+        topLevelDests.add(R.id.fragment_overview);
+        topLevelDests.add(R.id.fragment_tools);
 
 //        appBarConfiguration = new AppBarConfiguration.Builder(topLevelDests) //controller.getGraph())
         appBarConfiguration = new AppBarConfiguration.Builder(controller.getGraph())

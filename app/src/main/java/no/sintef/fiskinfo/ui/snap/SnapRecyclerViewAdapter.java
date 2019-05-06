@@ -59,9 +59,10 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         holder.viewButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onViewEchogramClicked(holder.mItem.getEchogram());
-                }
+                Navigation.findNavController(v).navigate(R.id.action_fragment_snap_to_snapDetailFragment);
+                //if (mListener != null) {
+                //    mListener.onViewEchogramClicked(holder.mItem.getEchogram());
+                //}
             }
         });
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {

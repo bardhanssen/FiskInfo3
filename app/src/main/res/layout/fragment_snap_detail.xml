@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.map.MapFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/detail_view_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/detail_view_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/detail_view_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/detail_view_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/contentGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="100dp" />
+
+
+    <TextView
+        android:id="@+id/snapFromLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="From"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintBaseline_toBaselineOf="@id/snapFromTextView"/>
+
+    <TextView
+        android:id="@+id/snapFromTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="User name"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintStart_toStartOf="@id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <TextView
+        android:id="@+id/snapTitleLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Title"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintBaseline_toBaselineOf="@id/snapTitleTextView"/>
+
+    <TextView
+        android:id="@+id/snapTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintStart_toStartOf="@id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/snapFromTextView" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@+id/snapTitleTextView"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/echogramInfoLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+    <ImageView
+        android:id="@+id/timeIcon"
+        android:layout_width="@dimen/small_icon_width"
+        android:layout_height="@dimen/small_icon_height"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/timeTextView"
+        android:src="@drawable/ic_time" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@id/timeIcon"
+        app:layout_constraintTop_toBottomOf="@id/divider1"
+        android:text="01.01 13:13" />
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="@dimen/small_icon_width"
+        android:layout_height="@dimen/small_icon_height"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/positionTextView"
+        android:src="@drawable/ic_place" />
+
+    <TextView
+        android:id="@+id/positionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toRightOf="@id/timeIcon"
+        app:layout_constraintTop_toBottomOf="@id/timeTextView"
+        android:text="Hello" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="@dimen/small_icon_width"
+        android:layout_height="@dimen/small_icon_height"
+        app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/sourceTextView"
+        android:src="@drawable/ic_snap" />
+
+    <TextView
+        android:id="@+id/sourceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toRightOf="@id/timeIcon"
+        app:layout_constraintTop_toBottomOf="@id/positionTextView"
+        android:text="TextView" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/sourceTextView"/>
+
+
+    <TextView
+        android:id="@+id/snapCommentLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Comment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/snapCommentTextView"
+        tools:layout_editor_absoluteY="163dp" />
+
+    <TextView
+        android:id="@+id/snapCommentTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        tools:layout_editor_absoluteY="163dp" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/snapCommentTextView"/>
+
+    <ImageView
+        android:id="@+id/snapPreviewImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_photo"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/divider3"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"/>
+
+    <Button
+        android:id="@+id/viewEchogramButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View echogram here"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/divider3"
+        />
+
+    <Button
+        android:id="@+id/viewEchogramInMapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View in map"
+        app:layout_constraintStart_toStartOf="@+id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/viewEchogramButton"
+        />
+
+    <Button
+        android:id="@+id/viewInEchosounderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View in echosounder"
+        app:layout_constraintStart_toStartOf="@+id/contentGuideline"
+        app:layout_constraintTop_toBottomOf="@id/viewEchogramInMapButton"
+        />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/viewInEchosounderButton"/>
+
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/divider4"
+        android:src="@drawable/ic_delete" />
+</androidx.constraintlayout.widget.ConstraintLayout>

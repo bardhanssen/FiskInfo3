@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import no.sintef.fiskinfo.R;
 
-public class NewSnapFragment extends Fragment {
+public class SnapDetailFragment extends Fragment {
 
-    private NewSnapViewModel mViewModel;
+    private SnapDetailViewModel mViewModel;
 
-    public static NewSnapFragment newInstance() {
-        return new NewSnapFragment();
+    public static SnapDetailFragment newInstance() {
+        return new SnapDetailFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_snap, container, false);
+        return inflater.inflate(R.layout.fragment_snap_detail, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(NewSnapViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SnapDetailViewModel.class);
         // TODO: Use the ViewModel
     }
 

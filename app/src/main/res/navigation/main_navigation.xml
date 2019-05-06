@@ -3,72 +3,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/overview_fragment">
+    app:startDestination="@id/fragment_overview">
 
     <fragment
-        android:id="@+id/tools_fragment"
+        android:id="@+id/fragment_tools"
         android:name="no.sintef.fiskinfo.ui.tools.ToolsFragment"
         android:label="Tools"
         tools:layout="@layout/fragment_tools" >
         <action
             android:id="@+id/action_tools_fragment_to_tool_details_fragment"
-            app:destination="@id/tool_details_fragment" />
+            app:destination="@id/fragment_tool_details" />
     </fragment>
     <fragment
-        android:id="@+id/map_fragment"
+        android:id="@+id/fragment_map"
         android:name="no.sintef.fiskinfo.ui.map.MapFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map" />
     <fragment
-        android:id="@+id/tool_details_fragment"
+        android:id="@+id/fragment_tool_details"
         android:name="no.sintef.fiskinfo.ui.tools.ToolDetailsFragment"
         android:label="Tool Details"
         tools:layout="@layout/fragment_tool_details" />
     <fragment
-        android:id="@+id/overview_fragment"
+        android:id="@+id/fragment_overview"
         android:name="no.sintef.fiskinfo.ui.overview.OverviewFragment"
         android:label="FiskInfo Overview"
         tools:layout="@layout/fragment_overview" >
         <action
             android:id="@+id/action_overview_fragment_to_tools_fragment"
-            app:destination="@id/tools_fragment" />
+            app:destination="@id/fragment_tools" />
         <action
             android:id="@+id/action_overview_fragment_to_map_fragment"
-            app:destination="@id/map_fragment" />
+            app:destination="@id/fragment_map" />
         <action
             android:id="@+id/action_overview_fragment_to_tool_details_fragment"
-            app:destination="@id/tool_details_fragment" />
+            app:destination="@id/fragment_tool_details" />
         <action
             android:id="@+id/action_overview_fragment_to_user_profile_fragment"
-            app:destination="@id/user_profile_fragment" />
+            app:destination="@id/fragment_user_profile" />
         <action
             android:id="@+id/action_overview_fragment_to_snap_fragment"
-            app:destination="@id/snap_fragment" />
+            app:destination="@id/fragment_snap" />
         <action
             android:id="@+id/action_overview_fragment_to_userPreferencesFragment"
-            app:destination="@id/preferences_fragment" />
+            app:destination="@id/fragment_preferences" />
     </fragment>
     <fragment
-        android:id="@+id/snap_fragment"
+        android:id="@+id/fragment_snap"
         android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
         android:label="Snapfish"
         tools:layout="@layout/fragment_snap" >
         <action
             android:id="@+id/action_snap_fragment_to_newSnapFragment"
-            app:destination="@id/new_snap_fragment" />
+            app:destination="@id/fragment_snap_editor" />
+        <action
+            android:id="@+id/action_fragment_snap_to_snapDetailFragment"
+            app:destination="@id/snapDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/user_profile_fragment"
+        android:id="@+id/fragment_user_profile"
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"
         android:label="User Profile"
         tools:layout="@layout/fragment_user_profile" />
     <fragment
-        android:id="@+id/preferences_fragment"
+        android:id="@+id/fragment_preferences"
         android:name="no.sintef.fiskinfo.ui.preferences.UserPreferencesFragment"
         android:label="User Preferences" />
     <fragment
-        android:id="@+id/new_snap_fragment"
-        android:name="no.sintef.fiskinfo.ui.snap.NewSnapFragment"
+        android:id="@+id/fragment_snap_editor"
+        android:name="no.sintef.fiskinfo.ui.snap.SnapEditorFragment"
         android:label="New snap"
-        tools:layout="@layout/fragment_new_snap" />
+        tools:layout="@layout/fragment_snap_editor" />
+    <fragment
+        android:id="@+id/snapDetailFragment"
+        android:name="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"
+        android:label="Snap message"
+        tools:layout="@layout/fragment_snap_detail" />
 </navigation>
