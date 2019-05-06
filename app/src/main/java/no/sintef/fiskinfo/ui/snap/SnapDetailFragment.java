@@ -16,7 +16,7 @@ import no.sintef.fiskinfo.R;
 
 public class SnapDetailFragment extends Fragment {
 
-    private SnapDetailViewModel mViewModel;
+    private SnapInboxViewModel mViewModel;
 
     public static SnapDetailFragment newInstance() {
         return new SnapDetailFragment();
@@ -31,7 +31,7 @@ public class SnapDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SnapDetailViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SnapInboxViewModel.class);
         // TODO: Use the ViewModel
     }
 
