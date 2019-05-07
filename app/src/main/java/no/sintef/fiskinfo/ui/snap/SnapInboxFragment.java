@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,7 @@ import no.sintef.fiskinfo.repository.SnapRepository;
  * A fragment representing a list of Items.
  * <p/>
  */
-public class SnapInboxFragment extends Fragment {
+public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapter.OnSnapInteractionListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -89,7 +90,7 @@ public class SnapInboxFragment extends Fragment {
             }
 //            recyclerView.setAdapter(new MyEchogramRecyclerViewAdapter(DummyContent.ITEMS, mListener))
 
-            mAdapter = new SnapRecyclerViewAdapter();
+            mAdapter = new SnapRecyclerViewAdapter(this);
             recyclerView.setAdapter(mAdapter); //new SnapRecyclerViewAdapter(new SnapRepository().getInboxSnaps(), mListener));
         }
         return view;
@@ -111,6 +112,17 @@ public class SnapInboxFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         //mListener = null;
+    }
+
+    @Override
+    public void onViewSnapClicked(View v, Snap snap) {
+        mViewModel.selectSnap(snap);
+        Navigation.findNavController(v).navigate(R.id.action_fragment_snap_to_snapDetailFragment);
+    }
+
+    @Override
+    public void onViewSnapInMapClicked(View v, Snap snap) {
+        Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
     }
 
     /**

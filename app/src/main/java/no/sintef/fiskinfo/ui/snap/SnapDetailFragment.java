@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.ui.snap;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -13,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import no.sintef.fiskinfo.R;
+import no.sintef.fiskinfo.databinding.FragmentSnapDetailBinding;
+import no.sintef.fiskinfo.model.Snap;
 
 public class SnapDetailFragment extends Fragment {
 
     private SnapViewModel mViewModel;
+    private FragmentSnapDetailBinding mBinding;
 
     public static SnapDetailFragment newInstance() {
         return new SnapDetailFragment();
@@ -25,14 +30,21 @@ public class SnapDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_snap_detail, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_snap_detail, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
-        // TODO: Use the ViewModel
+        mViewModel.getSelectedSnap().observe(this, new Observer<Snap>() {
+            @Override
+            public void onChanged(Snap snap) {
+                mBinding.setSnap(snap);
+                mBinding.setEchogram(snap.echogram);
+            }
+        });
     }
 
 }

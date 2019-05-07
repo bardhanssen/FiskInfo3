@@ -28,11 +28,11 @@ import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
 public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder> {
 
     private List<Snap> snaps;
-//    private final OnEchogramInteractionListener mListener;
+    private final OnSnapInteractionListener mListener;
 
-    public SnapRecyclerViewAdapter() {
+    public SnapRecyclerViewAdapter(OnSnapInteractionListener listener) {
         snaps =  new ArrayList<>();
- //       mListener = listener;
+        mListener = listener;
     }
 
     public void setSnaps(List<Snap> snaps) {
@@ -64,20 +64,17 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         holder.viewButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_fragment_snap_to_snapDetailFragment);
-                //if (mListener != null) {
-                //    mListener.onViewEchogramClicked(holder.mItem.getEchogram());
-                //}
+                if (mListener != null) {
+                    mListener.onViewSnapClicked(v, holder.mItem);
+                }
             }
         });
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
-
-                //if (mListener != null) {
-                //    mListener.onShareEchogramClicked(holder.mItem.getEchogram());
-               //}
+                if (mListener != null) {
+                    mListener.onViewSnapInMapClicked(v, holder.mItem);
+               }
             }
         });
 
@@ -123,5 +120,10 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         public String toString() {
             return super.toString() + " '" + titleView.getText() + "'";
         }
+    }
+
+    public interface OnSnapInteractionListener {
+        void onViewSnapClicked(View v, Snap snap);
+        void onViewSnapInMapClicked(View v, Snap snap);
     }
 }
