@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.ui.snap;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -15,12 +17,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import no.sintef.fiskinfo.R;
+import no.sintef.fiskinfo.databinding.FragmentSnapEditorBinding;
 import no.sintef.fiskinfo.model.Snap;
 
 public class SnapEditorFragment extends Fragment {
 
     private SnapViewModel mViewModel;
-    private View mView;
+    private FragmentSnapEditorBinding mBinding;
 
     public static SnapEditorFragment newInstance() {
         return new SnapEditorFragment();
@@ -29,8 +32,8 @@ public class SnapEditorFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_snap_editor, container, false);
-        return mView;
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_snap_editor, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
@@ -40,10 +43,8 @@ public class SnapEditorFragment extends Fragment {
         mViewModel.getDraft().observe(this, new Observer<Snap>() {
             @Override
             public void onChanged(Snap snap) {
-                TextView timeText = mView.findViewById(R.id.timeTextView);
-                timeText.setText(snap.echogram.timestamp.toString());
-                TextView positionText = mView.findViewById(R.id.positionTextView);
-                positionText.setText(snap.echogram.location);
+                mBinding.setSnap(snap);
+                mBinding.setEchogram(snap.echogram);
             }
         });
     }
