@@ -18,12 +18,11 @@ import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.Snap;
-import no.sintef.fiskinfo.ui.snap.EchogramFragment.OnEchogramInteractionListener;
 import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnEchogramInteractionListener}.
+ * specified
  * TODO: Replace the implementation with code for your data type.
  */
 public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder> {

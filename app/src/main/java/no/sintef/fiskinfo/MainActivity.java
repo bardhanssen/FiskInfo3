@@ -3,11 +3,9 @@ package no.sintef.fiskinfo;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -17,16 +15,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import no.sintef.fiskinfo.model.Echogram;
-import no.sintef.fiskinfo.ui.snap.EchogramFragment;
-
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;
 
 import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
-public class MainActivity extends AppCompatActivity implements EchogramFragment.OnEchogramInteractionListener {
+public class MainActivity extends AppCompatActivity  {
 
     AppBarConfiguration appBarConfiguration = null;
     NavController controller;
@@ -58,46 +53,16 @@ public class MainActivity extends AppCompatActivity implements EchogramFragment.
         topLevelDests.add(R.id.fragment_overview);
         topLevelDests.add(R.id.fragment_tools);
 
-//        appBarConfiguration = new AppBarConfiguration.Builder(topLevelDests) //controller.getGraph())
         appBarConfiguration = new AppBarConfiguration.Builder(controller.getGraph())
                 .setDrawerLayout(drawerLayout)
                 .build();
 
         setupActionBarWithNavController(this, controller, drawerLayout);
-        //setupActionBarWithNavController(this, controller, appBarConfiguration);
-
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawerLayout, toolbar, R.string.proto_open_drawer, R.string.proto_close_drawer);
-//        toggle.syncState();
 
         setupNavigationMenu(controller);
 
-/*        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, OverviewFragment.newInstance())
-                    .commitNow();
-        }*/
     }
 
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_nav_drawer, menu);
-        return true;
-        boolean retVal = super.onCreateOptionsMenu(menu);
-        NavigationView navView = findViewById(R.id.navigation_view);
-        if (navView == null) {
-            getMenuInflater().inflate(R.menu.menu_nav_drawer, menu);
-            return true;
-        }
-        return retVal;*
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return NavigationUI.onNavDestinationSelected(item, Navigation.findNavController(this, R.id.nav_host_fragment));
-    }
-*/
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(controller, drawerLayout);
@@ -110,15 +75,14 @@ public class MainActivity extends AppCompatActivity implements EchogramFragment.
 
     }
 
-
-
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_nav_drawer, menu);
         return true;
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -135,23 +99,5 @@ public class MainActivity extends AppCompatActivity implements EchogramFragment.
         } else {
             super.onBackPressed();
         }
-    }
-
-
-    @Override
-    public void onViewEchogramClicked(Echogram echogram) {
-
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(echogram.echogramURL);
-        startActivity(i);
-
-//        Toast toast = Toast.makeText(this,"Show Echogram " + echogram.source + " " + echogram.timestamp.toString(),Toast.LENGTH_LONG);
-//        toast.show();
-    }
-
-    @Override
-    public void onShareEchogramClicked(Echogram echogram) {
-        Toast toast = Toast.makeText(this,"Share Echogram " + echogram.source + " " + echogram.timestamp.toString(),Toast.LENGTH_LONG);
-        toast.show();
     }
 }

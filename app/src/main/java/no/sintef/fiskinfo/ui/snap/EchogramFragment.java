@@ -1,9 +1,13 @@
 package no.sintef.fiskinfo.ui.snap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,16 +24,15 @@ import no.sintef.fiskinfo.ui.snap.dummy.DummyContent;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnEchogramInteractionListener}
- * interface.
  */
-public class EchogramFragment extends Fragment {
+public class EchogramFragment extends Fragment implements EchogramRecyclerViewAdapter.OnEchogramInteractionListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnEchogramInteractionListener mListener;
+    // private OnEchogramInteractionListener mListener;
+    private SnapViewModel mSnapViewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,6 +61,13 @@ public class EchogramFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mSnapViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_echogram_list, container, false);
@@ -73,7 +83,7 @@ public class EchogramFragment extends Fragment {
             }
 //            recyclerView.setAdapter(new MyEchogramRecyclerViewAdapter(DummyContent.ITEMS, mListener))
 
-            recyclerView.setAdapter(new EchogramRecyclerViewAdapter(new EchogramRepository().getEchograms(), mListener));
+            recyclerView.setAdapter(new EchogramRecyclerViewAdapter(new EchogramRepository().getEchograms(), this));
         }
         return view;
     }
@@ -82,18 +92,31 @@ public class EchogramFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnEchogramInteractionListener) {
+/*        if (context instanceof OnEchogramInteractionListener) {
             mListener = (OnEchogramInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnEchogramInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
+    }
+
+    @Override
+    public void onViewEchogramClicked(View v, Echogram echogram) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(echogram.echogramURL);
+        startActivity(i);
+    }
+
+    @Override
+    public void onShareEchogramClicked(View v, Echogram echogram) {
+        mSnapViewModel.createDraftFrom(echogram);
+        Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
     }
 
     /**
@@ -106,8 +129,8 @@ public class EchogramFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnEchogramInteractionListener {
+/*    public interface OnEchogramInteractionListener {
         void onViewEchogramClicked(Echogram echogram);
         void onShareEchogramClicked(Echogram echogram);
-    }
+    }*/
 }

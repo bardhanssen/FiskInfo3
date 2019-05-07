@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +16,6 @@ import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.Echogram;
-import no.sintef.fiskinfo.ui.snap.EchogramFragment.OnEchogramInteractionListener;
 import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
 
 /**
@@ -30,7 +28,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
     private final List<Echogram> echograms;
     private final OnEchogramInteractionListener mListener;
 
-    public EchogramRecyclerViewAdapter(List<Echogram> items, EchogramFragment.OnEchogramInteractionListener listener) {
+    public EchogramRecyclerViewAdapter(List<Echogram> items, EchogramRecyclerViewAdapter.OnEchogramInteractionListener listener) {
         echograms = items;
         mListener = listener;
     }
@@ -59,30 +57,18 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onViewEchogramClicked(holder.mItem);
+                    mListener.onViewEchogramClicked(v, holder.mItem);
                 }
             }
         });
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
-                // if (mListener != null) {
-                //    mListener.onShareEchogramClicked(holder.mItem);
-                // }
-            }
-        });
-
-/*        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onViewEchogramClicked(holder.mItem);
+                if (mListener != null) {
+                    mListener.onShareEchogramClicked(v, holder.mItem);
                 }
             }
-        });*/
+        });
     }
 
     @Override
@@ -115,5 +101,10 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
         public String toString() {
             return super.toString() + " '" + titleView.getText() + "'";
         }
+    }
+
+    public interface OnEchogramInteractionListener {
+        void onViewEchogramClicked(View v, Echogram echogram);
+        void onShareEchogramClicked(View v, Echogram echogram);
     }
 }

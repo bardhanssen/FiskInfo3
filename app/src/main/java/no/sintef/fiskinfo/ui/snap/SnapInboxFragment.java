@@ -30,7 +30,7 @@ public class SnapInboxFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private EchogramFragment.OnEchogramInteractionListener mListener;
+    // private EchogramFragment.OnEchogramInteractionListener mListener;
     private SnapViewModel mViewModel;
     private SnapRecyclerViewAdapter mAdapter;
 
@@ -99,18 +99,18 @@ public class SnapInboxFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof EchogramFragment.OnEchogramInteractionListener) {
+/*        if (context instanceof EchogramFragment.OnEchogramInteractionListener) {
             mListener = (EchogramFragment.OnEchogramInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnEchogramInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
     }
 
     /**
