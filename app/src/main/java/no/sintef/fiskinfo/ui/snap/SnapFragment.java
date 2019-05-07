@@ -23,7 +23,7 @@ public class SnapFragment extends Fragment  {
 
     ViewPager viewPager;
     SnapPageAdapter snapPagerAdapter;
-//    private SnapInboxViewModel mViewModel;
+//    private SnapViewModel mViewModel;
 
     public static SnapFragment newInstance() {
         return new SnapFragment();
@@ -47,7 +47,7 @@ public class SnapFragment extends Fragment  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //mViewModel = ViewModelProviders.of(this).get(SnapInboxViewModel.class);
+        //mViewModel = ViewModelProviders.of(this).get(SnapViewModel.class);
         // TODO: Use the ViewModel
     }
 

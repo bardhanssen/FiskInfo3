@@ -6,19 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import no.sintef.fiskinfo.R;
+import no.sintef.fiskinfo.model.Snap;
 import no.sintef.fiskinfo.repository.SnapRepository;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnEchogramInteractionListener}
- * interface.
  */
 public class SnapInboxFragment extends Fragment {
 
@@ -27,6 +31,8 @@ public class SnapInboxFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private EchogramFragment.OnEchogramInteractionListener mListener;
+    private SnapViewModel mViewModel;
+    private SnapRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,6 +61,19 @@ public class SnapInboxFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
+        mViewModel.getInboxSnaps().observe(this, new Observer<List<Snap>>() {
+            @Override
+            public void onChanged(List<Snap> snaps) {
+                mAdapter.setSnaps(snaps);
+            }
+        });
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_snap_inbox, container, false);
@@ -70,7 +89,8 @@ public class SnapInboxFragment extends Fragment {
             }
 //            recyclerView.setAdapter(new MyEchogramRecyclerViewAdapter(DummyContent.ITEMS, mListener))
 
-            recyclerView.setAdapter(new SnapRecyclerViewAdapter(new SnapRepository().getInboxSnaps(), mListener));
+            mAdapter = new SnapRecyclerViewAdapter();
+            recyclerView.setAdapter(mAdapter); //new SnapRecyclerViewAdapter(new SnapRepository().getInboxSnaps(), mListener));
         }
         return view;
     }

@@ -31,7 +31,7 @@ public class SnapEditorFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(NewSnapViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(NewSnapViewModel.class);
         // TODO: Use the ViewModel
     }
 

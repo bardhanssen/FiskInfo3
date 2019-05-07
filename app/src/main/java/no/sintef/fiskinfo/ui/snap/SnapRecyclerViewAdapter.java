@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -27,12 +28,17 @@ import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
  */
 public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Snap> snaps;
-    private final OnEchogramInteractionListener mListener;
+    private List<Snap> snaps;
+//    private final OnEchogramInteractionListener mListener;
 
-    public SnapRecyclerViewAdapter(List<Snap> items, OnEchogramInteractionListener listener) {
-        snaps = items;
-        mListener = listener;
+    public SnapRecyclerViewAdapter() {
+        snaps =  new ArrayList<>();
+ //       mListener = listener;
+    }
+
+    public void setSnaps(List<Snap> snaps) {
+        this.snaps = snaps;
+        this.notifyDataSetChanged();
     }
 
     @Override

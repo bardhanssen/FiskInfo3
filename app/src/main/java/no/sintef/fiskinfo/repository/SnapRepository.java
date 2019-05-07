@@ -1,5 +1,8 @@
 package no.sintef.fiskinfo.repository;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +18,29 @@ public class SnapRepository {
         return instance;
     }
 
-    protected List<Snap> outboxSnaps = new ArrayList<>();
+    protected MutableLiveData<List<Snap>> outboxSnaps;
 
-    public List<Snap> getInboxSnaps() {
+    public LiveData<List<Snap>> getInboxSnaps() {
         return DummySnap.getDummyInboxSnaps();
     }
 
-    public void storeSnap(Snap newSnap) {
-        outboxSnaps.add(newSnap);
+
+    private void initOutbox() {
+        outboxSnaps = new MutableLiveData<>();
+        outboxSnaps.setValue(new ArrayList<Snap>());
     }
-    public List<Snap> getOutboxSnaps() {
+
+    public void storeSnap(Snap newSnap) {
+        if (outboxSnaps == null)
+            initOutbox();
+        outboxSnaps.getValue().add(newSnap);
+    }
+
+    public LiveData<List<Snap>> getOutboxSnaps() {
+        if (outboxSnaps == null) {
+            outboxSnaps = new MutableLiveData<>();
+            outboxSnaps.setValue(new ArrayList<Snap>());
+        }
         return outboxSnaps;
     }
 }
