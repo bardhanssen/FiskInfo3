@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"/>
         <variable name="snap" type="no.sintef.fiskinfo.model.Snap"/>
         <variable name="echogram" type="no.sintef.fiskinfo.model.Echogram" />
     </data>
@@ -191,12 +192,9 @@
             android:id="@+id/snapCommentTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="100dp"
+            android:minHeight="20dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
             android:text="@{snap.comment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/contentGuideline"
@@ -229,6 +227,7 @@
             android:layout_height="wrap_content"
             android:text="View echogram here"
             android:layout_marginTop="8dp"
+            android:onClick="@{handlers::onViewEchogramHereClicked}"
             app:layout_constraintStart_toStartOf="@+id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@id/divider3" />
 
@@ -237,6 +236,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View in map"
+            android:onClick="@{handlers::onViewInMapClicked}"
             app:layout_constraintStart_toStartOf="@+id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@id/viewEchogramButton" />
 
@@ -245,6 +245,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View in echosounder"
+            android:onClick="@{handlers::onViewInEchosounderClicked}"
             app:layout_constraintStart_toStartOf="@+id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@id/viewEchogramInMapButton" />
 
