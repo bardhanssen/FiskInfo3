@@ -10,8 +10,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,6 +37,7 @@ public class SnapEditorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_snap_editor, container, false);
+        setHasOptionsMenu(true);
         return mBinding.getRoot();
     }
 
@@ -43,10 +48,27 @@ public class SnapEditorFragment extends Fragment {
         mViewModel.getDraft().observe(this, new Observer<Snap>() {
             @Override
             public void onChanged(Snap snap) {
-                mBinding.setSnap(snap);
-                mBinding.setEchogram(snap.echogram);
+                if (snap != null) {
+                    mBinding.setSnap(snap);
+                    mBinding.setEchogram(snap.echogram);
+                }
             }
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.snap_editor_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.send_snap_action) {
+            mViewModel.sendSnapAndClear();
+            Navigation.findNavController(this.getView()).navigateUp();
+            return true;
+        }
+        return false;
+    }
 }
