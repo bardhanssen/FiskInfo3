@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class DummySnap {
         snap.title = title;
         snap.comment = comment;
         snap.sender = sender;
-        snap.receivers = receivers;
+        snap.receivers = new ArrayList<String>(Arrays.asList(receivers));
         snap.sendTimestamp = new Date();
         return snap;
     }

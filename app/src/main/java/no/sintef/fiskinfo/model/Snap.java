@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import androidx.room.Entity;
@@ -13,7 +14,7 @@ public class Snap {
     //public int echogramUid;
 
     public String sender;
-    public String[] receivers;
+    public ArrayList<String> receivers;
 
     public String title;
     public String comment;
@@ -21,6 +22,7 @@ public class Snap {
     public Date sendTimestamp;
 
     public Echogram echogram;
+    public boolean sharePublicly;
 
     public Echogram getEchogram() {
         return echogram;

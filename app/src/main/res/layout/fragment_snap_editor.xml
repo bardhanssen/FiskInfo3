@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
         <variable name="snap" type="no.sintef.fiskinfo.model.Snap"/>
         <variable name="echogram" type="no.sintef.fiskinfo.model.Echogram" />
     </data>
@@ -140,7 +141,7 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:text="@={snap.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
             app:layout_constraintStart_toStartOf="@id/contentGuideline"
@@ -165,6 +166,7 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
+            android:text="@={snap.comment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@+id/snapTitleEditText"
@@ -207,6 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select from contacts"
+            android:onClick="@{handlers::onSelectFromContactsClicked}"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText" />
 
@@ -215,6 +218,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Share publicly (with everyone)"
+            android:checked="@={snap.sharePublicly}"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@id/selectFromContactsButton" />
 
