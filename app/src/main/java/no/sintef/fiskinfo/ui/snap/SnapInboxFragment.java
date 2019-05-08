@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +17,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
@@ -71,8 +77,13 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
                 mAdapter.setSnaps(snaps);
             }
         });
-    }
 
+/*        ViewParent parent = this.getView().getParent();
+        if (parent instanceof ViewPager) {
+            TabLayout tabLayout = (TabLayout) ((ViewPager) parent).findViewById(R.id.snaptab_layout);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_info);
+        }*/
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +104,14 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
             mAdapter = new SnapRecyclerViewAdapter(this);
             recyclerView.setAdapter(mAdapter); //new SnapRecyclerViewAdapter(new SnapRepository().getInboxSnaps(), mListener));
         }
+/*        if (container instanceof ViewPager) {
+            TabLayout tabLayout = (TabLayout) ((ViewPager) container).findViewById(R.id.snaptab_layout);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_info);
+            View customTab = inflater.inflate(R.layout.tab_with_icon_and_title, container, false);
+            tabLayout.getTabAt(1).setCustomView(customTab);
+            TextView tabText = customTab.findViewById(R.id.tabTextView);
+            tabText.setText("Inbox");
+        }*/
         return view;
     }
 
@@ -122,7 +141,8 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
 
     @Override
     public void onViewSnapInMapClicked(View v, Snap snap) {
-        Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
+        Toast toast = Toast.makeText(this.getContext(),"Not yet implemented!",Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     /**

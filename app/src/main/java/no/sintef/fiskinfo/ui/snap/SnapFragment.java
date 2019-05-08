@@ -3,6 +3,7 @@ package no.sintef.fiskinfo.ui.snap;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +69,32 @@ public class SnapFragment extends Fragment  {
             return getResources().getStringArray(R.array.snap_tab_titles)[position];
         }
 
+/*        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Drawable counterIcon;
+            String title = getResources().getStringArray(R.array.snap_tab_titles)[position];
+            switch (position) {
+                case 0:
+                    counterIcon = getResources().getDrawable(R.drawable.item_count);
+                    break;
+                default:
+                    //TODO: handle default selection
+                    return title;
+            }
+
+            SpannableStringBuilder sb = new SpannableStringBuilder("   " + title); // space added before text for convenience
+            try {
+                counterIcon.setBounds(5, 5, 20, 20); //counterIcon.getIntrinsicWidth(), counterIcon.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(counterIcon, DynamicDrawableSpan.ALIGN_BASELINE);
+                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            return sb.subSequence(0, sb.length());
+        }
+
+*/
         @NonNull
         @Override
         public Fragment getItem(int position) {

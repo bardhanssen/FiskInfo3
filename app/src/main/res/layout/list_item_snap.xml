@@ -37,6 +37,7 @@ limitations under the License.
         android:orientation="vertical"
         android:layout_marginStart="@dimen/list_margin"
         android:gravity="center_vertical"
+        android:layout_weight="4"
         >
 
         <TextView
@@ -66,13 +67,6 @@ limitations under the License.
             />
         <!--            android:layout_marginTop="@dimen/utility_row_margin_top" -->
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/open_snap_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/list_margin"
-        app:srcCompat="@drawable/ic_open_in_browser" />
 
     <ImageButton
         android:id="@+id/show_snap_in_map_button"

@@ -60,7 +60,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         //holder.detail1View.setText(sdf.format(holder.mItem.getEchogram().timestamp));
         holder.detail1View.setText(holder.mItem.title);
         holder.detail2View.setText(sdf.format(holder.mItem.getEchogram().timestamp)); //holder.mItem.getEchogram().location);
-
+/*
         holder.viewButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
                     mListener.onViewSnapClicked(v, holder.mItem);
                 }
             }
-        });
+        });*/
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,16 +78,16 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
             }
         });
 
-/*        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onViewEchogramClicked(holder.mItem);
+                    mListener.onViewSnapClicked(v, holder.mItem);
                 }
             }
-        });*/
+        });
     }
 
     @Override
@@ -102,7 +102,6 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         public final TextView detail1View;
         public final TextView detail2View;
         // public final ImageView imageView;
-        public final ImageButton viewButton;
         public final ImageButton shareButton;
 
         public ViewHolder(View view) {
@@ -113,7 +112,6 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
             detail2View = (TextView) view.findViewById(R.id.snap_item_detail_2_view);
             // imageView = (ImageView) view.findViewById(R.id.snap_item_image_view);
             shareButton = (ImageButton) view.findViewById(R.id.show_snap_in_map_button);
-            viewButton = (ImageButton) view.findViewById(R.id.open_snap_button);
         }
 
         @Override
