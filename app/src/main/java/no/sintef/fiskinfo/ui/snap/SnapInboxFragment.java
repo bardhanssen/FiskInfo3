@@ -37,7 +37,7 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    // private EchogramFragment.OnEchogramInteractionListener mListener;
+    // private EchogramListFragment.OnEchogramInteractionListener mListener;
     private SnapViewModel mViewModel;
     private SnapRecyclerViewAdapter mAdapter;
 
@@ -119,8 +119,8 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof EchogramFragment.OnEchogramInteractionListener) {
-            mListener = (EchogramFragment.OnEchogramInteractionListener) context;
+/*        if (context instanceof EchogramListFragment.OnEchogramInteractionListener) {
+            mListener = (EchogramListFragment.OnEchogramInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnEchogramInteractionListener");

@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.snap.EchogramFragment"
+    tools:context=".ui.snap.EchogramListFragment"
     tools:listitem="@layout/list_item_echogram" />

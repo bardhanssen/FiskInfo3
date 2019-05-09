@@ -3,7 +3,6 @@ package no.sintef.fiskinfo.ui.snap;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,10 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.DynamicDrawableSpan;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +94,7 @@ public class SnapFragment extends Fragment  {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return EchogramFragment.newInstance(position + 1);
+                return EchogramListFragment.newInstance();
 
             } else {
                 return SnapInboxFragment.newInstance(position);
