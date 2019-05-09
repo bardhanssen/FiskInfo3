@@ -22,16 +22,11 @@ import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.Snap;
 
 /**
- * A fragment representing a list of Items.
+ * A fragment showing the inbox of snap messages.
  * <p/>
  */
 public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapter.OnSnapInteractionListener {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    // private EchogramListFragment.OnEchogramInteractionListener mListener;
     private SnapViewModel mViewModel;
     private SnapRecyclerViewAdapter mAdapter;
 
@@ -42,23 +37,13 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
     public SnapInboxFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static SnapInboxFragment newInstance(int columnCount) {
-        SnapInboxFragment fragment = new SnapInboxFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+        return new SnapInboxFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -88,15 +73,9 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-//            recyclerView.setAdapter(new MyEchogramRecyclerViewAdapter(DummyContent.ITEMS, mListener))
-
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             mAdapter = new SnapRecyclerViewAdapter(this);
-            recyclerView.setAdapter(mAdapter); //new SnapRecyclerViewAdapter(new SnapRepository().getInboxSnaps(), mListener));
+            recyclerView.setAdapter(mAdapter);
         }
 /*        if (container instanceof ViewPager) {
             TabLayout tabLayout = (TabLayout) ((ViewPager) container).findViewById(R.id.snaptab_layout);
@@ -107,24 +86,6 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
             tabText.setText("Inbox");
         }*/
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-/*        if (context instanceof EchogramListFragment.OnEchogramInteractionListener) {
-            mListener = (EchogramListFragment.OnEchogramInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnEchogramInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
     }
 
     @Override
@@ -138,19 +99,4 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
         Toast toast = Toast.makeText(this.getContext(),"Not yet implemented!",Toast.LENGTH_SHORT);
         toast.show();
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-/*TODO:    public interface OnEchogramInteractionListener {
-        void onViewEchogramClicked(Echogram echogram);
-        void onShareEchogramClicked(Echogram echogram);
-    }*/
 }
