@@ -17,13 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.databinding.FragmentSnapDetailBinding;
+import no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding;
 import no.sintef.fiskinfo.model.Snap;
 
 public class SnapDetailFragment extends Fragment {
 
     private SnapViewModel mViewModel;
-    private FragmentSnapDetailBinding mBinding;
+    private SnapDetailFragmentBinding mBinding;
 
     public static SnapDetailFragment newInstance() {
         return new SnapDetailFragment();
@@ -32,7 +32,7 @@ public class SnapDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_snap_detail, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.snap_detail_fragment, container, false);
         return mBinding.getRoot();
     }
 

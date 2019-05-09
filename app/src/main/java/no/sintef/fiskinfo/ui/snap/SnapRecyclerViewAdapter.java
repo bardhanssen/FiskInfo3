@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -43,7 +42,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_snap, parent, false);
+                .inflate(R.layout.snap_list_item, parent, false);
         return new ViewHolder(view);
     }
 

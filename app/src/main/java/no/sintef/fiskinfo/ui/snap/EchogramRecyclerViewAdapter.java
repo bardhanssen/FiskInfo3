@@ -16,12 +16,10 @@ import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.Echogram;
-import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Echogram} and makes calls to the
  * specified {@link OnEchogramInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRecyclerViewAdapter.ViewHolder> {
 
@@ -36,7 +34,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_echogram, parent, false);
+                .inflate(R.layout.echogram_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -82,7 +80,6 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
         public final TextView titleView;
         public final TextView detail1View;
         public final TextView detail2View;
-        // public final ImageView imageView;
         public final ImageButton viewButton;
         public final ImageButton shareButton;
 
@@ -92,7 +89,6 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
             titleView = (TextView) view.findViewById(R.id.snap_item_title_view);
             detail1View = (TextView) view.findViewById(R.id.snap_item_detail_1_view);
             detail2View = (TextView) view.findViewById(R.id.snap_item_detail_2_view);
-            // imageView = (ImageView) view.findViewById(R.id.snap_item_image_view);
             shareButton = (ImageButton) view.findViewById(R.id.share_echogram_button);
             viewButton = (ImageButton) view.findViewById(R.id.open_echogram_button);
         }

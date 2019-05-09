@@ -1,7 +1,6 @@
 package no.sintef.fiskinfo.ui.snap;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -22,12 +21,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.databinding.FragmentSnapEditorBinding;
+import no.sintef.fiskinfo.databinding.SnapEditorFragmentBinding;
 import no.sintef.fiskinfo.model.Snap;
 
 import static android.app.Activity.RESULT_OK;
@@ -35,7 +33,7 @@ import static android.app.Activity.RESULT_OK;
 public class SnapEditorFragment extends Fragment {
 
     private SnapViewModel mViewModel;
-    private FragmentSnapEditorBinding mBinding;
+    private SnapEditorFragmentBinding mBinding;
 
     public static SnapEditorFragment newInstance() {
         return new SnapEditorFragment();
@@ -44,7 +42,7 @@ public class SnapEditorFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_snap_editor, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.snap_editor_fragment, container, false);
         setHasOptionsMenu(true);
         return mBinding.getRoot();
     }

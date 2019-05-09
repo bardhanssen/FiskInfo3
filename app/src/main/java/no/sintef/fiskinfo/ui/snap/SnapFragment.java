@@ -32,7 +32,7 @@ public class SnapFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_snap, container, false);
+        return inflater.inflate(R.layout.snap_fragment, container, false);
     }
 
     @Override

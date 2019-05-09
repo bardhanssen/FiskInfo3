@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,15 +15,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.Snap;
-import no.sintef.fiskinfo.repository.SnapRepository;
 
 /**
  * A fragment representing a list of Items.
@@ -88,7 +82,7 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_snap_inbox, container, false);
+        View view = inflater.inflate(R.layout.snap_inbox_fragment, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
