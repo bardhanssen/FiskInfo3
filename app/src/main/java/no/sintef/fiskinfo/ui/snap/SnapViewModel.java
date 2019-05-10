@@ -6,33 +6,31 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import no.sintef.fiskinfo.model.Echogram;
-import no.sintef.fiskinfo.model.Snap;
+import no.sintef.fiskinfo.model.EchogramInfo;
+import no.sintef.fiskinfo.model.SnapMessage;
 import no.sintef.fiskinfo.repository.SnapRepository;
 
 public class SnapViewModel extends ViewModel {
 
-    //MutableLiveData<Snap> snap;
-    //LiveData<Echogram> echogram;
-    private MutableLiveData<Snap> selectedSnap = new MutableLiveData<Snap>();
-    private LiveData<List<Snap>> inboxSnaps;
-    private MutableLiveData<Snap> snapDraft = new MutableLiveData<Snap>();
+    private MutableLiveData<SnapMessage> selectedSnap = new MutableLiveData<SnapMessage>();
+    private LiveData<List<SnapMessage>> inboxSnaps;
+    private MutableLiveData<SnapMessage> snapDraft = new MutableLiveData<SnapMessage>();
 
-    public void selectSnap(Snap snap) {
+    public void selectSnap(SnapMessage snap) {
         selectedSnap.setValue(snap);
     }
 
-    public LiveData<Snap> getSelectedSnap() {
+    public LiveData<SnapMessage> getSelectedSnap() {
         return selectedSnap;
     }
 
-    public void createDraftFrom(Echogram echogram) {
-        Snap snap = new Snap();
+    public void createDraftFrom(EchogramInfo echogram) {
+        SnapMessage snap = new SnapMessage();
         snap.echogram = echogram;
         snapDraft.setValue(snap);
     }
 
-    public LiveData<Snap> getDraft() {
+    public LiveData<SnapMessage> getDraft() {
         return snapDraft;
     }
 
@@ -41,7 +39,7 @@ public class SnapViewModel extends ViewModel {
         snapDraft.setValue(null);
     }
 
-    public LiveData<List<Snap>> getInboxSnaps() {
+    public LiveData<List<SnapMessage>> getInboxSnaps() {
         if (inboxSnaps == null) {
             inboxSnaps = SnapRepository.getInstance().getInboxSnaps();
         }

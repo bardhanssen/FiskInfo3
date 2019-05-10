@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Snap {
+public class SnapMessage {
     @PrimaryKey
     public long uid;
 
@@ -21,10 +21,10 @@ public class Snap {
 
     public Date sendTimestamp;
 
-    public Echogram echogram;
+    public EchogramInfo echogram;
     public boolean sharePublicly;
 
-    public Echogram getEchogram() {
+    public EchogramInfo getEchogram() {
         return echogram;
     }
 }

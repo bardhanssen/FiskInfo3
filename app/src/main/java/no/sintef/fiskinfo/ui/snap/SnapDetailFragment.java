@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding;
-import no.sintef.fiskinfo.model.Snap;
+import no.sintef.fiskinfo.model.SnapMessage;
 
 public class SnapDetailFragment extends Fragment {
 
@@ -40,9 +40,9 @@ public class SnapDetailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
-        mViewModel.getSelectedSnap().observe(this, new Observer<Snap>() {
+        mViewModel.getSelectedSnap().observe(this, new Observer<SnapMessage>() {
             @Override
-            public void onChanged(Snap snap) {
+            public void onChanged(SnapMessage snap) {
                 mBinding.setSnap(snap);
                 mBinding.setEchogram(snap.echogram);
                 mBinding.setHandlers(SnapDetailFragment.this);

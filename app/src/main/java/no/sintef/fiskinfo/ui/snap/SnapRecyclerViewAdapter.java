@@ -16,17 +16,16 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.model.Snap;
-import no.sintef.fiskinfo.ui.snap.dummy.DummyContent.DummyItem;
+import no.sintef.fiskinfo.model.SnapMessage;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified
+ * {@link RecyclerView.Adapter} that can display a {@link SnapMessage} and makes call to the
+ * specified {@OnSnapInteractionListener} callbacks on interaction
  * TODO: Replace the implementation with code for your data type.
  */
 public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder> {
 
-    private List<Snap> snaps;
+    private List<SnapMessage> snaps;
     private final OnSnapInteractionListener mListener;
 
     public SnapRecyclerViewAdapter(OnSnapInteractionListener listener) {
@@ -34,7 +33,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         mListener = listener;
     }
 
-    public void setSnaps(List<Snap> snaps) {
+    public void setSnaps(List<SnapMessage> snaps) {
         this.snaps = snaps;
         this.notifyDataSetChanged();
     }
@@ -58,16 +57,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
         sdf.setTimeZone(TimeZone.getDefault());
         //holder.detail1View.setText(sdf.format(holder.mItem.getEchogram().timestamp));
         holder.detail1View.setText(holder.mItem.title);
-        holder.detail2View.setText(sdf.format(holder.mItem.getEchogram().timestamp)); //holder.mItem.getEchogram().location);
-/*
-        holder.viewButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onViewSnapClicked(v, holder.mItem);
-                }
-            }
-        });*/
+        holder.detail2View.setText(sdf.format(holder.mItem.getEchogram().timestamp)); //holder.mItem.getEchogram().latitude);
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +71,6 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onViewSnapClicked(v, holder.mItem);
                 }
             }
@@ -95,12 +83,11 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public Snap mItem;
+        public SnapMessage mItem;
         public final View mView;
         public final TextView titleView;
         public final TextView detail1View;
         public final TextView detail2View;
-        // public final ImageView imageView;
         public final ImageButton shareButton;
 
         public ViewHolder(View view) {
@@ -109,7 +96,6 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
             titleView = (TextView) view.findViewById(R.id.snap_item_title_view);
             detail1View = (TextView) view.findViewById(R.id.snap_item_detail_1_view);
             detail2View = (TextView) view.findViewById(R.id.snap_item_detail_2_view);
-            // imageView = (ImageView) view.findViewById(R.id.snap_item_image_view);
             shareButton = (ImageButton) view.findViewById(R.id.show_snap_in_map_button);
         }
 
@@ -120,7 +106,7 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
     }
 
     public interface OnSnapInteractionListener {
-        void onViewSnapClicked(View v, Snap snap);
-        void onViewSnapInMapClicked(View v, Snap snap);
+        void onViewSnapClicked(View v, SnapMessage snap);
+        void onViewSnapInMapClicked(View v, SnapMessage snap);
     }
 }

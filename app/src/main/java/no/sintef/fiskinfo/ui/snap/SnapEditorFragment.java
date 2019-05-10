@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.databinding.SnapEditorFragmentBinding;
-import no.sintef.fiskinfo.model.Snap;
+import no.sintef.fiskinfo.model.SnapMessage;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -51,9 +51,9 @@ public class SnapEditorFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
-        mViewModel.getDraft().observe(this, new Observer<Snap>() {
+        mViewModel.getDraft().observe(this, new Observer<SnapMessage>() {
             @Override
-            public void onChanged(Snap snap) {
+            public void onChanged(SnapMessage snap) {
                 if (snap != null) {
                     mBinding.setSnap(snap);
                     mBinding.setEchogram(snap.echogram);

@@ -5,8 +5,8 @@
 
     <data>
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"/>
-        <variable name="snap" type="no.sintef.fiskinfo.model.Snap"/>
-        <variable name="echogram" type="no.sintef.fiskinfo.model.Echogram" />
+        <variable name="snap" type="no.sintef.fiskinfo.model.SnapMessage"/>
+        <variable name="echogram" type="no.sintef.fiskinfo.model.EchogramInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -135,18 +135,28 @@
             android:layout_width="@dimen/small_icon_width"
             android:layout_height="@dimen/small_icon_height"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-            app:layout_constraintBottom_toBottomOf="@id/positionTextView"
+            app:layout_constraintBottom_toBottomOf="@id/latitudeTextView"
             android:src="@drawable/ic_place" />
 
         <TextView
-            android:id="@+id/positionTextView"
+            android:id="@+id/latitudeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toRightOf="@id/timeIcon"
             app:layout_constraintTop_toBottomOf="@id/timeTextView"
-            android:text="@{echogram.location}" />
+            android:text="@{echogram.latitude}" />
+
+        <TextView
+            android:id="@+id/longitudeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toRightOf="@id/latitudeTextView"
+            app:layout_constraintTop_toTopOf="@id/latitudeTextView"
+            android:text="@{echogram.longitude}" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -163,7 +173,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toRightOf="@id/timeIcon"
-            app:layout_constraintTop_toBottomOf="@id/positionTextView"
+            app:layout_constraintTop_toBottomOf="@id/latitudeTextView"
             android:text="@{echogram.source}" />
 
         <View

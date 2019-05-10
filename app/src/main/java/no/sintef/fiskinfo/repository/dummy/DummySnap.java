@@ -8,13 +8,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import no.sintef.fiskinfo.model.Echogram;
-import no.sintef.fiskinfo.model.Snap;
+import no.sintef.fiskinfo.model.SnapMessage;
 
 public class DummySnap {
 
-    public static Snap createSnap(long minutesAgo, String title, String comment, String sender, String[] receivers) {
-        Snap snap = new Snap();
+    public static SnapMessage createSnap(long minutesAgo, String title, String comment, String sender, String[] receivers) {
+        SnapMessage snap = new SnapMessage();
         snap.uid = Math.round(Math.random()*100000000);
 
         snap.echogram = DummyEchogram.createEchogram(minutesAgo);
@@ -31,9 +30,9 @@ public class DummySnap {
         return new String[]{"Me"};
     }
 
-    public static LiveData<List<Snap>> getDummyInboxSnaps() {
-        MutableLiveData<List<Snap>> listHolder = new MutableLiveData<List<Snap>>();
-        List<Snap> list = new ArrayList<>();
+    public static LiveData<List<SnapMessage>> getDummyInboxSnaps() {
+        MutableLiveData<List<SnapMessage>> listHolder = new MutableLiveData<List<SnapMessage>>();
+        List<SnapMessage> list = new ArrayList<>();
         list.add(createSnap(0, "Mer her", "Det er mer en nok å ta av, men kvota er full. Kanskje du rekker frem?", "Ola", me()));
         list.add(createSnap(12, "Torsk?", "", "Ola", me()));
         list.add(createSnap(41, "Ser her da!", "", "Peder", new String[]{"Me", "Hans"}));

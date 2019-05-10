@@ -12,14 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.model.Snap;
+import no.sintef.fiskinfo.model.SnapMessage;
 
 /**
  * A fragment showing the inbox of snap messages.
@@ -50,9 +49,9 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
-        mViewModel.getInboxSnaps().observe(this, new Observer<List<Snap>>() {
+        mViewModel.getInboxSnaps().observe(this, new Observer<List<SnapMessage>>() {
             @Override
-            public void onChanged(List<Snap> snaps) {
+            public void onChanged(List<SnapMessage> snaps) {
                 mAdapter.setSnaps(snaps);
             }
         });
@@ -89,13 +88,13 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
     }
 
     @Override
-    public void onViewSnapClicked(View v, Snap snap) {
+    public void onViewSnapClicked(View v, SnapMessage snap) {
         mViewModel.selectSnap(snap);
         Navigation.findNavController(v).navigate(R.id.action_fragment_snap_to_snapDetailFragment);
     }
 
     @Override
-    public void onViewSnapInMapClicked(View v, Snap snap) {
+    public void onViewSnapInMapClicked(View v, SnapMessage snap) {
         Toast toast = Toast.makeText(this.getContext(),"Not yet implemented!",Toast.LENGTH_SHORT);
         toast.show();
     }

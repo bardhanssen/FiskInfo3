@@ -15,18 +15,18 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.model.Echogram;
+import no.sintef.fiskinfo.model.EchogramInfo;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Echogram} and makes calls to the
+ * {@link RecyclerView.Adapter} that can display a {@link EchogramInfo} and makes calls to the
  * specified {@link OnEchogramInteractionListener}.
  */
 public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Echogram> echograms;
+    private final List<EchogramInfo> echograms;
     private final OnEchogramInteractionListener mListener;
 
-    public EchogramRecyclerViewAdapter(List<Echogram> items, EchogramRecyclerViewAdapter.OnEchogramInteractionListener listener) {
+    public EchogramRecyclerViewAdapter(List<EchogramInfo> items, EchogramRecyclerViewAdapter.OnEchogramInteractionListener listener) {
         echograms = items;
         mListener = listener;
     }
@@ -49,7 +49,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
         holder.detail1View.setText(sdf.format(holder.mItem.timestamp));
-        holder.detail2View.setText(holder.mItem.location);
+        holder.detail2View.setText(holder.mItem.latitude);
 
         holder.viewButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -75,7 +75,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public Echogram mItem;
+        public EchogramInfo mItem;
         public final View mView;
         public final TextView titleView;
         public final TextView detail1View;
@@ -100,7 +100,7 @@ public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRe
     }
 
     public interface OnEchogramInteractionListener {
-        void onViewEchogramClicked(View v, Echogram echogram);
-        void onShareEchogramClicked(View v, Echogram echogram);
+        void onViewEchogramClicked(View v, EchogramInfo echogram);
+        void onShareEchogramClicked(View v, EchogramInfo echogram);
     }
 }

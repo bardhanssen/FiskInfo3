@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.sintef.fiskinfo.model.Snap;
+import no.sintef.fiskinfo.model.SnapMessage;
 import no.sintef.fiskinfo.repository.dummy.DummySnap;
 
 public class SnapRepository {
@@ -18,28 +18,28 @@ public class SnapRepository {
         return instance;
     }
 
-    protected MutableLiveData<List<Snap>> outboxSnaps;
+    protected MutableLiveData<List<SnapMessage>> outboxSnaps;
 
-    public LiveData<List<Snap>> getInboxSnaps() {
+    public LiveData<List<SnapMessage>> getInboxSnaps() {
         return DummySnap.getDummyInboxSnaps();
     }
 
 
     private void initOutbox() {
         outboxSnaps = new MutableLiveData<>();
-        outboxSnaps.setValue(new ArrayList<Snap>());
+        outboxSnaps.setValue(new ArrayList<SnapMessage>());
     }
 
-    public void storeSnap(Snap newSnap) {
+    public void storeSnap(SnapMessage newSnap) {
         if (outboxSnaps == null)
             initOutbox();
         outboxSnaps.getValue().add(newSnap);
     }
 
-    public LiveData<List<Snap>> getOutboxSnaps() {
+    public LiveData<List<SnapMessage>> getOutboxSnaps() {
         if (outboxSnaps == null) {
             outboxSnaps = new MutableLiveData<>();
-            outboxSnaps.setValue(new ArrayList<Snap>());
+            outboxSnaps.setValue(new ArrayList<SnapMessage>());
         }
         return outboxSnaps;
     }

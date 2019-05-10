@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import no.sintef.fiskinfo.R;
-import no.sintef.fiskinfo.model.Echogram;
+import no.sintef.fiskinfo.model.EchogramInfo;
 import no.sintef.fiskinfo.repository.EchogramRepository;
 
 /**
@@ -60,14 +60,14 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
     }
 
     @Override
-    public void onViewEchogramClicked(View v, Echogram echogram) {
+    public void onViewEchogramClicked(View v, EchogramInfo echogram) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(echogram.echogramURL);
         startActivity(i);
     }
 
     @Override
-    public void onShareEchogramClicked(View v, Echogram echogram) {
+    public void onShareEchogramClicked(View v, EchogramInfo echogram) {
         mSnapViewModel.createDraftFrom(echogram);
         Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment);
     }

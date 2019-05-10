@@ -8,12 +8,13 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity
-public class Echogram {
+public class EchogramInfo {
     @PrimaryKey
     public long uid;
 
     public Date timestamp;
-    public String location;
+    public String latitude;
+    public String longitude;
     public String biomass;
     public String source;
 
