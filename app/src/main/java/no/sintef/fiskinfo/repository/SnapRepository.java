@@ -6,11 +6,19 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.sintef.fiskinfo.api.SnapMessageService;
 import no.sintef.fiskinfo.model.SnapMessage;
 import no.sintef.fiskinfo.repository.dummy.DummySnap;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SnapRepository {
     static SnapRepository instance;
+    SnapMessageService snapMessageService = null;
+
 
     public static SnapRepository getInstance() {
         if (instance == null)
@@ -21,7 +29,39 @@ public class SnapRepository {
     protected MutableLiveData<List<SnapMessage>> outboxSnaps;
 
     public LiveData<List<SnapMessage>> getInboxSnaps() {
-        return DummySnap.getDummyInboxSnaps();
+        if (snapMessageService == null)
+            initService();
+
+
+        final MutableLiveData<List<SnapMessage>> data = new MutableLiveData<>();
+
+        // This implementation is still suboptimal but better than before.
+        // A complete implementation also handles error cases.
+        snapMessageService.getSnapMessages().enqueue(new Callback<List<SnapMessage>>() {
+            @Override
+            public void onResponse(Call<List<SnapMessage>> call, Response<List<SnapMessage>> response) {
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SnapMessage>> call, Throwable t) {
+                data.setValue(DummySnap.getDummyInboxSnaps().getValue());
+            }
+        });
+        return data;
+//        return DummySnap.getDummyInboxSnaps();
+    }
+
+    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
+
+    protected void initService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(SNAP_FISH_SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        snapMessageService = retrofit.create(SnapMessageService.class);
+
     }
 
 
