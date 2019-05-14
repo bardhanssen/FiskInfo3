@@ -37,7 +37,7 @@ public class SnapRepository {
 
         // This implementation is still suboptimal but better than before.
         // A complete implementation also handles error cases.
-        snapMessageService.getSnapMessages().enqueue(new Callback<List<SnapMessage>>() {
+        snapMessageService.getSnapMessages(true).enqueue(new Callback<List<SnapMessage>>() {
             @Override
             public void onResponse(Call<List<SnapMessage>> call, Response<List<SnapMessage>> response) {
                 data.setValue(response.body());
