@@ -52,7 +52,10 @@ public class SnapRepository {
 //        return DummySnap.getDummyInboxSnaps();
     }
 
-    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
+//    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
+//    final static String SNAP_FISH_SERVER_URL = "http://10.218.69.173:58196/";
+    final static String SNAP_FISH_SERVER_URL = "http://10.218.86.229:5002/";
+
 
     protected void initService() {
         Retrofit retrofit = new Retrofit.Builder()

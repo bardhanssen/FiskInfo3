@@ -44,7 +44,7 @@ public class SnapDetailFragment extends Fragment {
             @Override
             public void onChanged(SnapMessage snap) {
                 mBinding.setSnap(snap);
-                mBinding.setEchogram(snap.echogram);
+                mBinding.setEchogram(snap.echogramInfo);
                 mBinding.setHandlers(SnapDetailFragment.this);
             }
         });
@@ -52,7 +52,7 @@ public class SnapDetailFragment extends Fragment {
 
     public void onViewEchogramHereClicked(View v) {
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(mViewModel.getSelectedSnap().getValue().echogram.echogramURL);
+        i.setData(mViewModel.getSelectedSnap().getValue().echogramInfo.echogramURL);
         startActivity(i);
     }
 

@@ -12,6 +12,7 @@ public class EchogramInfo {
     @PrimaryKey
     public long uid;
 
+    public long ownerid;
     public Date timestamp;
     public String latitude;
     public String longitude;

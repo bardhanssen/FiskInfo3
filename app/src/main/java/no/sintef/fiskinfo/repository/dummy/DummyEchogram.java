@@ -18,7 +18,8 @@ public class DummyEchogram {
         echogram.biomass = "400.0";
         echogram.echogramURL = Uri.parse("https://www.sintef.no");
         echogram.latitude = "N63" + (char) 0x00B0 + "24\'48\"";
-        echogram.longitude = "E10" + (char) 0x00B0 + "24\'33\"";
+        echogram.longitude = "E10" + (char) 0x00B0 + "24\'33\" ";
+        echogram.ownerid = 1;
         echogram.source = "EK80";
         return echogram;
     }

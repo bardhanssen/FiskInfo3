@@ -56,7 +56,7 @@ public class SnapEditorFragment extends Fragment {
             public void onChanged(SnapMessage snap) {
                 if (snap != null) {
                     mBinding.setSnap(snap);
-                    mBinding.setEchogram(snap.echogram);
+                    mBinding.setEchogram(snap.echogramInfo);
                     mBinding.setHandlers(SnapEditorFragment.this);
                 }
             }
@@ -115,7 +115,7 @@ public class SnapEditorFragment extends Fragment {
 
                     cursor.moveToNext();
                 }
-                mViewModel.getDraft().getValue().receivers = result;
+                //TODO mViewModel.getDraft().getValue().receivers = result;
 
                 // Do something with the phone number...
             }

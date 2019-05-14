@@ -16,11 +16,11 @@ public class DummySnap {
         SnapMessage snap = new SnapMessage();
         snap.uid = Math.round(Math.random()*100000000);
 
-        snap.echogram = DummyEchogram.createEchogram(minutesAgo);
+        snap.echogramInfo = DummyEchogram.createEchogram(minutesAgo);
         snap.title = title;
         snap.comment = comment;
         snap.sender = sender;
-        snap.receivers = new ArrayList<String>(Arrays.asList(receivers));
+        snap.receivers = receivers[0]; ///ArrayList<String>(Arrays.asList(receivers));
         snap.sendTimestamp = new Date();
         return snap;
     }

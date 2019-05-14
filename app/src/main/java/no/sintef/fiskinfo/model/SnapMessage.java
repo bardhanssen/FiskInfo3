@@ -14,17 +14,18 @@ public class SnapMessage {
     //public int echogramUid;
 
     public String sender;
-    public ArrayList<String> receivers;
+    public String receivers;
+    //public ArrayList<String> receivers;
 
     public String title;
     public String comment;
 
     public Date sendTimestamp;
 
-    public EchogramInfo echogram;
+    public EchogramInfo echogramInfo;
     public boolean sharePublicly;
 
-    public EchogramInfo getEchogram() {
-        return echogram;
+    public EchogramInfo getEchogramInfo() {
+        return echogramInfo;
     }
 }

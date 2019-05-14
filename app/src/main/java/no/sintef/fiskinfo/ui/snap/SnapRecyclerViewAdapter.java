@@ -55,9 +55,9 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
 //        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.datetime_format_yyyy_mm_dd_t_hh_mm_ss), Locale.getDefault());
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
-        //holder.detail1View.setText(sdf.format(holder.mItem.getEchogram().timestamp));
+        //holder.detail1View.setText(sdf.format(holder.mItem.getEchogramInfo().timestamp));
         holder.detail1View.setText(holder.mItem.title);
-        holder.detail2View.setText(sdf.format(holder.mItem.getEchogram().timestamp)); //holder.mItem.getEchogram().latitude);
+        holder.detail2View.setText(sdf.format(holder.mItem.getEchogramInfo().timestamp)); //holder.mItem.getEchogramInfo().latitude);
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
