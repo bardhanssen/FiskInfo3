@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey;
 @Entity
 public class SnapMessage {
     @PrimaryKey
-    public long uid;
+    public long id;
 
-    //public int echogramUid;
+    public long echogramInfoID;
 
     public String sender;
     public String receivers;

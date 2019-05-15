@@ -10,9 +10,9 @@ import java.util.Date;
 @Entity
 public class EchogramInfo {
     @PrimaryKey
-    public long uid;
+    public long id;
 
-    public long ownerid;
+    public long userID;
     public Date timestamp;
     public String latitude;
     public String longitude;

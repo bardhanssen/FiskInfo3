@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,9 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.EchogramInfo;
-import no.sintef.fiskinfo.repository.EchogramRepository;
 
 /**
  * A fragment showing a list of Echograms.
@@ -27,6 +29,8 @@ import no.sintef.fiskinfo.repository.EchogramRepository;
 public class EchogramListFragment extends Fragment implements EchogramRecyclerViewAdapter.OnEchogramInteractionListener {
 
     private SnapViewModel mSnapViewModel;
+    private EchogramViewModel mEchogramViewModel;
+    private EchogramRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,6 +47,14 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mSnapViewModel = ViewModelProviders.of(getActivity()).get(SnapViewModel.class);
+        mEchogramViewModel = ViewModelProviders.of(getActivity()).get(EchogramViewModel.class);
+        mEchogramViewModel.getEchogramInfos().observe(this, new Observer<List<EchogramInfo>>() {
+            @Override
+            public void onChanged(List<EchogramInfo> echogramInfos) {
+                mAdapter.setEchograms(echogramInfos);
+            }
+        });
+
     }
 
     @Override
@@ -55,7 +67,8 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new EchogramRecyclerViewAdapter(new EchogramRepository().getEchograms(), this));
+            mAdapter = new EchogramRecyclerViewAdapter(this);
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }

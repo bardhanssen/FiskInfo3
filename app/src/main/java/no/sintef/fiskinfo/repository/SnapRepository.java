@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.sintef.fiskinfo.api.SnapMessageService;
+import no.sintef.fiskinfo.model.EchogramInfo;
 import no.sintef.fiskinfo.model.SnapMessage;
+import no.sintef.fiskinfo.repository.dummy.DummyEchogram;
 import no.sintef.fiskinfo.repository.dummy.DummySnap;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,4 +88,28 @@ public class SnapRepository {
         }
         return outboxSnaps;
     }
+
+    public LiveData<List<EchogramInfo>> getEchogramInfos() {
+        if (snapMessageService == null)
+            initService();
+
+
+        final MutableLiveData<List<EchogramInfo>> data = new MutableLiveData<>();
+
+        // This implementation is still suboptimal but better than before.
+        // A complete implementation also handles error cases.
+        snapMessageService.getEchogramInfos().enqueue(new Callback<List<EchogramInfo>>() {
+            @Override
+            public void onResponse(Call<List<EchogramInfo>> call, Response<List<EchogramInfo>> response) {
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<EchogramInfo>> call, Throwable t) {
+                data.setValue(DummyEchogram.getDummyEchograms());
+            }
+        });
+        return data;
+    }
+
 }

@@ -14,9 +14,10 @@ public class DummySnap {
 
     public static SnapMessage createSnap(long minutesAgo, String title, String comment, String sender, String[] receivers) {
         SnapMessage snap = new SnapMessage();
-        snap.uid = Math.round(Math.random()*100000000);
+        snap.id = Math.round(Math.random()*100000000);
 
         snap.echogramInfo = DummyEchogram.createEchogram(minutesAgo);
+        snap.echogramInfoID = snap.echogramInfo.id;
         snap.title = title;
         snap.comment = comment;
         snap.sender = sender;

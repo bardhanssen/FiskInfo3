@@ -11,13 +11,13 @@ public class DummyEchogram {
 
     public static EchogramInfo createEchogram(long minutesOld) {
         EchogramInfo echogram = new EchogramInfo();
-        echogram.uid = Math.round(Math.random()*100000000);
+        echogram.id = Math.round(Math.random()*100000000);
         echogram.timestamp = new Date(System.currentTimeMillis() - minutesOld*MILLIS_IN_MIN);
         echogram.biomass = "400.0";
         echogram.echogramUrl = "https://www.sintef.no";
         echogram.latitude = "N63" + (char) 0x00B0 + "24\'48\"";
         echogram.longitude = "E10" + (char) 0x00B0 + "24\'33\" ";
-        echogram.ownerid = 1;
+        echogram.userID = 1;
         echogram.source = "EK80";
         return echogram;
     }

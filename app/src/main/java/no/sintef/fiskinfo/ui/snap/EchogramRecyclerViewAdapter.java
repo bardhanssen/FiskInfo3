@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.model.EchogramInfo;
+import no.sintef.fiskinfo.model.SnapMessage;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link EchogramInfo} and makes calls to the
@@ -23,14 +25,18 @@ import no.sintef.fiskinfo.model.EchogramInfo;
  */
 public class EchogramRecyclerViewAdapter extends RecyclerView.Adapter<EchogramRecyclerViewAdapter.ViewHolder> {
 
-    private final List<EchogramInfo> echograms;
+    private List<EchogramInfo> echograms;
     private final OnEchogramInteractionListener mListener;
 
-    public EchogramRecyclerViewAdapter(List<EchogramInfo> items, EchogramRecyclerViewAdapter.OnEchogramInteractionListener listener) {
-        echograms = items;
+    public EchogramRecyclerViewAdapter(EchogramRecyclerViewAdapter.OnEchogramInteractionListener listener) {
+        echograms = new ArrayList<>();
         mListener = listener;
     }
 
+    public void setEchograms(List<EchogramInfo> echograms) {
+        this.echograms = echograms;
+        this.notifyDataSetChanged();
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

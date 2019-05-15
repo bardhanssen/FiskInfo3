@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.api;
 
 import java.util.List;
 
+import no.sintef.fiskinfo.model.EchogramInfo;
 import no.sintef.fiskinfo.model.SnapMessage;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,5 +15,8 @@ public interface SnapMessageService {
 
     @GET("api/snapmessage")
     Call<List<SnapMessage>> getSnapMessages(@Query("withechogram") boolean withEchogram);
+
+    @GET("api/echograminfo")
+    Call<List<EchogramInfo>> getEchogramInfos();
 
 }
