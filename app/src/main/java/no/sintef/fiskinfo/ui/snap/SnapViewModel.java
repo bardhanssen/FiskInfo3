@@ -27,6 +27,7 @@ public class SnapViewModel extends ViewModel {
     public void createDraftFrom(EchogramInfo echogram) {
         SnapMessage snap = new SnapMessage();
         snap.echogramInfo = echogram;
+        snap.echogramInfoID = echogram.id;
         snapDraft.setValue(snap);
     }
 

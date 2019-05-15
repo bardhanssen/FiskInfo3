@@ -78,6 +78,20 @@ public class SnapRepository {
     public void storeSnap(SnapMessage newSnap) {
         if (outboxSnaps == null)
             initOutbox();
+
+        if (snapMessageService == null)
+            initService();
+        snapMessageService.sendSnapMessage(newSnap).enqueue(new Callback<SnapMessage>() {
+            @Override
+            public void onResponse(Call<SnapMessage> call, Response<SnapMessage> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<SnapMessage> call, Throwable t) {
+
+            }
+        });
         outboxSnaps.getValue().add(newSnap);
     }
 
