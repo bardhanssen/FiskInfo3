@@ -19,5 +19,5 @@ public class EchogramInfo {
     public String biomass;
     public String source;
 
-    public Uri echogramURL;
+    public String echogramUrl;
 }

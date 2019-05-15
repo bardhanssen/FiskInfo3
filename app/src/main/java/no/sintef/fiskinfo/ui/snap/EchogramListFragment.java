@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.ui.snap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -61,9 +62,11 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
 
     @Override
     public void onViewEchogramClicked(View v, EchogramInfo echogram) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(echogram.echogramURL);
-        startActivity(i);
+        if (echogram != null) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(echogram.echogramUrl));
+            startActivity(i);
+        }
     }
 
     @Override

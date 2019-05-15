@@ -1,7 +1,5 @@
 package no.sintef.fiskinfo.repository.dummy;
 
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +14,7 @@ public class DummyEchogram {
         echogram.uid = Math.round(Math.random()*100000000);
         echogram.timestamp = new Date(System.currentTimeMillis() - minutesOld*MILLIS_IN_MIN);
         echogram.biomass = "400.0";
-        echogram.echogramURL = Uri.parse("https://www.sintef.no");
+        echogram.echogramUrl = "https://www.sintef.no";
         echogram.latitude = "N63" + (char) 0x00B0 + "24\'48\"";
         echogram.longitude = "E10" + (char) 0x00B0 + "24\'33\" ";
         echogram.ownerid = 1;
