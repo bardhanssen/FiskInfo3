@@ -30,28 +30,11 @@ public class SnapRepository {
 
     protected MutableLiveData<List<SnapMessage>> outboxSnaps;
 
+    final MutableLiveData<List<SnapMessage>> inboxSnaps = new MutableLiveData<>();
+
     public LiveData<List<SnapMessage>> getInboxSnaps() {
-        if (snapMessageService == null)
-            initService();
-
-
-        final MutableLiveData<List<SnapMessage>> data = new MutableLiveData<>();
-
-        // This implementation is still suboptimal but better than before.
-        // A complete implementation also handles error cases.
-        snapMessageService.getSnapMessages(true).enqueue(new Callback<List<SnapMessage>>() {
-            @Override
-            public void onResponse(Call<List<SnapMessage>> call, Response<List<SnapMessage>> response) {
-                data.setValue(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<SnapMessage>> call, Throwable t) {
-                data.setValue(DummySnap.getDummyInboxSnaps().getValue());
-            }
-        });
-        return data;
-//        return DummySnap.getDummyInboxSnaps();
+        refreshInboxContent();
+        return inboxSnaps;
     }
 
 //    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
@@ -124,6 +107,23 @@ public class SnapRepository {
             }
         });
         return data;
+    }
+
+    public void refreshInboxContent() {
+        if (snapMessageService == null)
+            initService();
+
+        snapMessageService.getSnapMessages(true).enqueue(new Callback<List<SnapMessage>>() {
+            @Override
+            public void onResponse(Call<List<SnapMessage>> call, Response<List<SnapMessage>> response) {
+                inboxSnaps.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<SnapMessage>> call, Throwable t) {
+                inboxSnaps.setValue(DummySnap.getDummyInboxSnaps().getValue());
+            }
+        });
     }
 
 }

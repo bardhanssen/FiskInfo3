@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
 
     private SnapViewModel mViewModel;
     private SnapRecyclerViewAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeLayout;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -53,6 +55,8 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
             @Override
             public void onChanged(List<SnapMessage> snaps) {
                 mAdapter.setSnaps(snaps);
+                if (mSwipeLayout != null)
+                    mSwipeLayout.setRefreshing(false);
             }
         });
 
@@ -68,14 +72,26 @@ public class SnapInboxFragment extends Fragment implements SnapRecyclerViewAdapt
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.snap_inbox_fragment, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mAdapter = new SnapRecyclerViewAdapter(this);
-            recyclerView.setAdapter(mAdapter);
-        }
+        RecyclerView listView = view.findViewById(R.id.inbox_list);
+        Context context = view.getContext();
+        listView.setLayoutManager(new LinearLayoutManager(context));
+        mAdapter = new SnapRecyclerViewAdapter(this);
+        listView.setAdapter(mAdapter);
+
+        mSwipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.inboxswipelayout);
+        //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
+
+        mSwipeLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        mViewModel.refreshInboxContent();
+                    }
+                }
+        );
+
+
+
 /*        if (container instanceof ViewPager) {
             TabLayout tabLayout = (TabLayout) ((ViewPager) container).findViewById(R.id.snaptab_layout);
             tabLayout.getTabAt(1).setIcon(R.drawable.ic_info);

@@ -47,4 +47,7 @@ public class SnapViewModel extends ViewModel {
         return inboxSnaps;
     }
 
+    public void refreshInboxContent() {
+        SnapRepository.getInstance().refreshInboxContent();
+    }
 }
