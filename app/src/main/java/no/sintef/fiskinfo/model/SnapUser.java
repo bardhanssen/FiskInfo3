@@ -4,10 +4,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class User {
+public class SnapUser {
     @PrimaryKey
     private int id;
+    private String phoneNumber;
     private String name;
-    private String lastName;
 
 }

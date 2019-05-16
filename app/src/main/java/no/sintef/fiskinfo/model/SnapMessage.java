@@ -13,9 +13,9 @@ public class SnapMessage {
 
     public long echogramInfoID;
 
-    public String sender;
-    public String receivers;
-    //public ArrayList<String> receivers;
+    public long senderID;
+    public long receiverID;
+    //public ArrayList<String> receiverID;
 
     public String title;
     public String comment;
