@@ -15,13 +15,13 @@ public interface SnapMessageService {
 //    @GET("users/{user}/repos")
 //    Call<List<SnapMessage>> listRepos(@Path("user") String user);
 
-    @GET("api/snapmessage")
+    @GET("api/snapmessages")
     Call<List<SnapMessage>> getSnapMessages(@Query("withechogram") boolean withEchogram);
 
-    @GET("api/echograminfo")
+    @GET("api/echograminfos")
     Call<List<EchogramInfo>> getEchogramInfos();
 
-    @POST("api/snapmessage")
+    @POST("api/snapmessages")
     Call<SnapMessage> sendSnapMessage(@Body SnapMessage message);
 
 }

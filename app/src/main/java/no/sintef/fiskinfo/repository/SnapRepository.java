@@ -1,5 +1,9 @@
 package no.sintef.fiskinfo.repository;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -21,10 +25,19 @@ public class SnapRepository {
     static SnapRepository instance;
     SnapMessageService snapMessageService = null;
 
+    //    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
+//    final static String SNAP_FISH_SERVER_URL = "http://10.218.69.173:58196/";
+    final static String DEFAULT_SNAP_FISH_SERVER_URL = "http://10.218.86.229:5002/";
 
-    public static SnapRepository getInstance() {
+    String snapFishServerUrl = DEFAULT_SNAP_FISH_SERVER_URL;
+
+    public SnapRepository(Context context) {
+        updateFromPreferences(context);
+    }
+
+    public static SnapRepository getInstance(Context context) {
         if (instance == null)
-            instance = new SnapRepository();
+            instance = new SnapRepository(context);
         return instance;
     }
 
@@ -37,14 +50,11 @@ public class SnapRepository {
         return inboxSnaps;
     }
 
-//    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
-//    final static String SNAP_FISH_SERVER_URL = "http://10.218.69.173:58196/";
-    final static String SNAP_FISH_SERVER_URL = "http://10.218.86.229:5002/";
 
 
     protected void initService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SNAP_FISH_SERVER_URL)
+                .baseUrl(snapFishServerUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -124,6 +134,17 @@ public class SnapRepository {
                 inboxSnaps.setValue(DummySnap.getDummyInboxSnaps().getValue());
             }
         });
+    }
+
+
+    public void updateFromPreferences(Context context) {
+        if (context != null) {
+            // Find preferences
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            snapFishServerUrl = prefs.getString("server_address", DEFAULT_SNAP_FISH_SERVER_URL);
+            snapMessageService = null;
+        }
+        refreshInboxContent();
     }
 
 }
