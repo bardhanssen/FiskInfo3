@@ -6,8 +6,17 @@ import androidx.room.PrimaryKey;
 @Entity
 public class SnapUser {
     @PrimaryKey
-    private int id;
-    private String phoneNumber;
-    private String name;
+    public long id;
+    public String email;
+    public String name;
+
+    public SnapUser() {
+    }
+
+    public SnapUser(long id, String email, String name) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+    }
 
 }

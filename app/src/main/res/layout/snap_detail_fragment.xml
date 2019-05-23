@@ -63,7 +63,7 @@
             android:id="@+id/snapFromTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{snap.senderID}"
+            android:text="@{snap.sender.email}"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
             app:layout_constraintStart_toStartOf="@id/contentGuideline"
