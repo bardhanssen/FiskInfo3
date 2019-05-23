@@ -205,7 +205,7 @@
             app:layout_constraintBaseline_toBaselineOf="@id/snapReceiverEditText"
             tools:layout_editor_absoluteY="163dp" />
 
-        <EditText
+        <MultiAutoCompleteTextView
             android:id="@+id/snapReceiverEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

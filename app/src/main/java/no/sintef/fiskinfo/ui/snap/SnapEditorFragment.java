@@ -1,9 +1,11 @@
 package no.sintef.fiskinfo.ui.snap;
 
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FilterQueryProvider;
+import android.widget.MultiAutoCompleteTextView;
 
 import java.util.ArrayList;
 
@@ -39,11 +43,61 @@ public class SnapEditorFragment extends Fragment {
         return new SnapEditorFragment();
     }
 
+    ContentResolver mContentResolver;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.snap_editor_fragment, container, false);
         setHasOptionsMenu(true);
+
+        mContentResolver = getContext().getContentResolver();
+        mBinding.snapReceiverEditText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        final String[] from = new String[]{ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Email.ADDRESS,
+                ContactsContract.Contacts.Photo.PHOTO_URI};
+
+        final int[] to = new int[]{R.id.tv_contact_name,
+                R.id.tv_contact_email,
+                R.id.iv_contact_photo};
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(), R.layout.contact_row, null, from, to, 0) {
+            @Override
+            public CharSequence convertToString(Cursor cursor) {
+
+                final int emailIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS);
+                return cursor.getString(emailIndex);
+            }
+        };
+
+        adapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence constraint) {
+                if (constraint == null) {
+                    return null;
+                }
+
+                String query = constraint.toString();
+
+                final String selection = ContactsContract.Contacts.DISPLAY_NAME
+                        + " LIKE ? "
+                        + " OR "
+                        + ContactsContract.CommonDataKinds.Email.ADDRESS
+                        + " LIKE ? ";
+
+                String[] selectionArgs = new String[]{"%" + query + "%"
+                        , "%" + query + "%"};
+
+                return mContentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, selection, selectionArgs, null);
+
+            }
+        });
+
+        mBinding.snapReceiverEditText.setAdapter(adapter);
+
+
+
         return mBinding.getRoot();
     }
 
