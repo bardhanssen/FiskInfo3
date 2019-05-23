@@ -115,7 +115,7 @@ public class SnapEditorFragment extends Fragment {
 
                     cursor.moveToNext();
                 }
-                //TODO mViewModel.getDraft().getValue().receivers = result;
+                //TODO mViewModel.getDraft().getValue().receiverID = result;
 
                 // Do something with the phone number...
             }

@@ -11,6 +11,7 @@ import java.util.Date;
 public class EchogramInfo {
     @PrimaryKey
     public long id;
+    // ignore long ownerID;
 
     public long userID;
     public Date timestamp;
@@ -20,4 +21,6 @@ public class EchogramInfo {
     public String source;
 
     public String echogramUrl;
+
+    // ignore SnapUser owner;
 }
