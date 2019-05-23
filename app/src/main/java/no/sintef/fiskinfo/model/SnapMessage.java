@@ -12,6 +12,7 @@ public class SnapMessage {
     @PrimaryKey
     public long id;
     public long senderID;
+    public String senderEmail;
 
     public String title;
     public String comment;

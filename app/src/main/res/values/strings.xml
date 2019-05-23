@@ -13,4 +13,10 @@
     <string name="proto_close_drawer">Close drawer</string>
     <string name="snap_title">Echo snaps</string>
     <string name="map_title">Map</string>
+
+
+    <!-- User preferences strings -->
+    <string name="server_address">server_address</string>
+    <string name="user_identity">user_identity</string>
+
 </resources>

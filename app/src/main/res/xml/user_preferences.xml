@@ -6,9 +6,10 @@
 
         <EditTextPreference
             android:defaultValue="http://10.218.86.230:5002/"
-            android:key="server_address"
+            android:key="@string/server_address"
             android:selectAllOnFocus="true"
             android:singleLine="true"
+            app:useSimpleSummaryProvider="true"
             android:title="Snapfish server address" />
     </PreferenceCategory>
 
@@ -16,9 +17,10 @@
 
         <EditTextPreference
             android:defaultValue="ola@fiskinfo.no"
-            android:key="user_identity"
+            android:key="@string/user_identity"
             android:selectAllOnFocus="true"
             android:singleLine="true"
+            app:useSimpleSummaryProvider="true"
             android:title="User e-mail" />
     </PreferenceCategory>
 

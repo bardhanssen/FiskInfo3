@@ -58,6 +58,7 @@ public class SnapEditorFragment extends Fragment {
                     mBinding.setSnap(snap);
                     mBinding.setEchogram(snap.echogramInfo);
                     mBinding.setHandlers(SnapEditorFragment.this);
+                    mBinding.setSnapviewmodel(mViewModel);
                 }
             }
         });

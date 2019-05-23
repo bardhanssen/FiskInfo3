@@ -7,6 +7,9 @@
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
         <variable name="snap" type="no.sintef.fiskinfo.model.SnapMessage"/>
         <variable name="echogram" type="no.sintef.fiskinfo.model.EchogramInfo" />
+        <variable
+            name="snapviewmodel"
+            type="no.sintef.fiskinfo.ui.snap.SnapViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -208,7 +211,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:text="@={snapviewmodel.draftSnapReceivers}"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
             app:layout_constraintStart_toStartOf="@id/contentGuideline"

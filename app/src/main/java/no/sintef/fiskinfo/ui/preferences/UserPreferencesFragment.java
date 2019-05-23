@@ -31,6 +31,6 @@ public class UserPreferencesFragment extends PreferenceFragmentCompat implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("server_address"))
-        SnapRepository.getInstance(this.getContext()).updateFromPreferences(getContext());
+            SnapRepository.getInstance(this.getContext()).updateFromPreferences(getContext());
     }
 }
