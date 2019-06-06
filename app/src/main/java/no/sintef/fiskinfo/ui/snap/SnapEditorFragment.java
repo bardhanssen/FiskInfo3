@@ -7,10 +7,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -29,13 +27,9 @@ import android.view.ViewGroup;
 import android.widget.FilterQueryProvider;
 import android.widget.MultiAutoCompleteTextView;
 
-import java.util.ArrayList;
-
 import no.sintef.fiskinfo.R;
 import no.sintef.fiskinfo.databinding.SnapEditorFragmentBinding;
 import no.sintef.fiskinfo.model.SnapMessage;
-
-import static android.app.Activity.RESULT_OK;
 
 public class SnapEditorFragment extends Fragment {
 
@@ -139,50 +133,5 @@ public class SnapEditorFragment extends Fragment {
             return true;
         }
         return false;
-    }
-
-    static final int PICK_CONTACT_REQUEST = 1;
-
-    public void onSelectFromContactsClicked(View v) {
-        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Email.CONTENT_URI);
-//        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-        startActivityForResult(i, PICK_CONTACT_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
-        // Check which request it is that we're responding to
-        if (requestCode == PICK_CONTACT_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // Get the URI that points to the selected contact
-                Uri contactUri = resultIntent.getData();
-                // We only need the NUMBER column, because there will be only one row in the result
-                String[] projection = {ContactsContract.CommonDataKinds.Email.ADDRESS};
-
-                // Perform the query on the contact to get the NUMBER column
-                // We don't need a selection or sort order (there's only one result for the given URI)
-                // CAUTION: The query() method should be called from a separate thread to avoid blocking
-                // your app's UI thread. (For simplicity of the sample, this code doesn't do that.)
-                // Consider using <code><a href="/reference/android/content/CursorLoader.html">CursorLoader</a></code> to perform the query.
-                Cursor cursor = getContext().getContentResolver()
-                        .query(contactUri, projection, null, null, null);
-                cursor.moveToFirst();
-
-                ArrayList<String> result = new ArrayList<>();
-                while (!cursor.isAfterLast()) {
-                    // Retrieve the phone number from the NUMBER column
-//                    int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                    int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS);
-                    String number = cursor.getString(column);
-                    result.add(number);
-
-                    cursor.moveToNext();
-                }
-                if (!result.isEmpty()) {
-                    mViewModel.draftSnapReceivers.set(result.get(0));
-                }
-            }
-        }
     }
 }

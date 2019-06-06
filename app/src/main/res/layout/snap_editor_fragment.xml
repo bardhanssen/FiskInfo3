@@ -161,15 +161,6 @@
             app:layout_constraintStart_toStartOf="@id/contentGuideline"
             app:layout_constraintTop_toBottomOf="@id/divider2" />
 
-        <Button
-            android:id="@+id/selectFromContactsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select from contacts"
-            android:onClick="@{handlers::onSelectFromContactsClicked}"
-            app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-            app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText" />
-
         <CheckBox
             android:id="@+id/shareWithAllCheckbox"
             android:layout_width="wrap_content"
@@ -177,7 +168,7 @@
             android:text="Share publicly (with everyone)"
             android:checked="@={snap.sharePublicly}"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-            app:layout_constraintTop_toBottomOf="@id/selectFromContactsButton" />
+            app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText" />
 
         <View
             android:id="@+id/divider3"
