@@ -40,10 +40,7 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button mapB = view.findViewById(R.id.proto_map_button);
-        mapB.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_overview_fragment_to_map_fragment, null));
-
         Button toolsB = view.findViewById(R.id.proto_tools_button);
-        toolsB.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_overview_fragment_to_tools_fragment, null));
+        toolsB.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_overview_fragment_to_snap_fragment, null));
     }
 }
