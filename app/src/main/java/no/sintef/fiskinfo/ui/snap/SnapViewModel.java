@@ -60,7 +60,8 @@ public class SnapViewModel extends AndroidViewModel {
             List<String> receiverList = Arrays.asList(draftSnapReceivers.get().split(","));
             draft.receivers = new ArrayList<>();
             for (String receiver : receiverList) {
-                draft.receivers.add(new SnapReceiver(receiver));
+                if (!receiver.trim().isEmpty())
+                    draft.receivers.add(new SnapReceiver(receiver));
             }
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());

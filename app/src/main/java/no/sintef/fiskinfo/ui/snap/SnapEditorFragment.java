@@ -5,10 +5,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,6 +56,7 @@ public class SnapEditorFragment extends Fragment {
 
         mContentResolver = getContext().getContentResolver();
         mBinding.snapReceiverEditText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        mBinding.snapReceiverEditText.setThreshold(1);
 
         final String[] from = new String[]{ContactsContract.Contacts.DISPLAY_NAME,
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -96,10 +100,9 @@ public class SnapEditorFragment extends Fragment {
 
         mBinding.snapReceiverEditText.setAdapter(adapter);
 
-
-
         return mBinding.getRoot();
     }
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -116,6 +119,10 @@ public class SnapEditorFragment extends Fragment {
                 }
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+
     }
 
     @Override
@@ -137,7 +144,8 @@ public class SnapEditorFragment extends Fragment {
     static final int PICK_CONTACT_REQUEST = 1;
 
     public void onSelectFromContactsClicked(View v) {
-        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Email.CONTENT_URI);
+//        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
         startActivityForResult(i, PICK_CONTACT_REQUEST);
     }
 
@@ -150,7 +158,7 @@ public class SnapEditorFragment extends Fragment {
                 // Get the URI that points to the selected contact
                 Uri contactUri = resultIntent.getData();
                 // We only need the NUMBER column, because there will be only one row in the result
-                String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+                String[] projection = {ContactsContract.CommonDataKinds.Email.ADDRESS};
 
                 // Perform the query on the contact to get the NUMBER column
                 // We don't need a selection or sort order (there's only one result for the given URI)
@@ -164,15 +172,16 @@ public class SnapEditorFragment extends Fragment {
                 ArrayList<String> result = new ArrayList<>();
                 while (!cursor.isAfterLast()) {
                     // Retrieve the phone number from the NUMBER column
-                    int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+//                    int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS);
                     String number = cursor.getString(column);
                     result.add(number);
 
                     cursor.moveToNext();
                 }
-                //TODO mViewModel.getDraft().getValue().receiverID = result;
-
-                // Do something with the phone number...
+                if (!result.isEmpty()) {
+                    mViewModel.draftSnapReceivers.set(result.get(0));
+                }
             }
         }
     }
