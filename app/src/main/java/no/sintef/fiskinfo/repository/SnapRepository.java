@@ -44,6 +44,7 @@ public class SnapRepository {
     protected MutableLiveData<List<SnapMessage>> outboxSnaps;
 
     final MutableLiveData<List<SnapMessage>> inboxSnaps = new MutableLiveData<>();
+    final MutableLiveData<List<EchogramInfo>> echogramInfos = new MutableLiveData<>();
 
     public LiveData<List<SnapMessage>> getInboxSnaps() {
         refreshInboxContent();
@@ -97,26 +98,8 @@ public class SnapRepository {
     }
 
     public LiveData<List<EchogramInfo>> getEchogramInfos() {
-        if (snapMessageService == null)
-            initService();
-
-
-        final MutableLiveData<List<EchogramInfo>> data = new MutableLiveData<>();
-
-        // This implementation is still suboptimal but better than before.
-        // A complete implementation also handles error cases.
-        snapMessageService.getEchogramInfos().enqueue(new Callback<List<EchogramInfo>>() {
-            @Override
-            public void onResponse(Call<List<EchogramInfo>> call, Response<List<EchogramInfo>> response) {
-                data.setValue(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<EchogramInfo>> call, Throwable t) {
-                data.setValue(DummyEchogram.getDummyEchograms());
-            }
-        });
-        return data;
+        refreshEchogramListContent();
+        return echogramInfos;
     }
 
     public void refreshInboxContent() {
@@ -132,6 +115,23 @@ public class SnapRepository {
             @Override
             public void onFailure(Call<List<SnapMessage>> call, Throwable t) {
                 inboxSnaps.setValue(DummySnap.getDummyInboxSnaps().getValue());
+            }
+        });
+    }
+
+    public void refreshEchogramListContent() {
+        if (snapMessageService == null)
+            initService();
+
+        snapMessageService.getEchogramInfos().enqueue(new Callback<List<EchogramInfo>>() {
+            @Override
+            public void onResponse(Call<List<EchogramInfo>> call, Response<List<EchogramInfo>> response) {
+                echogramInfos.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<EchogramInfo>> call, Throwable t) {
+                echogramInfos.setValue(DummyEchogram.getDummyEchograms());
             }
         });
     }

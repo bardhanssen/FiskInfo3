@@ -31,4 +31,7 @@ public class EchogramViewModel extends AndroidViewModel {
         return echogramInfos;
     }
 
+    public void refreshEchogramListContent() {
+        SnapRepository.getInstance(getApplication()).refreshEchogramListContent();
+    }
 }

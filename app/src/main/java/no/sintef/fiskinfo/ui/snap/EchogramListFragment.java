@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
     private SnapViewModel mSnapViewModel;
     private EchogramViewModel mEchogramViewModel;
     private EchogramRecyclerViewAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeLayout;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,9 +54,10 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
             @Override
             public void onChanged(List<EchogramInfo> echogramInfos) {
                 mAdapter.setEchograms(echogramInfos);
+                if (mSwipeLayout != null)
+                    mSwipeLayout.setRefreshing(false);
             }
         });
-
     }
 
     @Override
@@ -62,14 +65,24 @@ public class EchogramListFragment extends Fragment implements EchogramRecyclerVi
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.echogram_list_fragment, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mAdapter = new EchogramRecyclerViewAdapter(this);
-            recyclerView.setAdapter(mAdapter);
-        }
+        RecyclerView recyclerView = view.findViewById(R.id.echogram_list);
+
+        Context context = view.getContext();
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mAdapter = new EchogramRecyclerViewAdapter(this);
+        recyclerView.setAdapter(mAdapter);
+
+        mSwipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.echogramlistswipelayout);
+
+        mSwipeLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        mEchogramViewModel.refreshEchogramListContent();
+                    }
+                }
+        );
+
         return view;
     }
 
