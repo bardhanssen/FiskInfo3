@@ -15,19 +15,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello" />
+            android:text="This is a temporary overview page. Currently only the following functionality has been integrated in this app version:" />
 
         <Button
             android:id="@+id/proto_tools_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tools" />
-
-        <Button
-            android:id="@+id/proto_map_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Map" />
+            android:text="View and send echo snaps" />
 
     </LinearLayout>
 

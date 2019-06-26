@@ -7,6 +7,9 @@
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
         <variable name="snap" type="no.sintef.fiskinfo.model.SnapMessage"/>
         <variable name="echogram" type="no.sintef.fiskinfo.model.EchogramInfo" />
+        <variable
+            name="snapviewmodel"
+            type="no.sintef.fiskinfo.ui.snap.SnapViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,6 +128,49 @@
             android:text="@{echogram.source}" />
 
         <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+            app:layout_constraintRight_toRightOf="@id/guidelineRight"
+            app:layout_constraintTop_toBottomOf="@+id/echogramIcon"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/snapReceiverTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Share with"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/snapReceiverEditText"
+            tools:layout_editor_absoluteY="163dp" />
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/snapReceiverEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@={snapviewmodel.draftSnapReceivers}"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+            app:layout_constraintStart_toStartOf="@id/contentGuideline"
+            app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+        <CheckBox
+            android:id="@+id/shareWithAllCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share publicly (with everyone)"
+            android:checked="@={snap.sharePublicly}"
+            app:layout_constraintLeft_toRightOf="@id/contentGuideline"
+            app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText" />
+
+        <View
             android:id="@+id/divider3"
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -133,7 +179,7 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/echogramIcon" />
+            app:layout_constraintTop_toBottomOf="@id/shareWithAllCheckbox" />
 
         <TextView
             android:id="@+id/snapTitleTextView"
@@ -182,55 +228,6 @@
             app:layout_constraintTop_toBottomOf="@+id/snapTitleEditText"
             tools:layout_editor_absoluteY="163dp" />
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
-            app:layout_constraintRight_toRightOf="@id/guidelineRight"
-            app:layout_constraintTop_toBottomOf="@+id/snapCommentEditText"
-            android:background="?android:attr/listDivider" />
-
-        <TextView
-            android:id="@+id/snapReceiverTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Share with"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/snapReceiverEditText"
-            tools:layout_editor_absoluteY="163dp" />
-
-        <EditText
-            android:id="@+id/snapReceiverEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
-            app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-            app:layout_constraintStart_toStartOf="@id/contentGuideline"
-            app:layout_constraintTop_toBottomOf="@id/divider2" />
-
-        <Button
-            android:id="@+id/selectFromContactsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select from contacts"
-            android:onClick="@{handlers::onSelectFromContactsClicked}"
-            app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-            app:layout_constraintTop_toBottomOf="@id/snapReceiverEditText" />
-
-        <CheckBox
-            android:id="@+id/shareWithAllCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Share publicly (with everyone)"
-            android:checked="@={snap.sharePublicly}"
-            app:layout_constraintLeft_toRightOf="@id/contentGuideline"
-            app:layout_constraintTop_toBottomOf="@id/selectFromContactsButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

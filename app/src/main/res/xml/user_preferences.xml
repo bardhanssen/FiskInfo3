@@ -2,6 +2,29 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory android:title="Server settings">
+
+        <EditTextPreference
+            android:defaultValue="http://10.218.86.230:5002/"
+            android:key="@string/server_address"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            app:useSimpleSummaryProvider="true"
+            android:title="Snapfish server address" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="User settings">
+
+        <EditTextPreference
+            android:defaultValue="ola@fiskinfo.no"
+            android:key="@string/user_identity"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            app:useSimpleSummaryProvider="true"
+            android:title="User e-mail" />
+    </PreferenceCategory>
+
+
     <PreferenceCategory android:title="App settings">
 
         <ListPreference

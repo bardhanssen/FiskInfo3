@@ -49,15 +49,15 @@ public class SnapRecyclerViewAdapter extends RecyclerView.Adapter<SnapRecyclerVi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = snaps.get(position);
 
-        holder.titleView.setText(holder.mItem.sender);
+        holder.titleView.setText(holder.mItem.sender.email);
 
         SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd HH:mm", Locale.getDefault());
 //        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.datetime_format_yyyy_mm_dd_t_hh_mm_ss), Locale.getDefault());
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
-        //holder.detail1View.setText(sdf.format(holder.mItem.getEchogram().timestamp));
+        //holder.detail1View.setText(sdf.format(holder.mItem.getEchogramInfo().timestamp));
         holder.detail1View.setText(holder.mItem.title);
-        holder.detail2View.setText(sdf.format(holder.mItem.getEchogram().timestamp)); //holder.mItem.getEchogram().latitude);
+        holder.detail2View.setText(sdf.format(holder.mItem.getEchogramInfo().timestamp)); //holder.mItem.getEchogramInfo().latitude);
         holder.shareButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {

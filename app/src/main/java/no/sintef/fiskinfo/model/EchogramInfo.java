@@ -10,13 +10,17 @@ import java.util.Date;
 @Entity
 public class EchogramInfo {
     @PrimaryKey
-    public long uid;
+    public long id;
+    // ignore long ownerID;
 
+    public long userID;
     public Date timestamp;
     public String latitude;
     public String longitude;
     public String biomass;
     public String source;
 
-    public Uri echogramURL;
+    public String echogramUrl;
+
+    // ignore SnapUser owner;
 }

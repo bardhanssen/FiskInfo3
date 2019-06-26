@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,16 +45,19 @@ public class SnapDetailFragment extends Fragment {
             @Override
             public void onChanged(SnapMessage snap) {
                 mBinding.setSnap(snap);
-                mBinding.setEchogram(snap.echogram);
+                mBinding.setEchogram(snap.echogramInfo);
                 mBinding.setHandlers(SnapDetailFragment.this);
             }
         });
     }
 
     public void onViewEchogramHereClicked(View v) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(mViewModel.getSelectedSnap().getValue().echogram.echogramURL);
-        startActivity(i);
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(mViewModel.getSelectedSnap().getValue().echogramInfo.echogramUrl));
+            startActivity(i);
+        } catch (Exception ex) {
+        }
     }
 
     public void onViewInMapClicked(View v) {
