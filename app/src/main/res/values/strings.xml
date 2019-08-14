@@ -28,6 +28,7 @@
     <string name="login_action_sign_in">Logg inn</string>
     <string name="login_action_forgot_password">Glemt passord</string>
     <string name="login_action_sign_up">Registrer bruker</string>
+    <string name="login_error_incorrect_password">Feil passord</string>
 
 
     <!--

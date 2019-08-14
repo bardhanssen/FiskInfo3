@@ -79,4 +79,6 @@
         android:name="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"
         android:label="Snap message"
         tools:layout="@layout/snap_detail_fragment" />
+    <fragment android:id="@+id/login_fragment" android:name="no.sintef.fiskinfo.ui.login.LoginFragment"
+              android:label="login_fragment" tools:layout="@layout/login_fragment"/>
 </navigation>

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -38,27 +39,27 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        usernameEditText = view.findViewById(R.id.username_edit_text)
-        passwordEditText = view.findViewById(R.id.password_edit_text)
+        usernameEditText = view.findViewById(R.id.email_sign_in_edit_text)
+        passwordEditText = view.findViewById(R.id.password_sign_in_edit_text)
 
-        loginButton = view.findViewById(R.id.login_button)
+        loginButton = view.findViewById(R.id.sign_in_button)
         loginButton.setOnClickListener {
             viewModel.authenticate(usernameEditText.text.toString(),
                 passwordEditText.text.toString())
         }
 
+        val navController = findNavController()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.refuseAuthentication()
-            navController.popBackStack(R.id.main_fragment, false)
-        })
+            //TODO: navController.popBackStack(R.id.main_fragment, false)
+        }
 
-        val navController = findNavController()
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
-                AUTHENTICATED -> navController.popBackStack()
-                INVALID_AUTHENTICATION ->
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> navController.popBackStack()
+                LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION ->
                     Snackbar.make(view,
-                        R.string.invalid_credentials,
+                        R.string.login_error_incorrect_password,
                         Snackbar.LENGTH_SHORT
                     ).show()
             }
@@ -68,7 +69,7 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
