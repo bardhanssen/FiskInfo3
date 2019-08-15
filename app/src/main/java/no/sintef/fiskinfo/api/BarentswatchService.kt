@@ -25,11 +25,12 @@ object BarentswatchServicePaths {
 */
 interface BarentswatchService {
     companion object {
-        const val subscribable = "service/subscribable/"
-        const val geoDataSubscription = "subscription/"
-        const val geoDataSubscriptionManagement = "subscription/{Id}"
-        const val geoDataDownload = "download/{ApiName}"
-        const val authorization = "authorization"
+        const val prefix = "api/v1/geodata/"
+        const val subscribable = prefix + "service/subscribable/"
+        const val geoDataSubscription = prefix + "subscription/"
+        const val geoDataSubscriptionManagement = prefix + "subscription/{Id}"
+        const val geoDataDownload = prefix + "download/{ApiName}"
+        const val authorization = prefix + "authorization"
     }
 
     @GET( subscribable)

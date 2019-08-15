@@ -9,27 +9,33 @@ import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class OAuthInterceptor(private val tokenType: String, private val acceessToken: String): Interceptor {
+class OAuthInterceptor(private val tokenType: String, private val accessToken: String, private val userAgent : String = ""): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
         var request = chain.request()
-        request = request.newBuilder().header("Authorization", "$tokenType $acceessToken").build()
+        request = request.newBuilder()
+            .header("Authorization", "$tokenType $accessToken")
+            .header("User-Agent", "$userAgent")
+            .build()
 
         return chain.proceed(request)
     }
 }
 
 class BasicAuthClient<T> (val accessToken : String) {
+    private val barentsWatchProdAddress = "https://www.barentswatch.no/"
     private val client =  OkHttpClient.Builder()
-        .addInterceptor(OAuthInterceptor("Bearer", accessToken))
+        .addInterceptor(OAuthInterceptor("Bearer", accessToken,  "FiskInfo/2.0 (Android)"))
         .build()
 
     val gson = GsonBuilder()
-        .setLenient()
+        .setLenient() // consider to remove
+        // .setDateFormat("yyyy-MM-dd'T'HH:mm:ss") Consider to add
+        // .excludeFieldsWithoutExposeAnnotation() Consider to add
         .create()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.example.com")
+        .baseUrl(barentsWatchProdAddress)
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
@@ -39,6 +45,32 @@ class BasicAuthClient<T> (val accessToken : String) {
     }
 }
 
+class UnauthClient<T> () {
+    private val barentsWatchPilotAddress = "https://pilot.barentswatch.net/"
+    private val barentsWatchProdAddress = "https://www.barentswatch.no/"
+
+    private val client =  OkHttpClient.Builder()
+//        .addInterceptor(OAuthInterceptor("Bearer", accessToken,  "FiskInfo/2.0 (Android)"))
+        .build()
+
+    val gson = GsonBuilder()
+        .setLenient() // consider to remove
+        // .setDateFormat("yyyy-MM-dd'T'HH:mm:ss") Consider to add
+        // .excludeFieldsWithoutExposeAnnotation() Consider to add
+        .create()
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(barentsWatchProdAddress)
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build()
+
+    fun create(service: Class<T>): T {
+        return retrofit.create(service)
+    }
+}
+
+/*
 class Authenticator {
     fun getRequestForAuthentication(mEmail: String, mPassword: String): Request {
         val MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8")
@@ -69,5 +101,4 @@ class Authenticator {
             .post(formBody)
             .build()
     }
-
-}
+*/
