@@ -1,10 +1,7 @@
 package no.sintef.fiskinfo.ui.overview
 
 import androidx.lifecycle.ViewModel;
-import no.sintef.fiskinfo.api.BarentswatchService
-import no.sintef.fiskinfo.api.BarentswatchTokenService
-import no.sintef.fiskinfo.api.BasicAuthClient
-import no.sintef.fiskinfo.api.UnauthClient
+import no.sintef.fiskinfo.api.*
 import no.sintef.fiskinfo.model.Token
 import no.sintef.fiskinfo.model.barentswatch.Subscription
 import retrofit2.Call
@@ -19,11 +16,13 @@ class OverviewViewModel : ViewModel() {
 
     var token : Token? = null
 
+    private val barentsWatchProdAddress = "https://www.barentswatch.no/"
     fun testLogin() {
         try {
             val cred_type_pw = "password"
             val cred_type_client = "client_credentials"
-            var loginClient : BarentswatchTokenService = UnauthClient<BarentswatchTokenService>().create(BarentswatchTokenService::class.java)
+
+            var loginClient : BarentswatchTokenService = createService(BarentswatchTokenService::class.java, barentsWatchProdAddress)
             var tokenRequest = loginClient.requestToken(cred_type_pw, userName, passWord)
             var token = tokenRequest.enqueue(object : Callback<Token> {
                 override fun onResponse(call: Call<Token>, response: Response<Token>) {
@@ -45,7 +44,7 @@ class OverviewViewModel : ViewModel() {
     }
 
     fun testNextCall() {
-        var serviceClient : BarentswatchService = BasicAuthClient<BarentswatchService>(token!!.access_token).create(BarentswatchService::class.java)
+        var serviceClient : BarentswatchService = createService(BarentswatchService::class.java, barentsWatchProdAddress, token!!.access_token)
         var subRequest = serviceClient.getSubscriptions()
         var token = subRequest.enqueue(object : Callback<List<Subscription>> {
             override fun onResponse(call: Call<List<Subscription>>, response: Response<List<Subscription>>) {
