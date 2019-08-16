@@ -1,19 +1,23 @@
 package no.sintef.fiskinfo.ui.map
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.webkit.JavascriptInterface
-import android.webkit.WebSettings
-import android.webkit.WebView
+import android.webkit.*
+import androidx.fragment.app.activityViewModels
 
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.ui.login.LoginViewModel
 import org.json.JSONArray
 import org.json.JSONException
 
@@ -25,6 +29,7 @@ class MapFragment : Fragment() {
 
     private lateinit var viewModel: MapViewModel
     private lateinit var webView: WebView
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +42,8 @@ class MapFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
+        fragmentIsActive = true
+
         configureWebView()
         // TODO: Use the ViewModel
     }
@@ -52,17 +59,17 @@ class MapFragment : Fragment() {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         }
         //webView.webViewClient =
-
-        webView.addJavascriptInterface(WebAppInterface(context!!),"Android" )
+        webView.addJavascriptInterface(WebAppInterface(context!!, loginViewModel),"Android" )
+        webView.setWebViewClient(BarentswatchFiskInfoWebClient())
         webView.loadUrl("file:///android_asset/sintium_app/index.html")
     }
 
 
-    class WebAppInterface(private val mContext: Context) {
+    private inner class WebAppInterface(private val mContext: Context, private val loginViewModel: LoginViewModel) {
 
         @android.webkit.JavascriptInterface
         fun getToken(): String? {
-            return null //user.getToken()
+           return loginViewModel.token?.access_token
         }
 
 
@@ -129,20 +136,115 @@ class MapFragment : Fragment() {
 
         @android.webkit.JavascriptInterface
         fun setLayers(layers: String) {
-/*            try {
+            try {
                 val layersJSONArray = JSONArray(layers)
                 layersFromSintium.clear()
                 for (i in 0 until layersJSONArray.length()) {
                     layersFromSintium.add(layersJSONArray.get(i).toString())
                 }
+                refreshMapLayersIfReady()
             } catch (e: JSONException) {
                 e.printStackTrace()
                 //TODO : Not my job! xoxo, torbjørn!
             }
-*/
+
         }
 
 
+    }
+    var layersFromSintium = mutableListOf<String>()
+
+    private var fragmentIsActive = false
+    var pageLoaded = false
+    var waitingForTools = false //user.getIsFishingFacilityAuthenticated() // Wait for tools only if user is allowed to see them
+    var waitingForAIS = false //user.getIsAuthenticated()  // Wait for AIS only if user is allowd to see it
+
+    private inner class BarentswatchFiskInfoWebClient : WebViewClient() {
+        override fun onLoadResource(view: WebView, url: String) {
+            // Added just for debug purposes
+            super.onLoadResource(view, url)
+            Log.d("barentswatchFiskInfoWC", url)
+        }
+
+        override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+            // Added just for debug purposes
+            super.onReceivedError(view, request, error)
+            Log.d("barentswatchFiskInfoErr", "$request $error")
+        }
+
+        override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+            Log.d("URL TEST", url)
+            if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                view.context.startActivity(
+                    Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                )
+                return true
+            } else {
+                return false
+            }
+        }
+
+//        @RequiresApi(api = Build.VERSION_CODES.N)
+        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest?): Boolean {
+            val a = ""
+
+            if (request != null && (request.url.toString().startsWith("http://") || request.url.toString().startsWith("https://"))) {
+                view.context.startActivity(
+                    Intent(Intent.ACTION_VIEW, Uri.parse(request.url.toString()))
+                )
+                return true
+            } else {
+                return false
+            }
+        }
+
+        override fun onPageFinished(view: WebView, url: String) {
+            if (!fragmentIsActive)
+                return
+
+            //List<String> layers = user.getActiveLayers(); //.getActiveLayers();
+            //if (!layers.contains(getString(R.string.primary_background_map)))
+            //    layers.add(getString(R.string.primary_background_map));
+            //JSONArray json = new JSONArray(layers);
+
+            //view.loadUrl("javascript:populateMap();");
+            //view.loadUrl("javascript:toggleLayers(" + json + ");");
+
+            //if(toolsFeatureCollection != null && (getActivity() != null && (new FiskInfoUtility().isNetworkAvailable(getActivity())) && !user.getOfflineMode())) {
+            //TODO: Check with Bård if this is needed now;   view.loadUrl("javascript:getToolDataFromAndroid();");
+            //}
+
+            pageLoaded = true
+            refreshMapLayersIfReady()
+            webView.loadUrl("javascript:getLayers()")
+            webView.loadUrl("javascript:getColors()")
+
+            //loadProgressSpinner.setVisibility(View.GONE);
+
+            /*            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    getLayersAndVisibility();
+                }
+            }, 200);*/
+        }
+    }
+
+    fun refreshMapLayersIfReady() {
+        if (pageLoaded && !waitingForAIS && !waitingForTools) {
+            activity?.runOnUiThread(Runnable {
+                val json = JSONArray(layersFromSintium)
+                webView.loadUrl("javascript:toggleLayers($json);")
+                //loadProgressSpinner.setVisibility(View.GONE)
+
+            })
+            /*activity.runOnUiThread(Runnable {
+                val layers = user.getActiveLayers()
+                val json = JSONArray(layers)
+                webView.loadUrl("javascript:toggleLayers($json);")
+                loadProgressSpinner.setVisibility(View.GONE)
+            })*/
+        }
     }
 
 

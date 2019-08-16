@@ -2,6 +2,12 @@ package no.sintef.fiskinfo.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+import no.sintef.fiskinfo.api.BarentswatchTokenService
+import no.sintef.fiskinfo.api.createService
+import no.sintef.fiskinfo.model.Token
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
     enum class AuthenticationState {
@@ -23,16 +29,48 @@ class LoginViewModel : ViewModel() {
         authenticationState.value = AuthenticationState.UNAUTHENTICATED
     }
 
-    var count = 0
+    //var count = 0
+    var token : Token? = null
+
+    private val barentsWatchProdAddress = "https://www.barentswatch.no/"
 
     fun authenticate(username: String, password: String) {
-        count++
+        try {
+            val cred_type_pw = "password"
+            val cred_type_client = "client_credentials"
+
+            var loginClient : BarentswatchTokenService = createService(BarentswatchTokenService::class.java, barentsWatchProdAddress)
+            var tokenRequest = loginClient.requestToken(cred_type_pw, username, password)
+            tokenRequest.enqueue(object : Callback<Token> {
+                override fun onResponse(call: Call<Token>, response: Response<Token>) {
+                    token = response.body()
+                    if (token != null) {
+                        authenticationState.value = AuthenticationState.AUTHENTICATED
+                    }
+                    else {
+                        authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
+                    }
+                }
+
+                override fun onFailure(call: Call<Token>, t: Throwable) {
+                    authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
+                    t.printStackTrace()
+                }
+            })
+        } catch (ex : Exception) {
+            ex.printStackTrace()
+        }
+        //var bwService : BarentswatchService = BasicAuthClient<BarentswatchService>(accessToken = ).create()
+
+
+
+/*        count++
         if (count > 2) { //passwordIsValidForUsername(username, password)) {
             this.username = username
             authenticationState.value = AuthenticationState.AUTHENTICATED
         } else {
             authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
-        }
+        }*/
     }
     // TODO: Implement the ViewModel
 }
