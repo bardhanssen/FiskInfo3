@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ import androidx.databinding.ViewDataBinding
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding
 import no.sintef.fiskinfo.model.SnapMessage
+import no.sintef.fiskinfo.repository.SnapRepository
 
 class SnapDetailFragment : Fragment() {
 
@@ -64,9 +66,19 @@ class SnapDetailFragment : Fragment() {
 
     fun onViewEchogramHereClicked(v: View) {
         try {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(mViewModel!!.getSelectedSnap().value!!.echogramInfo!!.echogramUrl)
-            startActivity(i)
+            if (! (mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId != null))
+                return
+
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val snapFishServerUrl = prefs.getString("server_address", SnapRepository.DEFAULT_SNAP_FISH_SERVER_URL)
+            if (snapFishServerUrl != null) {
+                val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
+                val i = Intent(Intent.ACTION_VIEW)
+                val url = snapFishWebServerUrl + "snap/id/" + mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+
         } catch (ex: Exception) {
         }
 

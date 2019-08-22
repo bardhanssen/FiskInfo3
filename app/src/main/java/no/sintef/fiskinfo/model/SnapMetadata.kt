@@ -26,19 +26,18 @@ import java.util.Date
 /**
  * Metainformation for shared echograms.
  */
-class EchogramInfo {
+class SnapMetadata {
 //    @PrimaryKey
     var id: Long = 0
     // ignore long ownerID;
 
-    var userID: Long = 0
+    var snapId: Long = 0
+    var ownerId: Long = 0
     var timestamp: Date? = null
     var latitude: String? = null
     var longitude: String? = null
     var biomass: String? = null
     var source: String? = null
-
-    var echogramUrl: String? = null
 
     // ignore SnapUser owner;
 }

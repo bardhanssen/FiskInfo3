@@ -1,7 +1,5 @@
 package no.sintef.fiskinfo.api
 
-import no.sintef.fiskinfo.model.EchogramInfo
-import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.model.barentswatch.PropertyDescription
 import no.sintef.fiskinfo.model.barentswatch.Subscription
 import no.sintef.fiskinfo.model.barentswatch.SubscriptionSubmitObject
@@ -9,7 +7,6 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 /**
  * Interface to REST API services from Barentswatch

@@ -18,7 +18,6 @@
 package no.sintef.fiskinfo.repository
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
 import androidx.lifecycle.LiveData
@@ -27,7 +26,7 @@ import androidx.lifecycle.MutableLiveData
 import java.util.ArrayList
 
 import no.sintef.fiskinfo.api.SnapMessageService
-import no.sintef.fiskinfo.model.EchogramInfo
+import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.repository.dummy.DummyEchogram
 import no.sintef.fiskinfo.repository.dummy.DummySnap
@@ -45,7 +44,7 @@ class SnapRepository(context: Context) {
     internal var outboxSnaps = MutableLiveData<ArrayList<SnapMessage>>()
 
     internal val inboxSnaps = MutableLiveData<List<SnapMessage>>()
-    internal val echogramInfos = MutableLiveData<List<EchogramInfo>>()
+    internal val echogramInfos = MutableLiveData<List<SnapMetadata>>()
 
     init {
         updateFromPreferences(context)
@@ -99,7 +98,7 @@ class SnapRepository(context: Context) {
         return outboxSnaps
     }
 
-    fun getEchogramInfos(): LiveData<List<EchogramInfo>> {
+    fun getEchogramInfos(): LiveData<List<SnapMetadata>> {
         refreshEchogramListContent()
         return echogramInfos
     }
@@ -123,12 +122,12 @@ class SnapRepository(context: Context) {
         if (snapMessageService == null)
             initService()
 
-        snapMessageService!!.getEchogramInfos().enqueue(object : Callback<List<EchogramInfo>> {
-            override fun onResponse(call: Call<List<EchogramInfo>>, response: Response<List<EchogramInfo>>) {
+        snapMessageService!!.getEchogramInfos().enqueue(object : Callback<List<SnapMetadata>> {
+            override fun onResponse(call: Call<List<SnapMetadata>>, response: Response<List<SnapMetadata>>) {
                 echogramInfos.setValue(response.body())
             }
 
-            override fun onFailure(call: Call<List<EchogramInfo>>, t: Throwable) {
+            override fun onFailure(call: Call<List<SnapMetadata>>, t: Throwable) {
                 echogramInfos.setValue(DummyEchogram.dummyEchograms)
             }
         })

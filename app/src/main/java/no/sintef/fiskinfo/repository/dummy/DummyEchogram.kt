@@ -17,7 +17,7 @@
  */
 package no.sintef.fiskinfo.repository.dummy
 
-import no.sintef.fiskinfo.model.EchogramInfo
+import no.sintef.fiskinfo.model.SnapMetadata
 
 import java.util.ArrayList
 import java.util.Date
@@ -25,10 +25,10 @@ import java.util.Date
 object DummyEchogram {
     internal var MILLIS_IN_MIN: Long = 60000
 
-    //    public static LiveData<List<EchogramInfo>> getDummyEchogram() {
-    val dummyEchograms: List<EchogramInfo>
+    //    public static LiveData<List<SnapMetadata>> getDummyEchogram() {
+    val dummyEchograms: List<SnapMetadata>
         get() {
-            val list = ArrayList<EchogramInfo>()
+            val list = ArrayList<SnapMetadata>()
             list.add(createEchogram(0))
             list.add(createEchogram(23))
             list.add(createEchogram(84))
@@ -37,15 +37,15 @@ object DummyEchogram {
             return list
         }
 
-    fun createEchogram(minutesOld: Long): EchogramInfo {
-        val echogram = EchogramInfo()
+    fun createEchogram(minutesOld: Long): SnapMetadata {
+        val echogram = SnapMetadata()
         echogram.id = Math.round(Math.random() * 100000000)
         echogram.timestamp = Date(System.currentTimeMillis() - minutesOld * MILLIS_IN_MIN)
         echogram.biomass = "400.0"
-        echogram.echogramUrl = "https://www.sintef.no"
+        //echogram.echogramUrl = "https://www.sintef.no"
         echogram.latitude = "N63" + 0x00B0.toChar() + "24\'48\""
         echogram.longitude = "E10" + 0x00B0.toChar() + "24\'33\" "
-        echogram.userID = 1
+        echogram.ownerId = 1
         echogram.source = "EK80"
         return echogram
     }

@@ -17,7 +17,7 @@
  */
 package no.sintef.fiskinfo.api
 
-import no.sintef.fiskinfo.model.EchogramInfo
+import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
 import retrofit2.Call
 import retrofit2.http.Body
@@ -31,8 +31,8 @@ import retrofit2.http.Query
  */
 interface SnapMessageService {
 
-    @GET("api/echograminfos")
-    fun getEchogramInfos(): Call<List<EchogramInfo>>
+    @GET("api/snapmetadata")
+    fun getEchogramInfos(): Call<List<SnapMetadata>>
     //    @GET("users/{user}/repos")
     //    Call<List<SnapMessage>> listRepos(@Path("user") String user);
 

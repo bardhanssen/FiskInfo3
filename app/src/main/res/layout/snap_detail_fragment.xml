@@ -6,7 +6,7 @@
     <data>
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"/>
         <variable name="snap" type="no.sintef.fiskinfo.model.SnapMessage"/>
-        <variable name="echogram" type="no.sintef.fiskinfo.model.EchogramInfo" />
+        <variable name="echogram" type="no.sintef.fiskinfo.model.SnapMetadata" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

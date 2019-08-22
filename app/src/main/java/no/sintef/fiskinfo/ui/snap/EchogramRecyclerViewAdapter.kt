@@ -20,12 +20,11 @@ package no.sintef.fiskinfo.ui.snap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.EchogramInfo
+import no.sintef.fiskinfo.model.SnapMetadata
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -33,13 +32,13 @@ import java.util.Locale
 import java.util.TimeZone
 
 /**
- * [RecyclerView.Adapter] that can display a [EchogramInfo] and makes calls to the
+ * [RecyclerView.Adapter] that can display a [SnapMetadata] and makes calls to the
  * specified [OnEchogramInteractionListener].
  */
 class EchogramRecyclerViewAdapter(listener: EchogramRecyclerViewAdapter.OnEchogramInteractionListener) :
     RecyclerView.Adapter<EchogramRecyclerViewAdapter.ViewHolder>() {
 
-    private var echograms: List<EchogramInfo>? = null
+    private var echograms: List<SnapMetadata>? = null
     private val mListener: OnEchogramInteractionListener?
 
     init {
@@ -47,7 +46,7 @@ class EchogramRecyclerViewAdapter(listener: EchogramRecyclerViewAdapter.OnEchogr
         mListener = listener
     }
 
-    fun setEchograms(echograms: List<EchogramInfo>) {
+    fun setEchograms(echograms: List<SnapMetadata>) {
         this.echograms = echograms
         this.notifyDataSetChanged()
     }
@@ -90,7 +89,7 @@ class EchogramRecyclerViewAdapter(listener: EchogramRecyclerViewAdapter.OnEchogr
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        var mItem: EchogramInfo? = null
+        var mItem: SnapMetadata? = null
         val titleView: TextView
         val detail1View: TextView
         val detail2View: TextView
@@ -111,7 +110,7 @@ class EchogramRecyclerViewAdapter(listener: EchogramRecyclerViewAdapter.OnEchogr
     }
 
     interface OnEchogramInteractionListener {
-        fun onViewEchogramClicked(v: View, echogram: EchogramInfo?)
-        fun onShareEchogramClicked(v: View, echogram: EchogramInfo?)
+        fun onViewEchogramClicked(v: View, echogram: SnapMetadata?)
+        fun onShareEchogramClicked(v: View, echogram: SnapMetadata?)
     }
 }

@@ -20,20 +20,17 @@ package no.sintef.fiskinfo.ui.snap
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
-import no.sintef.fiskinfo.model.EchogramInfo
-import no.sintef.fiskinfo.model.SnapMessage
+import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.repository.SnapRepository
 
 class EchogramViewModel(application: Application) : AndroidViewModel(application) {
 
-    //private MutableLiveData<EchogramInfo> selectedEchogram = new MutableLiveData<EchogramInfo>();
-    private var echogramInfos: LiveData<List<EchogramInfo>>? = null
+    //private MutableLiveData<SnapMetadata> selectedEchogram = new MutableLiveData<SnapMetadata>();
+    private var echogramInfos: LiveData<List<SnapMetadata>>? = null
 
 
-    fun getEchogramInfos(): LiveData<List<EchogramInfo>>? {
+    fun getEchogramInfos(): LiveData<List<SnapMetadata>>? {
         if (echogramInfos == null) {
              echogramInfos = SnapRepository.getInstance(getApplication()).getEchogramInfos()
         }

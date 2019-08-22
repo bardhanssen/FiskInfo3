@@ -18,19 +18,17 @@
 package no.sintef.fiskinfo.ui.snap
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
 import java.util.ArrayList
 import java.util.Arrays
 
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.EchogramInfo
+import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.model.SnapReceiver
 import no.sintef.fiskinfo.repository.SnapRepository
@@ -54,7 +52,7 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         return selectedSnap
     }
 
-    fun createDraftFrom(echogram: EchogramInfo) {
+    fun createDraftFrom(echogram: SnapMetadata) {
         val snap = SnapMessage()
         snap.echogramInfo = echogram
         snap.echogramInfoID = echogram.id

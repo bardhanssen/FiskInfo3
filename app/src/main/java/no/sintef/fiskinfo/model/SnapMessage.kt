@@ -42,7 +42,7 @@ class SnapMessage {
 
     //public ArrayList<String> receiverID;
 
-    var echogramInfo: EchogramInfo? = null
+    var echogramInfo: SnapMetadata? = null
     var sender: SnapUser? = null
     var receivers: MutableList<SnapReceiver>? = null
 }

@@ -1,6 +1,8 @@
 package no.sintef.fiskinfo.ui.map
 
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -14,6 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 
 import no.sintef.fiskinfo.R
@@ -246,6 +250,47 @@ class MapFragment : Fragment() {
             })*/
         }
     }
+
+
+    inner class MapLayerDialog : DialogFragment() {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return activity?.let {
+                val selectedItems = viewModel.activeLayerNames.value!!.toMutableList() // Where we track the selected items
+                val allItems = viewModel.allLayerNames.value!!.toTypedArray()
+                val builder = AlertDialog.Builder(it)
+                // Set the dialog title
+                builder.setTitle("Show map layers")
+                    // Specify the list array, the items to be selected by default (null for none),
+                    // and the listener through which to receive callbacks when items are selected
+                    .setMultiChoiceItems(allItems, null) { dialog, which, isChecked ->
+                            if (isChecked) {
+                                // If the user checked the item, add it to the selected items
+                                selectedItems.add(allItems[which])
+                            } else if (selectedItems.contains(allItems[which])) {
+                                // Else, if the item is already in the array, remove it
+                                selectedItems.remove(allItems[which])
+                            }
+                        }
+                    // Set the action buttons
+                    .setPositiveButton( "OK", //R.string.ok,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User clicked OK, so save the selectedItems results somewhere
+                            // or return them to the component that opened the dialog
+
+                            viewModel.setSelectedLayers(selectedItems);
+                            // TODO: update
+                        })
+                    .setNegativeButton( "Cancel", //R.string.cancel,
+                        DialogInterface.OnClickListener { dialog, id ->
+
+                            // This can be left empty?
+                        })
+
+                builder.create()
+            } ?: throw IllegalStateException("Activity cannot be null")
+        }
+    }
+
 
 
 }

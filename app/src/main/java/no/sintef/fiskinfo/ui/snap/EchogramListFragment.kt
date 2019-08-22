@@ -1,9 +1,9 @@
 package no.sintef.fiskinfo.ui.snap
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,7 +17,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.EchogramInfo
+import no.sintef.fiskinfo.model.SnapMetadata
+import no.sintef.fiskinfo.repository.SnapRepository
 
 /**
  * A fragment showing a list of Echograms.
@@ -67,15 +68,21 @@ class EchogramListFragment : Fragment(), EchogramRecyclerViewAdapter.OnEchogramI
         return view
     }
 
-    override fun onViewEchogramClicked(v: View, echogram: EchogramInfo?) {
+    override fun onViewEchogramClicked(v: View, echogram: SnapMetadata?) {
         if (echogram != null) {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(echogram.echogramUrl)
-            startActivity(i)
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val snapFishServerUrl = prefs.getString("server_address", SnapRepository.DEFAULT_SNAP_FISH_SERVER_URL)
+            if ((snapFishServerUrl != null) && (echogram.snapId != null)) {
+                val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
+                val i = Intent(Intent.ACTION_VIEW)
+                val url = snapFishWebServerUrl + "snap/id/" + echogram.snapId.toString()
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
         }
     }
 
-    override fun onShareEchogramClicked(v: View, echogram: EchogramInfo?) {
+    override fun onShareEchogramClicked(v: View, echogram: SnapMetadata?) {
         mSnapViewModel!!.createDraftFrom(echogram!!)
         Navigation.findNavController(v).navigate(R.id.action_snap_fragment_to_newSnapFragment)
     }
