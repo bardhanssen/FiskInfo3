@@ -68,12 +68,14 @@ class SnapRepository(context: Context) {
 
 
     private fun initOutbox() {
-        outboxSnaps = MutableLiveData()
-        outboxSnaps!!.value = ArrayList()
+        if (outboxSnaps == null)
+            outboxSnaps = MutableLiveData()
+        if (outboxSnaps.value == null)
+            outboxSnaps!!.value = ArrayList()
     }
 
     fun storeSnap(newSnap: SnapMessage) {
-        if (outboxSnaps == null)
+        if ((outboxSnaps == null) || (outboxSnaps?.value == null))
             initOutbox()
 
         if (snapMessageService == null)

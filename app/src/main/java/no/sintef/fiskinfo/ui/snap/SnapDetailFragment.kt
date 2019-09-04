@@ -74,7 +74,7 @@ class SnapDetailFragment : Fragment() {
             if (snapFishServerUrl != null) {
                 val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
                 val i = Intent(Intent.ACTION_VIEW)
-                val url = snapFishWebServerUrl + "snap/id/" + mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
+                val url = snapFishWebServerUrl + "snap/" + mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
                 i.data = Uri.parse(url)
                 startActivity(i)
             }

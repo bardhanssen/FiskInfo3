@@ -75,7 +75,7 @@ class EchogramListFragment : Fragment(), EchogramRecyclerViewAdapter.OnEchogramI
             if ((snapFishServerUrl != null) && (echogram.snapId != null)) {
                 val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
                 val i = Intent(Intent.ACTION_VIEW)
-                val url = snapFishWebServerUrl + "snap/id/" + echogram.snapId.toString()
+                val url = snapFishWebServerUrl + "snap/" + echogram.snapId.toString()
                 i.data = Uri.parse(url)
                 startActivity(i)
             }
