@@ -15,6 +15,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMetadata
@@ -69,16 +71,10 @@ class EchogramListFragment : Fragment(), EchogramRecyclerViewAdapter.OnEchogramI
     }
 
     override fun onViewEchogramClicked(v: View, echogram: SnapMetadata?) {
-        if (echogram != null) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val snapFishServerUrl = prefs.getString("server_address", SnapRepository.DEFAULT_SNAP_FISH_SERVER_URL)
-            if ((snapFishServerUrl != null) && (echogram.snapId != null)) {
-                val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
-                val i = Intent(Intent.ACTION_VIEW)
-                val url = snapFishWebServerUrl + "snap/" + echogram.snapId.toString()
-                i.data = Uri.parse(url)
-                startActivity(i)
-            }
+        if (echogram?.snapId != null) {
+            var snapId = echogram.snapId.toString()
+            var bundle = bundleOf(ARG_SNAP_ID to snapId)
+            v.findNavController().navigate(R.id.action_fragment_snap_to_echogram_viewer_fragment, bundle)
         }
     }
 
@@ -92,27 +88,3 @@ class EchogramListFragment : Fragment(), EchogramRecyclerViewAdapter.OnEchogramI
     }
 }
 
-
-/*
-class EchogramListFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = EchogramListFragment()
-    }
-
-    private lateinit var viewModel: EchogramViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.echogram_list_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(EchogramViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-}*/

@@ -32,7 +32,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.findNavController
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding
@@ -68,7 +70,11 @@ class SnapDetailFragment : Fragment() {
         try {
             if (! (mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId != null))
                 return
+            var snapId = mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
+            var bundle = bundleOf(ARG_SNAP_ID to snapId)
+            v.findNavController().navigate(R.id.action_snapDetailFragment_to_echogramViewerFragment, bundle)
 
+            /*
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val snapFishServerUrl = prefs.getString("server_address", SnapRepository.DEFAULT_SNAP_FISH_SERVER_URL)
             if (snapFishServerUrl != null) {
@@ -77,7 +83,7 @@ class SnapDetailFragment : Fragment() {
                 val url = snapFishWebServerUrl + "snap/" + mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
                 i.data = Uri.parse(url)
                 startActivity(i)
-            }
+            }*/
 
         } catch (ex: Exception) {
         }

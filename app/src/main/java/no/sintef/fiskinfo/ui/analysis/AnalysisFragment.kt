@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 
 import no.sintef.fiskinfo.R
 
@@ -30,13 +31,12 @@ class AnalysisFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AnalysisViewModel::class.java)
-        // TODO: Use the ViewModel
         configureWebView()
     }
 
     fun configureWebView() {
         if (getView() == null) return
-        webView = getView()!!.findViewById(R.id.map_fragment_web_view)
+        webView = getView()!!.findViewById(R.id.analysis_fragment_web_view)
         with (webView.settings) {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
@@ -44,11 +44,14 @@ class AnalysisFragment : Fragment() {
             setGeolocationEnabled(true)
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         }
-        //webView.webViewClient =
-//        webView.addJavascriptInterface(WebAppInterface(context!!, loginViewModel),"Android" )
-        webView.setWebViewClient(BarentswatchFiskInfoWebClient())
-        webView.loadUrl("https://www.fangstanalyse.no")
-    }
+        webView!!.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                view?.loadUrl(url)
+                return true
+            }
+        }
 
+        webView.loadUrl("https://www.fangstanalyse.no/years/2019/months/0,1,2,3,4")
+    }
 
 }
