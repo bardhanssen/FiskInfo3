@@ -69,7 +69,7 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
             draft!!.receivers = ArrayList()
             for (receiver in receiverList) {
                 if (!receiver.trim { it <= ' ' }.isEmpty())
-                    draft.receivers!!.add(SnapReceiver(receiver))
+                    draft.receivers!!.add(SnapReceiver(receiver.trim() ))
             }
         }
         val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
