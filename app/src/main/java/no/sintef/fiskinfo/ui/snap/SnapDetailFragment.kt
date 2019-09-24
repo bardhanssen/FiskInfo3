@@ -62,7 +62,12 @@ class SnapDetailFragment : Fragment() {
         mViewModel!!.getSelectedSnap().observe(this, Observer { snap ->
             mBinding!!.setSnap(snap)
             mBinding!!.setEchogram(snap?.echogramInfo)
+            //mBinding!!.setIsIncomming(mViewModel!!.isIncomming)
+            //mBinding!!.setIncomming(true)
             mBinding!!.setHandlers(this@SnapDetailFragment)
+        })
+        mViewModel!!.isIncomming().observe(this, Observer { isIncomming ->
+            mBinding!!.setIncomming(isIncomming)
         })
     }
 
@@ -73,18 +78,6 @@ class SnapDetailFragment : Fragment() {
             var snapId = mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
             var bundle = bundleOf(ARG_SNAP_ID to snapId)
             v.findNavController().navigate(R.id.action_snapDetailFragment_to_echogramViewerFragment, bundle)
-
-            /*
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val snapFishServerUrl = prefs.getString("server_address", SnapRepository.DEFAULT_SNAP_FISH_SERVER_URL)
-            if (snapFishServerUrl != null) {
-                val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
-                val i = Intent(Intent.ACTION_VIEW)
-                val url = snapFishWebServerUrl + "snap/" + mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
-                i.data = Uri.parse(url)
-                startActivity(i)
-            }*/
-
         } catch (ex: Exception) {
         }
 
@@ -108,38 +101,3 @@ class SnapDetailFragment : Fragment() {
     }
 
 }
-
-/*
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import no.sintef.fiskinfo.R
-
-class SnapDetailFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SnapDetailFragment()
-    }
-
-    private lateinit var viewModel: SnapDetailViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.snap_detail_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SnapDetailViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-}
-
-*/

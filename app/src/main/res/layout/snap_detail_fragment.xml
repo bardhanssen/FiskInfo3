@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"/>
         <variable name="snap" type="no.sintef.fiskinfo.model.SnapMessage"/>
+        <variable name="incomming" type="Boolean"/>
         <variable name="echogram" type="no.sintef.fiskinfo.model.SnapMetadata" />
     </data>
 
@@ -56,14 +58,25 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="From"
+            android:visibility="@{incomming ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
             app:layout_constraintBaseline_toBaselineOf="@id/snapFromTextView" />
+
+        <TextView
+                android:id="@+id/snapToLabelView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="To"
+                android:visibility="@{incomming ? View.GONE : View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+                app:layout_constraintBaseline_toBaselineOf="@id/snapFromTextView" />
 
         <TextView
             android:id="@+id/snapFromTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{snap.sender.email}"
+            android:text="@{incomming ? snap.sender.email : snap.receivers.get(0).receiverEmail }"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintLeft_toRightOf="@id/contentGuideline"
             app:layout_constraintStart_toStartOf="@id/contentGuideline"

@@ -36,7 +36,9 @@ import no.sintef.fiskinfo.repository.SnapRepository
 class SnapViewModel(application: Application) : AndroidViewModel(application) {
 
     private val selectedSnap = MutableLiveData<SnapMessage?>()
+    private var selectedIsIncomming = MutableLiveData<Boolean>()
     private var inboxSnaps: LiveData<List<SnapMessage>>? = null
+    private var outboxSnaps: LiveData<List<SnapMessage>>? = null
     private val snapDraft = MutableLiveData<SnapMessage>()
 
     val draftSnapReceivers = ObservableField<String>()
@@ -44,8 +46,13 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
     val draft: LiveData<SnapMessage>
         get() = snapDraft
 
-    fun selectSnap(snap: SnapMessage?) {
+    fun isIncomming(): LiveData<Boolean> {
+        return selectedIsIncomming
+    }
+
+    fun selectSnap(snap: SnapMessage?, incomming: Boolean) {
         selectedSnap.value = snap
+        selectedIsIncomming.value = incomming
     }
 
     fun getSelectedSnap(): LiveData<SnapMessage?> {
@@ -88,7 +95,18 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         return inboxSnaps
     }
 
+    fun getOutboxSnaps(): LiveData<List<SnapMessage>>? {
+        if (outboxSnaps == null) {
+            outboxSnaps = SnapRepository.getInstance(getApplication()).outboxSnaps
+        }
+        return outboxSnaps
+    }
+
     fun refreshInboxContent() {
         SnapRepository.getInstance(getApplication()).refreshInboxContent()
+    }
+
+    fun refreshOutboxContent() {
+        SnapRepository.getInstance(getApplication()).refreshOutboxContent()
     }
 }

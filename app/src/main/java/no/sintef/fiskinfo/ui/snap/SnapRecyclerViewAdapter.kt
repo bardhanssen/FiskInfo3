@@ -39,7 +39,7 @@ import java.util.TimeZone
  * specified {@OnSnapInteractionListener} callbacks on interaction
  * TODO: Replace the implementation with code for your data type.
  */
-class SnapRecyclerViewAdapter(private val mListener: OnSnapInteractionListener?) :
+class SnapRecyclerViewAdapter(private val mListener: OnSnapInteractionListener?, private val mIncomming : Boolean) :
     RecyclerView.Adapter<SnapRecyclerViewAdapter.ViewHolder>() {
 
     private var snaps: List<SnapMessage>? = null
@@ -62,7 +62,10 @@ class SnapRecyclerViewAdapter(private val mListener: OnSnapInteractionListener?)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mItem = snaps!![position]
 
-        holder.titleView.text = holder.mItem!!.sender!!.email
+        if (mIncomming)
+            holder.titleView.text = holder.mItem!!.sender!!.email
+        else
+            holder.titleView.text = holder.mItem?.receivers?.get(0)?.receiverEmail ?: ""
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         //        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.datetime_format_yyyy_mm_dd_t_hh_mm_ss), Locale.getDefault());

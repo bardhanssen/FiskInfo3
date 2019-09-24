@@ -42,9 +42,9 @@ class SnapRepository(context: Context) {
 
     internal var snapFishServerUrl: String? = DEFAULT_SNAP_FISH_SERVER_URL
 
-    internal var outboxSnaps = MutableLiveData<ArrayList<SnapMessage>>()
-
+    internal var outboxSnaps = MutableLiveData<List<SnapMessage>>()
     internal val inboxSnaps = MutableLiveData<List<SnapMessage>>()
+
     internal val echogramInfos = MutableLiveData<List<SnapMetadata>>()
 
     init {
@@ -90,13 +90,17 @@ class SnapRepository(context: Context) {
 
             }
         })
-        outboxSnaps!!.value!!.add(newSnap)
+        (outboxSnaps!!.value!! as ArrayList<SnapMessage>).add(newSnap)
     }
 
-    fun getOutboxSnaps(): MutableLiveData<ArrayList<SnapMessage>> {
+    fun refreshOutboxContent() {
+        if (outboxSnaps == null)
+            initOutbox()
+    }
+
+    fun getOutboxSnaps(): LiveData<List<SnapMessage>> {
         if (outboxSnaps == null) {
-            outboxSnaps = MutableLiveData()
-            outboxSnaps!!.setValue(ArrayList())
+            initOutbox()
         }
         return outboxSnaps
     }

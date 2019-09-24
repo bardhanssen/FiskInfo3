@@ -57,11 +57,11 @@ class SnapFragment : Fragment() {
         tabLayout.setupWithViewPager(viewPager)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+/*    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }
-
-    inner class SnapPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+*/
+    inner class SnapPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getPageTitle(position: Int): CharSequence? {
             return resources.getStringArray(R.array.snap_tab_titles)[position]
@@ -71,8 +71,11 @@ class SnapFragment : Fragment() {
             return if (position == 0) {
                 EchogramListFragment.newInstance()
 
-            } else {
-                SnapInboxFragment.newInstance(position)
+            } else if (position == 1) {
+                SnapInboxFragment.newInstance(true)
+            }
+            else {
+                SnapInboxFragment.newInstance(false)
             }
         }
 
@@ -89,38 +92,3 @@ class SnapFragment : Fragment() {
     }
 
 }
-
-/*package no.sintef.fiskinfo.ui.snap
-
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import no.sintef.fiskinfo.R
-
-class SnapFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SnapFragment()
-    }
-
-    private lateinit var viewModel: SnapViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.snap_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SnapViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-}
-*/
