@@ -5,12 +5,20 @@
     <PreferenceCategory android:title="Server settings">
 
         <EditTextPreference
-            android:defaultValue="http://10.218.86.230:5002/"
-            android:key="@string/server_address"
+            android:defaultValue="http://129.242.16.123:37789/"
+            android:key="@string/snap_api_server_address"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"
-            android:title="Snapfish server address" />
+            android:title="Snapfish API server address" />
+
+        <EditTextPreference
+                android:defaultValue="https://129.242.16.123:37457/"
+                android:key="@string/snap_web_server_address"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                app:useSimpleSummaryProvider="true"
+                android:title="Snapfish web server address" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="User settings">

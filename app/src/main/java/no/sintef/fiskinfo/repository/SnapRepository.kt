@@ -22,6 +22,7 @@ import android.preference.PreferenceManager
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import no.sintef.fiskinfo.R
 
 import java.util.ArrayList
 
@@ -140,7 +141,7 @@ class SnapRepository(context: Context) {
         if (context != null) {
             // Find preferences
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            snapFishServerUrl = prefs.getString("server_address", DEFAULT_SNAP_FISH_SERVER_URL)
+            snapFishServerUrl = prefs.getString( context.getString(R.string.snap_api_server_address), DEFAULT_SNAP_FISH_SERVER_URL)
             snapMessageService = null
         }
         refreshInboxContent()
@@ -151,8 +152,8 @@ class SnapRepository(context: Context) {
 
         //    final static String SNAP_FISH_SERVER_URL = "https://10.218.86.229:44387/";
         //    final static String SNAP_FISH_SERVER_URL = "http://10.218.69.173:58196/";
-        internal val DEFAULT_SNAP_FISH_SERVER_URL = "http://10.218.86.229:5002/"
-
+        // internal val DEFAULT_SNAP_FISH_SERVER_URL = "http://10.218.86.229:5002/"
+        internal val DEFAULT_SNAP_FISH_SERVER_URL = "http://129.242.16.123:37789/"
         fun getInstance(context: Context): SnapRepository {
             if (instance == null)
                 instance = SnapRepository(context)

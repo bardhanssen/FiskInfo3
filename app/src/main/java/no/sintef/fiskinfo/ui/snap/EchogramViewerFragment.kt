@@ -80,16 +80,19 @@ class EchogramViewerFragment : Fragment() {
 
     }
 
+    val DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS = "https://129.242.16.123:37457/"
+
     fun loadContent() {
         try {
             if (snapId == null)
                 return
 
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val snapFishServerUrl = prefs.getString("server_address", SnapRepository.DEFAULT_SNAP_FISH_SERVER_URL)
+            val snapFishServerUrl = prefs.getString(getString(R.string.snap_web_server_address), DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS)
             if (snapFishServerUrl != null) {
-                val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
-                val url = snapFishWebServerUrl + "snap/" + snapId
+                //val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
+                //val url = snapFishWebServerUrl + "snap/" + snapId
+                val url = snapFishServerUrl + "snap/" + snapId
                 webView.loadUrl(url)
             }
 
