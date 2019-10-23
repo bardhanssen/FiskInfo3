@@ -119,7 +119,7 @@ class SnapEditorFragment : Fragment() {
         mViewModel!!.draft.observe(this, Observer { snap ->
             if (snap != null) {
                 mBinding!!.setSnap(snap)
-                mBinding!!.setEchogram(snap.echogramInfo)
+                //mBinding!!.setEchogram(mViewModel?.draftMetadata)
                 mBinding!!.setHandlers(this@SnapEditorFragment)
                 mBinding!!.setSnapviewmodel(mViewModel)
             }

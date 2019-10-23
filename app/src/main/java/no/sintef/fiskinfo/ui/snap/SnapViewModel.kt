@@ -30,6 +30,7 @@ import java.util.Arrays
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
+import no.sintef.fiskinfo.model.SnapMessageDraft
 import no.sintef.fiskinfo.model.SnapReceiver
 import no.sintef.fiskinfo.repository.SnapRepository
 
@@ -39,12 +40,15 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
     private var selectedIsIncomming = MutableLiveData<Boolean>()
     private var inboxSnaps: LiveData<List<SnapMessage>>? = null
     private var outboxSnaps: LiveData<List<SnapMessage>>? = null
-    private val snapDraft = MutableLiveData<SnapMessage>()
+    private val draftMessage = MutableLiveData<SnapMessageDraft>()
+
+    val sharePublicly = MutableLiveData<Boolean>()
+    val draftMetadata = MutableLiveData<SnapMetadata>()
 
     val draftSnapReceivers = ObservableField<String>()
 
-    val draft: LiveData<SnapMessage>
-        get() = snapDraft
+    val draft: LiveData<SnapMessageDraft>
+        get() = draftMessage
 
     fun isIncomming(): LiveData<Boolean> {
         return selectedIsIncomming
@@ -59,32 +63,39 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         return selectedSnap
     }
 
-    fun createDraftFrom(echogram: SnapMetadata) {
-        val snap = SnapMessage()
-        snap.echogramInfo = echogram
-        snap.echogramInfoID = echogram.id
-        snapDraft.value = snap
+    fun createDraftFrom(snapMetadata: SnapMetadata) {
+        val snap = SnapMessageDraft(snapMetadata.id)
+
+        sharePublicly.value = true
+        draftMessage.value = snap
+        draftMetadata.value = snapMetadata
         draftSnapReceivers.set("")
     }
 
     fun sendSnapAndClear() {
-        val draft = snapDraft.value
+        val draft = draftMessage.value
+        if (draft == null) {
+            return
+        }
 
         if (draftSnapReceivers.get() != null) {
+            // TODO: Add validation
+            draft?.receiverEmails = draftSnapReceivers.get()!!
+            /*
             val receiverList =
                 Arrays.asList(*draftSnapReceivers.get()!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
             draft!!.receivers = ArrayList()
             for (receiver in receiverList) {
                 if (!receiver.trim().isEmpty())
                     draft.receivers!!.add(SnapReceiver(receiver.trim() ))
-            }
+            }*/
         }
         val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
-        draft!!.senderEmail =
+        draft?.senderEmail =
             prefs.getString(getApplication<Application>().getString(R.string.user_identity), "ola@fiskinfo.no")
 
         SnapRepository.getInstance(getApplication()).storeSnap(draft)
-        snapDraft.setValue(null)
+        draftMessage.setValue(null)
         draftSnapReceivers.set("")
     }
 

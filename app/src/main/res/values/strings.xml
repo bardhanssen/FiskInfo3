@@ -20,6 +20,7 @@
     <string name="snap_api_server_address">snap_api_server_address</string>
     <string name="snap_web_server_address">snap_web_server_address</string>
     <string name="user_identity">user_identity</string>
+    <string name="user_id">user_id</string>
 
 
     <!-- Strings related to login -->

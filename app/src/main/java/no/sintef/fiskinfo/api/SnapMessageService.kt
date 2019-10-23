@@ -19,11 +19,9 @@ package no.sintef.fiskinfo.api
 
 import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
+import no.sintef.fiskinfo.model.SnapMessageDraft
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Interface to REST API service for getting and creating echogram snap messages
@@ -32,14 +30,14 @@ import retrofit2.http.Query
 interface SnapMessageService {
 
     @GET("api/snapmetadata")
-    fun getEchogramInfos(): Call<List<SnapMetadata>>
+    fun getSnapMetadata(@Query("ownerId") ownerId: Int): Call<List<SnapMetadata>>
     //    @GET("users/{user}/repos")
     //    Call<List<SnapMessage>> listRepos(@Path("user") String user);
 
     @GET("api/snapmessages")
-    fun getSnapMessages(@Query("withechogram") withEchogram: Boolean): Call<List<SnapMessage>>
+    fun getSnapMessages(@Path("userId") userId: Int, @Query("inbox") inbox: Boolean, @Query("snapmetadata") snapmetadata: Boolean): Call<List<SnapMessage>>
 
     @POST("api/snapmessages")
-    fun sendSnapMessage(@Body message: SnapMessage): Call<SnapMessage>
+    fun sendSnapMessage(@Body message: SnapMessageDraft): Call<SnapMessage>
 
 }

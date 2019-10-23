@@ -30,6 +30,16 @@
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"
             android:title="User e-mail" />
+
+        <EditTextPreference
+                android:defaultValue="2"
+                android:key="@string/user_id"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:inputType="number"
+                app:useSimpleSummaryProvider="true"
+                android:title="User id" />
+
     </PreferenceCategory>
 
 
