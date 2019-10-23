@@ -22,10 +22,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 
 import android.view.LayoutInflater
@@ -33,13 +30,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.databinding.ViewDataBinding
 import androidx.navigation.findNavController
 
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding
-import no.sintef.fiskinfo.model.SnapMessage
-import no.sintef.fiskinfo.repository.SnapRepository
 
 class SnapDetailFragment : Fragment() {
 
@@ -62,12 +55,8 @@ class SnapDetailFragment : Fragment() {
         mViewModel!!.getSelectedSnap().observe(this, Observer { snap ->
             mBinding!!.setSnap(snap)
             mBinding!!.setEchogram(snap?.echogramInfo)
-            //mBinding!!.setIsIncomming(mViewModel!!.isIncomming)
-            //mBinding!!.setIncomming(true)
+            mBinding!!.setIncomming(mViewModel!!.isIncomming().value)
             mBinding!!.setHandlers(this@SnapDetailFragment)
-        })
-        mViewModel!!.isIncomming().observe(this, Observer { isIncomming ->
-            mBinding!!.setIncomming(isIncomming)
         })
     }
 

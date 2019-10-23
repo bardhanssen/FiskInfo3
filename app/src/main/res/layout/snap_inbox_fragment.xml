@@ -14,6 +14,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.snap.SnapInboxFragment"
+        tools:context=".ui.snap.SnapBoxFragment"
         tools:listitem="@layout/snap_list_item" />    
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

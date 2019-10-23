@@ -72,10 +72,10 @@ class SnapFragment : Fragment() {
                 EchogramListFragment.newInstance()
 
             } else if (position == 1) {
-                SnapInboxFragment.newInstance(true)
+                SnapBoxFragment.newInstance(true)
             }
             else {
-                SnapInboxFragment.newInstance(false)
+                SnapBoxFragment.newInstance(false)
             }
         }
 

@@ -17,7 +17,6 @@
  */
 package no.sintef.fiskinfo.ui.snap
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,33 +34,46 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMessage
 
 /**
- * A fragment showing the inbox of snap messages.
+ * A fragment for showing the inbox or outbox of snap messages.
  *
  *
  */
+
 /**
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class SnapOutboxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteractionListener {
+class SnapBoxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteractionListener {
     private var mViewModel: SnapViewModel? = null
     private var mAdapter: SnapRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
+    private var mIsInbox : Boolean = true
+    private val IS_INBOX = "IsInbox"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mIsInbox = arguments?.getBoolean(IS_INBOX, true) ?: true
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
-        mViewModel!!.getOutboxSnaps()!!.observe(this,
+        val box = if (mIsInbox) mViewModel!!.getInboxSnaps() else mViewModel!!.getOutboxSnaps()
+
+        box?.observe(this,
             Observer { snaps ->
                 mAdapter!!.setSnaps(snaps)
                 if (mSwipeLayout != null)
                     mSwipeLayout!!.isRefreshing = false
             })
 
+/*        mViewModel!!.getInboxSnaps()!!.observe(this,
+            Observer { snaps ->
+                mAdapter!!.setSnaps(snaps)
+                if (mSwipeLayout != null)
+                    mSwipeLayout!!.isRefreshing = false
+            })
+*/
         /*        ViewParent parent = this.getView().getParent();
         if (parent instanceof ViewPager) {
             TabLayout tabLayout = (TabLayout) ((ViewPager) parent).findViewById(R.id.snaptab_layout);
@@ -78,13 +90,14 @@ class SnapOutboxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteraction
         val listView = view.findViewById<RecyclerView>(R.id.inbox_list)
         val context = view.context
         listView.setLayoutManager(LinearLayoutManager(context))
-        mAdapter = SnapRecyclerViewAdapter(this, false)
+        mAdapter = SnapRecyclerViewAdapter(this, mIsInbox)
         listView.setAdapter(mAdapter)
 
         mSwipeLayout = view.findViewById(R.id.inboxswipelayout) as SwipeRefreshLayout
         //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
 
-        mSwipeLayout!!.setOnRefreshListener { mViewModel!!.refreshOutboxContent() }
+        if (mIsInbox) // Refresh only supported on inbox as outbox is currently only local on phone
+            mSwipeLayout!!.setOnRefreshListener { mViewModel!!.refreshInboxContent() }
 
 
         /*        if (container instanceof ViewPager) {
@@ -99,7 +112,7 @@ class SnapOutboxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteraction
     }
 
     override fun onViewSnapClicked(v: View, snap: SnapMessage?) {
-        mViewModel!!.selectSnap(snap, false)
+        mViewModel!!.selectSnap(snap, mIsInbox)
         Navigation.findNavController(v).navigate(R.id.action_fragment_snap_to_snapDetailFragment)
     }
 
@@ -110,44 +123,11 @@ class SnapOutboxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteraction
 
     companion object {
 
-        fun newInstance(columnCount: Int): SnapOutboxFragment {
-            return SnapOutboxFragment()
+        @JvmStatic
+        fun newInstance(isInbox: Boolean) = SnapBoxFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(IS_INBOX, isInbox)
+            }
         }
     }
 }
-
-
-/*package no.sintef.fiskinfo.ui.snap
-
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import no.sintef.fiskinfo.R
-
-class SnapInboxFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SnapInboxFragment()
-    }
-
-    private lateinit var viewModel: SnapInboxViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.snap_inbox_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SnapInboxViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-}
-*/

@@ -51,8 +51,8 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun selectSnap(snap: SnapMessage?, incomming: Boolean) {
-        selectedSnap.value = snap
         selectedIsIncomming.value = incomming
+        selectedSnap.value = snap
     }
 
     fun getSelectedSnap(): LiveData<SnapMessage?> {
@@ -75,13 +75,13 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
                 Arrays.asList(*draftSnapReceivers.get()!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
             draft!!.receivers = ArrayList()
             for (receiver in receiverList) {
-                if (!receiver.trim { it <= ' ' }.isEmpty())
+                if (!receiver.trim().isEmpty())
                     draft.receivers!!.add(SnapReceiver(receiver.trim() ))
             }
         }
         val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
         draft!!.senderEmail =
-            prefs.getString(getApplication<Application>().getString(R.string.user_identity), "default@fiskinfo.no")
+            prefs.getString(getApplication<Application>().getString(R.string.user_identity), "ola@fiskinfo.no")
 
         SnapRepository.getInstance(getApplication()).storeSnap(draft)
         snapDraft.setValue(null)
