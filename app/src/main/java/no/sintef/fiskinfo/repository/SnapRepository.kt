@@ -27,11 +27,10 @@ import no.sintef.fiskinfo.R
 import java.util.ArrayList
 
 import no.sintef.fiskinfo.api.SnapMessageService
+import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.model.SnapMessageDraft
-import no.sintef.fiskinfo.repository.dummy.DummyEchogram
-import no.sintef.fiskinfo.repository.dummy.DummySnap
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,7 +58,12 @@ class SnapRepository(context: Context) {
         return inboxSnaps
     }
 
+    protected fun initService() {
+        snapMessageService =
+            createService(SnapMessageService::class.java,snapFishServerUrl!! )
+    }
 
+/*
     protected fun initService() {
         val retrofit = Retrofit.Builder()
             .baseUrl(snapFishServerUrl!!)
@@ -69,17 +73,15 @@ class SnapRepository(context: Context) {
         snapMessageService = retrofit.create(SnapMessageService::class.java)
 
     }
-
+*/
 
     private fun initOutbox() {
-        if (outboxSnaps == null)
-            outboxSnaps = MutableLiveData()
         if (outboxSnaps.value == null)
-            outboxSnaps!!.value = ArrayList()
+            outboxSnaps.value = ArrayList()
     }
 
     fun storeSnap(newSnap: SnapMessageDraft) {
-        if ((outboxSnaps == null) || (outboxSnaps?.value == null))
+        if (outboxSnaps.value == null)
             initOutbox()
 
         if (snapMessageService == null)
@@ -87,7 +89,7 @@ class SnapRepository(context: Context) {
         snapMessageService!!.sendSnapMessage(newSnap).enqueue(object : Callback<SnapMessage> {
             override fun onResponse(call: Call<SnapMessage>, response: Response<SnapMessage>) {
                 if (response.body() != null)
-                    (outboxSnaps!!.value!! as ArrayList<SnapMessage>).add(response.body()!!)
+                    (outboxSnaps.value!! as ArrayList<SnapMessage>).add(response.body()!!)
             }
 
             override fun onFailure(call: Call<SnapMessage>, t: Throwable) {
@@ -98,12 +100,12 @@ class SnapRepository(context: Context) {
     }
 
     fun refreshOutboxContent() {
-        if (outboxSnaps == null)
+        if (outboxSnaps.value == null)
             initOutbox()
     }
 
     fun getOutboxSnaps(): LiveData<List<SnapMessage>> {
-        if (outboxSnaps == null) {
+        if (outboxSnaps.value == null) {
             initOutbox()
         }
         return outboxSnaps
@@ -124,7 +126,8 @@ class SnapRepository(context: Context) {
             }
 
             override fun onFailure(call: Call<List<SnapMessage>>, t: Throwable) {
-                inboxSnaps.value = DummySnap.dummyInboxSnaps.value
+                // TODO: log problem
+                inboxSnaps.value = ArrayList()
             }
         })
     }
@@ -139,7 +142,8 @@ class SnapRepository(context: Context) {
             }
 
             override fun onFailure(call: Call<List<SnapMetadata>>, t: Throwable) {
-                echogramInfos.setValue(DummyEchogram.dummyEchograms)
+                // TODO: log problem
+                echogramInfos.setValue(ArrayList())
             }
         })
     }
@@ -150,7 +154,7 @@ class SnapRepository(context: Context) {
             // Find preferences
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             snapFishServerUrl = prefs.getString( context.getString(R.string.snap_api_server_address), DEFAULT_SNAP_FISH_SERVER_URL)
-            snapFishUserId = prefs.getInt("snap_user_id", 2)
+            snapFishUserId = prefs.getString( context.getString(R.string.user_id),"2").toInt()
             snapMessageService = null
         }
         refreshInboxContent()

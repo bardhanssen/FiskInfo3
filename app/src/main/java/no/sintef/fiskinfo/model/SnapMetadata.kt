@@ -39,5 +39,8 @@ class SnapMetadata {
     var biomass: String? = null
     var source: String? = null
 
+    var sharePublic: Boolean = false
+    var sharePublicFrom: Date? = null
+
     // ignore SnapUser owner;
 }

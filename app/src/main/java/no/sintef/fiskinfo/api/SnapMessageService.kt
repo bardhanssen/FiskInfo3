@@ -35,7 +35,7 @@ interface SnapMessageService {
     //    Call<List<SnapMessage>> listRepos(@Path("user") String user);
 
     @GET("api/snapmessages")
-    fun getSnapMessages(@Path("userId") userId: Int, @Query("inbox") inbox: Boolean, @Query("snapmetadata") snapmetadata: Boolean): Call<List<SnapMessage>>
+    fun getSnapMessages(@Query("userId") userId: Int, @Query("inbox") inbox: Boolean, @Query("snapmetadata") snapmetadata: Boolean): Call<List<SnapMessage>>
 
     @POST("api/snapmessages")
     fun sendSnapMessage(@Body message: SnapMessageDraft): Call<SnapMessage>

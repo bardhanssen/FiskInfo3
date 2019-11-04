@@ -65,16 +65,16 @@ class SnapRecyclerViewAdapter(private val mListener: OnSnapInteractionListener?,
         if (mIncomming)
             holder.titleView.text = holder.mItem!!.sender!!.email
         else
-            holder.titleView.text = holder.mItem?.receivers?.get(0)?.receiverEmail ?: ""
+            holder.titleView.text = holder.mItem?.receiverEmails ?: ""
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         //        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.datetime_format_yyyy_mm_dd_t_hh_mm_ss), Locale.getDefault());
         //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.timeZone = TimeZone.getDefault()
         //holder.detail1View.setText(sdf.format(holder.mItem.getEchogramInfo().timestamp));
-        holder.detail1View.text = holder.mItem!!.title
+        holder.detail1View.text = holder.mItem!!.message
         holder.detail2View.text =
-            sdf.format(holder.mItem!!.echogramInfo!!.timestamp) //holder.mItem.getEchogramInfo().latitude);
+            sdf.format(holder.mItem!!.snapMetadata!!.timestamp) //holder.mItem.getEchogramInfo().latitude);
         holder.shareButton.setOnClickListener({mListener?.onViewSnapInMapClicked(it, holder.mItem)})
 
         holder.mView.setOnClickListener { v ->

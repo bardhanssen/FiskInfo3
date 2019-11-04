@@ -54,7 +54,7 @@ class SnapDetailFragment : Fragment() {
         mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
         mViewModel!!.getSelectedSnap().observe(this, Observer { snap ->
             mBinding!!.setSnap(snap)
-            mBinding!!.setEchogram(snap?.echogramInfo)
+            mBinding!!.setSnapMetadata(snap?.snapMetadata)
             mBinding!!.setIncomming(mViewModel!!.isIncomming().value)
             mBinding!!.setHandlers(this@SnapDetailFragment)
         })
@@ -62,9 +62,9 @@ class SnapDetailFragment : Fragment() {
 
     fun onViewEchogramHereClicked(v: View) {
         try {
-            if (! (mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId != null))
+            if (! (mViewModel?.getSelectedSnap()?.value?.snapMetadata?.snapId != null))
                 return
-            var snapId = mViewModel?.getSelectedSnap()?.value?.echogramInfo?.snapId.toString()
+            var snapId = mViewModel?.getSelectedSnap()?.value?.snapMetadata?.snapId.toString()
             var bundle = bundleOf(ARG_SNAP_ID to snapId)
             v.findNavController().navigate(R.id.action_snapDetailFragment_to_echogramViewerFragment, bundle)
         } catch (ex: Exception) {

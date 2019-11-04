@@ -30,19 +30,15 @@ import java.util.Date
 class SnapMessage {
 //    @PrimaryKey
     var id: Long = 0
-    var senderID: Long = 0
-    var senderEmail: String? = null
+    var ownerId: Long = 0
+    var senderId: Long = 0
 
-    var title: String? = null
-    var comment: String? = null
-    var sendTimestamp: Date? = null
-    var sharePublicly: Boolean = false
+    var receiverEmails: String = ""
+    var message: String? = null
+    var sentTimestamp: Date? = null
+    var snapMetadataId: Long = 0
+    var seen: Boolean = false
 
-    var echogramInfoID: Long = 0
-
-    //public ArrayList<String> receiverID;
-
-    var echogramInfo: SnapMetadata? = null
+    var snapMetadata: SnapMetadata? = null
     var sender: SnapUser? = null
-    var receivers: MutableList<SnapReceiver>? = null
 }
