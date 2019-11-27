@@ -1,15 +1,11 @@
 package no.sintef.fiskinfo.api
 
-import com.google.gson.GsonBuilder
+import com.google.gson.*
 import okhttp3.OkHttpClient
 import okhttp3.Interceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
-import com.google.gson.JsonParseException
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonElement
-import com.google.gson.JsonDeserializer
 import java.lang.reflect.Type
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -42,6 +38,7 @@ private fun <S> createService(serviceClass: Class<S>, baseUrl : String, client :
         .setLenient() // consider to remove
         // .setDateFormat("yyyy-MM-dd'T'HH:mm:ss") //Consider to add
         // .excludeFieldsWithoutExposeAnnotation() Consider to add
+        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
         .registerTypeAdapter(
             Date::class.java,  DateTypeDeserializer())
         .create()
