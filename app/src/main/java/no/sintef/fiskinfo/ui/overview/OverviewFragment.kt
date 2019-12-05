@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 
 import no.sintef.fiskinfo.R
@@ -35,6 +37,10 @@ class OverviewFragment : Fragment() {
                 LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
             }
         })
+
+        view.findViewById<Button>(R.id.map_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_map, null))
+        view.findViewById<Button>(R.id.snapfish_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_snap, null))
+        view.findViewById<Button>(R.id.catch_analysis_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null))
     }
 
     private fun showWelcomeMessage() {
