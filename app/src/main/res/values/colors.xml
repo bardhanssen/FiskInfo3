@@ -11,4 +11,9 @@
     <color name="colorPrimary">#FF03A9F4</color>
     <color name="colorPrimaryDark">@color/colorBarentsDarkBlue</color>
     <color name="colorAccent">#FF00E5FF</color>
+
+    <!-- App colors -->
+    <color name="hyperlink_blue">#0000EE</color>
+
+
 </resources>

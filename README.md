@@ -5,7 +5,7 @@ FiskInfo is developed by [SINTEF](https://www.sintef.no/) in collaboration with 
 
 This repository contains a new version of the Android that is under development. The new version will be a rewrite of the current Android app
 (available in the [SINTEF-SE/Fiskinfo](https://github.com/SINTEF-SE/Fiskinfo) repository)
-targeting more recent versions of the Android SDK, and will be based on AndroidX / JetPack. 
+targeting more recent versions of the Android SDK, and will be based on Kotlin and AndroidX / JetPack.
 
 Currently this version mainly contains the following:
 * New navigation structure with empty placeholders for main fragments

@@ -17,6 +17,10 @@
             android:id="@id/fragment_snap"
             android:icon="@drawable/ic_snap"
             android:title="@string/snap_title" />
+        <item
+            android:id="@id/fragment_analysis"
+            android:icon="@drawable/ic_chart"
+            android:title="@string/catch_analysis_title" />
 
     </group>
     <!-- TODO STEP 9.8 - Add a menu item for settings_fragment -->

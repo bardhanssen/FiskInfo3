@@ -7,4 +7,21 @@
     <dimen name="list_item_icon_width">48dp</dimen>
     <dimen name="small_icon_height">16dp</dimen>
     <dimen name="small_icon_width">16dp</dimen>
+
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin_small">8dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin_small">8dp</dimen>
+    <dimen name="default_image_view_and_button_width">48dp</dimen>
+    <dimen name="default_image_view_and_button_height">48dp</dimen>
+    <dimen name="small_image_view_and_button_width">32dp</dimen>
+    <dimen name="small_image_view_and_button_height">32dp</dimen>
+
+    <!-- login fragment -->
+    <dimen name="login_logo_width">550dp</dimen>
+    <dimen name="login_logo_height">105dp</dimen>
+    <dimen name="seek_bar_label_length">70dp</dimen>
+    <dimen name="login_network_error_text_size">20sp</dimen>
+
 </resources>

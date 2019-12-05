@@ -12,11 +12,43 @@
     <string name="proto_open_drawer">Open drawer</string>
     <string name="proto_close_drawer">Close drawer</string>
     <string name="snap_title">Echo snaps</string>
+    <string name="catch_analysis_title">Catch analysis</string>
     <string name="map_title">Map</string>
 
 
     <!-- User preferences strings -->
-    <string name="server_address">server_address</string>
+    <string name="snap_api_server_address">snap_api_server_address</string>
+    <string name="snap_web_server_address">snap_web_server_address</string>
     <string name="user_identity">user_identity</string>
+    <string name="user_id">user_id</string>
+
+
+    <!-- Strings related to login -->
+    <string name="login_remember_login">Husk meg</string>
+    <string name="login_prompt_email">Epostadresse</string>
+    <string name="login_prompt_password">Passord</string>
+    <string name="login_action_sign_in_short">Logg inn</string>
+    <string name="login_action_sign_in">Logg inn</string>
+    <string name="login_action_forgot_password">Glemt passord</string>
+    <string name="login_action_sign_up">Registrer bruker</string>
+    <string name="login_error_incorrect_password">Feil passord</string>
+
+
+    <!--
+    <string name="error_invalid_email">Ugyldig epostadresse</string>
+    <string name="error_invalid_password">Passordet er for kort</string>
+    <string name="error_incorrect_password">Feil passord</string>
+    <string name="error_account_creation_failed">Oppretting av ny bruker feilet</string>
+    <string name="error_password_reset_failed">Gjenoppretting av passordet feilet</string>
+    <string name="title_activity_my_page">MyPageActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="log_out">Logg ut</string>
+    <string name="confirm_log_out">Er du sikker på at du vil logge ut?</string>
+    <string name="title_activity_file_dialog">FileDialog</string>
+    <string name="register_user_account_hyperlink">&lt;a href="https://www.barentswatch.no/LandingPage/"&gt;Registrer bruker.&lt;/a&gt;</string>
+    <string name="forgot_account_password_hyperlink">&lt;a href="https://www.barentswatch.no/s/Logg-inn/?ReturnUrl=/MinSide/"&gt;Glemt passord.&lt;/a&gt;</string>
+    -->
+
 
 </resources>

@@ -47,6 +47,8 @@
         <action
             android:id="@+id/action_overview_fragment_to_userPreferencesFragment"
             app:destination="@id/fragment_preferences" />
+        <action android:id="@+id/action_fragment_overview_to_analysis_fragment"
+                app:destination="@id/fragment_analysis"/>
     </fragment>
     <fragment
         android:id="@+id/fragment_snap"
@@ -59,6 +61,8 @@
         <action
             android:id="@+id/action_fragment_snap_to_snapDetailFragment"
             app:destination="@id/snapDetailFragment" />
+        <action android:id="@+id/action_fragment_snap_to_echogram_viewer_fragment"
+                app:destination="@id/echogram_viewer_fragment"/>
     </fragment>
     <fragment
         android:id="@+id/fragment_user_profile"
@@ -70,13 +74,23 @@
         android:name="no.sintef.fiskinfo.ui.preferences.UserPreferencesFragment"
         android:label="User Preferences" />
     <fragment
-        android:id="@+id/fragment_snap_editor"
-        android:name="no.sintef.fiskinfo.ui.snap.SnapEditorFragment"
-        android:label="New snap"
-        tools:layout="@layout/snap_editor_fragment" />
+            android:id="@+id/fragment_snap_editor"
+            android:name="no.sintef.fiskinfo.ui.snap.SnapEditorFragment"
+            android:label="New Snap Message"
+            tools:layout="@layout/snap_editor_fragment"/>
     <fragment
-        android:id="@+id/snapDetailFragment"
-        android:name="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"
-        android:label="Snap message"
-        tools:layout="@layout/snap_detail_fragment" />
+            android:id="@+id/snapDetailFragment"
+            android:name="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"
+            android:label="Snap Message"
+            tools:layout="@layout/snap_detail_fragment">
+        <action android:id="@+id/action_snapDetailFragment_to_echogramViewerFragment"
+                app:destination="@id/echogram_viewer_fragment"/>
+    </fragment>
+    <fragment android:id="@+id/login_fragment" android:name="no.sintef.fiskinfo.ui.login.LoginFragment"
+              android:label="FiskInfo Login" tools:layout="@layout/login_fragment"/>
+    <fragment android:name="no.sintef.fiskinfo.ui.analysis.AnalysisFragment"
+              android:label="Catch Analysis" tools:layout="@layout/analysis_fragment"
+              android:id="@+id/fragment_analysis"/>
+    <fragment android:id="@+id/echogram_viewer_fragment" android:name="no.sintef.fiskinfo.ui.snap.EchogramViewerFragment"
+              android:label="Echogram Viewer"/>
 </navigation>
