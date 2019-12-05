@@ -5,7 +5,7 @@
     <PreferenceCategory android:title="Server settings">
 
         <EditTextPreference
-            android:defaultValue="http://129.242.16.123:37789/"
+            android:defaultValue="http://esushi.no:37789/"
             android:key="@string/snap_api_server_address"
             android:selectAllOnFocus="true"
             android:singleLine="true"
@@ -13,7 +13,7 @@
             android:title="Snapfish API server address" />
 
         <EditTextPreference
-                android:defaultValue="https://129.242.16.123:37457/"
+                android:defaultValue="https://esushi.no:37457/"
                 android:key="@string/snap_web_server_address"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
@@ -24,7 +24,7 @@
     <PreferenceCategory android:title="User settings">
 
         <EditTextPreference
-            android:defaultValue="ola@fiskinfo.no"
+            android:defaultValue="per@fiskinfo.no"
             android:key="@string/user_identity"
             android:selectAllOnFocus="true"
             android:singleLine="true"
@@ -32,7 +32,7 @@
             android:title="User e-mail" />
 
         <EditTextPreference
-                android:defaultValue="2"
+                android:defaultValue="1"
                 android:key="@string/user_id"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
