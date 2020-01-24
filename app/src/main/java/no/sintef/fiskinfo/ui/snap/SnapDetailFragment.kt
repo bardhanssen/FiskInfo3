@@ -82,6 +82,11 @@ class SnapDetailFragment : Fragment() {
         toast.show()
     }
 
+    fun onDeleteSnapClicked(v: View) {
+        mViewModel!!.deleteSelectedSnap()
+        v.findNavController().navigateUp()
+    }
+
     companion object {
 
         fun newInstance(): SnapDetailFragment {

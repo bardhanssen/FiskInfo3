@@ -59,6 +59,16 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         selectedSnap.value = snap
     }
 
+    fun deleteSelectedSnap() {
+        if (selectedSnap.value != null) {
+            if (selectedIsIncomming.value!!)
+                SnapRepository.getInstance(getApplication()).deleteInboxSnap(selectedSnap.value!!)
+        }
+        selectedIsIncomming.value = true
+        selectedSnap.value = null
+    }
+
+
     fun getSelectedSnap(): LiveData<SnapMessage?> {
         return selectedSnap
     }

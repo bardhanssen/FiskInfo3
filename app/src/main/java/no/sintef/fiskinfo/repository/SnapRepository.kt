@@ -88,8 +88,10 @@ class SnapRepository(context: Context) {
             initService()
         snapMessageService!!.sendSnapMessage(newSnap).enqueue(object : Callback<SnapMessage> {
             override fun onResponse(call: Call<SnapMessage>, response: Response<SnapMessage>) {
-                if (response.body() != null)
+                if (response.body() != null) {
                     (outboxSnaps.value!! as ArrayList<SnapMessage>).add(response.body()!!)
+                    (outboxSnaps.value!! as ArrayList<SnapMessage>).sortByDescending { it.sentTimestamp }
+                }
             }
 
             override fun onFailure(call: Call<SnapMessage>, t: Throwable) {
@@ -97,6 +99,10 @@ class SnapRepository(context: Context) {
             }
         })
 //        (outboxSnaps!!.value!! as ArrayList<SnapMessage>).add(newSnap)
+    }
+
+    fun deleteInboxSnap(message: SnapMessage) {
+        inboxSnaps.value = inboxSnaps.value!!.minusElement(message)
     }
 
     fun refreshOutboxContent() {
@@ -108,6 +114,8 @@ class SnapRepository(context: Context) {
         if (outboxSnaps.value == null) {
             initOutbox()
         }
+        outboxSnaps.value = outboxSnaps.value?.sortedByDescending {it.sentTimestamp} ?: ArrayList()
+
         return outboxSnaps
     }
 
@@ -122,7 +130,7 @@ class SnapRepository(context: Context) {
 
         snapMessageService!!.getSnapMessages(snapFishUserId, true, true).enqueue(object : Callback<List<SnapMessage>> {
             override fun onResponse(call: Call<List<SnapMessage>>, response: Response<List<SnapMessage>>) {
-                inboxSnaps.value = response.body()
+                inboxSnaps.value = response.body()?.sortedByDescending {it.sentTimestamp} ?: ArrayList()
             }
 
             override fun onFailure(call: Call<List<SnapMessage>>, t: Throwable) {
@@ -138,7 +146,7 @@ class SnapRepository(context: Context) {
 
         snapMessageService!!.getSnapMetadata(snapFishUserId).enqueue(object : Callback<List<SnapMetadata>> {
             override fun onResponse(call: Call<List<SnapMetadata>>, response: Response<List<SnapMetadata>>) {
-                echogramInfos.setValue(response.body())
+                echogramInfos.setValue(response.body()?.sortedByDescending {it.timestamp} ?: ArrayList() )
             }
 
             override fun onFailure(call: Call<List<SnapMetadata>>, t: Throwable) {

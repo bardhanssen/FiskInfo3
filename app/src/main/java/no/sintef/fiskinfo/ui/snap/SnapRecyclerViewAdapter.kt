@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.ui.snap
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,11 @@ class SnapRecyclerViewAdapter(private val mListener: OnSnapInteractionListener?,
         else
             holder.titleView.text = holder.mItem?.receiverEmails ?: ""
 
+        val textStyle = if (holder.mItem!!.seen) Typeface.NORMAL else Typeface.BOLD
+        holder.titleView.setTypeface(null, textStyle)
+        holder.detail1View.setTypeface(null, textStyle)
+
+
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         //        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.datetime_format_yyyy_mm_dd_t_hh_mm_ss), Locale.getDefault());
         //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -78,6 +84,7 @@ class SnapRecyclerViewAdapter(private val mListener: OnSnapInteractionListener?,
         holder.shareButton.setOnClickListener({mListener?.onViewSnapInMapClicked(it, holder.mItem)})
 
         holder.mView.setOnClickListener { v ->
+            holder.mItem?.seen = true
             mListener?.onViewSnapClicked(v, holder.mItem)
         }
     }
