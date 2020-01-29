@@ -18,16 +18,21 @@ package no.sintef.fiskinfo.ui.snap
  * limitations under the License.
  */
 
+import android.net.http.SslError
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -52,13 +57,64 @@ class SnapDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
+        configureWebView()
         mViewModel!!.getSelectedSnap().observe(this, Observer { snap ->
             mBinding!!.setSnap(snap)
             mBinding!!.setSnapMetadata(snap?.snapMetadata)
             mBinding!!.setIncomming(mViewModel!!.isIncomming().value)
             mBinding!!.setHandlers(this@SnapDetailFragment)
+            loadContent(snap?.snapMetadata?.snapId.toString())
         })
     }
+
+    private lateinit var webView: WebView
+
+    fun configureWebView() {
+        if (getView() == null) return
+        webView = getView()!!.findViewById(R.id.snapdetail_web_view)
+        with (webView.settings) {
+            javaScriptEnabled = true
+            javaScriptCanOpenWindowsAutomatically = true
+            domStorageEnabled = true
+            setGeolocationEnabled(true)
+            // layoutAlgorithm = android.webkit.WebSettings.LayoutAlgorithm.NORMAL
+            //setUseWideViewPort(true)
+            //setLoadWithOverviewMode(true)
+        }
+        webView!!.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                view?.loadUrl(url)
+                return true
+            }
+            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+                // TODO: Remove this when we have valid certificates
+                handler.proceed() // Ignore SSL certificate errors
+            }
+        }
+
+    }
+
+    val DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS = "https://129.242.16.123:37457/"
+
+    fun loadContent(snapId : String) {
+        try {
+            if (snapId == null)
+                return
+
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val snapFishServerUrl = prefs.getString(getString(R.string.snap_web_server_address), DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS)
+            if (snapFishServerUrl != null) {
+                val url = snapFishServerUrl + "snap/" + snapId
+                webView.loadUrl(url)
+            }
+
+        } catch (ex: Exception) {
+        }
+
+    }
+
+
+
 
     fun onViewEchogramHereClicked(v: View) {
         try {

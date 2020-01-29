@@ -69,13 +69,13 @@ class SnapFragment : Fragment() {
 
         override fun getItem(position: Int): Fragment {
             return if (position == 0) {
-                EchogramListFragment.newInstance()
+                SnapBoxFragment.newInstance(true)
 
             } else if (position == 1) {
-                SnapBoxFragment.newInstance(true)
+                SnapBoxFragment.newInstance(false)
             }
             else {
-                SnapBoxFragment.newInstance(false)
+                EchogramListFragment.newInstance()
             }
         }
 

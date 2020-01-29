@@ -24,14 +24,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-import java.util.ArrayList
-import java.util.Arrays
-
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.model.SnapMessageDraft
-import no.sintef.fiskinfo.model.SnapReceiver
 import no.sintef.fiskinfo.repository.SnapRepository
 
 class SnapViewModel(application: Application) : AndroidViewModel(application) {
@@ -63,6 +59,8 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         if (selectedSnap.value != null) {
             if (selectedIsIncomming.value!!)
                 SnapRepository.getInstance(getApplication()).deleteInboxSnap(selectedSnap.value!!)
+            else
+                SnapRepository.getInstance(getApplication()).deleteOutboxSnap(selectedSnap.value!!)
         }
         selectedIsIncomming.value = true
         selectedSnap.value = null
@@ -104,7 +102,7 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         draft?.senderEmail =
             prefs.getString(getApplication<Application>().getString(R.string.user_identity), "ola@fiskinfo.no")
 
-        SnapRepository.getInstance(getApplication()).storeSnap(draft)
+        SnapRepository.getInstance(getApplication()).sendSnap(draft)
         draftMessage.setValue(null)
         draftSnapReceivers.set("")
     }

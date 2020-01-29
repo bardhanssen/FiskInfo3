@@ -80,7 +80,7 @@ class SnapRepository(context: Context) {
             outboxSnaps.value = ArrayList()
     }
 
-    fun storeSnap(newSnap: SnapMessageDraft) {
+    fun sendSnap(newSnap: SnapMessageDraft) {
         if (outboxSnaps.value == null)
             initOutbox()
 
@@ -103,6 +103,10 @@ class SnapRepository(context: Context) {
 
     fun deleteInboxSnap(message: SnapMessage) {
         inboxSnaps.value = inboxSnaps.value!!.minusElement(message)
+    }
+
+    fun deleteOutboxSnap(message: SnapMessage) {
+        outboxSnaps.value = outboxSnaps.value!!.minusElement(message)
     }
 
     fun refreshOutboxContent() {
