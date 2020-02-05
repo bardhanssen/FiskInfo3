@@ -20,17 +20,12 @@ package no.sintef.fiskinfo.ui.overview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.SnapMetadata
-
-import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 /**
  * [RecyclerView.Adapter] that can display a [OverviewCardItem] and makes calls to the
@@ -64,6 +59,8 @@ class OverviewRecyclerViewAdapter(listener: OverviewRecyclerViewAdapter.OnOvervi
 
         holder.titleView.text = holder.mItem!!.title
         holder.subTitleView.text = holder.mItem!!.subTitle
+        holder.icon.setImageResource(holder.mItem!!.imageResource)
+
         holder.descriptionView.text = holder.mItem!!.description
         holder.action1Button.text = holder.mItem!!.action1Text
         holder.action2Button.text = holder.mItem!!.action2Text
@@ -80,6 +77,7 @@ class OverviewRecyclerViewAdapter(listener: OverviewRecyclerViewAdapter.OnOvervi
         var mItem: OverviewCardItem? = null
         val titleView: TextView
         val subTitleView: TextView
+        val icon : ImageView
         val descriptionView: TextView
         val action1Button: MaterialButton
         val action2Button: MaterialButton
@@ -87,6 +85,7 @@ class OverviewRecyclerViewAdapter(listener: OverviewRecyclerViewAdapter.OnOvervi
         init {
             titleView = mView.findViewById(R.id.card_title_text_view) as TextView
             subTitleView = mView.findViewById(R.id.card_top_text_view) as TextView
+            icon = mView.findViewById(R.id.card_image_view) as ImageView
             descriptionView = mView.findViewById(R.id.card_main_text_view) as TextView
             action1Button = mView.findViewById(R.id.card_button_1) as MaterialButton
             action2Button = mView.findViewById(R.id.card_button_2) as MaterialButton
