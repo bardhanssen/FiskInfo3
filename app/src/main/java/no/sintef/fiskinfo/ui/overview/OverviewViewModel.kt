@@ -1,6 +1,8 @@
 package no.sintef.fiskinfo.ui.overview
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.*
 import no.sintef.fiskinfo.model.Token
 import no.sintef.fiskinfo.model.barentswatch.Subscription
@@ -58,4 +60,35 @@ class OverviewViewModel : ViewModel() {
         })
 
     }
+
+    var overviewList = MutableLiveData<List<OverviewCardItem>>()
+
+
+    fun getOverViewItems() : MutableLiveData<List<OverviewCardItem>> {
+        if (overviewList.value == null) {
+            val itemList = ArrayList<OverviewCardItem>()
+            addMapSummary(itemList)
+            addSnapSummary(itemList)
+            addCatchAnalysis(itemList)
+            overviewList.value = itemList
+        }
+        return overviewList
+    }
+
+    private fun addMapSummary(list : ArrayList<OverviewCardItem>) {
+        val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "This is a long description that could contain useful information in some cases.", "View map", "")
+        list.add(item)
+    }
+
+    private fun addSnapSummary(list : ArrayList<OverviewCardItem>) {
+        val item = OverviewCardItem("SnapFish", "View a map with resources", R.drawable.ic_snap, "You have 5 unread snap messages. You have 1 new snap to share", "View inbox", "Send snap")
+        list.add(item)
+
+    }
+    private fun addCatchAnalysis(list : ArrayList<OverviewCardItem>) {
+        val item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
+        list.add(item)
+    }
+
+
 }
