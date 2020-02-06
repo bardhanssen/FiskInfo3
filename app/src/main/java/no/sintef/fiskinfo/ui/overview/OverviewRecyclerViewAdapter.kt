@@ -53,20 +53,27 @@ class OverviewRecyclerViewAdapter(listener: OverviewRecyclerViewAdapter.OnOvervi
         return ViewHolder(view)
     }
 
+    private fun goneIfEmpty(text : String?) : Int {
+        return if (text != null && text != "") View.VISIBLE else View.GONE
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mItem = overviewItems!![position]
-
 
         holder.titleView.text = holder.mItem!!.title
         holder.subTitleView.text = holder.mItem!!.subTitle
         holder.icon.setImageResource(holder.mItem!!.imageResource)
 
         holder.descriptionView.text = holder.mItem!!.description
+        holder.descriptionView.visibility = goneIfEmpty(holder.mItem!!.description)
+//        holder.descriptionView.visibility = if (holder.descriptionView.text != "") View.GONE else View.VISIBLE
         holder.action1Button.text = holder.mItem!!.action1Text
         holder.action2Button.text = holder.mItem!!.action2Text
+        holder.action2Button.visibility = goneIfEmpty(holder.mItem!!.action2Text)
 
         holder.action1Button.setOnClickListener {mListener?.onAction1Clicked(it, holder.mItem)}
-        holder.action2Button.setOnClickListener {mListener?.onAction2Clicked(it, holder.mItem)}
+        if (holder.action2Button.text != "")
+            holder.action2Button.setOnClickListener {mListener?.onAction2Clicked(it, holder.mItem)}
     }
 
     override fun getItemCount(): Int {

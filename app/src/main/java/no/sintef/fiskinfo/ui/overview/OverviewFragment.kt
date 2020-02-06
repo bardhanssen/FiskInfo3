@@ -38,8 +38,6 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //welcomeTextView = view.findViewById(R.id.welcome_text_view)
-
         val navController = findNavController()
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
@@ -48,9 +46,6 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
             }
         })
 
-//        view.findViewById<Button>(R.id.map_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_map, null))
-//        view.findViewById<Button>(R.id.snapfish_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_snap, null))
-//        view.findViewById<Button>(R.id.catch_analysis_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null))
     }
 
     private fun showWelcomeMessage() {
@@ -77,34 +72,5 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
         viewModel!!.getOverViewItems().observe(this, Observer { mAdapter?.setOverviewItems(it) })
     }
-
-
-    private fun getOverViewItems() : List<OverviewCardItem> {
-        val itemList = ArrayList<OverviewCardItem>()
-        addMapSummary(itemList)
-        addSnapSummary(itemList)
-        addCatchAnalysis(itemList)
-        return itemList
-    }
-
-    private fun addMapSummary(list : ArrayList<OverviewCardItem>) {
-        var item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map,
-            "This is a long description that could contain useful information in some cases.", "View map", "",
-            Navigation.createNavigateOnClickListener(R.id.fragment_map, null),null )
-        list.add(item)
-    }
-
-    private fun addSnapSummary(list : ArrayList<OverviewCardItem>) {
-        var item = OverviewCardItem("SnapFish", "View a map with resources", R.drawable.ic_snap, "You have 5 unread snap messages. You have 1 new snap to share", "View inbox", "Send snap")
-        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_snap, null)
-        list.add(item)
-
-    }
-    private fun addCatchAnalysis(list : ArrayList<OverviewCardItem>) {
-        var item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
-        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null)
-        list.add(item)
-    }
-
 
 }

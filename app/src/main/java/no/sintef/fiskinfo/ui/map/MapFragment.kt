@@ -27,6 +27,7 @@ import org.json.JSONException
 import java.util.*
 
 class MapFragment : Fragment() {
+    val FRAGMENT_TAG = "MapFragment"
 
     companion object {
         fun newInstance() = MapFragment()
@@ -101,6 +102,33 @@ class MapFragment : Fragment() {
         //webView.webViewClient =
         webView.addJavascriptInterface(WebAppInterface(context!!, loginViewModel),"Android" )
         webView.setWebViewClient(BarentswatchFiskInfoWebClient())
+
+        webView.setWebChromeClient(object : WebChromeClient() {
+            override fun onGeolocationPermissionsShowPrompt(
+                origin: String,
+                callback: GeolocationPermissions.Callback
+            ) {
+                Log.d("geolocation permission", "permission >>>$origin")
+                callback.invoke(origin, true, false)
+            }
+
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+                Log.d("WebView", consoleMessage.message())
+                return true
+            }
+
+            override fun onJsAlert(
+                view: WebView,
+                url: String,
+                message: String,
+                result: JsResult
+            ): Boolean {
+                Log.d(FRAGMENT_TAG, message)
+                return super.onJsAlert(view, url, message, result)
+            }
+        })
+
+
         webView.loadUrl("file:///android_asset/sintium_app/index.html")
     }
 

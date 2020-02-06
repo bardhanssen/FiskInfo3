@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.ui.overview
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.*
 import no.sintef.fiskinfo.model.Token
@@ -76,17 +77,19 @@ class OverviewViewModel : ViewModel() {
     }
 
     private fun addMapSummary(list : ArrayList<OverviewCardItem>) {
-        val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "This is a long description that could contain useful information in some cases.", "View map", "")
+        val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "", "View map", "")
+        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_map, null)
         list.add(item)
     }
 
     private fun addSnapSummary(list : ArrayList<OverviewCardItem>) {
-        val item = OverviewCardItem("SnapFish", "View a map with resources", R.drawable.ic_snap, "You have 5 unread snap messages. You have 1 new snap to share", "View inbox", "Send snap")
+        val item = OverviewCardItem("SnapFish", "Share echo sounder snaps with your contacts", R.drawable.ic_snap, "You have 5 unread snap messages. You have 1 new snap to share", "View inbox", "Send snap")
+        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_snap, null)
         list.add(item)
-
     }
     private fun addCatchAnalysis(list : ArrayList<OverviewCardItem>) {
         val item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
+        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null)
         list.add(item)
     }
 

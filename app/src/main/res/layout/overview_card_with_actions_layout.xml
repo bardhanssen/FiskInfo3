@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
-    android:layout_marginRight="@dimen/mtrl_card_spacing">
+    android:layout_marginRight="@dimen/mtrl_card_spacing"
+        >
 
 
     <LinearLayout
@@ -28,7 +29,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:baselineAlignBottom="true"
-                app:srcCompat="@drawable/ic_info" />
+                app:srcCompat="@drawable/ic_info"
+                android:tint="@color/colorBarentsDarkBlue" />
 
             <TextView
                 android:id="@+id/card_title_text_view"
