@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.ui.overview
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation
@@ -7,13 +9,15 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.*
 import no.sintef.fiskinfo.model.Token
 import no.sintef.fiskinfo.model.barentswatch.Subscription
+import no.sintef.fiskinfo.repository.SnapRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OverviewViewModel : ViewModel() {
+class OverviewViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
 
+    /*
     val userName = ""
     val passWord = ""
 
@@ -62,17 +66,17 @@ class OverviewViewModel : ViewModel() {
 
     }
 
+*/
+
     var overviewList = MutableLiveData<List<OverviewCardItem>>()
 
 
     fun getOverViewItems() : MutableLiveData<List<OverviewCardItem>> {
-        if (overviewList.value == null) {
-            val itemList = ArrayList<OverviewCardItem>()
-            addMapSummary(itemList)
-            addSnapSummary(itemList)
-            addCatchAnalysis(itemList)
-            overviewList.value = itemList
-        }
+        val itemList = ArrayList<OverviewCardItem>()
+        addMapSummary(itemList)
+        addSnapSummary(itemList)
+        addCatchAnalysis(itemList)
+        overviewList.value = itemList
         return overviewList
     }
 
@@ -83,10 +87,18 @@ class OverviewViewModel : ViewModel() {
     }
 
     private fun addSnapSummary(list : ArrayList<OverviewCardItem>) {
-        val item = OverviewCardItem("SnapFish", "Share echo sounder snaps with your contacts", R.drawable.ic_snap, "You have 5 unread snap messages. You have 1 new snap to share", "View inbox", "Send snap")
+        //SnapRepository.getInstance(getApplication()).inboxSnaps.value.size
+
+        val inboxSnaps = SnapRepository.getInstance(getApplication()).inboxSnaps;
+        val echogramInfos = SnapRepository.getInstance(getApplication()).echogramInfos;
+        val unread = inboxSnaps.value?.count{!it.seen} ?: 0
+        val echogramCount = echogramInfos.value?.size ?: 0
+        //TODO find number of unread messages and number of new snaps,  and add these numbers to the messsage
+        val item = OverviewCardItem("SnapFish", "Share echo sounder snaps with your contacts", R.drawable.ic_snap, "You have $unread unread snap messages.\nYou have $echogramCount snaps to share.", "View inbox", "Send snap")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_snap, null)
         list.add(item)
     }
+
     private fun addCatchAnalysis(list : ArrayList<OverviewCardItem>) {
         val item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null)
