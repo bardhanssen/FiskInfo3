@@ -1,23 +1,19 @@
 package no.sintef.fiskinfo
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import androidx.appcompat.app.ActionBar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
-import java.util.HashSet
+import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSelectedListener {
 
@@ -25,6 +21,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var controller : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,4 +143,8 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }*/
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 0x001
+        const val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0x002
+    }
 }

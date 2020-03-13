@@ -1,36 +1,39 @@
 package no.sintef.fiskinfo.ui.map
 
+import android.Manifest.permission
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import android.view.*
 import android.webkit.*
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
+import android.widget.Button
+import android.widget.TableLayout
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-
+import androidx.lifecycle.ViewModelProviders
+import no.sintef.fiskinfo.MainActivity
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.login.LoginViewModel
+import no.sintef.fiskinfo.utilities.ui.ToolLegendRow
+import no.sintef.fiskinfo.utilities.ui.UtilityDialogs
 import org.json.JSONArray
 import org.json.JSONException
+import java.util.*
 
 class MapFragment : Fragment() {
+    val FRAGMENT_TAG = "MapFragment"
 
     companion object {
         fun newInstance() = MapFragment()
     }
 
+    private lateinit var dialogInterface : UtilityDialogs
     private lateinit var viewModel: MapViewModel
     private lateinit var webView: WebView
     private val loginViewModel: LoginViewModel by activityViewModels()
@@ -41,10 +44,44 @@ class MapFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.map_fragment, container, false)
     }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_map, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.update_map -> {
+                //updateMap()
+                return true
+            }
+
+            R.id.zoom_to_user_position -> {
+                zoomToUserPosition()
+                return true
+            }
+
+            R.id.symbol_explanation -> {
+                createToolSymbolExplanationDialog()
+                return true
+            }
+            R.id.setProximityAlert -> {
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        dialogInterface = UtilityDialogs()
+
         viewModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
         fragmentIsActive = true
 
@@ -65,9 +102,37 @@ class MapFragment : Fragment() {
         //webView.webViewClient =
         webView.addJavascriptInterface(WebAppInterface(context!!, loginViewModel),"Android" )
         webView.setWebViewClient(BarentswatchFiskInfoWebClient())
+
+        webView.setWebChromeClient(object : WebChromeClient() {
+            override fun onGeolocationPermissionsShowPrompt(
+                origin: String,
+                callback: GeolocationPermissions.Callback
+            ) {
+                Log.d("geolocation permission", "permission >>>$origin")
+                callback.invoke(origin, true, false)
+            }
+
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+                Log.d("WebView", consoleMessage.message())
+                return true
+            }
+
+            override fun onJsAlert(
+                view: WebView,
+                url: String,
+                message: String,
+                result: JsResult
+            ): Boolean {
+                Log.d(FRAGMENT_TAG, message)
+                return super.onJsAlert(view, url, message, result)
+            }
+        })
+
+
         webView.loadUrl("file:///android_asset/sintium_app/index.html")
     }
 
+    var colorsFromSintium = ArrayList<Int>()
 
     private inner class WebAppInterface(private val mContext: Context, private val loginViewModel: LoginViewModel) {
 
@@ -123,7 +188,7 @@ class MapFragment : Fragment() {
 
         @android.webkit.JavascriptInterface
         fun setToolColors(colors: String) {
-/*            try {
+            try {
                 val colorsJSONArray = JSONArray(colors)
                 colorsFromSintium.clear()
                 for (i in 0 until colorsJSONArray.length()) {
@@ -135,7 +200,6 @@ class MapFragment : Fragment() {
                 e.printStackTrace()
                 //TODO : Not my job! xoxo, torbjørn!
             }
-*/
         }
 
         @android.webkit.JavascriptInterface
@@ -251,46 +315,52 @@ class MapFragment : Fragment() {
         }
     }
 
-
-    inner class MapLayerDialog : DialogFragment() {
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            return activity?.let {
-                val selectedItems = viewModel.activeLayerNames.value!!.toMutableList() // Where we track the selected items
-                val allItems = viewModel.allLayerNames.value!!.toTypedArray()
-                val builder = AlertDialog.Builder(it)
-                // Set the dialog title
-                builder.setTitle("Show map layers")
-                    // Specify the list array, the items to be selected by default (null for none),
-                    // and the listener through which to receive callbacks when items are selected
-                    .setMultiChoiceItems(allItems, null) { dialog, which, isChecked ->
-                            if (isChecked) {
-                                // If the user checked the item, add it to the selected items
-                                selectedItems.add(allItems[which])
-                            } else if (selectedItems.contains(allItems[which])) {
-                                // Else, if the item is already in the array, remove it
-                                selectedItems.remove(allItems[which])
-                            }
-                        }
-                    // Set the action buttons
-                    .setPositiveButton( "OK", //R.string.ok,
-                        DialogInterface.OnClickListener { dialog, id ->
-                            // User clicked OK, so save the selectedItems results somewhere
-                            // or return them to the component that opened the dialog
-
-                            viewModel.setSelectedLayers(selectedItems);
-                            // TODO: update
-                        })
-                    .setNegativeButton( "Cancel", //R.string.cancel,
-                        DialogInterface.OnClickListener { dialog, id ->
-
-                            // This can be left empty?
-                        })
-
-                builder.create()
-            } ?: throw IllegalStateException("Activity cannot be null")
+    private fun zoomToUserPosition() {
+        if (ContextCompat.checkSelfPermission(
+                context!!,
+                permission.ACCESS_FINE_LOCATION
+            ) !== PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(
+                arrayOf(permission.ACCESS_FINE_LOCATION),
+                MainActivity.MY_PERMISSIONS_REQUEST_FINE_LOCATION
+            )
+        } else {
+            webView.loadUrl("javascript:zoomToUserPosition()")
         }
     }
 
-
+    private fun createToolSymbolExplanationDialog() {
+        val dialog: Dialog = dialogInterface.getDialog(
+            activity,
+            R.layout.tool_legend_dialog,
+            R.string.tool_legend
+        )!!
+        val tableLayout =
+            dialog.findViewById<View>(R.id.tool_legend_table_layout) as TableLayout
+        val dismissButton =
+            dialog.findViewById<View>(R.id.tool_legend_dismiss_button) as Button
+        val toolTypes = arrayOf(
+            "Teine",
+            "Snurpenot",
+            "Line",
+            "Fortøyningssystem",
+            "Garn",
+            "Sensor / kabel",
+            "Ukjent redskap"
+        )
+        if (colorsFromSintium.size > 0) {
+            var i = 0
+            for (toolType in toolTypes) {
+                val color = colorsFromSintium[i]
+                val toolLegendRow: View =
+                    ToolLegendRow(activity, color, toolType).view
+                tableLayout.addView(toolLegendRow)
+                i += 1
+            }
+        }
+        dismissButton.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
 
 }

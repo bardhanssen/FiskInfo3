@@ -11,11 +11,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.login.LoginViewModel
 
-class OverviewFragment : Fragment() {
+
+class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardInteractionListener {
+    override fun onAction2Clicked(v: View, item: OverviewCardItem?) {
+        item?.action2Listener?.onClick(v);
+    }
+
+    override fun onAction1Clicked(v: View, item: OverviewCardItem?) {
+        item?.action1Listener?.onClick(v);
+    }
 
     companion object {
         fun newInstance() = OverviewFragment()
@@ -28,8 +38,6 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //welcomeTextView = view.findViewById(R.id.welcome_text_view)
-
         val navController = findNavController()
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
@@ -38,9 +46,6 @@ class OverviewFragment : Fragment() {
             }
         })
 
-        view.findViewById<Button>(R.id.map_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_map, null))
-        view.findViewById<Button>(R.id.snapfish_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_snap, null))
-        view.findViewById<Button>(R.id.catch_analysis_button).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null))
     }
 
     private fun showWelcomeMessage() {
@@ -50,14 +55,22 @@ class OverviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.overview_fragment, container, false)
+        val view = inflater.inflate(R.layout.overview_fragment, container, false)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.overview_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        mAdapter = OverviewRecyclerViewAdapter(this)
+        recyclerView.adapter = mAdapter
+
+        return view
     }
+
+    private var mAdapter: OverviewRecyclerViewAdapter? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel!!.getOverViewItems().observe(this, Observer { mAdapter?.setOverviewItems(it) })
     }
-
 
 }
