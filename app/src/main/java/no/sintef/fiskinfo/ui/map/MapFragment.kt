@@ -135,6 +135,7 @@ class MapFragment : Fragment() {
     var colorsFromSintium = ArrayList<Int>()
 
     private inner class WebAppInterface(private val mContext: Context, private val loginViewModel: LoginViewModel) {
+        // TODO: Check which parts of this should be implemented again
 
         @android.webkit.JavascriptInterface
         fun getToken(): String? {
@@ -165,7 +166,6 @@ class MapFragment : Fragment() {
                 //searchAutoCompleteAdapter.addAll(wrappers)
             } catch (e: Exception) {
                 e.printStackTrace()
-                //TODO
             }
 
         }
@@ -198,7 +198,6 @@ class MapFragment : Fragment() {
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
-                //TODO : Not my job! xoxo, torbjørn!
             }
         }
 
@@ -213,7 +212,6 @@ class MapFragment : Fragment() {
                 refreshMapLayersIfReady()
             } catch (e: JSONException) {
                 e.printStackTrace()
-                //TODO : Not my job! xoxo, torbjørn!
             }
 
         }
