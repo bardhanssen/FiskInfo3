@@ -13,6 +13,10 @@ android {
         versionCode 2
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                //appAuthRedirectScheme: "no.sintef.fiskinfo.android"
+                appAuthRedirectScheme: "iosfiskinfoapp"
+        ]
     }
     dataBinding {
         enabled = true
@@ -45,6 +49,7 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.blundell:app-auth-android:0.7.1-HYBRID-FORK-0.0.2'
 
 //    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
 //    implementation 'android.arch.navigation:navigation-ui:1.0.0'

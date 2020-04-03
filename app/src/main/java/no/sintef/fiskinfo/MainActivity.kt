@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
@@ -13,7 +14,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationResponse
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSelectedListener {
 
@@ -90,6 +94,22 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
             super.onBackPressed()
         }
     }
+
+
+    val RC_AUTH = 100;
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //if (requestCode == RC_AUTH) {
+            val resp = AuthorizationResponse.fromIntent(data!!)
+            val ex = AuthorizationException.fromIntent(data)
+            //handleAuthorizationResponse(data)
+        //}
+    }
+
+
+
 /*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

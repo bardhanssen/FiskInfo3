@@ -1,9 +1,8 @@
 package no.sintef.fiskinfo.ui.login
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-
+import net.openid.appauth.*
 import no.sintef.fiskinfo.R
+
 
 class LoginFragment : Fragment() {
 
@@ -46,8 +47,9 @@ class LoginFragment : Fragment() {
 
         loginButton = view.findViewById(R.id.sign_in_button)
         loginButton.setOnClickListener {
-            viewModel.authenticate(usernameEditText.text.toString(),
-                passwordEditText.text.toString())
+            startAuthentication()
+            //viewModel.authenticate(usernameEditText.text.toString(),
+            //    passwordEditText.text.toString())
         }
 
         val navController = findNavController()
@@ -71,6 +73,70 @@ class LoginFragment : Fragment() {
             }
         })
     }
+
+    //val ISSUER_URI = "https://id.barentswatch.net/"
+    //val CLIENT_ID = "sinteffiskinfoandroidapp"
+    //val REDIRECT_URI = "no.sintef.fiskinfo.android://"
+    //val SCOPE = "api openid"
+    //val REQCODE_AUTH = 100
+
+    val ISSUER_URI = "https://id.barentswatch.net/"
+    val CLIENT_ID = "sinteffiskinfoapp"
+    val REDIRECT_URI = "iOSFiskInfoApp://"
+    val SCOPE = "api openid offline_access"
+    val REQCODE_AUTH = 100
+
+
+    fun startAuthentication() {
+
+        AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(ISSUER_URI),
+            fun(config: AuthorizationServiceConfiguration?, ex: AuthorizationException?) {
+                if (config != null) {
+                    val authState = AuthState(config) // TODO: Store?
+
+
+                    val req = AuthorizationRequest
+                        .Builder(
+                            config,
+                            CLIENT_ID,
+                            ResponseTypeValues.CODE,
+                            Uri.parse(REDIRECT_URI)
+                        )
+                        .setScope(SCOPE)
+                        .build()
+                    val intent =
+                        AuthorizationService(this.requireActivity()).getAuthorizationRequestIntent(req)
+
+                    startActivityForResult(intent, REQCODE_AUTH)
+                    //var serv = AuthorizationService(this.context!!);
+                    //serv.
+                } else {
+                    if (ex != null) {
+                        val m = Throwable().stackTrace[0]
+                        //Log.e(LOG_TAG, "${m}: ${ex}")
+                    }
+                    whenAuthorizationFails(ex)
+                }
+            })
+
+
+        /*
+        val serviceConfig: AuthorizationServiceConfiguration =
+        AuthorizationServiceConfiguration.fetchFromIssuer(
+            Uri.parse("https://idp.example.com"), { serviceConfiguration, ex ->
+                if (ex != null) {
+                    // Log.e(TAG, "failed to fetch configuration")
+                    return@RetrieveConfigurationCallback
+                }
+                // use serviceConfiguration as needed
+            } )*/
+    }
+
+    private fun whenAuthorizationFails(ex: AuthorizationException?) {
+        //uResponseView.text = "%s\n\n%s".format(getText(R.string.msg_auth_ng), ex?.message)
+        //doShowAppAuthState()
+    }
+
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
