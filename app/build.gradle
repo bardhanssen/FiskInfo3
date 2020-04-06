@@ -14,8 +14,8 @@ android {
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-                //appAuthRedirectScheme: "no.sintef.fiskinfo.android"
-                appAuthRedirectScheme: "iosfiskinfoapp"
+                appAuthRedirectScheme: "no.sintef.fiskinfo.android"
+                //appAuthRedirectScheme: "iosfiskinfoapp"
         ]
     }
     dataBinding {

@@ -95,21 +95,6 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         }
     }
 
-
-    val RC_AUTH = 100;
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //if (requestCode == RC_AUTH) {
-            val resp = AuthorizationResponse.fromIntent(data!!)
-            val ex = AuthorizationException.fromIntent(data)
-            //handleAuthorizationResponse(data)
-        //}
-    }
-
-
-
 /*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

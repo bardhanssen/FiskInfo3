@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+import net.openid.appauth.AuthState
 import no.sintef.fiskinfo.api.BarentswatchTokenService
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.Token
@@ -31,6 +32,7 @@ class LoginViewModel : ViewModel() {
 
     //var count = 0
     var token : Token? = null
+    lateinit var appAuthState: AuthState
 
     private val barentsWatchProdAddress = "https://www.barentswatch.no/"
 
