@@ -1,15 +1,16 @@
 package no.sintef.fiskinfo.api
 
 import com.google.gson.*
-import okhttp3.OkHttpClient
-import okhttp3.Interceptor
+import java9.util.concurrent.CompletableFuture
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationService
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.lang.reflect.Type
 import java.text.ParseException
 import java.text.SimpleDateFormat
-
 
 /**
  * Create a REST service without authentication
@@ -32,6 +33,19 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authToken : Stri
 
     return createService(serviceClass, baseUrl, client)
 }
+
+/**
+ * Create a REST service with AuthApp-based authentication
+ */
+fun <S> createService(serviceClass: Class<S>, baseUrl : String, authService: AuthorizationService, authState: AuthState) : S {
+    val client =  OkHttpClient.Builder()
+        .authenticator(OIDCAuthenticator(authService, authState, "FiskInfo/3.0 (Android)"))
+        //.addInterceptor(OAuthInterceptor("Bearer", authToken,  "FiskInfo/2.0 (Android)"))
+        .build()
+
+    return createService(serviceClass, baseUrl, client)
+}
+
 
 private fun <S> createService(serviceClass: Class<S>, baseUrl : String, client : OkHttpClient) : S {
     val gson = GsonBuilder()
@@ -96,6 +110,42 @@ private class JSONHeaderInterceptor(private val userAgent : String = ""):
         return chain.proceed(request)
     }
 }
+
+
+
+// TODO: Figure out what parameters are needed in new API for Authorization
+// TODO: Figure out if the call can be done without involving futures
+// TODO: Test call on a simple API call
+
+
+private class OIDCAuthenticator(private val authService: AuthorizationService, private val authState: AuthState, private val userAgent : String = "") :
+    Authenticator {
+
+    override fun authenticate(route: Route?, response: Response): Request? {
+        val future = CompletableFuture<Request?>()
+
+        authState.performActionWithFreshTokens(authService) { accessToken, _, ex ->
+            if (ex != null) {
+                //Log.e("AppAuthAuthenticator", "Failed to authorize = $ex")
+            }
+
+            if (response.request().header("Authorization") != null) {
+                future.complete(null) // Give up, we've already failed to authenticate.
+            }
+
+            val response = response.request().newBuilder()
+                .header("Authorization", "bearer $accessToken")
+                .header("User-Agent", "$userAgent")
+                .build()
+
+            future.complete(response)
+        }
+
+        return future.get()
+    }
+
+}
+
 
 
 private class OAuthInterceptor(private val tokenType: String, private val accessToken: String, private val userAgent : String = ""):

@@ -19,6 +19,14 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import net.openid.appauth.*
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.api.BarentswatchService
+import no.sintef.fiskinfo.api.createService
+import no.sintef.fiskinfo.model.barentswatch.PropertyDescription
+import no.sintef.fiskinfo.model.barentswatch.Subscription
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.ArrayList
 
 
 class LoginFragment : Fragment() {
@@ -36,7 +44,10 @@ class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by activityViewModels()
 
-    private lateinit var usernameEditText: EditText
+    private lateinit var mAuthService : AuthorizationService
+
+
+        private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
 
@@ -80,7 +91,7 @@ class LoginFragment : Fragment() {
     val REDIRECT_URI = "no.sintef.fiskinfo.android://"
     val SCOPE = "api openid offline_access"
     val REQCODE_AUTH = 100
-    val CLIENT_SECRET = "???"
+    val CLIENT_SECRET = ""
 
     //val ISSUER_URI = "https://id.barentswatch.net/"
     //val CLIENT_ID = "sinteffiskinfoapp"
@@ -105,8 +116,12 @@ class LoginFragment : Fragment() {
                         )
                         .setScope(SCOPE)
                         .build()
+
+                    mAuthService = AuthorizationService(this.requireActivity())
                     val intent =
-                        AuthorizationService(this.requireActivity()).getAuthorizationRequestIntent(req)
+                        mAuthService.getAuthorizationRequestIntent(req)
+//                    val intent =
+//                        AuthorizationService(this.requireActivity()).getAuthorizationRequestIntent(req)
 
                     startActivityForResult(intent, REQCODE_AUTH)
                     //var serv = AuthorizationService(this.context!!);
@@ -130,12 +145,15 @@ class LoginFragment : Fragment() {
 
                 viewModel.appAuthState.update(resp, ex)
                 val clientAuth: ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
-                AuthorizationService(this.requireActivity())
+                //AuthorizationService(this.requireActivity())
+                mAuthService
                     .performTokenRequest(resp!!.createTokenExchangeRequest(), clientAuth, { resp2, ex2 ->
                         //appAuthState.update(resp2, ex2)
                         if (resp2 != null) {
 
                             viewModel.appAuthState.update(resp2, ex2)
+                            testCall()
+                            testCall2()
 
                         } else {
                             whenAuthorizationFails(ex2)
@@ -151,6 +169,44 @@ class LoginFragment : Fragment() {
             }
         }
     }
+    val bwServerUrl = "https://pilot.barentswatch.net/"
+    //val bwServerUrl = "https://pilot.barentswatch.net/bwapi/v1/geodata/service/subscribable/"
+
+    private fun testCall() {
+        val bwService =
+            createService(BarentswatchService::class.java,bwServerUrl , mAuthService, viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl )
+        bwService.getSubscribable().enqueue(object : Callback<List<PropertyDescription>> {
+            override fun onResponse(call: Call<List<PropertyDescription>>, response: Response<List<PropertyDescription>>) {
+                response.body()
+            }
+
+            override fun onFailure(call: Call<List<PropertyDescription>>, t: Throwable) {
+                t.stackTrace
+                // TODO: log problem
+            }
+        })
+    }
+
+    private fun testCall2() {
+        val bwService =
+            createService(BarentswatchService::class.java,bwServerUrl , mAuthService, viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl )
+        bwService.getSubscriptions().enqueue(object : Callback<List<Subscription>> {
+            override fun onResponse(call: Call<List<Subscription>>, response: Response<List<Subscription>>) {
+                response.body()
+            }
+
+            override fun onFailure(call: Call<List<Subscription>>, t: Throwable) {
+                t.stackTrace
+                // TODO: log problem
+            }
+        })
+    }
+
+
 
 
     private fun whenAuthorizationFails(ex: AuthorizationException?) {
