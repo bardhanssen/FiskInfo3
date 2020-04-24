@@ -17,12 +17,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.JsonElement
 import net.openid.appauth.*
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.BarentswatchService
+import no.sintef.fiskinfo.api.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.barentswatch.PropertyDescription
 import no.sintef.fiskinfo.model.barentswatch.Subscription
+import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
+import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,7 +51,7 @@ class LoginFragment : Fragment() {
     private lateinit var mAuthService : AuthorizationService
 
 
-        private lateinit var usernameEditText: EditText
+    private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
 
@@ -91,13 +95,14 @@ class LoginFragment : Fragment() {
     val REDIRECT_URI = "no.sintef.fiskinfo.android://"
     val SCOPE = "api openid offline_access"
     val REQCODE_AUTH = 100
-    val CLIENT_SECRET = ""
+    val CLIENT_SECRET = "abc"
 
     //val ISSUER_URI = "https://id.barentswatch.net/"
     //val CLIENT_ID = "sinteffiskinfoapp"
     //val REDIRECT_URI = "iOSFiskInfoApp://"
     //val SCOPE = "api openid offline_access"
     //val REQCODE_AUTH = 100
+    //val CLIENT_SECRET = ""
 
 
     fun startAuthentication() {
@@ -152,8 +157,10 @@ class LoginFragment : Fragment() {
                         if (resp2 != null) {
 
                             viewModel.appAuthState.update(resp2, ex2)
-                            testCall()
-                            testCall2()
+                            //testCall()
+                            //testCall2()
+                            testCallProfile()
+                            testCallFacilityChanges()
 
                         } else {
                             whenAuthorizationFails(ex2)
@@ -205,6 +212,64 @@ class LoginFragment : Fragment() {
             }
         })
     }
+
+
+
+    // TODO: Test with other user profile
+/*
+    private fun testCallProfile() {
+        val bwService =
+            createService(FishingFacilityReportService::class.java,bwServerUrl , mAuthService, viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl )
+        bwService.getFishingFacilityProfile().enqueue(object : Callback<JsonElement> {
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                response.body()
+            }
+
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                t.stackTrace
+                // TODO: log problem
+            }
+        })
+    }
+
+*/
+
+    private fun testCallProfile() {
+        val bwService =
+            createService(FishingFacilityReportService::class.java,bwServerUrl , mAuthService, viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl )
+        bwService.getFishingFacilityProfile().enqueue(object : Callback<FiskInfoProfileDTO> {
+            override fun onResponse(call: Call<FiskInfoProfileDTO>, response: Response<FiskInfoProfileDTO>) {
+                response.body()
+            }
+
+            override fun onFailure(call: Call<FiskInfoProfileDTO>, t: Throwable) {
+                t.stackTrace
+                // TODO: log problem
+            }
+        })
+    }
+
+    private fun testCallFacilityChanges() {
+        val bwService =
+            createService(FishingFacilityReportService::class.java,bwServerUrl , mAuthService, viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
+//            createService(BarentswatchService::class.java,bwServerUrl )
+        bwService.getFishingFacilityChanges().enqueue(object : Callback<FishingFacilityChanges> {
+            override fun onResponse(call: Call<FishingFacilityChanges>, response: Response<FishingFacilityChanges>) {
+                response.body()
+            }
+
+            override fun onFailure(call: Call<FishingFacilityChanges>, t: Throwable) {
+                t.stackTrace
+                // TODO: log problem
+            }
+        })
+    }
+
 
 
 

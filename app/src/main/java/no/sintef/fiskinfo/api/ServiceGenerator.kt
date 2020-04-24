@@ -39,8 +39,9 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authToken : Stri
  */
 fun <S> createService(serviceClass: Class<S>, baseUrl : String, authService: AuthorizationService, authState: AuthState) : S {
     val client =  OkHttpClient.Builder()
-        .authenticator(OIDCAuthenticator(authService, authState, "FiskInfo/3.0 (Android)"))
+        //.authenticator(OIDCAuthenticator(authService, authState, "FiskInfo/3.0 (Android)"))
         //.addInterceptor(OAuthInterceptor("Bearer", authToken,  "FiskInfo/2.0 (Android)"))
+        .addInterceptor(OAuthInterceptor("bearer", authState.accessToken!!,  "FiskInfo/3.0 (Android)"))
         .build()
 
     return createService(serviceClass, baseUrl, client)
@@ -52,7 +53,7 @@ private fun <S> createService(serviceClass: Class<S>, baseUrl : String, client :
         .setLenient() // consider to remove
         // .setDateFormat("yyyy-MM-dd'T'HH:mm:ss") //Consider to add
         // .excludeFieldsWithoutExposeAnnotation() Consider to add
-        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+        //TODO Check .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
         .registerTypeAdapter(
             Date::class.java,  DateTypeDeserializer())
         .create()
