@@ -36,6 +36,15 @@ class LoginViewModel : ViewModel() {
 
     private val barentsWatchProdAddress = "https://www.barentswatch.no/"
 
+    fun updateFromAppAuthState() {
+        if (appAuthState.isAuthorized && (appAuthState.accessToken != null)) {
+            authenticationState.value = AuthenticationState.AUTHENTICATED
+        } else {
+            authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
+        }
+    }
+
+
     fun authenticate(username: String, password: String) {
         try {
             val cred_type_pw = "password"

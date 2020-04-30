@@ -95,7 +95,7 @@ class LoginFragment : Fragment() {
     val REDIRECT_URI = "no.sintef.fiskinfo.android://"
     val SCOPE = "api openid offline_access"
     val REQCODE_AUTH = 100
-    val CLIENT_SECRET = "abc"
+    val CLIENT_SECRET = "fiskinfoappoda"
 
     //val ISSUER_URI = "https://id.barentswatch.net/"
     //val CLIENT_ID = "sinteffiskinfoapp"
@@ -157,10 +157,20 @@ class LoginFragment : Fragment() {
                         if (resp2 != null) {
 
                             viewModel.appAuthState.update(resp2, ex2)
+
+
+                            // Login was successful, so return to previous fragment
+                            viewModel.updateFromAppAuthState()
+
+
+                            //val navController = findNavController()
+                            //navController.popBackStack()
+
+
                             //testCall()
                             //testCall2()
-                            testCallProfile()
-                            testCallFacilityChanges()
+                            //testCallProfile()
+                            //testCallFacilityChanges()
 
                         } else {
                             whenAuthorizationFails(ex2)

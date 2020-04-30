@@ -19,8 +19,9 @@ fun <S> createService(serviceClass : Class<S>, baseUrl : String) : S {
     val client =  OkHttpClient.Builder()
         .addInterceptor(JSONHeaderInterceptor("FiskInfo/2.0 (Android)"))
         .build()
-
-    return createService(serviceClass, baseUrl, client)
+    // TODO: Consider how to handle field name policy. At the moment this function is used
+    // by snapfish, while the authorization service one is used by BW services
+    return createService(serviceClass, baseUrl, client, FieldNamingPolicy.UPPER_CAMEL_CASE)
 }
 
 /**
@@ -31,7 +32,7 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authToken : Stri
         .addInterceptor(OAuthInterceptor("Bearer", authToken,  "FiskInfo/2.0 (Android)"))
         .build()
 
-    return createService(serviceClass, baseUrl, client)
+    return createService(serviceClass, baseUrl, client, FieldNamingPolicy.IDENTITY)
 }
 
 /**
@@ -44,16 +45,16 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authService: Aut
         .addInterceptor(OAuthInterceptor("bearer", authState.accessToken!!,  "FiskInfo/3.0 (Android)"))
         .build()
 
-    return createService(serviceClass, baseUrl, client)
+    return createService(serviceClass, baseUrl, client, FieldNamingPolicy.IDENTITY)
 }
 
 
-private fun <S> createService(serviceClass: Class<S>, baseUrl : String, client : OkHttpClient) : S {
+private fun <S> createService(serviceClass: Class<S>, baseUrl : String, client : OkHttpClient, namingPolicy: FieldNamingPolicy) : S {
     val gson = GsonBuilder()
         .setLenient() // consider to remove
         // .setDateFormat("yyyy-MM-dd'T'HH:mm:ss") //Consider to add
         // .excludeFieldsWithoutExposeAnnotation() Consider to add
-        //TODO Check .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+        .setFieldNamingPolicy(namingPolicy)
         .registerTypeAdapter(
             Date::class.java,  DateTypeDeserializer())
         .create()
