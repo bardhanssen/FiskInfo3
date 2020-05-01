@@ -51,7 +51,7 @@ class AnalysisFragment : Fragment() {
             }
         }
 
-        webView.loadUrl("https://www.fangstanalyse.no/years/2019/months/0,1,2,3,4")
+        webView.loadUrl("https://www.fangstanalyse.no")
     }
 
 }

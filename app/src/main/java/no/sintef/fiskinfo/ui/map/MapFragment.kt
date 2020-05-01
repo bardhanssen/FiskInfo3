@@ -19,7 +19,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProviders
 import no.sintef.fiskinfo.MainActivity
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.ui.login.LoginViewModel
+//import no.sintef.fiskinfo.ui.login.LoginViewModel
+import no.sintef.fiskinfo.util.AuthStateManager
 import no.sintef.fiskinfo.utilities.ui.ToolLegendRow
 import no.sintef.fiskinfo.utilities.ui.UtilityDialogs
 import org.json.JSONArray
@@ -36,7 +37,8 @@ class MapFragment : Fragment() {
     private lateinit var dialogInterface : UtilityDialogs
     private lateinit var viewModel: MapViewModel
     private lateinit var webView: WebView
-    private val loginViewModel: LoginViewModel by activityViewModels()
+//    private val loginViewModel: LoginViewModel by activityViewModels()
+    private lateinit var authStateManager : AuthStateManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +49,7 @@ class MapFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
+        authStateManager = AuthStateManager.getInstance(this.requireContext())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -100,7 +103,7 @@ class MapFragment : Fragment() {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         }
         //webView.webViewClient =
-        webView.addJavascriptInterface(WebAppInterface(context!!, loginViewModel),"Android" )
+        webView.addJavascriptInterface(WebAppInterface(context!!), "Android" )  //, loginViewModel),"Android" )
         webView.setWebViewClient(BarentswatchFiskInfoWebClient())
 
         webView.setWebChromeClient(object : WebChromeClient() {
@@ -134,12 +137,17 @@ class MapFragment : Fragment() {
 
     var colorsFromSintium = ArrayList<Int>()
 
-    private inner class WebAppInterface(private val mContext: Context, private val loginViewModel: LoginViewModel) {
+
+
+
+    private inner class WebAppInterface(private val mContext: Context) { //, private val loginViewModel: LoginViewModel) {
         // TODO: Check which parts of this should be implemented again
 
         @android.webkit.JavascriptInterface
         fun getToken(): String? {
-           return loginViewModel.token?.access_token
+            return authStateManager.current.accessToken
+
+            //return loginViewModel.token?.access_token
         }
 
 

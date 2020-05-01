@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+/*
 import net.openid.appauth.AuthState
 import no.sintef.fiskinfo.api.BarentswatchTokenService
 import no.sintef.fiskinfo.api.createService
@@ -9,6 +10,7 @@ import no.sintef.fiskinfo.model.Token
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+*/
 
 class LoginViewModel : ViewModel() {
     enum class AuthenticationState {
@@ -18,20 +20,24 @@ class LoginViewModel : ViewModel() {
     }
 
     val authenticationState = MutableLiveData<AuthenticationState>()
-    var username = ""
+//    var username = ""
 
     init {
         // In this example, the user is always unauthenticated when MainActivity is launched
         authenticationState.value = AuthenticationState.UNAUTHENTICATED
-        username = ""
+//        username = ""
     }
 
     fun refuseAuthentication() {
         authenticationState.value = AuthenticationState.UNAUTHENTICATED
     }
 
+    fun authenticate() {
+        authenticationState.value = AuthenticationState.AUTHENTICATED
+    }
+
     //var count = 0
-    var token : Token? = null
+/*    var token : Token? = null
     lateinit var appAuthState: AuthState
 
     private val barentsWatchProdAddress = "https://www.barentswatch.no/"
@@ -43,8 +49,8 @@ class LoginViewModel : ViewModel() {
             authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
         }
     }
-
-
+*/
+/*
     fun authenticate(username: String, password: String) {
         try {
             val cred_type_pw = "password"
@@ -75,13 +81,15 @@ class LoginViewModel : ViewModel() {
 
 
 
-/*        count++
+/        count++
         if (count > 2) { //passwordIsValidForUsername(username, password)) {
             this.username = username
             authenticationState.value = AuthenticationState.AUTHENTICATED
         } else {
             authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
-        }*/
+        }/
     }
+
+    */
     // TODO: Implement the ViewModel
 }

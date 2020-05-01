@@ -27,6 +27,7 @@ import no.sintef.fiskinfo.model.barentswatch.PropertyDescription
 import no.sintef.fiskinfo.model.barentswatch.Subscription
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
+import no.sintef.fiskinfo.util.AuthStateManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,17 +50,20 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by activityViewModels()
 
     private lateinit var mAuthService : AuthorizationService
+    private lateinit var authStateManager : AuthStateManager
 
 
-    private lateinit var usernameEditText: EditText
-    private lateinit var passwordEditText: EditText
+    //private lateinit var usernameEditText: EditText
+    //private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        usernameEditText = view.findViewById(R.id.email_sign_in_edit_text)
-        passwordEditText = view.findViewById(R.id.password_sign_in_edit_text)
+        //usernameEditText = view.findViewById(R.id.email_sign_in_edit_text)
+        //passwordEditText = view.findViewById(R.id.password_sign_in_edit_text)
+
+        authStateManager = AuthStateManager.getInstance(this.requireContext())
 
         loginButton = view.findViewById(R.id.sign_in_button)
         loginButton.setOnClickListener {
@@ -110,7 +114,8 @@ class LoginFragment : Fragment() {
         AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(ISSUER_URI),
             fun(config: AuthorizationServiceConfiguration?, ex: AuthorizationException?) {
                 if (config != null) {
-                    viewModel.appAuthState = AuthState(config) // TODO: Store?
+                    // man viewModel.appAuthState = AuthState(config) // TODO: Store?
+                    //viewModel.appAuthState = authStateManager.current
 
                     val req = AuthorizationRequest
                         .Builder(
@@ -148,7 +153,9 @@ class LoginFragment : Fragment() {
                 val resp = AuthorizationResponse.fromIntent(data!!)
                 val ex = AuthorizationException.fromIntent(data)
 
-                viewModel.appAuthState.update(resp, ex)
+                //viewModel.appAuthState.update(resp, ex)
+                authStateManager.updateAfterAuthorization(resp, ex)
+
                 val clientAuth: ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
                 //AuthorizationService(this.requireActivity())
                 mAuthService
@@ -156,12 +163,13 @@ class LoginFragment : Fragment() {
                         //appAuthState.update(resp2, ex2)
                         if (resp2 != null) {
 
-                            viewModel.appAuthState.update(resp2, ex2)
+                            authStateManager.updateAfterTokenResponse(resp2, ex2)
+                            //man viewModel.appAuthState.update(resp2, ex2)
 
 
                             // Login was successful, so return to previous fragment
-                            viewModel.updateFromAppAuthState()
-
+                            //viewModel.updateFromAppAuthState()
+                            viewModel.authenticate()
 
                             //val navController = findNavController()
                             //navController.popBackStack()
@@ -186,6 +194,24 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
+    private fun whenAuthorizationFails(ex: AuthorizationException?) {
+        //uResponseView.text = "%s\n\n%s".format(getText(R.string.msg_auth_ng), ex?.message)
+        //doShowAppAuthState()
+    }
+
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        //viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        // TODO: Use the ViewModel
+    }
+
+/*
+
+    // Testing code
+
     val bwServerUrl = "https://pilot.barentswatch.net/"
     //val bwServerUrl = "https://pilot.barentswatch.net/bwapi/v1/geodata/service/subscribable/"
 
@@ -280,21 +306,6 @@ class LoginFragment : Fragment() {
         })
     }
 
-
-
-
-
-    private fun whenAuthorizationFails(ex: AuthorizationException?) {
-        //uResponseView.text = "%s\n\n%s".format(getText(R.string.msg_auth_ng), ex?.message)
-        //doShowAppAuthState()
-    }
-
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+*/
 
 }
