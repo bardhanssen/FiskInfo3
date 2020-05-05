@@ -8,6 +8,7 @@ import no.sintef.fiskinfo.api.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
+import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import no.sintef.fiskinfo.util.AuthStateManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,6 +22,7 @@ class FishingFacilityRepository(context: Context) {
 
     internal var confirmedTools = MutableLiveData<List<FishingFacility>>()
     internal val unconfirmedTools = MutableLiveData<List<FishingFacility>>()
+    internal val fiskInfoProfileDTO = MutableLiveData<FiskInfoProfileDTO>()
 
     internal val authStateManager = AuthStateManager.getInstance(context)
     internal val authService = AuthorizationService(context)
@@ -45,10 +47,35 @@ class FishingFacilityRepository(context: Context) {
         return unconfirmedTools
     }
 
+    fun getFiskInfoProfileDTO():LiveData<FiskInfoProfileDTO> {
+        refreshFiskInfoProfileDTO()
+        return fiskInfoProfileDTO
+    }
+
+
     fun initService() {
         fishingFacilityService =
             createService(FishingFacilityReportService::class.java,bwServerUrl , authService, authStateManager.current)
     }
+
+    fun refreshFiskInfoProfileDTO() {
+        if (fishingFacilityService == null)
+            initService()
+
+        fishingFacilityService?.getFishingFacilityProfile()?.enqueue(object : Callback<FiskInfoProfileDTO> {
+            override fun onResponse(call: Call<FiskInfoProfileDTO>, response: Response<FiskInfoProfileDTO>) {
+                if (response.body() != null) {
+                    fiskInfoProfileDTO.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<FiskInfoProfileDTO>, t: Throwable) {
+                t.stackTrace
+                // TODO: log problem?
+            }
+        })
+    }
+
 
     fun refreshFishingFacilityChanges() {
         if (fishingFacilityService == null)
@@ -60,8 +87,8 @@ class FishingFacilityRepository(context: Context) {
         fishingFacilityService?.getFishingFacilityChanges()?.enqueue(object : Callback<FishingFacilityChanges> {
             override fun onResponse(call: Call<FishingFacilityChanges>, response: Response<FishingFacilityChanges>) {
                 if (response.body() != null) {
-                    confirmedTools.value = response.body()!!.confirmed_tools
-                    unconfirmedTools.value = response.body()!!.unconfirmed_tools
+                    confirmedTools.value = response.body()!!.confirmedTools
+                    unconfirmedTools.value = response.body()!!.unconfirmedTools
                     // TODO: Reports?
                 }
             }

@@ -5,12 +5,14 @@ import java9.util.concurrent.CompletableFuture
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationService
 import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 import java.lang.reflect.Type
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
+
 
 /**
  * Create a REST service without authentication
@@ -39,9 +41,12 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authToken : Stri
  * Create a REST service with AuthApp-based authentication
  */
 fun <S> createService(serviceClass: Class<S>, baseUrl : String, authService: AuthorizationService, authState: AuthState) : S {
+    val in2 = HttpLoggingInterceptor()
+    in2.setLevel(HttpLoggingInterceptor.Level.BODY)
     val client =  OkHttpClient.Builder()
         //.authenticator(OIDCAuthenticator(authService, authState, "FiskInfo/3.0 (Android)"))
         //.addInterceptor(OAuthInterceptor("Bearer", authToken,  "FiskInfo/2.0 (Android)"))
+        .addInterceptor(in2)
         .addInterceptor(OAuthInterceptor("bearer", authState.accessToken!!,  "FiskInfo/3.0 (Android)"))
         .build()
 

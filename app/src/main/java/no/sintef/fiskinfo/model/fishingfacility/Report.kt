@@ -2,69 +2,118 @@ package no.sintef.fiskinfo.model.fishingfacility
 
 /*
  *
- *  Report:
+    Report:
       properties:
-        Id:
+        id:
           type: string
           format: uuid
-        ToolId:
+        toolId:
           $ref: '#/components/schemas/ToolId'
-        Imo:
+        imo:
           $ref: '#/components/schemas/IMO'
-        Mmsi:
+        ircs:
+          $ref: '#/components/schemas/IRCS'
+        mmsi:
           $ref: '#/components/schemas/MMSI'
-        RegNum:
+        regNum:
           $ref: '#/components/schemas/RegNum'
-        VesselName:
+        vesselName:
           $ref: '#/components/schemas/VesselName'
-        VesselPhone:
+        vesselPhone:
           $ref: '#/components/schemas/VesselPhone'
-        ToolTypeCode:
+        toolTypeCode:
           $ref: '#/components/schemas/ToolTypeCode'
-        GeometryWKT:
+        geometryWKT:
           $ref: '#/components/schemas/GeometryWKT'
-        Type:
+        type:
           $ref: '#/components/schemas/FishingFacilityChangeType'
-        Confirmed:
+        confirmed:
           type: boolean
-        ChangedDateTime:
+        changedDateTime:
           $ref: '#/components/schemas/ChangedDateTime'
-        ContactPersonname:
+        contactPersonname:
           $ref: '#/components/schemas/ContactPersonName'
-        ContactPersonPhone:
+        contactPersonPhone:
           $ref: '#/components/schemas/VesselPhone'
-        ContactPersonEmail:
+        contactPersonEmail:
           $ref: '#/components/schemas/VesselEmail'
-        Comment:
+        comment:
           $ref: '#/components/schemas/Comment'
-        CurrentTime:
+        currentTime:
           $ref: '#/components/schemas/CurrentTime'
- *
+        deletedByUser:
+          $ref: '#/components/schemas/DeletedByUser'
+        responseStatus:
+          $ref: '#/components/schemas/ResponseStatus'
+        responseReason:
+          $ref: '#/components/schemas/ResponseReason'
+        responseDateTime:
+          $ref: '#/components/schemas/ResponseDateTime'
+        errorReportedFromApi:
+          $ref: '#/components/schemas/ErrorReportedFromApi'
  */
 
 
 data class Report (
-    var Id : String?,
-    var ToolId : String?,
+    var id : String?,
+    var toolId : String?,
+    var userId : String?, //TODO: Check if this is officially included
 
-    var Imo: Int?,
-    var Mmsi: Int?,
+    var imo: Int?,
+    var ircs: String?,
+    var mmsi: Int?,
 
-    var RegNum: String?,
-    var VesselName: String?,
-    var VesselPhone: String?,
-    var ToolTypeCode: String?, // enum: [NETS, LONGLINE, CRABPOT, DANPURSEINE]
+    var regNum: String?,
+    var vesselName: String?,
+    var vesselPhone: String?,
+    var toolTypeCode: String?, // TODO: enum: [NETS, LONGLINE, CRABPOT, DANPURSEINE]
 
-    var GeometryWKT: String?, // Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
+    var geometryWKT: String?, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
 
-    var Type: String?, // FishingFacilityChangeType enum: [Retrieved, Deployed]
-    var Confirmed: Boolean?,
+    var type: String?, // FishingFacilityChangeType enum: [Retrieved, Deployed]
+    var confirmed: Boolean?,
 
-    var ChangedDateTime: String?, //     format: date-time
+    var changedDateTime: String?, // TODO:    format: date-time
 
-    var ContactPersonname: String?,
-    var ContactPersonPhone: String?,
-    var ContactPersonEmail: String?, // format: email
-    var Comment: String?,
-    var CurrentTime: String?  //     format: date-time
-    )
+    var contactPersonName: String?,
+    var contactPersonPhone: String?,
+    var contactPersonEmail: String?, // format: email
+    var comment: String?,
+    var currentTime: String?,  // TODO:    format: date-time
+    var deletedByUser: Boolean?,
+    var responseStatus: String?, // TODO: enum :       enum: 'NoResponse', 'ResponseUnknown', 'ResponseApproved', 'ResponseRejected'
+    var responseReason: String?,
+    var responseDateTime: String?, // TODO: format: date-time
+    var errorReportedFromApi: Boolean
+)
+
+/*
+      "id": 2887,
+      "toolId": "AC2FE38D-4815-465B-8B7F-C9CC4C0D2508",
+      "userId": "tore.syversen@sintef.no",
+      "imo": "9230036",
+      "ircs": "LLOP",
+      "mmsi": "258410000",
+      "regNum": "F-7-L",
+      "vesselName": "HERMES",
+      "vesselPhone": null,
+      "toolTypeCode": "LONGLINE",
+      "geometryWKT": "POINT(14.512939 68.833661)",
+      "type": 3,
+      "confirmed": false,
+      "changedDateTime": "2020-03-26T08:30:13.65",
+      "contactPersonName": "Tore",
+      "contactPersonPhone": "90913338",
+      "contactPersonEmail": "tore.syversen@sintef.no",
+      "comment": " ",
+      "currentTime": "2020-03-26T08:30:34.784",
+      "currentPositionLat": null, //TODO: Include?
+      "currentPositionLon": null, //TODO: Include?
+      "deletedByUser": false,
+      "responseStatus": "NoResponse",
+      "responseReason": null,
+      "responseDateTime": null,
+      "errorReportedFromApi": false
+
+
+ */

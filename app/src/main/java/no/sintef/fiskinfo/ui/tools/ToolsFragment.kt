@@ -41,21 +41,21 @@ class ToolsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         pageAdapter = ToolPageAdapter(childFragmentManager)
-        viewPager = view.findViewById(R.id.snappager) //TODO
+        viewPager = view.findViewById(R.id.toolspager) //TODO
         viewPager.adapter = pageAdapter
-        val tabLayout = view.findViewById<TabLayout>(R.id.snaptab_layout) //TODO
+        val tabLayout = view.findViewById<TabLayout>(R.id.toolstab_layout) //TODO
         tabLayout.setupWithViewPager(viewPager)
     }
 
     inner class ToolPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return resources.getStringArray(R.array.snap_tab_titles)[position]
+            return resources.getStringArray(R.array.tool_tab_titles)[position]
         }
 
         override fun getItem(position: Int): Fragment {
-            return if (position == 0) {
-                ActiveToolsFragment.newInstance() //true)
+            return if (position == 1) {
+                UnconfirmedToolsFragment.newInstance() //true)
             }
             else {
                 ActiveToolsFragment.newInstance()

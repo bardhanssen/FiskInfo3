@@ -34,13 +34,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMessage
+import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
+import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import no.sintef.fiskinfo.ui.snap.SnapRecyclerViewAdapter
 
 /**
  * A fragment for showing the active tools.
  */
-class ActiveToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
+class UnconfirmedToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
 
     private val mViewModel: ToolsViewModel by activityViewModels()
 
@@ -54,26 +56,17 @@ class ActiveToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSnapInte
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val profile = mViewModel.getProfile()
-        profile?.observe(this,
+        val tools = mViewModel!!.getUnconfirmedTools()
 
-            Observer<FiskInfoProfileDTO> { pro  ->
-                val test = pro.fiskinfoProfile
-                test.toString()
-            }
-
-        )
-
-
-        //val box = if (mIsInbox) mViewModel!!.getConfirmedTools() else mViewModel!!.getUnconfirmedTools()
-
-/*        box?.observe(this,
-            Observer { snaps ->
-                mAdapter!!.setSnaps(snaps)
+        tools?.observe(this,
+            Observer<List<FishingFacility>> { changes ->
+                val numUnconfirmed = changes.size
+                numUnconfirmed.toString()
+                //mAdapter!!.setSnaps(snaps)
                 if (mSwipeLayout != null)
                     mSwipeLayout!!.isRefreshing = false
             })
-*/
+
     }
 
     override fun onCreateView(
@@ -109,6 +102,6 @@ class ActiveToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSnapInte
 
 */
     companion object {
-        fun newInstance() = ActiveToolsFragment()
+        fun newInstance() = UnconfirmedToolsFragment()
     }
 }
