@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.model.fishingfacility
 
+import java.util.*
+
 /*
     FishingFacility:
       required:
@@ -55,17 +57,17 @@ data class FishingFacility (
     var regNum: String?,
     var vesselPhone: String?,
     var vesselEmail: String?,
-    var toolTypeCode: String?, // TODO: enum [NETS, LONGLINE, CRABPOT, DANPURSEINE]
+    var toolTypeCode: ToolTypeCode?,
     var toolTypeName: String?,
     var toolColor: String?,
-    var setupDateTime: String?, //      format: date-time
-    var removedDateTime: String?, //      format: date-time
+    var setupDateTime: Date?,
+    var removedDateTime: Date?,
     var source: String?,
-    var lastChangedDateTime: String?, //     format: date-time
+    var lastChangedDateTime: Date?,
     var comment: String?,
     //var geometry: Any?, // TODO: Object
     //var shortComment: String?,
-    var lastChangedBySource: String?, //     format: date-time
+    var lastChangedBySource: Date?, //
     var geometryWKT: String? // TODO: Object
 )
 

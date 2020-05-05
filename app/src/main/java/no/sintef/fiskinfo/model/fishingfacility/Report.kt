@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.model.fishingfacility
 
+import java.util.*
+
 /*
  *
     Report:
@@ -66,24 +68,24 @@ data class Report (
     var regNum: String?,
     var vesselName: String?,
     var vesselPhone: String?,
-    var toolTypeCode: String?, // TODO: enum: [NETS, LONGLINE, CRABPOT, DANPURSEINE]
+    var toolTypeCode: ToolTypeCode?,
 
     var geometryWKT: String?, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
 
-    var type: String?, // FishingFacilityChangeType enum: [Retrieved, Deployed]
+    var type: FishingFacilityChangeType?,
     var confirmed: Boolean?,
 
-    var changedDateTime: String?, // TODO:    format: date-time
+    var changedDateTime: Date?,
 
     var contactPersonName: String?,
     var contactPersonPhone: String?,
     var contactPersonEmail: String?, // format: email
     var comment: String?,
-    var currentTime: String?,  // TODO:    format: date-time
+    var currentTime: Date?,
     var deletedByUser: Boolean?,
-    var responseStatus: String?, // TODO: enum :       enum: 'NoResponse', 'ResponseUnknown', 'ResponseApproved', 'ResponseRejected'
+    var responseStatus: ResponseStatus?,
     var responseReason: String?,
-    var responseDateTime: String?, // TODO: format: date-time
+    var responseDateTime: Date?,
     var errorReportedFromApi: Boolean
 )
 
