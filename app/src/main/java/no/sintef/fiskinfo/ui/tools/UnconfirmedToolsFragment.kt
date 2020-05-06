@@ -31,6 +31,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMessage
@@ -42,11 +44,11 @@ import no.sintef.fiskinfo.ui.snap.SnapRecyclerViewAdapter
 /**
  * A fragment for showing the active tools.
  */
-class UnconfirmedToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
+class UnconfirmedToolsFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionListener {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
 
     private val mViewModel: ToolsViewModel by activityViewModels()
 
-    private var mAdapter: SnapRecyclerViewAdapter? = null
+    private var mAdapter: ToolsRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +61,8 @@ class UnconfirmedToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSna
         val tools = mViewModel!!.getUnconfirmedTools()
 
         tools?.observe(this,
-            Observer<List<FishingFacility>> { changes ->
-                val numUnconfirmed = changes.size
-                numUnconfirmed.toString()
-                //mAdapter!!.setSnaps(snaps)
+            Observer<List<FishingFacility>> { unconfirmed ->
+                mAdapter!!.setTools(unconfirmed)
                 if (mSwipeLayout != null)
                     mSwipeLayout!!.isRefreshing = false
             })
@@ -73,15 +73,23 @@ class UnconfirmedToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSna
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.snap_inbox_fragment, container, false)
+        val view = inflater.inflate(R.layout.tool_list_fragment, container, false)
 
-        val listView = view.findViewById<RecyclerView>(R.id.inbox_list)
+        val listView = view.findViewById<RecyclerView>(R.id.tool_list)
+
+        val fab = view.findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener { view ->
+            Snackbar.make(view, "Adding tools will be supported soon", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show()
+        }
+
         val context = view.context
-        listView.setLayoutManager(LinearLayoutManager(context))
-//        mAdapter = SnapRecyclerViewAdapter(this, mIsInbox)
-        listView.setAdapter(mAdapter)
+        listView.layoutManager = LinearLayoutManager(context)
+        mAdapter = ToolsRecyclerViewAdapter(this, false)
+        listView.adapter = mAdapter
 
-        mSwipeLayout = view.findViewById(R.id.inboxswipelayout) as SwipeRefreshLayout
+        mSwipeLayout = view.findViewById(R.id.toollistswipelayout) as SwipeRefreshLayout
         //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
 
 //        if (mIsInbox) // Refresh only supported on inbox as outbox is currently only local on phone
@@ -103,5 +111,9 @@ class UnconfirmedToolsFragment : Fragment() {  //, SnapRecyclerViewAdapter.OnSna
 */
     companion object {
         fun newInstance() = UnconfirmedToolsFragment()
+    }
+
+    override fun onViewToolClicked(v: View, tool: FishingFacility?) {
+        TODO("Not yet implemented")
     }
 }

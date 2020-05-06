@@ -54,7 +54,7 @@ class ToolsFragment : Fragment() {
         }
 
         override fun getItem(position: Int): Fragment {
-            return if (position == 1) {
+            return if (position == 0) {
                 UnconfirmedToolsFragment.newInstance() //true)
             }
             else {
