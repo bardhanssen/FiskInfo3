@@ -1,6 +1,5 @@
 package no.sintef.fiskinfo.ui.tools
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -55,10 +54,11 @@ class ToolsFragment : Fragment() {
 
         override fun getItem(position: Int): Fragment {
             return if (position == 0) {
-                UnconfirmedToolsFragment.newInstance() //true)
+                ToolListFragment.newInstance(false)
+//                UnconfirmedToolsFragment.newInstance() //true)
             }
             else {
-                ActiveToolsFragment.newInstance()
+                ToolListFragment.newInstance(true)
             }
         }
 

@@ -21,41 +21,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
-import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
-import no.sintef.fiskinfo.ui.snap.SnapRecyclerViewAdapter
 
 /**
  * A fragment for showing the active tools.
  */
-class ActiveToolsFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionListener {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
+class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionListener {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
 
     private val mViewModel: ToolsViewModel by activityViewModels()
 
     private var mAdapter: ToolsRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
+    private var mIsConfirmed : Boolean = false
+    private val IS_CONFIRMED_TOOLS = "IsConfirmedTools"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mIsConfirmed = arguments?.getBoolean(IS_CONFIRMED_TOOLS, false) ?: false
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+/*
         val profile = mViewModel.getProfile()
         profile?.observe(this,
 
@@ -65,29 +62,15 @@ class ActiveToolsFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteracti
             }
 
         )
-
-        val tools = mViewModel!!.getConfirmedTools()
+*/
+        val tools = if (mIsConfirmed) mViewModel!!.getConfirmedTools() else mViewModel!!.getUnconfirmedTools()
 
         tools?.observe(this,
-            Observer<List<FishingFacility>> { confirmed ->
-                mAdapter!!.setTools(confirmed)
+            Observer<List<FishingFacility>> { _tools ->
+                mAdapter!!.setTools(_tools)
                 if (mSwipeLayout != null)
                     mSwipeLayout!!.isRefreshing = false
             })
-
-
-
-
-
-        //val box = if (mIsInbox) mViewModel!!.getConfirmedTools() else mViewModel!!.getUnconfirmedTools()
-
-/*        box?.observe(this,
-            Observer { snaps ->
-                mAdapter!!.setSnaps(snaps)
-                if (mSwipeLayout != null)
-                    mSwipeLayout!!.isRefreshing = false
-            })
-*/
     }
 
     override fun onCreateView(
@@ -98,7 +81,16 @@ class ActiveToolsFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteracti
 
         val listView = view.findViewById<RecyclerView>(R.id.tool_list)
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
-        fab.visibility = View.GONE // No fab for confirmed tools
+        if (mIsConfirmed)
+            fab.visibility = View.GONE // No fab for confirmed tools
+
+        else {
+            fab.setOnClickListener { view ->
+                Snackbar.make(view, "Adding tools will be supported soon", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show()
+            }
+        }
 
         val context = view.context
         listView.layoutManager = LinearLayoutManager(context)
@@ -126,10 +118,17 @@ class ActiveToolsFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteracti
 
 */
     companion object {
-        fun newInstance() = ActiveToolsFragment()
+        @JvmStatic
+        fun newInstance(isConfirmedTools: Boolean) = ToolListFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(IS_CONFIRMED_TOOLS, isConfirmedTools)
+            }
+        }
     }
 
     override fun onViewToolClicked(v: View, tool: FishingFacility?) {
-        TODO("Not yet implemented")
+        Snackbar.make(v, "Tool details will be supported soon", Snackbar.LENGTH_LONG)
+            .setAction("Action", null)
+            .show()
     }
 }

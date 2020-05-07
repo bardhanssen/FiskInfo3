@@ -2,6 +2,7 @@
 <androidx.viewpager.widget.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolspager"
+        android:name="no.sintef.fiskinfo.ui.tools.ToolsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
