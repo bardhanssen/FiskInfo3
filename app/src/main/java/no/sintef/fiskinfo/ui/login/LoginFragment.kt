@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonElement
 import net.openid.appauth.*
+import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.BarentswatchService
 import no.sintef.fiskinfo.api.FishingFacilityReportService
@@ -95,11 +96,11 @@ class LoginFragment : Fragment() {
     }
 
     val ISSUER_URI = "https://id.barentswatch.net/"
-    val CLIENT_ID = "sinteffiskinfoandroidapp"
+    val CLIENT_ID = BuildConfig.FISKINFO_BW_CLIENT_ID;
     val REDIRECT_URI = "no.sintef.fiskinfo.android://"
     val SCOPE = "api openid offline_access"
     val REQCODE_AUTH = 100
-    val CLIENT_SECRET = "fiskinfoappoda"
+    val CLIENT_SECRET = BuildConfig.FISKINFO_BW_CLIENT_SECRET;
 
     //val ISSUER_URI = "https://id.barentswatch.net/"
     //val CLIENT_ID = "sinteffiskinfoapp"

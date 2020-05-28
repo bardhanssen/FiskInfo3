@@ -7,10 +7,94 @@
     android:layout_height="match_parent"
     tools:context=".ui.map.MapFragment">
 
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Setup date"
+                android:layout_marginTop="16dp"
+                app:startIconDrawable="@drawable/ic_date"
+                app:startIconContentDescription="@string/proto_close_drawer"
+                >
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/toolDetailsDateField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:text="20.03.2020"
+                    />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Time"
+                android:layout_marginTop="16dp"
+                app:startIconDrawable="@drawable/ic_time"
+                app:startIconContentDescription="@string/proto_close_drawer"
+                >
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/toolDetailsTimeField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:text="21:15"
+                    />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tool type"
+                app:startIconDrawable="@drawable/ic_hook"
+                app:startIconContentDescription="@string/proto_close_drawer"
+                android:layout_marginTop="16dp"
+                >
+
+            <AutoCompleteTextView
+                android:id="@+id/toolDetailsTypeField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Comment"
+                android:layout_marginTop="16dp">
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/toolDetailsCommentField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    </LinearLayout>
+
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

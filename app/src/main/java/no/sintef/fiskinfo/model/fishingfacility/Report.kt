@@ -57,36 +57,36 @@ import java.util.*
 
 
 data class Report (
-    var id : String?,
-    var toolId : String?,
-    var userId : String?, //TODO: Check if this is officially included
+    var id : String? = null,
+    var toolId : String? = null,
+    var userId : String? = null, //TODO: Check if this is officially included
 
-    var imo: Int?,
-    var ircs: String?,
-    var mmsi: Int?,
+    var imo: Int? = null,
+    var ircs: String? = null,
+    var mmsi: Int? = null,
 
-    var regNum: String?,
-    var vesselName: String?,
-    var vesselPhone: String?,
-    var toolTypeCode: ToolTypeCode?,
+    var regNum: String? = null,
+    var vesselName: String? = null,
+    var vesselPhone: String? = null,
+    var toolTypeCode: ToolTypeCode? = ToolTypeCode.NETS,
 
-    var geometryWKT: String?, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
+    var geometryWKT: String? = null, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
 
-    var type: FishingFacilityChangeType?,
-    var confirmed: Boolean?,
+    var type: FishingFacilityChangeType? = FishingFacilityChangeType.DEPLOYED,
+    var confirmed: Boolean? = false,
 
-    var changedDateTime: Date?,
+    var changedDateTime: Date? = Calendar.getInstance().time,
 
-    var contactPersonName: String?,
-    var contactPersonPhone: String?,
-    var contactPersonEmail: String?, // format: email
-    var comment: String?,
-    var currentTime: Date?,
-    var deletedByUser: Boolean?,
-    var responseStatus: ResponseStatus?,
-    var responseReason: String?,
-    var responseDateTime: Date?,
-    var errorReportedFromApi: Boolean
+    var contactPersonName: String? = null,
+    var contactPersonPhone: String? = null,
+    var contactPersonEmail: String?  = null, // format: email
+    var comment: String?  = null,
+    var currentTime: Date?  = null,
+    var deletedByUser: Boolean? = false,
+    var responseStatus: ResponseStatus? = ResponseStatus.NO_RESPONSE,
+    var responseReason: String?  = null,
+    var responseDateTime: Date?  = null,
+    var errorReportedFromApi: Boolean? = null
 )
 
 /*

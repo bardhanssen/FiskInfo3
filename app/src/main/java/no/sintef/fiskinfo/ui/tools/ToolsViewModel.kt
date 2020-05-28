@@ -1,13 +1,18 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.app.Application
+import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
+import no.sintef.fiskinfo.model.fishingfacility.Report
+import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
+import java.util.*
 
 class ToolsViewModel(application: Application) : AndroidViewModel(application)  {
 
@@ -17,13 +22,14 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
 
     private var profile: LiveData<FiskInfoProfileDTO>? = null
 
+    private val draftReport = MutableLiveData<Report>()
 
-    fun selectSnap(tool: FishingFacility?, isConfirmed: Boolean) {
+    fun selectTool(tool: FishingFacility?, isConfirmed: Boolean) {
         //selectedIsIncomming.value = isConfirmed
         selectedTool.value = tool
     }
 
-    fun getSelectedSnap(): LiveData<FishingFacility?> {
+    fun getSelectedTool(): LiveData<FishingFacility?> {
         return selectedTool
     }
 
@@ -47,6 +53,17 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
             profile = FishingFacilityRepository.getInstance(getApplication()).getFiskInfoProfileDTO()
         }
         return profile;
+    }
+
+    val draft: LiveData<Report>
+        get() = draftReport
+
+    fun createReportDraft() {
+        val report = Report()
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
+        report.toolTypeCode = ToolTypeCode.valueOf(prefs.getString("default_tool_type", ToolTypeCode.NETS.code))
+        draftReport.value = report
     }
 
 

@@ -26,6 +26,10 @@ android {
         enabled = true
     }
     buildTypes {
+        buildTypes.each {
+            it.buildConfigField 'String', 'FISKINFO_BW_CLIENT_ID', fiskinfo_bwclientid
+            it.buildConfigField 'String', 'FISKINFO_BW_CLIENT_SECRET', fiskinfo_bwclientsecret
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

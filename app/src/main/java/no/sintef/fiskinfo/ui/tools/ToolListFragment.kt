@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -86,6 +87,10 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
         else {
             fab.setOnClickListener { view ->
+
+                mViewModel!!.createReportDraft()
+
+
                 Snackbar.make(view, "Adding tools will be supported soon", Snackbar.LENGTH_LONG)
                     .setAction("Action", null)
                     .show()
@@ -127,8 +132,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     }
 
     override fun onViewToolClicked(v: View, tool: FishingFacility?) {
-        Snackbar.make(v, "Tool details will be supported soon", Snackbar.LENGTH_LONG)
-            .setAction("Action", null)
-            .show()
+        mViewModel!!.selectTool(tool, mIsConfirmed)
+        Navigation.findNavController(v).navigate(R.id.action_tools_fragment_to_tool_details_fragment)
     }
 }

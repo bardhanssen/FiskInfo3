@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
+import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -33,6 +35,9 @@ import java.util.TimeZone
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// TODO: Add attribution
+// Icons made by Freepik from www.flaticon.com
 
 /**
  * [RecyclerView.Adapter] that can display a [FishingFacilityChange] and makes call to the
@@ -60,18 +65,27 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = tools!![position]
+        if (tools == null)
+            return
+        val tool = tools!![position]
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
-        holder.titleView.text = sdf.format(holder.mItem!!.lastChangedDateTime) // TODO: Check if this should be setupDateTime and check for null
+        holder.titleView.text = sdf.format(tool.lastChangedDateTime) // TODO: Check if this should be setupDateTime and check for null
 
         val textStyle =  Typeface.BOLD//if (holder.mItem!!.seen) Typeface.NORMAL else Typeface.BOLD
         holder.titleView.setTypeface(null, textStyle)
         //holder.detail1View.setTypeface(null, textStyle)
 
-        holder.detail1View.text = holder.mItem?.toolTypeCode?.code
-        holder.detail2View.text = holder.mItem?.geometryWKT
+        when (tool.toolTypeCode) {
+            ToolTypeCode.CRABPOT -> holder.iconView.setBackgroundResource(R.drawable.ic_crabpot)
+            ToolTypeCode.DANPURSEINE -> holder.iconView.setBackgroundResource(R.drawable.ic_purseseine)
+            ToolTypeCode.LONGLINE -> holder.iconView.setBackgroundResource(R.drawable.ic_hook)
+            ToolTypeCode.NETS -> holder.iconView.setBackgroundResource(R.drawable.ic_net)
+        }
+
+        holder.detail1View.text = tool.toolTypeCode?.code
+        holder.detail2View.text = tool.geometryWKT
 //            sdf.format(holder.mItem!!.snapMetadata!!.timestamp) //holder.mItem.getEchogramInfo().latitude);
         //holder.shareButton.setOnClickListener({mListener?.onViewSnapInMapClicked(it, holder.mItem)})
 
@@ -86,13 +100,14 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        var mItem: FishingFacility? = null
+        val iconView: ImageView
         val titleView: TextView
         val detail1View: TextView
         val detail2View: TextView
         val statusButton: ImageButton
 
         init {
+            iconView = mView.findViewById<View>(R.id.tool_item_image_view) as ImageView
             titleView = mView.findViewById<View>(R.id.tool_item_title_view) as TextView
             detail1View = mView.findViewById<View>(R.id.tool_item_detail_1_view) as TextView
             detail2View = mView.findViewById<View>(R.id.tool_item_detail_2_view) as TextView

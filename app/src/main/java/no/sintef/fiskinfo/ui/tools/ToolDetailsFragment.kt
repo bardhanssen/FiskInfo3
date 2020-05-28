@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import no.sintef.fiskinfo.R
 
 class ToolDetailsFragment : Fragment() {
+    // PRI: Get basic working editor
+    // MAYBE: use material design to improve l&f
 
     companion object {
         fun newInstance() = ToolDetailsFragment()
