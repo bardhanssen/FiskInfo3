@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="no.sintef.fiskinfo.util.UtilsKt"/>
+        <import type="android.text.InputType" />
+        <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
+        <variable name="tool" type="no.sintef.fiskinfo.model.fishingfacility.FishingFacility"/>
+        <variable
+                name="toolviewmodel"
+                type="no.sintef.fiskinfo.ui.snap.SnapViewModel" />
+    </data>
+
+
+
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.map.MapFragment">
@@ -15,8 +28,14 @@
             android:layout_margin="16dp"
         >
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+    <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Setup date"
                 android:layout_marginTop="16dp"
@@ -27,19 +46,20 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/toolDetailsDateField"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="date"
-                    android:text="20.03.2020"
+                    android:text="@{UtilsKt.formatDate(tool.lastChangedDateTime)}"
                     />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Time"
                 android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
                 app:startIconDrawable="@drawable/ic_time"
                 app:startIconContentDescription="@string/proto_close_drawer"
                 >
@@ -47,16 +67,17 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/toolDetailsTimeField"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="time"
-                    android:text="21:15"
+                    android:text="@{UtilsKt.formatTime(tool.lastChangedDateTime)}"
                     />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tool type"
@@ -66,12 +87,11 @@
                 >
 
             <AutoCompleteTextView
-                android:id="@+id/toolDetailsTypeField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                />
-
+                    android:id="@+id/toolDetailsTypeField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="@{InputType.TYPE_NULL}"
+                    android:text="@{tool.toolTypeCode.code}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -86,6 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
+                    android:text="@{tool.comment}"
                     />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -98,3 +119,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

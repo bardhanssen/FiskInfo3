@@ -28,6 +28,14 @@
         <item>Mooring system</item>
         <item>Unknown</item>
     </string-array>
+    <string-array name="tool_type_codes">
+        <item>NETS</item>
+        <item>LONGLINE</item>
+        <item>CRABPOT</item>
+        <item>DANPURSEINE</item>
+    </string-array>
+
+
     <string-array name="snap_tab_titles">
         <item>Inbox</item>
         <item>Outbox</item>
