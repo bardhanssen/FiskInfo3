@@ -91,7 +91,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="@{InputType.TYPE_NULL}"
-                    android:text="@{tool.toolTypeCode.code}" />
+                    android:editable="false"
+                    />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

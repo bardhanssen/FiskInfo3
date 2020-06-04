@@ -60,6 +60,13 @@
     <string name="login_error_incorrect_password">Feil passord</string>
 
 
+    <!-- Tool type code resources -->
+    <string name="tool_type_code_nets">Nets</string>
+    <string name="tool_type_code_longline">Longline</string>
+    <string name="tool_type_code_crabpot">Crab pot</string>
+    <string name="tool_type_code_danpurseine">Danish purseine</string>
+
+
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>
     <string name="error_invalid_password">Passordet er for kort</string>
