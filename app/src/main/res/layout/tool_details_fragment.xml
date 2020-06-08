@@ -8,9 +8,10 @@
         <import type="android.text.InputType" />
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
         <variable name="tool" type="no.sintef.fiskinfo.model.fishingfacility.FishingFacility"/>
+        <variable name="toolcodename" type="String"/>
         <variable
                 name="toolviewmodel"
-                type="no.sintef.fiskinfo.ui.snap.SnapViewModel" />
+                type="no.sintef.fiskinfo.ui.tools.ToolsViewModel" />
     </data>
 
 
@@ -91,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="@{InputType.TYPE_NULL}"
-                    android:editable="false"
+                    android:text="@{toolcodename}"
                     />
         </com.google.android.material.textfield.TextInputLayout>
 

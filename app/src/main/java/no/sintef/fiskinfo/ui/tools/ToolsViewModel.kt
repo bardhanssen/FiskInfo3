@@ -23,10 +23,12 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
     private var profile: LiveData<FiskInfoProfileDTO>? = null
 
     private val draftReport = MutableLiveData<Report>()
+    private val selectedToolTypeCodeName = MutableLiveData<String>()
 
     fun selectTool(tool: FishingFacility?, isConfirmed: Boolean) {
         //selectedIsIncomming.value = isConfirmed
         selectedTool.value = tool
+        selectedToolTypeCodeName.value = tool?.toolTypeCode?.getLocalizedName(getApplication())
     }
 
     fun getSelectedTool(): LiveData<FishingFacility?> {
@@ -66,6 +68,25 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
         draftReport.value = report
     }
 
+    fun setSelectedToolCode(code: ToolTypeCode) {
+        if ((selectedTool.value?.toolTypeCode != code) && (code != null)) {
+            selectedTool.value?.toolTypeCode != code
+            selectedToolTypeCodeName.value = code.getLocalizedName(getApplication())
+        }
+    }
 
+
+    val selectedToolCodeName: LiveData<String>
+        get() = this.selectedToolTypeCodeName
+
+    /*
+    fun getSelectedToolCodeName():String { this.selectedToolCodeName
+        var retVal : String? = null
+        selectedTool?.value?.let {
+            retVal = it.toolTypeCode?.getLocalizedName(getApplication())
+        }
+        return if (retVal != null) retVal!! else ""
+    }
+*/
 
 }
