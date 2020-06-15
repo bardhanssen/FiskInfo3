@@ -34,7 +34,7 @@ class ToolDetailsFragment : Fragment() {
             return theView
         }
 
-        private val filter_that_does_nothing = object: Filter() {
+        private val allToolCodesFilter = object: Filter() {
             override fun convertResultToString(resultValue: Any?): CharSequence {
                 resultValue?.let {
                     var code = it as ToolTypeCode
@@ -55,12 +55,8 @@ class ToolDetailsFragment : Fragment() {
         }
 
         override fun getFilter(): Filter {
-            return filter_that_does_nothing
+            return allToolCodesFilter
         }
-/*        override fun getFilter(): Filter {
-            return filter_that_does_nothing
-        }*/
-
     }
 
     private lateinit var mToolCodeAdapter : MyArrayAdapter
@@ -73,39 +69,13 @@ class ToolDetailsFragment : Fragment() {
     ): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_details_fragment, container, false)
 
-        //ToolTypeCode.values()
-
-        //val TOOLS =
-
-        /*    arrayOf("NETS", "LONGLINE", "CRABPOT", "DANPURSEINE")
-
-        val adapter = ArrayAdapter(
-            context,
-            R.layout.exposed_dropdown_menu_item,
-            //R.array.tool_type_codes
-            TOOLS
-        )
-        */
         mToolCodeAdapter = MyArrayAdapter(context, R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
         mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
 
         mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.setSelectedToolCode(parent.getItemAtPosition(position) as ToolTypeCode) }
-
-        /*
-        mEditTextFilledExposedDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val newCode = parent?.getItemAtPosition(position) as ToolTypeCode
-                mViewModel.setSelectedToolCode(newCode)
-            }
-        }
-*/
-        mEditTextFilledExposedDropdown =
-            mBinding!!.root.findViewById(R.id.toolDetailsTypeField)
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
-        return mBinding!!.getRoot()
+        return mBinding!!.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -116,26 +86,14 @@ class ToolDetailsFragment : Fragment() {
             if (tool != null) {
                 mBinding.tool = tool
                 mBinding.toolviewmodel = mViewModel
-                //if (context != null)
-                //    mEditTextFilledExposedDropdown.setText(tool.toolTypeCode?.getLocalizedName(context!!), false)
-                //mBinding!!.setEchogram(mViewModel?.draftMetadata)
-                //mBinding!!.setHandlers(this@SnapEditorFragment)
-                //mBinding!!.setSnapviewmodel(mViewModel)
             }
         })
 
         mViewModel.selectedToolCodeName.observe(this, Observer { toolCodeName ->
             if (toolCodeName != null) {
                 mBinding.toolcodename = toolCodeName
-                //if (context != null)
-                //    mEditTextFilledExposedDropdown.setText(tool.toolTypeCode?.getLocalizedName(context!!), false)
-                //mBinding!!.setEchogram(mViewModel?.draftMetadata)
-                //mBinding!!.setHandlers(this@SnapEditorFragment)
-                //mBinding!!.setSnapviewmodel(mViewModel)
             }
         })
-
-        // TODO: Use the ViewModel
     }
 
 }
