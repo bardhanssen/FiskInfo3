@@ -6,12 +6,9 @@
     <data>
         <import type="no.sintef.fiskinfo.util.UtilsKt"/>
         <import type="android.text.InputType" />
-        <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
-        <variable name="tool" type="no.sintef.fiskinfo.model.fishingfacility.FishingFacility"/>
-        <variable name="toolcodename" type="String"/>
         <variable
-                name="toolviewmodel"
-                type="no.sintef.fiskinfo.ui.tools.ToolsViewModel" />
+                name="deploymentviewmodel"
+                type="no.sintef.fiskinfo.ui.tools.DeploymentViewModel" />
     </data>
 
 
@@ -51,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="date"
-                    android:text="@{UtilsKt.formatDate(tool.lastChangedDateTime)}"
+                    android:text="@{UtilsKt.formatDate(deploymentviewmodel.setupTime)}"
                     />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -72,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="time"
-                    android:text="@{UtilsKt.formatTime(tool.lastChangedDateTime)}"
+                    android:text="@{UtilsKt.formatTime(deploymentviewmodel.setupTime)}"
                     />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="@{InputType.TYPE_NULL}"
-                    android:text="@{toolcodename}"
+                    android:text="@{deploymentviewmodel.toolTypeCodeName}"
                     />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,17 +106,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:text="@{tool.comment}"
+                    android:text="@{deploymentviewmodel.comment}"
                     />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
     </LinearLayout>
-
-    <!-- TODO: Update blank fragment layout -->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

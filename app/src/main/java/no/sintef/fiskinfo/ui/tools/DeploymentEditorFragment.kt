@@ -1,6 +1,5 @@
 package no.sintef.fiskinfo.ui.tools
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,37 +11,35 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.datepicker.MaterialDatePicker
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.databinding.ToolDetailsFragmentBinding
+import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import java.time.Instant
 import java.util.*
 
-
-class ToolDetailsFragment : Fragment() {
-    // PRI: Get basic working editor
-    // MAYBE: use material design to improve l&f
-
+class DeploymentEditorFragment: Fragment() {
     companion object {
-        fun newInstance() = ToolDetailsFragment()
+        fun newInstance() = DeploymentEditorFragment()
     }
 
-    private lateinit var mViewModel: ToolsViewModel
-    private var _mBinding : ToolDetailsFragmentBinding? = null;
-    private lateinit var mBinding: ToolDetailsFragmentBinding //? = null
+    private lateinit var mViewModel: DeploymentViewModel
+    private var _mBinding: ToolDeploymentEditorFragmentBinding? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val mBinding get() = _mBinding!!
 
     private lateinit var mToolCodeAdapter : ToolTypeCodeArrayAdapter
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
-    //private lateinit val mBinding: ToolDetailsFragmentBinding = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_details_fragment, container, false)
+        _mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_deployment_editor_fragment, container, false)
 
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(context, R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
         mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
 
-        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.setSelectedToolCode(parent.getItemAtPosition(position) as ToolTypeCode) }
+        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.toolTypeCode.value = parent.getItemAtPosition(position) as ToolTypeCode }
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
         mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
@@ -50,7 +47,11 @@ class ToolDetailsFragment : Fragment() {
             //val currentTimeInMillis = Calendar.getInstance().timeInMillis
             //builder.setSelection(currentTimeInMillis)
             val picker : MaterialDatePicker<*> = builder.build()
-            picker.addOnPositiveButtonClickListener { mViewModel.setSelectedToolDate(it as Date) }
+            picker.addOnPositiveButtonClickListener {
+                var cal = Calendar.getInstance()
+                cal.timeInMillis = it as Long
+                mViewModel.setSetupDate( cal.time )
+            }
             picker.show(fragmentManager!!, picker.toString())
         }
 
@@ -59,9 +60,12 @@ class ToolDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProviders.of(activity!!).get(ToolsViewModel::class.java)
+        mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
+        mViewModel.clearInfo()
 
-        mViewModel.getSelectedTool().observe(this, Observer { tool ->
+        mBinding.deploymentviewmodel = mViewModel
+/*
+        mViewModel.observe(this, Observer { tool ->
             if (tool != null) {
                 mBinding.tool = tool
                 mBinding.toolviewmodel = mViewModel
@@ -73,6 +77,8 @@ class ToolDetailsFragment : Fragment() {
                 mBinding.toolcodename = toolCodeName
             }
         })
+
+ */
     }
 
     override fun onDestroyView() {

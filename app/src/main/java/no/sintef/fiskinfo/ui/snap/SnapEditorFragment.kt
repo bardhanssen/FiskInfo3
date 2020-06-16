@@ -47,8 +47,9 @@ import no.sintef.fiskinfo.model.SnapMessage
 
 class SnapEditorFragment : Fragment() {
 
-    private var mViewModel: SnapViewModel? = null
-    private var mBinding: SnapEditorFragmentBinding? = null
+    private lateinit var mViewModel: SnapViewModel
+    private var _mBinding: SnapEditorFragmentBinding? = null
+    private val mBinding get() = _mBinding!! // Only valid between onCreateView and onDestroyView.
 
     internal var mContentResolver: ContentResolver? = null
 
@@ -56,7 +57,7 @@ class SnapEditorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate<SnapEditorFragmentBinding>(
+        _mBinding = DataBindingUtil.inflate<SnapEditorFragmentBinding>(
             inflater,
             R.layout.snap_editor_fragment,
             container,
@@ -65,8 +66,8 @@ class SnapEditorFragment : Fragment() {
         setHasOptionsMenu(true)
 
         mContentResolver = context!!.contentResolver
-        mBinding!!.snapReceiverEditText.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
-        mBinding!!.snapReceiverEditText.setThreshold(1)
+        mBinding.snapReceiverEditText.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+        mBinding.snapReceiverEditText.setThreshold(1)
 
         val from = arrayOf(
             ContactsContract.Contacts.DISPLAY_NAME,
@@ -108,20 +109,20 @@ class SnapEditorFragment : Fragment() {
             )
         }
 
-        mBinding!!.snapReceiverEditText.setAdapter(adapter)
+        mBinding.snapReceiverEditText.setAdapter(adapter)
 
-        return mBinding!!.getRoot()
+        return mBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
-        mViewModel!!.draft.observe(this, Observer { snap ->
+        mViewModel.draft.observe(this, Observer { snap ->
             if (snap != null) {
-                mBinding!!.setSnap(snap)
+                mBinding.snap = snap
                 //mBinding!!.setEchogram(mViewModel?.draftMetadata)
-                mBinding!!.setHandlers(this@SnapEditorFragment)
-                mBinding!!.setSnapviewmodel(mViewModel)
+                mBinding.handlers = this@SnapEditorFragment
+                mBinding.snapviewmodel = mViewModel
             }
         })
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity!!.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -137,12 +138,18 @@ class SnapEditorFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.send_snap_action) {
-            mViewModel!!.sendSnapAndClear()
+            mViewModel.sendSnapAndClear()
             Navigation.findNavController(this.view!!).navigateUp()
             return true
         }
         return false
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _mBinding = null
+    }
+
 
     companion object {
 
@@ -153,39 +160,3 @@ class SnapEditorFragment : Fragment() {
         private val PERMISSIONS_REQUEST_READ_CONTACTS = 100
     }
 }
-
-
-/*package no.sintef.fiskinfo.ui.snap
-
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import no.sintef.fiskinfo.R
-
-class SnapEditorFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SnapEditorFragment()
-    }
-
-    private lateinit var viewModel: SnapEditorViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.snap_editor_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SnapEditorViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-}
-*/

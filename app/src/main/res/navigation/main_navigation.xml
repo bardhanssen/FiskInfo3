@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_tools_fragment_to_tool_details_fragment"
             app:destination="@id/fragment_tool_details" />
+        <action
+                android:id="@+id/action_fragment_tools_to_deployment_editor_fragment"
+                app:destination="@id/deployment_editor_fragment" />
     </fragment>
     <fragment
         android:id="@+id/fragment_map"
@@ -93,4 +96,8 @@
               android:id="@+id/fragment_analysis"/>
     <fragment android:id="@+id/echogram_viewer_fragment" android:name="no.sintef.fiskinfo.ui.snap.EchogramViewerFragment"
               android:label="Echogram Viewer"/>
+    <fragment
+            android:id="@+id/deployment_editor_fragment"
+            android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
+            android:label="DeploymentEditorFragment" />
 </navigation>

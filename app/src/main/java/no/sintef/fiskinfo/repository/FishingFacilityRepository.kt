@@ -3,9 +3,11 @@ package no.sintef.fiskinfo.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonElement
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.api.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
+import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
@@ -50,6 +52,23 @@ class FishingFacilityRepository(context: Context) {
     fun getFiskInfoProfileDTO():LiveData<FiskInfoProfileDTO> {
         refreshFiskInfoProfileDTO()
         return fiskInfoProfileDTO
+    }
+
+
+    fun sendDeploymentInfo(info : DeploymentInfo) {
+        if (fishingFacilityService == null)
+            initService()
+
+        fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<JsonElement> {
+            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                // TODO("Not yet implemented")
+            }
+
+        })
     }
 
 

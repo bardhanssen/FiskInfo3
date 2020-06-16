@@ -41,15 +41,18 @@ import no.sintef.fiskinfo.R
 
 class SnapDetailFragment : Fragment() {
 
-    private var mViewModel: SnapViewModel? = null
-    private var mBinding: no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding? = null
+    private lateinit var mViewModel: SnapViewModel
+    private var _mBinding: no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding? = null
+
+    private val mBinding get() = _mBinding!! // Only valid between onCreateView and onDestroyView.
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.snap_detail_fragment, container, false)
-        return mBinding!!.getRoot()
+        _mBinding = DataBindingUtil.inflate(inflater, R.layout.snap_detail_fragment, container, false)
+        return mBinding.getRoot()
     }
 
     // Changed from ViewDataBinding to SnapDetailFragmentBinding above
@@ -58,11 +61,11 @@ class SnapDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
         configureWebView()
-        mViewModel!!.getSelectedSnap().observe(this, Observer { snap ->
-            mBinding!!.setSnap(snap)
-            mBinding!!.setSnapMetadata(snap?.snapMetadata)
-            mBinding!!.setIncomming(mViewModel!!.isIncomming().value)
-            mBinding!!.setHandlers(this@SnapDetailFragment)
+        mViewModel.getSelectedSnap().observe(this, Observer { snap ->
+            mBinding.setSnap(snap)
+            mBinding.setSnapMetadata(snap?.snapMetadata)
+            mBinding.setIncomming(mViewModel!!.isIncomming().value)
+            mBinding.setHandlers(this@SnapDetailFragment)
             loadContent(snap?.snapMetadata?.snapId.toString())
         })
     }
@@ -118,9 +121,9 @@ class SnapDetailFragment : Fragment() {
 
     fun onViewEchogramHereClicked(v: View) {
         try {
-            if (! (mViewModel?.getSelectedSnap()?.value?.snapMetadata?.snapId != null))
+            if (! (mViewModel.getSelectedSnap()?.value?.snapMetadata?.snapId != null))
                 return
-            var snapId = mViewModel?.getSelectedSnap()?.value?.snapMetadata?.snapId.toString()
+            var snapId = mViewModel.getSelectedSnap()?.value?.snapMetadata?.snapId.toString()
             var bundle = bundleOf(ARG_SNAP_ID to snapId)
             v.findNavController().navigate(R.id.action_snapDetailFragment_to_echogramViewerFragment, bundle)
         } catch (ex: Exception) {
@@ -139,9 +142,16 @@ class SnapDetailFragment : Fragment() {
     }
 
     fun onDeleteSnapClicked(v: View) {
-        mViewModel!!.deleteSelectedSnap()
+        mViewModel.deleteSelectedSnap()
         v.findNavController().navigateUp()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _mBinding = null
+    }
+
+
 
     companion object {
 

@@ -88,12 +88,15 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         else {
             fab.setOnClickListener { view ->
 
-                mViewModel!!.createReportDraft()
+                Navigation.findNavController(view).navigate(R.id.action_fragment_tools_to_deployment_editor_fragment)
 
 
-                Snackbar.make(view, "Adding tools will be supported soon", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .show()
+                //mViewModel!!.createReportDraft()
+
+
+                //Snackbar.make(view, "Adding tools will be supported soon", Snackbar.LENGTH_LONG)
+                //    .setAction("Action", null)
+                //    .show()
             }
         }
 

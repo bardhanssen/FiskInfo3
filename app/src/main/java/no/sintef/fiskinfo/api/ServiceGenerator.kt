@@ -47,7 +47,7 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authService: Aut
         //.authenticator(OIDCAuthenticator(authService, authState, "FiskInfo/3.0 (Android)"))
         //.addInterceptor(OAuthInterceptor("Bearer", authToken,  "FiskInfo/2.0 (Android)"))
         .addInterceptor(in2)
-        .addInterceptor(OAuthInterceptor("bearer", authState.accessToken!!,  "FiskInfo/3.0 (Android)"))
+        .addInterceptor(OAuthInterceptor("bearer", authState.accessToken!!,  "FiskInfo/3.0 (Android)")) // TODO: handle renewal of access tokens
         .build()
 
     return createService(serviceClass, baseUrl, client, FieldNamingPolicy.IDENTITY)

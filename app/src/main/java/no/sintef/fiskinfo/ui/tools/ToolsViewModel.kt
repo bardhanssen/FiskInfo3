@@ -79,6 +79,30 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
     val selectedToolCodeName: LiveData<String>
         get() = this.selectedToolTypeCodeName
 
+
+    fun setSelectedToolDate(date : Date) {
+        if ((date != null) && (selectedTool.value != null)) {
+            // TODO: pick out only date part (not time)
+            selectedTool.value!!.lastChangedDateTime = date
+        }
+    }
+
+
+    fun canSendReport():Boolean {
+        if (draftReport.value == null)
+            return false
+
+        // TODO: Check that all required fields are present
+        return true
+    }
+
+    fun sendReport() {
+        if (canSendReport()) {
+
+        }
+    }
+
+
     /*
     fun getSelectedToolCodeName():String { this.selectedToolCodeName
         var retVal : String? = null

@@ -1,6 +1,7 @@
 package no.sintef.fiskinfo.api
 
 import com.google.gson.JsonElement
+import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import retrofit2.Call
@@ -16,6 +17,7 @@ interface FishingFacilityReportService {
         const val v2prefix = "bwapi/v2/geodata/"
         const val fishingfacilityprofile = v1prefix + "fishingfacilityprofile"
         const val fishingfacilitychanges = v2prefix + "fishingfacilitychanges"
+        const val deployed = v1prefix + "fishingfacilitychange/deployed"
         //const val geoDataSubscription = prefix + "subscription/"
         //const val geoDataSubscriptionManagement = prefix + "subscription/{Id}"
         //const val geoDataDownload = prefix + "download/{ApiName}"
@@ -29,6 +31,8 @@ interface FishingFacilityReportService {
     @GET(fishingfacilitychanges)
     fun getFishingFacilityChanges(): Call<FishingFacilityChanges>
 
+    @POST(deployed)
+    fun sendDeploymentInfo(@Body deploymentInfo: DeploymentInfo):Call<JsonElement>
 
     /*
     @GET(geoDataSubscription)
