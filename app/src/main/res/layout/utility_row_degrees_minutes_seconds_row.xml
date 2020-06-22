@@ -1,0 +1,259 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/utility_lat_lon_row_set_position_button"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:id="@+id/latitude_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dialog_container_margin_top"
+                android:layout_marginTop="@dimen/dialog_internal_container_large_margin_top"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="1dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="5dp"
+                >
+
+                <EditText
+                    android:id="@+id/latitude_degrees_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:layout_weight="0.9"
+                    android:gravity="end"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@+id/latitude_minutes_edit_text"
+                    android:nextFocusLeft="@+id/latitude_minutes_edit_text"
+                    android:nextFocusRight="@+id/latitude_minutes_edit_text"
+                    android:nextFocusUp="@+id/latitude_minutes_edit_text"
+                    android:selectAllOnFocus="true"
+                    />
+
+                <TextView
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.1"
+                    android:text="@string/symbol_geographical_degrees"
+                    android:labelFor="@+id/latitude_degrees_edit_text"
+                    />
+
+                <EditText
+                    android:id="@+id/latitude_minutes_edit_text"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:layout_weight="0.9"
+                    android:gravity="end"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@+id/latitude_seconds_edit_text"
+                    android:nextFocusLeft="@+id/latitude_seconds_edit_text"
+                    android:nextFocusRight="@+id/latitude_seconds_edit_text"
+                    android:nextFocusUp="@+id/latitude_seconds_edit_text"
+                    android:selectAllOnFocus="true"
+                    />
+
+                <TextView
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.1"
+                    android:text="@string/symbol_geographical_minutes"
+                    android:labelFor="@+id/latitude_minutes_edit_text"
+                    />
+
+                <EditText
+                    android:id="@+id/latitude_seconds_edit_text"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:layout_weight="1.2"
+                    android:gravity="end"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
+                    android:nextFocusDown="@+id/longitude_degrees_edit_text"
+                    android:nextFocusLeft="@+id/longitude_degrees_edit_text"
+                    android:nextFocusRight="@+id/longitude_degrees_edit_text"
+                    android:nextFocusUp="@+id/longitude_degrees_edit_text"
+                    android:selectAllOnFocus="true"
+                    />
+
+                <TextView
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.1"
+                    android:text="@string/symbol_geographical_seconds"
+                    android:labelFor="@+id/latitude_seconds_edit_text"
+                    />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/latitude_cardinal_direction_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="0dp"
+                        android:textOff="@string/cardinal_direction_symbol_north"
+                        android:textOn="@string/cardinal_direction_symbol_south"
+                        app:showText="true"
+                        />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/longitude_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dialog_container_margin_top"
+                android:layout_marginTop="@dimen/dialog_internal_container_large_margin_top"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="1.0dp"
+                android:paddingLeft="4.0dp"
+                android:paddingRight="4.0dp"
+                >
+
+                <EditText
+                    android:id="@+id/longitude_degrees_edit_text"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:layout_weight="0.9"
+                    android:gravity="end"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@+id/longitude_minutes_edit_text"
+                    android:nextFocusLeft="@+id/longitude_minutes_edit_text"
+                    android:nextFocusRight="@+id/longitude_minutes_edit_text"
+                    android:nextFocusUp="@+id/longitude_minutes_edit_text"
+                    android:selectAllOnFocus="true"
+                    />
+
+                <TextView
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.1"
+                    android:text="@string/symbol_geographical_degrees"
+                    android:labelFor="@+id/longitude_degrees_edit_text"
+                    />
+
+                <EditText
+                    android:id="@+id/longitude_minutes_edit_text"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:layout_weight="0.9"
+                    android:gravity="end"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@+id/longitude_seconds_edit_text"
+                    android:nextFocusLeft="@+id/longitude_seconds_edit_text"
+                    android:nextFocusRight="@+id/longitude_seconds_edit_text"
+                    android:nextFocusUp="@+id/longitude_seconds_edit_text"
+                    android:selectAllOnFocus="true"
+                    />
+
+                <TextView
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.1"
+                    android:text="@string/symbol_geographical_minutes"
+                    android:labelFor="@+id/longitude_minutes_edit_text"
+                    />
+
+                <EditText
+                    android:id="@+id/longitude_seconds_edit_text"
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:layout_weight="1.2"
+                    android:gravity="end"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
+                    android:selectAllOnFocus="true"
+                    />
+
+                <TextView
+                    android:layout_width="0.0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.1"
+                    android:text="@string/symbol_geographical_seconds"
+                    android:labelFor="@+id/longitude_seconds_edit_text"
+                    />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/longitude_cardinal_direction_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="0dp"
+                        android:textOff="@string/cardinal_direction_symbol_west"
+                        android:textOn="@string/cardinal_direction_symbol_east"
+                        app:showText="true"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/utility_lat_lon_row_set_position_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+            android:background="@drawable/ic_baseline_my_location_24"
+            />
+    </RelativeLayout>
+</TableRow>

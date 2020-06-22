@@ -131,7 +131,7 @@ class LoginFragment : Fragment() {
 
                 val clientAuth: ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
                 mAuthService
-                    .performTokenRequest(resp!!.createTokenExchangeRequest(), clientAuth, { resp2, ex2 ->
+                    .performTokenRequest(resp!!.createTokenExchangeRequest(), clientAuth, { resp2, ex2 -> // TODO: Investigae possible null pointer exception on this line
                         if (resp2 != null) {
 
                             authStateManager.updateAfterTokenResponse(resp2, ex2)

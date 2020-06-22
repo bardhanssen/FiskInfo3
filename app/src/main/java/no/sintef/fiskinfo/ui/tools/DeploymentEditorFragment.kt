@@ -63,22 +63,15 @@ class DeploymentEditorFragment: Fragment() {
         mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
         mViewModel.clearInfo()
 
-        mBinding.deploymentviewmodel = mViewModel
-/*
-        mViewModel.observe(this, Observer { tool ->
-            if (tool != null) {
-                mBinding.tool = tool
-                mBinding.toolviewmodel = mViewModel
-            }
+        // Refresh the full UI when there is a change, as this UI is small
+        mViewModel.toolTypeCodeName.observe(
+            this, Observer {
+            mBinding.deploymentviewmodel = mViewModel
         })
 
-        mViewModel.selectedToolCodeName.observe(this, Observer { toolCodeName ->
-            if (toolCodeName != null) {
-                mBinding.toolcodename = toolCodeName
-            }
+        mViewModel.setupTime.observe(this, Observer {
+            mBinding.deploymentviewmodel = mViewModel
         })
-
- */
     }
 
     override fun onDestroyView() {

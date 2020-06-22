@@ -99,5 +99,5 @@
     <fragment
             android:id="@+id/deployment_editor_fragment"
             android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
-            android:label="DeploymentEditorFragment" />
+            android:label="Report tool deployment" />
 </navigation>

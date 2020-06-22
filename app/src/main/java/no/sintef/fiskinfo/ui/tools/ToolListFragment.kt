@@ -53,17 +53,6 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-/*
-        val profile = mViewModel.getProfile()
-        profile?.observe(this,
-
-            Observer<FiskInfoProfileDTO> { pro  ->
-                val test = pro.fiskinfoProfile
-                test.toString()
-            }
-
-        )
-*/
         val tools = if (mIsConfirmed) mViewModel!!.getConfirmedTools() else mViewModel!!.getUnconfirmedTools()
 
         tools?.observe(this,
@@ -88,15 +77,16 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         else {
             fab.setOnClickListener { view ->
 
-                Navigation.findNavController(view).navigate(R.id.action_fragment_tools_to_deployment_editor_fragment)
+                if (!isUserProfileValid()) {
+                    Snackbar.make(view, "The user profile must be completed before tools can be added. See settings.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .show()
+                } else {
 
 
-                //mViewModel!!.createReportDraft()
-
-
-                //Snackbar.make(view, "Adding tools will be supported soon", Snackbar.LENGTH_LONG)
-                //    .setAction("Action", null)
-                //    .show()
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_fragment_tools_to_deployment_editor_fragment)
+                }
             }
         }
 
@@ -113,6 +103,12 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
         return view
     }
+
+    private fun isUserProfileValid():Boolean {
+        return true;
+    }
+
+
 /*
     override fun onViewSnapClicked(v: View, snap: SnapMessage?) {
         mViewModel!!.selectSnap(snap, mIsInbox)
