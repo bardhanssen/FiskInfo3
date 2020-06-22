@@ -49,12 +49,14 @@ class LocationRecyclerViewAdapter : RecyclerView.Adapter<LocationRecyclerViewAda
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
+
+
                 //val binding = ListItemSleepNightBinding.inflate(layoutInflater, parent, false)
                 //return ViewHolder(binding)
 
 
                 val view = layoutInflater
-                    .inflate(R.layout.utility_row_degrees_minutes_seconds_row, parent, false)
+                    .inflate(R.layout.location_list_item, parent, false)
 
                 return ViewHolder(view)
             }
