@@ -5,18 +5,18 @@ function vesselSelectionFunction(e) {
     selectedFeature = e.popFeature();
     const coordinate = selectedFeature.getCenterCoordinate();
     const record = e.popRecord();
-    const tools = getMaxThreeToolsFromCallSign(record.get("Callsign"));
-    const destination = record.get("Destination");
-    const name = record.get("Name");
+    const tools = getMaxThreeToolsFromCallSign(record.get("callsign"));
+    const destination = record.get("edstination");
+    const name = record.get("name");
 
     vesselInfoTemplate.setData({
         title: !name ? "Mangler navn" : name,
         subtitle: vesselCodeToShipTypeName(record),
-        shipType: record.get("ShipType"),
-        sog: record.get("Sog"),
-        cog: record.get("Cog"),
+        shipType: record.get("shipType"),
+        sog: record.get("sog"),
+        cog: record.get("cog"),
         info: {
-            "Signal mottatt": formattedDate(record.get("TimeStamp")),
+            "Signal mottatt": formattedDate(record.get("timeStamp")),
             "Posisjon": formatLocation(coordinate),
             "Destinasjon": !destination ? "Mangler destinasjon" : destination,
             "Marinogram": marinogramLink(coordinate)
@@ -142,12 +142,12 @@ function vesselStyleFunction(feature, resolution) {
         return clusterStyle;
     } else {
         const record = vesselsSource.getDataContainer().getRecord(key);
-        const isVesselShip = record.get("ShipType") === 30;
+        const isVesselShip = record.get("shipType") === 30;
         if (selected) {
-            const name = record.get("Name") || "Mangler navn";
+            const name = record.get("name") || "Mangler navn";
             const selectedStyle = isVesselShip ? pointStyleFishingVesselSelected : pointStyleOtherVesselSelected;
             selectedStyle.getText().setText(name);
-            const rotation = degreesToRadians(record.get("Cog"));
+            const rotation = degreesToRadians(record.get("cog"));
             selectedStyle.getImage().setRotation(rotation);
             return selectedStyle;
         } else {
@@ -157,7 +157,7 @@ function vesselStyleFunction(feature, resolution) {
                 style = isVesselShip ? pointStyleFishingVessel : pointStyleOtherVessel;
             } else {
                 style = isVesselShip ? pointIconStyleFishingVessel : pointIconStyleOtherVessel;
-                const rotation = degreesToRadians(record.get("Cog"));
+                const rotation = degreesToRadians(record.get("cog"));
                 style.getImage().setRotation(rotation);
             }
 
@@ -177,8 +177,8 @@ const vesselsLayer = Sintium.vectorLayer2({
     layerId: 'AIS',
     dataSource: vesselsSource,
     clustered: true,
-    lonProperty: "Lon",
-    latProperty: "Lat",
+    lonProperty: "lon",
+    latProperty: "lat",
     visible: false,
     lazyLoad: false,
     useThread: true,
