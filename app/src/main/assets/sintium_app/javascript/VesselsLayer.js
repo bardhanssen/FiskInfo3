@@ -6,7 +6,7 @@ function vesselSelectionFunction(e) {
     const coordinate = selectedFeature.getCenterCoordinate();
     const record = e.popRecord();
     const tools = getMaxThreeToolsFromCallSign(record.get("callsign"));
-    const destination = record.get("edstination");
+    const destination = record.get("destination");
     const name = record.get("name");
 
     vesselInfoTemplate.setData({
@@ -205,10 +205,14 @@ vesselsLayer.getFeatureSource().onFeatureChange(function(features) {
 });
 
 function showVesselAndBottomsheet(callsignal) {
-    selectedKey = vesselMap[callsignal].key;
-    const record = vesselsSource.getDataContainer().getRecord(selectedKey);
-    if (!record) return;
-    const coordinates = [record.get("Lon"), record.get("Lat")];
-    map.zoomToCoordinates(coordinates, unrollAtZoom);
-    vesselsLayer.getFeatureSource().getFeatures().forEach(selectFeature);
+    try {
+        selectedKey = vesselMap[callsignal].key;
+        const record = vesselsSource.getDataContainer().getRecord(selectedKey);
+        if (!record) return;
+        const coordinates = [record.get("lon"), record.get("lat")];
+        map.zoomToCoordinates(coordinates, unrollAtZoom);
+        vesselsLayer.getFeatureSource().getFeatures().forEach(selectFeature);
+    } catch (err) {
+        alert(err);
+    }
 }

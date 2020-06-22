@@ -5,8 +5,8 @@ vesselSearchData = [];
 vesselsSource
     .onDataAdded(function(dataContainer) {
         dataContainer.forEachRecord(function(vessel) {
-            const callSign = vessel.get("Callsign");
-            const name = vessel.get("Name");
+            const callSign = vessel.get("callsign");
+            const name = vessel.get("name");
             const key = vessel.key();
 
             if (vesselMap[callSign] === undefined)
@@ -17,8 +17,8 @@ vesselsSource
                 vesselMap[callSign].key = key;
 
             vesselSearchData.push({
-                "Name": name,
-                "Callsign": callSign
+                "name": name,
+                "callsign": callSign
             });
         });
 

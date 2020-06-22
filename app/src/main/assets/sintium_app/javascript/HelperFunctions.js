@@ -53,7 +53,7 @@ function getMaxThreeToolsFromCallSign(callsign) {
 }
 
 function vesselCodeToShipTypeName(record) {
-    const number = record.get("ShipType");
+    const number = record.get("shipType");
     switch (number) {
         case 30: return "Fiskefartøy";
         case 31:
