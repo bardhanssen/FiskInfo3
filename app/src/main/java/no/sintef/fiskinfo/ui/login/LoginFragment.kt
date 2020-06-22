@@ -175,7 +175,6 @@ class LoginFragment : Fragment() {
                             //val navController = findNavController()
                             //navController.popBackStack()
 
-
                             //testCall()
                             //testCall2()
                             //testCallProfile()

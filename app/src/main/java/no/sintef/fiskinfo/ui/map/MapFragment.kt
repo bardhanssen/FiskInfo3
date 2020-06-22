@@ -131,7 +131,7 @@ class MapFragment : Fragment() {
             }
         })
 
-
+        webView.settings.allowUniversalAccessFromFileURLs = true;
         webView.loadUrl("file:///android_asset/sintium_app/index.html")
     }
 
