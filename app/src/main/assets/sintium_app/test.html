@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SINTIUM - App test</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/3.0.8/dc.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://openlayers.org/en/latest/css/ol.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="./css/sintium.sintium.css" rel="stylesheet">
+    <link href="./css/fiskinfo.css" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.5.0.min.js"
+            integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+            crossorigin="anonymous"></script>
+    <script src="./javascript/libs/ol.js"></script>
+    <script src="./javascript/libs/sintium.js"></script>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+
+    const settings = {
+        "url": "https://www.barentswatch.no/bwapi/v1/geodata/fishingfacility",
+        "method": "GET",
+        "timeout": 0,
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        }
+    };
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+    /*
+    const zoomControl = Sintium.zoomControl();
+    // Instantiating map
+    const map = Sintium.map({
+        domId: "map",
+        layers: [toolsLayer],
+        controls: [zoomControl],
+        zoomOnClusterClick: true,
+        hitTolerance: 4,
+        rotation: false
+    });
+     */
+</script>
+
+
+</body>
+</html>

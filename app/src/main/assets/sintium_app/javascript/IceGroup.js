@@ -1,35 +1,35 @@
 
 // Instantiating planned seismic activity layer
-var iceConcentrationSource = Sintium.dataSource({
+const iceConcentrationSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/icechart/?format=JSON",
 });
 
-var closeDriftIceStyle = new ol.style.Style({
+const closeDriftIceStyle = new ol.style.Style({
     fill: new ol.style.Fill({ color: "rgba(251, 156, 69, 0.5)" })
 });
-var veryCloseDriftIceStyle = new ol.style.Style({
+const veryCloseDriftIceStyle = new ol.style.Style({
     fill: new ol.style.Fill({ color: "rgba(255, 64, 64, 0.5)" })
 });
 
-var fastIceStyle = new ol.style.Style({
+const fastIceStyle = new ol.style.Style({
     fill: new ol.style.Fill({ color: "rgba(195, 197, 199, 0.5)" })
 });
 
-var openDriftIceStyle = new ol.style.Style({
+const openDriftIceStyle = new ol.style.Style({
     fill:  new ol.style.Fill({ color: "rgba(255, 255, 64, 0.5)" })
 });
 
-var veryOpenDriftIceStyle = new ol.style.Style({
+const veryOpenDriftIceStyle = new ol.style.Style({
     fill:  new ol.style.Fill({ color: "rgba(165, 253, 184, 0.5)" })
 });
 
-var openWaterStyle = new ol.style.Style({
+const openWaterStyle = new ol.style.Style({
     fill: new ol.style.Fill({ color: "rgba(176, 214, 255, 0.5)" })
 });
 
 function iceChartStyleFunction(feature) {
-    var key = feature.getFeatureKey();
-    var record = iceConcentrationSource
+    const key = feature.getFeatureKey();
+    const record = iceConcentrationSource
         .getDataContainer()
         .getRecord(key);
 
@@ -49,7 +49,7 @@ function iceChartStyleFunction(feature) {
     }
 }
 
-var iceConcentrationLayer = Sintium.vectorLayer2({
+const iceConcentrationLayer = Sintium.vectorLayer2({
     layerId: "Iskonsentrasjon",
     dataSource: iceConcentrationSource,
     visible: false,
@@ -57,11 +57,11 @@ var iceConcentrationLayer = Sintium.vectorLayer2({
 });
 
 // Instantiating planned seismic activity layer
-var iceEdgeSource = Sintium.dataSource({
+const iceEdgeSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/iceedge/?format=JSON"
 });
 
-var iceEdgeLayer = Sintium.vectorLayer2({
+const iceEdgeLayer = Sintium.vectorLayer2({
     layerId: "Iskant",
     dataSource: iceEdgeSource,
     visible: false,
@@ -74,4 +74,4 @@ var iceEdgeLayer = Sintium.vectorLayer2({
 });
 
 // Instantiating ice group
-var iceGroup = Sintium.layerGroup("Is", iceConcentrationLayer, iceEdgeLayer);
+const iceGroup = Sintium.layerGroup("Is", iceConcentrationLayer, iceEdgeLayer);

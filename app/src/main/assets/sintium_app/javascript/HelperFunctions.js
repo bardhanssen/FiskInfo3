@@ -1,5 +1,5 @@
 function errorBox(errorMessage) {
-    var html = "<div class=\"error\">";
+    const html = "<div class=\"error\">";
     html += "<div class=\"error-icon\"><i class=\"fas fa-exclamation-triangle\" ></i></div>";
     html += errorMessage;
     html += "</div>";
@@ -11,7 +11,7 @@ function getPositionFromGeometry(geometry) {
 }
 
 function nFormatter(num, digits) {
-    var si = [
+    const si = [
         { value: 1, symbol: "" },
         { value: 1E3, symbol: "k" },
         { value: 1E6, symbol: "M" },
@@ -20,8 +20,8 @@ function nFormatter(num, digits) {
         { value: 1E15, symbol: "P" },
         { value: 1E18, symbol: "E" }
     ];
-    var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-    var i;
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    let i;
     for (i = si.length - 1; i > 0; i--) {
         if (num >= si[i].value) {
             break;
@@ -31,12 +31,12 @@ function nFormatter(num, digits) {
 }
 
 function degreesToRadians(degrees) {
-    var pi = Math.PI;
+    const pi = Math.PI;
     return parseFloat(degrees) * (pi / 180);
 }
 
 function marinogramError() {
-    var marinogramDiv = document.getElementById("marinogram");
+    const marinogramDiv = document.getElementById("marinogram");
     if (marinogramDiv == null) return;
     marinogramDiv.innerHTML = errorBox("Marinogram er ikke tilgjengelig for valg punkt.")
 }
@@ -53,7 +53,7 @@ function getMaxThreeToolsFromCallSign(callsign) {
 }
 
 function vesselCodeToShipTypeName(record) {
-    var number = record.get("ShipType");
+    const number = record.get("ShipType");
     switch (number) {
         case 30: return "Fiskefartøy";
         case 31:
@@ -70,9 +70,9 @@ function vesselCodeToShipTypeName(record) {
 }
 
 function landCodeToCountryName(value) {
-    var countryName = "";
-    var landCodeArray = value.split(";");
-    for (var i = 0; i < landCodeArray.length; i++) {
+    let countryName = "";
+    const landCodeArray = value.split(";");
+    for (let i = 0; i < landCodeArray.length; i++) {
         switch(landCodeArray[i].toLowerCase()) {
             case "is":
                 countryName += "Island, ";
@@ -105,13 +105,13 @@ function landCodeToCountryName(value) {
 }
 
 function formatDateDifference(dateString) {
-    var date = new Date(dateString);
-    var totalSeconds = (new Date().getTime() - date.getTime())/1000;
-    var days = Math.floor(totalSeconds/(3600*24));
+    const date = new Date(dateString);
+    let totalSeconds = (new Date().getTime() - date.getTime())/1000;
+    const days = Math.floor(totalSeconds/(3600*24));
     totalSeconds -= days*3600*24;
-    var hours = Math.floor(totalSeconds/3600);
+    const hours = Math.floor(totalSeconds/3600);
     totalSeconds -= hours*3600;
-    var minutes = Math.round(totalSeconds/60);
+    const minutes = Math.round(totalSeconds/60);
     return days + " døgn, " + hours + " timer, " + minutes + " minutter";
 }
 
@@ -122,11 +122,11 @@ function missingIfNull(value) {
 function formattedDate(dateString) {
     if (dateString == null) return "Mangler";
 
-    var months = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
-    var date = new Date(dateString);
-    var year = date.getFullYear();
-    var dayOfMonth = date.getDate();
-    var month = months[date.getMonth()];
+    const months = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const dayOfMonth = date.getDate();
+    const month = months[date.getMonth()];
     return dayOfMonth + ". " + month + " " + year;
 }
 
@@ -135,24 +135,24 @@ function formattedTimePeriod(fromDate, toDate) {
 }
 
 function formatLocation(coordinates) {
-    var lon = coordinates[0];
-    var lat = coordinates[1];
-    var convertLat = Math.abs(lat);
-    var latDegree = Math.floor(convertLat);
-    var latMinutes = Math.floor(((convertLat - latDegree) * 60)*1000)/1000;
-    var latCardinal = ((lat > 0) ? "N" : "S");
+    const lon = coordinates[0];
+    const lat = coordinates[1];
+    const convertLat = Math.abs(lat);
+    const latDegree = Math.floor(convertLat);
+    const latMinutes = Math.floor(((convertLat - latDegree) * 60)*1000)/1000;
+    const latCardinal = ((lat > 0) ? "N" : "S");
 
-    var convertLon = Math.abs(lon);
-    var lonDegree = Math.floor(convertLon);
-    var lonMinute = Math.floor(((convertLon - lonDegree) * 60)*1000)/1000;
-    var lonCardinal = ((lon > 0) ? "E" : "W");
+    const convertLon = Math.abs(lon);
+    const lonDegree = Math.floor(convertLon);
+    const lonMinute = Math.floor(((convertLon - lonDegree) * 60)*1000)/1000;
+    const lonCardinal = ((lon > 0) ? "E" : "W");
     return latDegree + "° " + latMinutes + " " + latCardinal + " " + lonDegree  + "° " + lonMinute + " " + lonCardinal;
 }
 
 function marinogramLink(coordinate) {
-    var lon = coordinate[0];
-    var lat = coordinate[1];
-    var link = "<a href=\"https://www.yr.no/sted/Hav/";
+    const lon = coordinate[0];
+    const lat = coordinate[1];
+    let link = "<a href=\"https://www.yr.no/sted/Hav/";
     link += lat + "_" + lon;
     link += "\">Se marinogram fra yr.no</a>";
     return link;

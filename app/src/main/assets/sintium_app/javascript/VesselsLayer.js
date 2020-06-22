@@ -3,11 +3,11 @@ zIndex = -1;
 function vesselSelectionFunction(e) {
     if (selectedFeature) unsetSelectedFeature();
     selectedFeature = e.popFeature();
-    var coordinate = selectedFeature.getCenterCoordinate();
-    var record = e.popRecord();
-    var tools = getMaxThreeToolsFromCallSign(record.get("Callsign"));
-    var destination = record.get("Destination");
-    var name = record.get("Name");
+    const coordinate = selectedFeature.getCenterCoordinate();
+    const record = e.popRecord();
+    const tools = getMaxThreeToolsFromCallSign(record.get("Callsign"));
+    const destination = record.get("Destination");
+    const name = record.get("Name");
 
     vesselInfoTemplate.setData({
         title: !name ? "Mangler navn" : name,
@@ -25,12 +25,12 @@ function vesselSelectionFunction(e) {
         hasTools: tools.length > 0
     });
 
-    var elems = document.querySelectorAll('.collapsible');
+    const elems = document.querySelectorAll('.collapsible');
     M.Collapsible.init(elems, {});
     vesselInfoDrawer.open(null, closeSheetCallBack);
 }
 
-var selectedText = new ol.style.Text({
+const selectedText = new ol.style.Text({
    text: "",
    font: "bold 13px sans-serif",
    offsetY: 28,
@@ -39,19 +39,19 @@ var selectedText = new ol.style.Text({
    })
 });
 
-var fillFishingVessel = new ol.style.Fill({ color: "#4b0000" });
-var strokeFishingVessel = new ol.style.Stroke({
+const fillFishingVessel = new ol.style.Fill({ color: "#4b0000" });
+const strokeFishingVessel = new ol.style.Stroke({
     color: "#7d0000",
     width: 2
 });
 
-var fillOtherVessel = new ol.style.Fill({ color: "#7c7c80" });
-var strokeOtherVessel = new ol.style.Stroke({
+const fillOtherVessel = new ol.style.Fill({ color: "#7c7c80" });
+const strokeOtherVessel = new ol.style.Stroke({
     color: "#adadb2",
     width: 2
 });
 
-var clusterStyle = new ol.style.Style({
+const clusterStyle = new ol.style.Style({
     image: new ol.style.Circle({
         radius: 10,
         fill: new ol.style.Fill({ color: "#7c7c80" }),
@@ -65,7 +65,7 @@ var clusterStyle = new ol.style.Style({
     })
 });
 
-var pointStyleFishingVessel = new ol.style.Style({
+const pointStyleFishingVessel = new ol.style.Style({
     image: new ol.style.Circle({
         radius: 5,
         fill: fillFishingVessel,
@@ -73,7 +73,7 @@ var pointStyleFishingVessel = new ol.style.Style({
     })
 });
 
-var pointIconStyleFishingVessel = new ol.style.Style({
+const pointIconStyleFishingVessel = new ol.style.Style({
     image: new ol.style.Icon(({
         anchor: [0.5, 0.5],
         anchorXUnits: 'fraction',
@@ -84,7 +84,7 @@ var pointIconStyleFishingVessel = new ol.style.Style({
     }))
 });
 
-var pointStyleOtherVessel = new ol.style.Style({
+const pointStyleOtherVessel = new ol.style.Style({
     image: new ol.style.Circle({
         radius: 5,
         fill: fillOtherVessel,
@@ -92,7 +92,7 @@ var pointStyleOtherVessel = new ol.style.Style({
     })
 });
 
-var pointIconStyleOtherVessel = new ol.style.Style({
+const pointIconStyleOtherVessel = new ol.style.Style({
     image: new ol.style.Icon(({
         anchor: [0.5, 0.5],
         anchorXUnits: 'fraction',
@@ -103,7 +103,7 @@ var pointIconStyleOtherVessel = new ol.style.Style({
     }))
 });
 
-var pointStyleFishingVesselSelected = new ol.style.Style({
+const pointStyleFishingVesselSelected = new ol.style.Style({
     image: new ol.style.Icon(({
         anchor: [0.5, 0.5],
         anchorXUnits: 'fraction',
@@ -116,7 +116,7 @@ var pointStyleFishingVesselSelected = new ol.style.Style({
     zIndex: Number.POSITIVE_INFINITY
 });
 
-var pointStyleOtherVesselSelected = new ol.style.Style({
+const pointStyleOtherVesselSelected = new ol.style.Style({
     image: new ol.style.Icon(({
         anchor: [0.5, 0.5],
         anchorXUnits: 'fraction',
@@ -130,34 +130,34 @@ var pointStyleOtherVesselSelected = new ol.style.Style({
 });
 
 function vesselStyleFunction(feature, resolution) {
-    var key = feature.getFeatureKey();
-    var selected = feature.getSelected();
-    var zoom = Math.ceil( (Math.log(resolution) - Math.log(156543.03390625) ) / Math.log(0.5));
+    const key = feature.getFeatureKey();
+    const selected = feature.getSelected();
+    const zoom = Math.ceil( (Math.log(resolution) - Math.log(156543.03390625) ) / Math.log(0.5));
 
     if (feature.isCluster()) {
-        var clusterCount = feature.getRecordKeys().length;
-        var clusterText = nFormatter(clusterCount, 0);
+        const clusterCount = feature.getRecordKeys().length;
+        const clusterText = nFormatter(clusterCount, 0);
         clusterStyle.setZIndex(zIndex--);
         clusterStyle.getText().setText(clusterText);
         return clusterStyle;
     } else {
-        var record = vesselsSource.getDataContainer().getRecord(key);
-        var isVesselShip = record.get("ShipType") === 30;
+        const record = vesselsSource.getDataContainer().getRecord(key);
+        const isVesselShip = record.get("ShipType") === 30;
         if (selected) {
-            var name = record.get("Name") || "Mangler navn";
-            var selectedStyle = isVesselShip ? pointStyleFishingVesselSelected : pointStyleOtherVesselSelected;
+            const name = record.get("Name") || "Mangler navn";
+            const selectedStyle = isVesselShip ? pointStyleFishingVesselSelected : pointStyleOtherVesselSelected;
             selectedStyle.getText().setText(name);
-            var rotation = degreesToRadians(record.get("Cog"));
+            const rotation = degreesToRadians(record.get("Cog"));
             selectedStyle.getImage().setRotation(rotation);
             return selectedStyle;
         } else {
-            var style;
+            let style;
 
-            if (zoom < unrollAtZoom)
+            if (zoom < unrollAtZoom) {
                 style = isVesselShip ? pointStyleFishingVessel : pointStyleOtherVessel;
-            else {
+            } else {
                 style = isVesselShip ? pointIconStyleFishingVessel : pointIconStyleOtherVessel;
-                var rotation = degreesToRadians(record.get("Cog"));
+                const rotation = degreesToRadians(record.get("Cog"));
                 style.getImage().setRotation(rotation);
             }
 
@@ -168,12 +168,12 @@ function vesselStyleFunction(feature, resolution) {
 }
 
 // Instantiating vessel layer
-var vesselsSource = Sintium.dataSource({
-    url: "https://www.barentswatch.no/api/v1/geodata/ais/positions?xmin=0&ymin=25&xmax=60&ymax=95",
+const vesselsSource = Sintium.dataSource({
+    url: "https://pilot.barentswatch.net/bwapi/v1/geodata/ais/positions?xmin=0&ymin=25&xmax=60&ymax=95",
     authenticator: authenticator
 });
 
-var vesselsLayer = Sintium.vectorLayer2({
+const vesselsLayer = Sintium.vectorLayer2({
     layerId: 'AIS',
     dataSource: vesselsSource,
     clustered: true,
@@ -193,8 +193,6 @@ vesselsLayer.addSelection({
     callback: vesselSelectionFunction
 });
 
-var selectedKey = null;
-
 function selectFeature(feature) {
     if (feature.getFeatureKey() !== selectedKey) return;
     map.getSelectionHandler().clearSelection();
@@ -208,9 +206,9 @@ vesselsLayer.getFeatureSource().onFeatureChange(function(features) {
 
 function showVesselAndBottomsheet(callsignal) {
     selectedKey = vesselMap[callsignal].key;
-    var record = vesselsSource.getDataContainer().getRecord(selectedKey);
+    const record = vesselsSource.getDataContainer().getRecord(selectedKey);
     if (!record) return;
-    var coordinates = [record.get("Lon"), record.get("Lat")];
+    const coordinates = [record.get("Lon"), record.get("Lat")];
     map.zoomToCoordinates(coordinates, unrollAtZoom);
     vesselsLayer.getFeatureSource().getFeatures().forEach(selectFeature);
 }

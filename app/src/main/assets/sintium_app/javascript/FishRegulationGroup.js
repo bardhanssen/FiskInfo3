@@ -1,6 +1,6 @@
 function jMessageSelectionFunction(e) {
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: record.get("name"),
         subTitle: "Midlertidig stengt område",
@@ -19,7 +19,7 @@ function jMessageSelectionFunction(e) {
 
 function prohibitedAreasSelectionFunction(e) {
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: record.get( "navn"),
         subTitle: "Forbudsområde - Korallrev",
@@ -31,7 +31,7 @@ function prohibitedAreasSelectionFunction(e) {
 
 function fjordLinesSelectionFunction(e) {
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: "Kysttorsk",
         subTitle: "Fjordlinjer - Kysttorsk",
@@ -41,12 +41,12 @@ function fjordLinesSelectionFunction(e) {
 }
 
 // Instantiating j messages layer
-var jMessagesSource = Sintium.dataSource({
+const jMessagesSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/jmelding/?format=JSON",
     useThread: false
 });
 
-var jMessagesLayer = Sintium.vectorLayer2({
+const jMessagesLayer = Sintium.vectorLayer2({
     layerId: "J-Meldinger - stengte omr.",
     dataSource: jMessagesSource,
     visible: false,
@@ -70,11 +70,11 @@ jMessagesLayer.addSelection({
 });
 
 // Instantiating prohibited areas layer
-var prohibitedAreasSource = Sintium.dataSource({
+const prohibitedAreasSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/coralreef/?format=JSON",
 });
 
-var prohibitedAreasLayer = Sintium.vectorLayer2({
+const prohibitedAreasLayer = Sintium.vectorLayer2({
     layerId: "Forbudsområde - Korallrev",
     dataSource: prohibitedAreasSource,
     visible: false,
@@ -99,11 +99,11 @@ prohibitedAreasLayer.addSelection({
 });
 
 // Instantiating fjord lines layer
-var fjordLinesSource = Sintium.dataSource({
+const fjordLinesSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/coastalcodregulations/?format=JSON",
 });
 
-var fjordLinesLayer = Sintium.vectorLayer2({
+const fjordLinesLayer = Sintium.vectorLayer2({
     layerId: "Fjordlinjer - kysttorsk",
     dataSource: fjordLinesSource,
     visible: false,
@@ -129,4 +129,4 @@ fjordLinesLayer.addSelection({
 
 
 // Instantiating fish regulations group
-var fishRegulationsGroup = Sintium.layerGroup("Fiskerireguleringer", jMessagesLayer, prohibitedAreasLayer, fjordLinesLayer);
+const fishRegulationsGroup = Sintium.layerGroup("Fiskerireguleringer", jMessagesLayer, prohibitedAreasLayer, fjordLinesLayer);

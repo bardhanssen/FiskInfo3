@@ -5,15 +5,16 @@ function closeInfoDrawer(e) {
 
 // Instantiating layer switcher
 
-var zoomControl = Sintium.zoomControl();
+const zoomControl = Sintium.zoomControl();
 
-var layerSwitcher = Sintium.sidebarLayerSwitcher({
+const layerSwitcher = Sintium.sidebarLayerSwitcher({
     position: "left"
 });
 
 // Instantiating map
-var map = Sintium.map({
+const map = Sintium.map({
     domId: "map",
+    // layers: [toolsLayer, vesselsLayer, seaBottomInstallationsLayer, maritimeBordersLayer, fishRegulationsGroup, seismicGroup, iceGroup, tradeAreaGroup],
     layers: [toolsLayer, vesselsLayer, seaBottomInstallationsLayer, maritimeBordersLayer, fishRegulationsGroup, seismicGroup, iceGroup, tradeAreaGroup],
     use: [infoDrawer, vesselInfoDrawer, layerSwitcher],
     controls: [zoomControl],

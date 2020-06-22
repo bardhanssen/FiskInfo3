@@ -5,9 +5,9 @@ vesselSearchData = [];
 vesselsSource
     .onDataAdded(function(dataContainer) {
         dataContainer.forEachRecord(function(vessel) {
-            var callSign = vessel.get("Callsign");
-            var name = vessel.get("Name");
-            var key = vessel.key();
+            const callSign = vessel.get("Callsign");
+            const name = vessel.get("Name");
+            const key = vessel.key();
 
             if (vesselMap[callSign] === undefined)
                 vesselMap[callSign] = { 
@@ -22,7 +22,7 @@ vesselsSource
             });
         });
 
-        var autoCompleteData = JSON.stringify(vesselSearchData);
+        const autoCompleteData = JSON.stringify(vesselSearchData);
         Android.setAutoCompleteData(autoCompleteData);
         Android.aisFinishedLoading();
     }, true);
@@ -30,14 +30,14 @@ vesselsSource
 toolsSource
     .onDataAdded(function(dataContainer) {
         dataContainer.forEachRecord(function(tool) {
-            var callSign = tool.get("ircs");
-            var toolTypeCode = tool.get("tooltypecode");
-            var setupTime = tool.get("setupdatetime");
-            var key = tool.key();
+            const callSign = tool.get("ircs");
+            const toolTypeCode = tool.get("tooltypecode");
+            const setupTime = tool.get("setupdatetime");
+            const key = tool.key();
 
-            var coordinate = getPositionFromGeometry(tool.getGeometry());
+            const coordinate = getPositionFromGeometry(tool.getGeometry());
 
-            var toolData = {
+            const toolData = {
                 type: formatToolType(toolTypeCode),
                 key: key,
                 info: {
