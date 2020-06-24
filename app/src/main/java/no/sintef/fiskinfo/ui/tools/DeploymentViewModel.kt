@@ -1,9 +1,12 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.app.Application
-import android.preference.PreferenceManager
-import androidx.lifecycle.*
-import no.sintef.fiskinfo.model.fishingfacility.*
+import android.location.Location
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
+import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
@@ -15,7 +18,7 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     val toolTypeCode = MutableLiveData<ToolTypeCode>()
     val setupTime = MutableLiveData<Date>()
     val comment = MutableLiveData<String>()
-    val locations = MutableLiveData<MutableList<Objects>>()
+    val locations = MutableLiveData<MutableList<Location>>()
 
 
 
@@ -35,7 +38,10 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         comment.value = ""
         setupTime.value = Date()
         toolTypeCode.value = ToolTypeCode.NETS
-        //deploymentInfo.value = null
+        val defaultLoc = Location("")
+        defaultLoc.latitude = 68.333332  //your coords of course
+        defaultLoc.longitude = 14.666664
+        locations.value = mutableListOf(defaultLoc)
     }
 
     fun canSendReport():Boolean {

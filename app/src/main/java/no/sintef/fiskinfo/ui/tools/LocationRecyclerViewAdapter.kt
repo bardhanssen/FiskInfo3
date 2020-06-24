@@ -1,11 +1,14 @@
 package no.sintef.fiskinfo.ui.tools
 
+import android.app.Application
 import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.databinding.LocationListItemBinding
+import no.sintef.fiskinfo.util.formatLocation
 
 class LocationRecyclerViewAdapter : RecyclerView.Adapter<LocationRecyclerViewAdapter.ViewHolder>() {
 
@@ -32,33 +35,29 @@ class LocationRecyclerViewAdapter : RecyclerView.Adapter<LocationRecyclerViewAda
     }
 
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
-/*
-        val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
-        val quality: TextView = itemView.findViewById(R.id.quality_string)
-        val qualityImage: ImageView = itemView.findViewById(R.id.quality_image)
-*/
-
+    class ViewHolder private constructor(val binding : LocationListItemBinding ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Location) {
-//            binding.sleep = item
-//            binding.executePendingBindings()
+            binding.locationItemTextView.text = formatLocation(item, binding.root.context)
+            //binding.locationItemTextView.text = item.toString()
+            //binding.executePendingBindings()
         }
 
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = LocationListItemBinding.inflate(layoutInflater, parent, false)
 
-
+                return ViewHolder(binding)
                 //val binding = ListItemSleepNightBinding.inflate(layoutInflater, parent, false)
                 //return ViewHolder(binding)
-
+/*
 
                 val view = layoutInflater
                     .inflate(R.layout.location_list_item, parent, false)
 
-                return ViewHolder(view)
+                return ViewHolder(view)*/
             }
         }
     }

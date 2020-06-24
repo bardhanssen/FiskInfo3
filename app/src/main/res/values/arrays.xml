@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="coordinate_formats">
+    <string-array name="coordinate_formats" translatable="false" >
         <item>D_M_S</item>
         <item>D_DM</item>
     </string-array>
@@ -8,7 +8,7 @@
         <item>Degrees, minutes, and seconds</item>
         <item>Degrees and decimal minutes</item>
     </string-array>
-    <string-array name="tool_types">
+    <string-array name="tool_types" translatable="false" >
         <item>LONG_LINE</item>
         <item>NETS</item>
         <item>CRAB_POTS</item>
@@ -28,7 +28,7 @@
         <item>Mooring system</item>
         <item>Unknown</item>
     </string-array>
-    <string-array name="tool_type_codes">
+    <string-array name="tool_type_codes" translatable="false" >
         <item>NETS</item>
         <item>LONGLINE</item>
         <item>CRABPOT</item>

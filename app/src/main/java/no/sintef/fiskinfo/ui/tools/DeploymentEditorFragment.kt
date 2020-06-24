@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
@@ -29,6 +30,7 @@ class DeploymentEditorFragment: Fragment() {
 
     private lateinit var mToolCodeAdapter : ToolTypeCodeArrayAdapter
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
+    private lateinit var locAdapter : LocationRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +56,9 @@ class DeploymentEditorFragment: Fragment() {
             }
             picker.show(fragmentManager!!, picker.toString())
         }
+        mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
+        locAdapter = LocationRecyclerViewAdapter()
+        mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
 
         return mBinding!!.root
     }
@@ -72,6 +77,8 @@ class DeploymentEditorFragment: Fragment() {
         mViewModel.setupTime.observe(this, Observer {
             mBinding.deploymentviewmodel = mViewModel
         })
+
+        mViewModel.locations.observe(this, Observer { locAdapter.locations = it })
     }
 
     override fun onDestroyView() {

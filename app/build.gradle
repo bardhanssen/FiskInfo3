@@ -25,6 +25,9 @@ android {
     dataBinding {
         enabled = true
     }
+    viewBinding {
+        enabled = true
+    }
     buildTypes {
         buildTypes.each {
             it.buildConfigField 'String', 'FISKINFO_BW_CLIENT_ID', fiskinfo_bwclientid
