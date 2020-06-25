@@ -99,5 +99,14 @@
     <fragment
             android:id="@+id/deployment_editor_fragment"
             android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
-            android:label="Report tool deployment" />
+            android:label="Report tool deployment" >
+        <action
+                android:id="@+id/action_deployment_editor_fragment_to_location_editor_fragment"
+                app:destination="@id/location_editor_fragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/location_editor_fragment"
+            android:name="no.sintef.fiskinfo.ui.tools.LocationEditorFragment"
+            android:label="location_editor_fragment"
+            tools:layout="@layout/location_editor_fragment" />
 </navigation>

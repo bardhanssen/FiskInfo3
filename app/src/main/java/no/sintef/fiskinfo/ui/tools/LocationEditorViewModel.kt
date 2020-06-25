@@ -37,7 +37,7 @@ class LocationEditorViewModel : ViewModel() {
 
             if (format == FORMAT_SECONDS) {
                 latitudeTertiary.value = latArray[2]
-                longitudeTertiary.value = latArray[3]
+                longitudeTertiary.value = longArray[2]
             } else {
                 latitudeTertiary.value = 0.0
                 longitudeTertiary.value = 0.0

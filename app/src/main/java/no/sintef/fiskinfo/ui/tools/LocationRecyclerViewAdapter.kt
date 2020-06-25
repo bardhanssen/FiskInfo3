@@ -2,12 +2,14 @@ package no.sintef.fiskinfo.ui.tools
 
 import android.location.Location
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.databinding.LocationListItemBinding
+import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.util.formatLocation
 
-class LocationRecyclerViewAdapter : RecyclerView.Adapter<LocationRecyclerViewAdapter.ViewHolder>() {
+class LocationRecyclerViewAdapter(private val mListener: LocationRecyclerViewAdapter.OnLocationInteractionListener) : RecyclerView.Adapter<LocationRecyclerViewAdapter.ViewHolder>() {
 
     var locations =  listOf<Location>()
         set(value) {
@@ -29,8 +31,11 @@ class LocationRecyclerViewAdapter : RecyclerView.Adapter<LocationRecyclerViewAda
     override fun onBindViewHolder(holder: LocationRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = locations[position]
         holder.bind(item)
+        holder.binding.root
+            .setOnClickListener { v ->
+            mListener.onEditLocationClicked(v, locations[holder.adapterPosition] )
+        }
     }
-
 
     class ViewHolder private constructor(val binding : LocationListItemBinding ) : RecyclerView.ViewHolder(binding.root){
 
@@ -47,6 +52,11 @@ class LocationRecyclerViewAdapter : RecyclerView.Adapter<LocationRecyclerViewAda
                 return ViewHolder(binding)
             }
         }
+    }
+
+    interface OnLocationInteractionListener {
+        fun onEditLocationClicked(v: View, location: Location)
+        //fun onViewSnapInMapClicked(v: View, snap: SnapMessage?)
     }
 
 
