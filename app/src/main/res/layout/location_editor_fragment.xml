@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/utility_lat_lon_row_set_position_button"
+                android:layout_toStartOf="@+id/set_to_current_position_icon"
                 android:orientation="vertical"
                 >
 
@@ -234,15 +234,15 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-                android:id="@+id/utility_lat_lon_row_set_position_button"
+        <ImageView
+                android:id="@+id/set_to_current_position_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                android:background="@drawable/ic_baseline_my_location_24"
+                android:src="@drawable/ic_baseline_my_location_24"/>
                 />
     </RelativeLayout>
 

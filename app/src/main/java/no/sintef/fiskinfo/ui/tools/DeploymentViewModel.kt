@@ -88,9 +88,10 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         locations.postValue(locations.value)
     }
 
-    fun removeLastLoc() {
+    fun removeLastLocation() {
         if (locations.value?.size!! > 1) {
             locations.value?.removeAt(locations.value!!.size-1)
+            locations.postValue(locations.value)
         }
     }
 

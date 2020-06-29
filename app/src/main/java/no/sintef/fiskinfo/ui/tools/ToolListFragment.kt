@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -83,6 +84,8 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
                         .show()
                 } else {
 
+                    var depViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
+                    depViewModel.clearInfo()
 
                     Navigation.findNavController(view)
                         .navigate(R.id.action_fragment_tools_to_deployment_editor_fragment)

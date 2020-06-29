@@ -64,9 +64,8 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         locAdapter = LocationRecyclerViewAdapter(this)
         mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
 
-        mBinding.addPositionButton.setOnClickListener {
-            mViewModel.addLocation()
-        }
+        mBinding.addPositionButton.setOnClickListener { mViewModel.addLocation()}
+        mBinding.removePositionButton.setOnClickListener { mViewModel.removeLastLocation() }
 
         return mBinding!!.root
     }
@@ -74,7 +73,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
-        mViewModel.clearInfo()
+
         mLocationViewModel = ViewModelProviders.of(activity!!).get(LocationEditorViewModel::class.java)
 
         // Refresh the full UI when there is a change, as this UI is small

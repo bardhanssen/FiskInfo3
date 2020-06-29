@@ -1,18 +1,15 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.location.Location
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import no.sintef.fiskinfo.R
+import androidx.lifecycle.ViewModelProviders
 import no.sintef.fiskinfo.databinding.LocationEditorFragmentBinding
-import no.sintef.fiskinfo.databinding.LocationListItemBinding
-import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
+import no.sintef.fiskinfo.util.GpsLocationTracker
 
 class LocationEditorFragment : Fragment() {
 
@@ -29,6 +26,7 @@ class LocationEditorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = LocationEditorFragmentBinding.inflate(layoutInflater, container, false)
+        mBinding!!.setToCurrentPositionIcon.setOnClickListener { setLocationToCurrentPosition() }
         return mBinding!!.root
     }
 
@@ -61,5 +59,22 @@ class LocationEditorFragment : Fragment() {
             })
 */
     }
+
+    fun setLocationToCurrentPosition() {
+        var tracker = GpsLocationTracker(requireContext())
+        if (tracker.canGetLocation()) {
+
+            var loc = tracker.location
+            if (loc != null) {
+                viewModel.initWithLocation(loc)
+            }
+
+        } else {
+            tracker.showSettingsAlert()
+        }
+    }
+
+
+
 
 }
