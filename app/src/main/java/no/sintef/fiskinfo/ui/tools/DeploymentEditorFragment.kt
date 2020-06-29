@@ -64,6 +64,10 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         locAdapter = LocationRecyclerViewAdapter(this)
         mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
 
+        mBinding.addPositionButton.setOnClickListener {
+            mViewModel.addLocation()
+        }
+
         return mBinding!!.root
     }
 

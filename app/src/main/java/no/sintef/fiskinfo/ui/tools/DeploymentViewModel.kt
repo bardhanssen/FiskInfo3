@@ -80,6 +80,21 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         }
     }
 
+    fun addLocation() {
+        val newLoc = Location("")
+        newLoc.latitude = 68.223332  //your coords of course
+        newLoc.longitude = 13.666664
+        locations.value?.add(newLoc)
+        locations.postValue(locations.value)
+    }
+
+    fun removeLastLoc() {
+        if (locations.value?.size!! > 1) {
+            locations.value?.removeAt(locations.value!!.size-1)
+        }
+    }
+
+
     val toolTypeCodeName: LiveData<String> = Transformations.map(toolTypeCode) {
             code ->  code.getLocalizedName(getApplication())
     }

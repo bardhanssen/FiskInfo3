@@ -37,11 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Setup date"
-                android:layout_marginTop="16dp"
                 app:startIconDrawable="@drawable/ic_date"
                 app:startIconContentDescription="@string/proto_close_drawer"
-                >
-            >
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/toolDetailsDateField"
@@ -57,12 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Time"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 app:startIconDrawable="@drawable/ic_time"
                 app:startIconContentDescription="@string/proto_close_drawer"
-                >
-            >
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/toolDetailsTimeField"
@@ -76,7 +72,7 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tool type"
@@ -98,10 +94,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Comment"
-                android:layout_marginTop="16dp">
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
+                android:layout_marginTop="16dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/toolDetailsCommentField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,18 +106,60 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ScrollView
+        <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/toolPositionRecyclerView"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+            >
+            <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/positions_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:text="@string/position"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true" />
 
-        </ScrollView>
+                <ImageButton
+                        android:id="@+id/add_position_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/remove_position_button"
+                        tools:src="@drawable/ic_baseline_add_location_24" />
+
+                <ImageButton
+                        android:id="@+id/remove_position_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        tools:src="@drawable/ic_baseline_add_location_24" />
+
+
+                <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/add_position_button"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="8dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/toolPositionRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </ScrollView>
+
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
