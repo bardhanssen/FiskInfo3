@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.abs
 import kotlin.math.absoluteValue
+import kotlin.math.floor
 
 
 class LocationEditorViewModel : ViewModel() {
@@ -78,13 +79,13 @@ class LocationEditorViewModel : ViewModel() {
         var sign = if (coordinate < 0) -1.0 else 1.0
         var absCoord = abs(coordinate)
 
-        var degrees = Math.floor(coordinate).toInt()
+        var degrees = floor(absCoord).toInt()
         absCoord -= degrees.toDouble()
         absCoord *= 60.0
         if (outputType == FORMAT_MINUTES)
             return doubleArrayOf(sign * degrees, absCoord);
 
-        val minutes = Math.floor(coordinate).toInt()
+        val minutes = floor(absCoord).toInt()
         absCoord -= minutes.toDouble()
         absCoord *= 60.0
 
