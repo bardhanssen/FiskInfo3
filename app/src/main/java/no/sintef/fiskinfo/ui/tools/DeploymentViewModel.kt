@@ -73,11 +73,12 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         }
     }
 
-    fun setSetupTime(date : Date) {
-        if (date != null) {
-            // TODO: pick out only date part (not time)
-            setupTime.value = date
-        }
+    fun setSetupTime(hourOfDay : Int, minutes : Int) {
+        val c = Calendar.getInstance()
+        c.time = setupTime.value
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        c.set(Calendar.MINUTE, minutes)
+        setupTime.value = c.time
     }
 
     fun addLocation() {

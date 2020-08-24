@@ -1,12 +1,17 @@
 package no.sintef.fiskinfo.ui.tools
 
+import android.app.Dialog
+import android.app.TimePickerDialog
 import android.location.Location
 import android.os.Bundle
+import android.text.format.DateFormat
+import android.text.format.DateFormat.is24HourFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -60,6 +65,12 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             }
             picker.show(fragmentManager!!, picker.toString())
         }
+
+        mBinding.toolDetailsTimeField.setOnClickListener {
+            TimePickerFragment().show(fragmentManager!!, "timePicker")
+        }
+
+
         mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
         locAdapter = LocationRecyclerViewAdapter(this)
         mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
@@ -97,6 +108,26 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     override fun onEditLocationClicked(v: View, location: Location) {
         mLocationViewModel.initWithLocation(location)
         Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
+    }
+
+
+    class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+        private lateinit var mViewModel: DeploymentViewModel
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            // Use the current time as the default values for the picker
+            val c = Calendar.getInstance()
+            val hour = c.get(Calendar.HOUR_OF_DAY)
+            val minute = c.get(Calendar.MINUTE)
+            mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
+
+            // Create a new instance of TimePickerDialog and return it
+            return TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
+        }
+
+        override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
+            mViewModel.setSetupTime(hourOfDay, minute);
+            // Do something with the time chosen by the user
+        }
     }
 
 }
