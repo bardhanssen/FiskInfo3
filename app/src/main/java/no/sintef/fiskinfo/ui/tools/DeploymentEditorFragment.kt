@@ -53,8 +53,16 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.toolTypeCode.value = parent.getItemAtPosition(position) as ToolTypeCode }
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
-        mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
-            val builder : MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+//        mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
+        mBinding.toolDetailsDateField.setOnClickListener  {
+            val builder : MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
+            builder.setSelection(mViewModel.setupTime.value!!.time)
+            //mViewModel.setupTime.value!!.time
+            //mViewModel.setupTime.value?.time
+
+            //val currentTimeInMillis = Calendar.getInstance().timeInMillis
+            //builder.setSelection(currentTimeInMillis)
+
             //val currentTimeInMillis = Calendar.getInstance().timeInMillis
             //builder.setSelection(currentTimeInMillis)
             val picker : MaterialDatePicker<*> = builder.build()
@@ -114,11 +122,12 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         private lateinit var mViewModel: DeploymentViewModel
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
             // Use the current time as the default values for the picker
             val c = Calendar.getInstance()
+            c.time = mViewModel.setupTime.value
             val hour = c.get(Calendar.HOUR_OF_DAY)
             val minute = c.get(Calendar.MINUTE)
-            mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
 
             // Create a new instance of TimePickerDialog and return it
             return TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))

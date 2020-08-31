@@ -69,7 +69,15 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     fun setSetupDate(date : Date) {
         if (date != null) {
             // TODO: pick out only date part (not time)
-            setupTime.value = date
+            val c = Calendar.getInstance()
+            c.time = setupTime.value
+
+            val newDateC = Calendar.getInstance()
+            newDateC.time = date
+            c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
+            c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
+
+            setupTime.value = c.time
         }
     }
 
