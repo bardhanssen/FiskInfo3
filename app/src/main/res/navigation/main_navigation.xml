@@ -106,7 +106,7 @@
     </fragment>
     <fragment
             android:id="@+id/location_editor_fragment"
-            android:name="no.sintef.fiskinfo.ui.tools.LocationEditorFragment"
+            android:name="no.sintef.fiskinfo.ui.tools.LocationDmsEditorFragment"
             android:label="location_editor_fragment"
-            tools:layout="@layout/location_editor_fragment" />
+            tools:layout="@layout/location_dms_editor_fragment" />
 </navigation>

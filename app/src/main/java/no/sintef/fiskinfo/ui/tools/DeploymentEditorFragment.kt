@@ -93,7 +93,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
 
-        mLocationViewModel = ViewModelProviders.of(activity!!).get(LocationEditorViewModel::class.java)
+        mLocationViewModel = ViewModelProviders.of(activity!!).get(LocationDmsEditorViewModel::class.java)
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(

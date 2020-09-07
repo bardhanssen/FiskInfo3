@@ -9,68 +9,14 @@ import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 
-class LocationEditorViewModel : ViewModel() {
-    var format = FORMAT_SECONDS // TODO: Get from preferences
-
+open class LocationEditorViewModel : ViewModel() {
     val latitudeSouth = MutableLiveData<Boolean>()
-    val latitudePrimary = MutableLiveData<Double>()
-    val latitudeSecondary = MutableLiveData<Double>()
-    val latitudeTertiary = MutableLiveData<Double>()
-
     val longitudeWest = MutableLiveData<Boolean>()
-    val longitudePrimary = MutableLiveData<Double>()
-    val longitudeSecondary = MutableLiveData<Double>()
-    val longitudeTertiary = MutableLiveData<Double>()
 
-    fun initWithLocation(location : Location) {
+    open fun initWithLocation(location : Location) {
         latitudeSouth.value = location.latitude < 0
         longitudeWest.value = location.longitude < 0
-
-        var latArray = splitCoordinate(location.latitude.absoluteValue, format)
-        var longArray = splitCoordinate(location.longitude.absoluteValue, format)
-
-        latitudePrimary.value = latArray[0]
-        longitudePrimary.value = longArray[0]
-
-        if (format == FORMAT_MINUTES || format == FORMAT_SECONDS) {
-            latitudeSecondary.value = latArray[1]
-            longitudeSecondary.value = longArray[1]
-
-            if (format == FORMAT_SECONDS) {
-                latitudeTertiary.value = latArray[2]
-                longitudeTertiary.value = longArray[2]
-            } else {
-                latitudeTertiary.value = 0.0
-                longitudeTertiary.value = 0.0
-            }
-        }
    }
-
-    fun validateLocation():Boolean {
-        return true
-    }
-
-    fun getLocation():Location? {
-        if (!validateLocation())
-            return null
-
-        var loc = Location("")
-
-        loc.latitude = when (format) {
-            FORMAT_DEGREES -> buildCoordinate(doubleArrayOf(latitudePrimary.value!!), latitudeSouth.value!! )
-            FORMAT_MINUTES -> buildCoordinate(doubleArrayOf(latitudePrimary.value!!, latitudeSecondary.value!!), latitudeSouth.value!! )
-            FORMAT_SECONDS -> buildCoordinate(doubleArrayOf(latitudePrimary.value!!, latitudeSecondary.value!!, latitudeTertiary.value!!), latitudeSouth.value!! )
-            else -> 0.0
-        }
-
-        loc.longitude = when (format) {
-            FORMAT_DEGREES -> buildCoordinate(doubleArrayOf(longitudePrimary.value!!), longitudeWest.value!! )
-            FORMAT_MINUTES -> buildCoordinate(doubleArrayOf(longitudePrimary.value!!, longitudeSecondary.value!!), longitudeWest.value!! )
-            FORMAT_SECONDS -> buildCoordinate(doubleArrayOf(longitudePrimary.value!!, longitudeSecondary.value!!, longitudeTertiary.value!!), longitudeWest.value!! )
-            else -> 0.0
-        }
-        return loc
-    }
 
     fun splitCoordinate(coordinate: Double, outputType: Int): DoubleArray {
         if (outputType == FORMAT_DEGREES)
