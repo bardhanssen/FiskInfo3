@@ -6,9 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.text.format.DateFormat.is24HourFormat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -46,6 +44,8 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         savedInstanceState: Bundle?
     ): View? {
         _mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_deployment_editor_fragment, container, false)
+
+        setHasOptionsMenu(true)
 
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(context, R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
         mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
@@ -106,6 +106,24 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         })
 
         mViewModel.locations.observe(this, Observer { locAdapter.locations = it })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.tool_deployment_editor_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.send_tool_report_action) {
+            if (mViewModel.canSendReport()) {
+                mViewModel.sendReport();
+                Navigation.findNavController(this.view!!).navigateUp()
+            } else {
+                // TODO give feedback that it cannot be sent
+            }
+            return true
+        }
+        return false
     }
 
     override fun onDestroyView() {
