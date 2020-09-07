@@ -48,7 +48,9 @@
                             android:id="@+id/toolDetailsDateField"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="date"
+                            android:inputType="@{InputType.TYPE_NULL}"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:text="@{UtilsKt.formatDate(deploymentviewmodel.setupTime)}"
                             />
 
@@ -67,7 +69,9 @@
                             android:id="@+id/toolDetailsTimeField"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="time"
+                            android:inputType="@{InputType.TYPE_NULL}"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:text="@{UtilsKt.formatTime(deploymentviewmodel.setupTime)}"
                             />
 
@@ -89,6 +93,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="@{InputType.TYPE_NULL}"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:text="@{deploymentviewmodel.toolTypeCodeName}"
                             />
                 </com.google.android.material.textfield.TextInputLayout>
