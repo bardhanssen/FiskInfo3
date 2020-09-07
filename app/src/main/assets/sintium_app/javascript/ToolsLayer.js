@@ -2,31 +2,31 @@ function toolsSelectionFunction(e) {
     if (selectedFeature) unsetSelectedFeature();
 
     selectedFeature = e.popFeature();
-    var coordinate = selectedFeature.getCenterCoordinate();
-    var record = e.popRecord();
-    var toolTypeCode = record.get("tooltypecode");
-    var toolName = formatToolType(toolTypeCode);
+    const coordinate = selectedFeature.getCenterCoordinate();
+    const record = e.popRecord();
+    const toolTypeCode = record.get("toolTypeCode");
+    const toolName = formatToolType(toolTypeCode);
 
-    var vesselName = record.get("vesselname");
-    var callSignal = record.get("ircs");
+    const vesselName = record.get("vesselName");
+    const callSignal = record.get("ircs");
 
     infoTemplate.setData({
         title: toolName,
         subTitle: "Redskap",
         info: {
-            "Tid i havet": formatDateDifference(record.get("setupdatetime")),
-            "Satt": formattedDate(record.get("setupdatetime")),
+            "Tid i havet": formatDateDifference(record.get("setupDateTime")),
+            "Satt": formattedDate(record.get("setupDateTime")),
             "Posisjon": formatLocation(coordinate),
             "Se Marinogram": marinogramLink(coordinate)
         },
         infoWithHeader: {
             "Om Eier": {
                 "Fartøy": showVesselLink(callSignal, vesselName),
-                "Telefon": record.get("vesselphone"),
+                "Telefon": record.get("vesselPhone"),
                 "Kallesignal(IRCS)": callSignal,
                 "MMSI": record.get("mmsi"),
                 "IMO": record.get("imo"),
-                "E-post": record.get("vesselemail")
+                "E-post": record.get("vesselEmail")
             }
         },
         moreInfoFish: true
@@ -35,21 +35,34 @@ function toolsSelectionFunction(e) {
     infoDrawer.open(null, closeSheetCallBack);
 }
 
-var toolsSource = Sintium.dataSource({
-    url: "https://www.barentswatch.no/api/v1/geodata/download/fishingfacility/?format=JSON",
+const toolsSource = Sintium.dataSource({
+    url: "https://pilot.barentswatch.net/bwapi/v1/geodata/fishingfacility/",
+    useCrossfilter: true,
+    preprocess: data => JSON.parse(data).fishingFacilities,
+    columns: {
+        wktGeometry: "geometryWKT"
+    },
     authenticator: authenticator
 });
 
-var toolsLayerColors = [ "#2b83ba", "#d4c683", "#abdda4", "#fdae61", "#6bb0af", "#d7191c", "#ea643f"];
+const toolsLayerColors = [
+    "#2b83ba",
+    "#d4c683",
+    "#abdda4",
+    "#fdae61",
+    "#6bb0af",
+    "#d7191c",
+    "#ea643f",
+    "#222831"
+];
 
-var toolsLayer = Sintium.vectorLayer2({
+const toolsLayer = Sintium.vectorLayer2({
     layerId: 'Redskap',
     dataSource: toolsSource,
-    clusteredByProperty: "tooltypecode",
-    geometryProperty: "geometry",
+    clusteredByProperty: "toolTypeCode",
     addPointToGeometries: true,
-    visible: false,
-    lazyLoad: false,
+    visible: true,
+    lazyLoad: true,
     useThread: true,
     unrollClustersAtZoom: unrollAtZoom,
     clusterRadius: 150,
@@ -60,7 +73,7 @@ var toolsLayer = Sintium.vectorLayer2({
         single: {
             size: 18,
             shape: "triangle",
-            textFromProperty: "tooltypecode",
+            textFromProperty: "toolTypeCode",
             textOffset: 28
         }
     }
@@ -85,10 +98,10 @@ toolsLayer.getFeatureSource().onFeatureChange(function(features) {
 
 function locateTool(key) {
     selectedKey = key;
-    var record = toolsSource.getDataContainer().getRecord(selectedKey);
+    const record = toolsSource.getDataContainer().getRecord(selectedKey);
     if (!record) return;
-    var geometry = record.getGeometry();
-    var coordinates = ol.extent.getCenter(geometry.getExtent());
+    const geometry = record.getGeometry();
+    const coordinates = ol.extent.getCenter(geometry.getExtent());
     map.zoomToCoordinates(coordinates, unrollAtZoom);
     toolsLayer.getFeatureSource().getFeatures().forEach(selectFeature);
 }

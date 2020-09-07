@@ -1,19 +1,19 @@
-var infoTemplate = Sintium.templateWidget({
+const infoTemplate = Sintium.templateWidget({
     domId: "info-template"
 });
 
-var infoDrawer = Sintium.drawer({
+const infoDrawer = Sintium.drawer({
     position: 'bottom',
     widgets: [infoTemplate],
     previewSize: 72,
     size: '100%'
 });
 
-var vesselInfoTemplate = Sintium.templateWidget({
+const vesselInfoTemplate = Sintium.templateWidget({
     domId: "vessel-info-template"
 });
 
-var vesselInfoDrawer = Sintium.drawer({
+const vesselInfoDrawer = Sintium.drawer({
     position: 'bottom',
     widgets: [vesselInfoTemplate],
     previewSize: 72,

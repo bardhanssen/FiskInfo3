@@ -2,7 +2,7 @@ function ongoingSeismicActivitySelectionFunction(e) {
     if (selectedFeature) unsetSelectedFeature();
 
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
 
     infoTemplate.setData({
         title: record.get("surveyname"),
@@ -28,7 +28,7 @@ function plannedSeismicActivitySelectionFunction(e) {
     if (selectedFeature) unsetSelectedFeature();
 
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: record.get("surveyname"),
         subTitle: "Planlagt seismikk",
@@ -51,7 +51,7 @@ function plannedSeismicActivitySelectionFunction(e) {
 
 function ongoingElectromagneticSurveysSelectionFunction(e) {
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: record.get("surveyname"),
         subTitle: "Pågående elektromagnetiske undersøkelser",
@@ -74,7 +74,7 @@ function ongoingElectromagneticSurveysSelectionFunction(e) {
 
 function plannedElectromagneticSurveysFunction(e) {
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: record.get("surveyname"),
         subTitle: "Planlagte elektromagnetiske undersøkelser",
@@ -96,11 +96,11 @@ function plannedElectromagneticSurveysFunction(e) {
 }
 
 // Instantiating ongoing seismic activity layer
-var ongoingSeismicActivitySource = Sintium.dataSource({
+const ongoingSeismicActivitySource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/npdsurveyongoing/?format=JSON",
 });
 
-var ongoingSeismicActivityLayer = Sintium.vectorLayer2({
+const ongoingSeismicActivityLayer = Sintium.vectorLayer2({
     layerId: "Pågående seismikk",
     dataSource: ongoingSeismicActivitySource,
     visible: false,
@@ -125,11 +125,11 @@ ongoingSeismicActivityLayer.addSelection({
 });
 
 // Instantiating planned seismic activity layer
-var plannedSeismicActivitySource = Sintium.dataSource({
+const plannedSeismicActivitySource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/npdsurveyplanned/?format=JSON",
 });
 
-var plannedSeismicActivityLayer = Sintium.vectorLayer2({
+const plannedSeismicActivityLayer = Sintium.vectorLayer2({
     layerId: "Planlagt seismikk",
     dataSource: plannedSeismicActivitySource,
     visible: false,
@@ -154,12 +154,12 @@ plannedSeismicActivityLayer.addSelection({
 });
 
 // Instantiating planned seismic activity layer
-var ongoingElectromagneticSurveysSource = Sintium.dataSource({
+const ongoingElectromagneticSurveysSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/npdemsurveyongoing/?format=JSON",
     dataProjection: "EPSG:23032",
 });
 
-var ongoingElectromagneticSurveysLayer = Sintium.vectorLayer2({
+const ongoingElectromagneticSurveysLayer = Sintium.vectorLayer2({
     layerId: "Pågående elektromagnetiske undersøkelser",
     dataSource: ongoingElectromagneticSurveysSource,
     visible: false,
@@ -184,12 +184,12 @@ ongoingElectromagneticSurveysLayer.addSelection({
 });
 
 // Instantiating planned seismic activity layer
-var plannedElectromagneticSurveysSource = Sintium.dataSource({
+const plannedElectromagneticSurveysSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/npdemsurveyplanned/?format=JSON",
     dataProjection: "EPSG:23032"
 });
 
-var plannedElectromagneticSurveysLayer = Sintium.vectorLayer2({
+const plannedElectromagneticSurveysLayer = Sintium.vectorLayer2({
     layerId: "Planlagte elektromagnetiske undersøkelser",
     dataSource: plannedElectromagneticSurveysSource,
     visible: false,
@@ -214,4 +214,4 @@ plannedElectromagneticSurveysLayer.addSelection({
 });
 
 // Instantiating seismic group
-var seismicGroup = Sintium.layerGroup("Seismikk", ongoingSeismicActivityLayer, plannedSeismicActivityLayer, ongoingElectromagneticSurveysLayer, plannedElectromagneticSurveysLayer);
+const seismicGroup = Sintium.layerGroup("Seismikk", ongoingSeismicActivityLayer, plannedSeismicActivityLayer, ongoingElectromagneticSurveysLayer, plannedElectromagneticSurveysLayer);

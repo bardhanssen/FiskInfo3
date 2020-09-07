@@ -1,6 +1,6 @@
 function maritimeBordersSelection(e) {
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
+    const record = e.popRecord();
     infoTemplate.setData({
         title: record.get("navn"),
         subTitle: "Martime grenser",
@@ -24,11 +24,11 @@ function maritimeBordersSelection(e) {
 }
 
 // Instantiating maritime borders layer
-var maritimeBordersSource = Sintium.dataSource({
+const maritimeBordersSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/maritimeboundary/?format=JSON",
 });
 
-var maritimeBordersLayer = Sintium.vectorLayer2({
+const maritimeBordersLayer = Sintium.vectorLayer2({
     layerId: "Maritime grenser",
     dataSource: maritimeBordersSource,
     visible: false,

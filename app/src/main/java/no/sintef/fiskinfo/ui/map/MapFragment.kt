@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.ui.map
 
+//import no.sintef.fiskinfo.ui.login.LoginViewModel
 import android.Manifest.permission
 import android.app.Dialog
 import android.content.Context
@@ -15,17 +16,18 @@ import android.widget.Button
 import android.widget.TableLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProviders
+import net.openid.appauth.AuthState.AuthStateAction
+import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.MainActivity
 import no.sintef.fiskinfo.R
-//import no.sintef.fiskinfo.ui.login.LoginViewModel
 import no.sintef.fiskinfo.util.AuthStateManager
 import no.sintef.fiskinfo.utilities.ui.ToolLegendRow
 import no.sintef.fiskinfo.utilities.ui.UtilityDialogs
 import org.json.JSONArray
 import org.json.JSONException
 import java.util.*
+
 
 class MapFragment : Fragment() {
     val FRAGMENT_TAG = "MapFragment"
@@ -39,6 +41,7 @@ class MapFragment : Fragment() {
     private lateinit var webView: WebView
 //    private val loginViewModel: LoginViewModel by activityViewModels()
     private lateinit var authStateManager : AuthStateManager
+    private var mAccessToken : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +53,12 @@ class MapFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
         authStateManager = AuthStateManager.getInstance(this.requireContext())
+        val authService = AuthorizationService(requireContext())
+        authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
+            if (ex == null) {
+                mAccessToken = accessToken
+            }
+        } )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -131,7 +140,7 @@ class MapFragment : Fragment() {
             }
         })
 
-
+        webView.settings.allowUniversalAccessFromFileURLs = true;
         webView.loadUrl("file:///android_asset/sintium_app/index.html")
     }
 
@@ -145,7 +154,17 @@ class MapFragment : Fragment() {
 
         @android.webkit.JavascriptInterface
         fun getToken(): String? {
-            return authStateManager.current.accessToken
+            val manTok = authStateManager.current.accessToken
+            if (mAccessToken != null) {
+                if (manTok.equals(mAccessToken))
+                    return manTok
+                else
+                    return mAccessToken
+            }
+            else
+                return manTok
+            //return mAccessToken
+            //return authStateManager.current.accessToken
 
             //return loginViewModel.token?.access_token
         }

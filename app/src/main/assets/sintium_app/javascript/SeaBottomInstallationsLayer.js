@@ -2,8 +2,8 @@ function seaBottomInstallationsFunction(e) {
     if (selectedFeature) unsetSelectedFeature(selectedFeature);
 
     selectedFeature = e.popFeature();
-    var record = e.popRecord();
-    var coordinate = selectedFeature.getCenterCoordinate();
+    const record = e.popRecord();
+    const coordinate = selectedFeature.getCenterCoordinate();
     infoTemplate.setData({
         title: record.get("facname"),
         subTitle: "Havbunnsinstallasjoner",
@@ -23,11 +23,11 @@ function seaBottomInstallationsFunction(e) {
 }
 
 // Instantiating sea bottom installations layer
-var seaBottomInstallationsSource = Sintium.dataSource({
+const seaBottomInstallationsSource = Sintium.dataSource({
     url: "https://www.barentswatch.no/api/v1/geodata/download/npdfacility/?format=JSON",
 });
 
-var seaBottomInstallationsLayer = Sintium.vectorLayer2({
+const seaBottomInstallationsLayer = Sintium.vectorLayer2({
     layerId: "Havbunnsinstallasjoner",
     dataSource: seaBottomInstallationsSource,
     visible: false,

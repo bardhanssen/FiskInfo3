@@ -1,9 +1,9 @@
-var selectedFeature;
+let selectedFeature;
+let selectedKey = null;
 
-var tokenApiURL = "https://www.barentswatch.no/api/token";
-var token = Android.getToken();
-var authenticator = Sintium.OAuthAuthenticator(tokenApiURL, token);
-
-var unrollAtZoom = 12;
+const tokenApiURL = "https://www.barentswatch.no/api/token";
+const token = Android.getToken();
+const authenticator = Sintium.OAuthAuthenticator(tokenApiURL, token);
+const unrollAtZoom = 12;
 
 vesselMap = {};
