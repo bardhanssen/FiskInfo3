@@ -48,5 +48,4 @@ open class LocationEditorViewModel : ViewModel() {
         return if (negate) -coord else coord
     }
 
-
 }

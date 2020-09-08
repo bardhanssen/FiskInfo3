@@ -97,16 +97,16 @@
     <fragment android:id="@+id/echogram_viewer_fragment" android:name="no.sintef.fiskinfo.ui.snap.EchogramViewerFragment"
               android:label="Echogram Viewer"/>
     <fragment
-            android:id="@+id/deployment_editor_fragment"
-            android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
-            android:label="Report tool deployment" >
+        android:id="@+id/deployment_editor_fragment"
+        android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
+        android:label="Report tool">
         <action
-                android:id="@+id/action_deployment_editor_fragment_to_location_editor_fragment"
-                app:destination="@id/location_editor_fragment" />
+            android:id="@+id/action_deployment_editor_fragment_to_location_editor_fragment"
+            app:destination="@id/location_editor_fragment" />
     </fragment>
     <fragment
-            android:id="@+id/location_editor_fragment"
-            android:name="no.sintef.fiskinfo.ui.tools.LocationDmsEditorFragment"
-            android:label="location_editor_fragment"
-            tools:layout="@layout/location_dms_editor_fragment" />
+        android:id="@+id/location_editor_fragment"
+        android:name="no.sintef.fiskinfo.ui.tools.LocationDmsEditorFragment"
+        android:label="Edit position"
+        tools:layout="@layout/location_dms_editor_fragment" />
 </navigation>

@@ -14,13 +14,13 @@ import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
 import no.sintef.fiskinfo.databinding.SnapEditorFragmentBinding
 import no.sintef.fiskinfo.util.GpsLocationTracker
 
-class LocationDmsEditorFragment : Fragment() {
+class LocationDmmEditorFragment : Fragment() {
 
     companion object {
-        fun newInstance() = LocationDmsEditorFragment()
+        fun newInstance() = LocationDmmEditorFragment()
     }
 
-    private lateinit var viewModel: LocationDmsEditorViewModel
+    private lateinit var viewModel: LocationDmmEditorViewModel
     private var mBinding: LocationDmsEditorFragmentBinding? = null
 
     override fun onCreateView(
@@ -41,9 +41,9 @@ class LocationDmsEditorFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(LocationDmsEditorViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(LocationDmmEditorViewModel::class.java)
 
-        viewModel.dmsLocation.observe(this, Observer { dmsLoc ->
+  /*      viewModel.dmsLocation.observe(this, Observer { dmsLoc ->
             if (dmsLoc != null) {
                 mBinding?.viewmodel = dmsLoc
             }
@@ -57,7 +57,7 @@ class LocationDmsEditorFragment : Fragment() {
         viewModel.longitudeMinutes.observe(this, Observer {mBinding?.longitudeMinutesEditText?.setText(it.toString())})
         viewModel.longitudeSeconds.observe(this, Observer {mBinding?.longitudeSecondsEditText?.setText(it.toString())})
         viewModel.longitudeWest.observe(this, Observer {mBinding?.longitudeCardinalDirectionSwitch?.isChecked = it})
-
+*/
 /*        mViewModel.locations.observe(this, Observer { locAdapter.locations = it })
 
         toolTypeCodeName.observe(

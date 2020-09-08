@@ -20,6 +20,8 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
     val longitudeMinutes = MutableLiveData<Double>()
     val longitudeSeconds = MutableLiveData<Double>()
 
+    var dmsLocation = MutableLiveData<DMSLocation>()
+
     override fun initWithLocation(location : Location) {
         super.initWithLocation(location)
 
@@ -33,6 +35,12 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
         longitudeDegrees.value = longArray[0]
         longitudeMinutes.value = longArray[1]
         longitudeSeconds.value = longArray[2]
+
+        dmsLocation.value = DMSLocation(
+            latitudeSouth.value!!, latArray[0], latArray[1], latArray[2],
+            longitudeWest.value!!, longArray[0], longArray[1], longArray[2]
+        )
+
    }
 
     fun validateLocation():Boolean {
@@ -49,5 +57,16 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
         buildCoordinate(doubleArrayOf(longitudeDegrees.value!!, longitudeMinutes.value!!, longitudeSeconds.value!!), longitudeWest.value!! )
         return loc
     }
+
+
+    data class DMSLocation(var latitudeSouth : Boolean,
+                           val latitudeDegrees : Double,
+                           val latitudeMinutes : Double,
+                           val latitudeSeconds : Double,
+
+                           var longitudeWest : Boolean,
+                           val longitudeDegrees : Double,
+                           val longitudeMinutes : Double,
+                           val longitudeSeconds : Double)
 
 }

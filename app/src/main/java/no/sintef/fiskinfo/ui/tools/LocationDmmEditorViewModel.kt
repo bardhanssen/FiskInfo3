@@ -12,6 +12,8 @@ import kotlin.math.floor
 class LocationDmmEditorViewModel : LocationEditorViewModel() {
     var format = FORMAT_MINUTES
 
+    var dmmLocation = MutableLiveData<DMMLocation>();
+
     val latitudeDegrees = MutableLiveData<Double>()
     val latitudeDecimalMinutes = MutableLiveData<Double>()
 
@@ -31,6 +33,12 @@ class LocationDmmEditorViewModel : LocationEditorViewModel() {
 
         longitudeDegrees.value = longArray[0]
         longitudeDecimalMinutes.value = longArray[1]
+
+        dmmLocation.value = DMMLocation(
+            latitudeSouth.value!!, latArray[0], latArray[1],
+            longitudeWest.value!!, longArray[0], longArray[1] )
+
+
    }
 
     fun validateLocation():Boolean {
@@ -47,5 +55,13 @@ class LocationDmmEditorViewModel : LocationEditorViewModel() {
         return loc
     }
 
+
+    data class DMMLocation(var latitudeSouth : Boolean,
+                           val latitudeDegrees : Double,
+                           val latitudeDecimalMinutes : Double,
+
+                           var longitudeWest : Boolean,
+                           val longitudeDecimalDegrees : Double,
+                           val longitudeMinutes : Double)
 
 }
