@@ -13,6 +13,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.ParseException
 import java.util.*
+/*
 
 object DoubleConverter {
 @InverseMethod("stringToDouble")
@@ -21,7 +22,6 @@ object DoubleConverter {
     value: Double
 ): String {
     return value.toString()
-/*
     val numberFormat: NumberFormat = getNumberFormat(view)
     try {
         // Don't return a different value if the parsed value
@@ -34,7 +34,7 @@ object DoubleConverter {
     } catch (e: ParseException) {
         // Old number was broken
     }
-    return numberFormat.format(value)*/
+    return numberFormat.format(value)
 }
 
 @JvmStatic fun  stringToDouble(
@@ -63,16 +63,16 @@ fun getNumberFormat(view: View): NumberFormat {
     }
     return format
 }
+*/
 
-/*
     object DoubleConverter {
         @InverseMethod("stringToDouble")
         @JvmStatic fun doubleToString(
-            view: EditText, oldValue: Double,
+            //view: EditText,
             value: Double
         ): String {
-            val numberFormat: NumberFormat = getNumberFormat(view)
-            try {
+            val numberFormat: NumberFormat = NumberFormat.getNumberInstance(); //getNumberFormat(view)
+/*            try {
                 // Don't return a different value if the parsed value
                 // doesn't change
                 val inView = view.text.toString()
@@ -82,28 +82,28 @@ fun getNumberFormat(view: View): NumberFormat {
                 }
             } catch (e: ParseException) {
                 // Old number was broken
-            }
+            }*/
             return numberFormat.format(value)
         }
 
-        @InverseMethod("doubleToString")
         @JvmStatic fun  stringToDouble(
-            view: EditText, oldValue: Double,
+            //view: EditText,
             value: String
         ): Double {
-            val numberFormat: NumberFormat = getNumberFormat(view)
+            val numberFormat: NumberFormat =  NumberFormat.getNumberInstance(); //getNumberFormat(view)
             return try {
                 numberFormat.parse(value).toDouble()
             } catch (e: ParseException) {
-                val resources: Resources = view.resources
-                val errStr: String = "not a valid number" //resources.getString(R.string.badNumber)
-                view.error = errStr
-                oldValue.toDouble()
+                //val resources: Resources = view.resources
+                //val errStr: String = "not a valid number" //resources.getString(R.string.badNumber)
+                //view.error = errStr
+                0.0
+                //oldValue.toDouble()
             }
         }
 
 
-        fun getNumberFormat(view: View): NumberFormat {
+        @JvmStatic  fun getNumberFormat(view: View): NumberFormat {
             val resources: Resources = view.getResources()
             val locale: Locale = resources.getConfiguration().locale
             val format: NumberFormat = NumberFormat.getNumberInstance(locale)
@@ -117,7 +117,7 @@ fun getNumberFormat(view: View): NumberFormat {
 
 
 
- */
+
 
 
 

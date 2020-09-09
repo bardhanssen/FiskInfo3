@@ -60,13 +60,13 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
 
 
     data class DMSLocation(var latitudeSouth : Boolean,
-                           val latitudeDegrees : Double,
-                           val latitudeMinutes : Double,
-                           val latitudeSeconds : Double,
+                           var latitudeDegrees : Double,
+                           var latitudeMinutes : Double,
+                           var latitudeSeconds : Double,
 
                            var longitudeWest : Boolean,
-                           val longitudeDegrees : Double,
-                           val longitudeMinutes : Double,
-                           val longitudeSeconds : Double)
+                           var longitudeDegrees : Double,
+                           var longitudeMinutes : Double,
+                           var longitudeSeconds : Double)
 
 }
