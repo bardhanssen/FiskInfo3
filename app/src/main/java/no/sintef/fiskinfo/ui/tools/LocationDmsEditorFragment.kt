@@ -42,12 +42,12 @@ class LocationDmsEditorFragment : Fragment() {
 
         root.latitude_degrees_edit_text.addTextChangedListener(
             IntRangeValidator(root.latitude_degrees_edit_text, 0, true, 90, true,
-                { viewModel.dmsLocation.value!!.latitudeDegrees = it.toDouble() })
+                { viewModel.dmsLocation.value!!.latitudeDegrees = it.toInt() })
         )
 
         root.latitude_minutes_edit_text.addTextChangedListener(
             IntRangeValidator(root.latitude_minutes_edit_text, 0, true, 59, true,
-                { viewModel.dmsLocation.value!!.latitudeMinutes = it.toDouble() })
+                { viewModel.dmsLocation.value!!.latitudeMinutes = it.toInt() })
         )
 
         root.latitude_seconds_edit_text.addTextChangedListener(
@@ -58,12 +58,12 @@ class LocationDmsEditorFragment : Fragment() {
 
         root.longitude_degrees_edit_text.addTextChangedListener(
             IntRangeValidator(root.longitude_degrees_edit_text, 0, true, 180, true,
-                { viewModel.dmsLocation.value!!.longitudeDegrees = it.toDouble() })
+                { viewModel.dmsLocation.value!!.longitudeDegrees = it.toInt() })
         )
 
         root.longitude_minutes_edit_text.addTextChangedListener(
             IntRangeValidator(root.longitude_minutes_edit_text, 0, true, 59, true,
-                { viewModel.dmsLocation.value!!.longitudeMinutes = it.toDouble() })
+                { viewModel.dmsLocation.value!!.longitudeMinutes = it.toInt() })
         )
 
         root.longitude_seconds_edit_text.addTextChangedListener(
