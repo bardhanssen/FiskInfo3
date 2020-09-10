@@ -53,8 +53,10 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
 
         var loc = Location("")
 
-        buildCoordinate(doubleArrayOf(latitudeDegrees.value!!, latitudeMinutes.value!!, latitudeSeconds.value!!), latitudeSouth.value!! )
-        buildCoordinate(doubleArrayOf(longitudeDegrees.value!!, longitudeMinutes.value!!, longitudeSeconds.value!!), longitudeWest.value!! )
+        // buildCoordinate(doubleArrayOf(latitudeDegrees.value!!, latitudeMinutes.value!!, latitudeSeconds.value!!), latitudeSouth.value!! )
+        // buildCoordinate(doubleArrayOf(longitudeDegrees.value!!, longitudeMinutes.value!!, longitudeSeconds.value!!), longitudeWest.value!! )
+        buildCoordinate(doubleArrayOf(dmsLocation.value!!.latitudeDegrees, dmsLocation.value!!.latitudeMinutes, dmsLocation.value!!.latitudeSeconds), dmsLocation.value!!.latitudeSouth)
+        buildCoordinate(doubleArrayOf(dmsLocation.value!!.longitudeDegrees, dmsLocation.value!!.longitudeMinutes, dmsLocation.value!!.longitudeSeconds), longitudeWest.value!! )
         return loc
     }
 

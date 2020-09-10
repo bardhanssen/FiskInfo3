@@ -64,14 +64,14 @@ fun getNumberFormat(view: View): NumberFormat {
     return format
 }
 */
-
+/*
     object DoubleConverter {
         @InverseMethod("stringToDouble")
         @JvmStatic fun doubleToString(
             //view: EditText,
             value: Double
         ): String {
-            val numberFormat: NumberFormat = NumberFormat.getNumberInstance(); //getNumberFormat(view)
+            val numberFormat: NumberFormat = NumberFormat.getNumberInstance(); //getNumberFormat(view)*/
 /*            try {
                 // Don't return a different value if the parsed value
                 // doesn't change
@@ -83,7 +83,7 @@ fun getNumberFormat(view: View): NumberFormat {
             } catch (e: ParseException) {
                 // Old number was broken
             }*/
-            return numberFormat.format(value)
+/*            return numberFormat.format(value)
         }
 
         @JvmStatic fun  stringToDouble(
@@ -114,22 +114,10 @@ fun getNumberFormat(view: View): NumberFormat {
             return format
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
 }
+*/
 
 
-/*
 object DoubleConverter {
     @InverseMethod("stringToDouble")
     @JvmStatic fun doubleToString(
@@ -179,4 +167,3 @@ object DoubleConverter {
     }
 }
 
-*/

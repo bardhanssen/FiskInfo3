@@ -166,6 +166,7 @@
                         android:nextFocusRight="@+id/longitude_minutes_edit_text"
                         android:nextFocusUp="@+id/longitude_minutes_edit_text"
                         android:selectAllOnFocus="true"
+                        android:text="@{`` + viewmodel.longitudeDegrees}"
                         />
 
                 <TextView
@@ -193,6 +194,7 @@
                         android:nextFocusRight="@+id/longitude_seconds_edit_text"
                         android:nextFocusUp="@+id/longitude_seconds_edit_text"
                         android:selectAllOnFocus="true"
+                        android:text="@{`` + viewmodel.longitudeMinutes}"
                         />
 
                 <TextView
@@ -216,6 +218,7 @@
                         android:inputType="numberDecimal"
                         android:maxLength="5"
                         android:selectAllOnFocus="true"
+                        android:text="@{`` + viewmodel.longitudeSeconds}"
                         />
 
                 <TextView
@@ -231,7 +234,7 @@
                         android:id="@+id/longitude_cardinal_direction_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
+                        android:checked="@{viewmodel.longitudeWest}"
                         android:paddingStart="8dp"
                         android:paddingEnd="0dp"
                         android:textOff="@string/cardinal_direction_symbol_west"

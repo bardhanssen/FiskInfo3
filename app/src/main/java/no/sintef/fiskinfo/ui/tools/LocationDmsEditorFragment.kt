@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.location_dms_editor_fragment.view.*
+import kotlinx.coroutines.withTimeoutOrNull
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
 import no.sintef.fiskinfo.util.GpsLocationTracker
@@ -40,16 +41,35 @@ class LocationDmsEditorFragment : Fragment() {
         val root = mBinding.root
 
         root.latitude_degrees_edit_text.addTextChangedListener(
-            IntRangeValidator(root.latitude_degrees_edit_text, 0, 90,
+            IntRangeValidator(root.latitude_degrees_edit_text, 0, true, 90, true,
                 { viewModel.dmsLocation.value!!.latitudeDegrees = it.toDouble() })
         )
 
-        root.longitude_degrees_edit_text.addTextChangedListener(
-            IntRangeValidator(root.longitude_degrees_edit_text, 0, 180,
-                { viewModel.dmsLocation.value!!.longitudeDegrees = it.toDouble() })
+        root.latitude_minutes_edit_text.addTextChangedListener(
+            IntRangeValidator(root.latitude_minutes_edit_text, 0, true, 59, true,
+                { viewModel.dmsLocation.value!!.latitudeMinutes = it.toDouble() })
+        )
+
+        root.latitude_seconds_edit_text.addTextChangedListener(
+            IntRangeValidator(root.latitude_seconds_edit_text, 0, true, 60, false,
+                { viewModel.dmsLocation.value!!.latitudeSeconds = it.toDouble() })
         )
 
 
+        root.longitude_degrees_edit_text.addTextChangedListener(
+            IntRangeValidator(root.longitude_degrees_edit_text, 0, true, 180, true,
+                { viewModel.dmsLocation.value!!.longitudeDegrees = it.toDouble() })
+        )
+
+        root.longitude_minutes_edit_text.addTextChangedListener(
+            IntRangeValidator(root.longitude_minutes_edit_text, 0, true, 59, true,
+                { viewModel.dmsLocation.value!!.longitudeMinutes = it.toDouble() })
+        )
+
+        root.longitude_seconds_edit_text.addTextChangedListener(
+            IntRangeValidator(root.longitude_seconds_edit_text, 0, true, 60, false,
+                { viewModel.dmsLocation.value!!.longitudeSeconds = it.toDouble() })
+        )
 
         //mBinding = LocationDmsEditorFragmentBinding.inflate(layoutInflater, container, false)
         mBinding.setToCurrentPositionIcon.setOnClickListener { setLocationToCurrentPosition() }
@@ -75,15 +95,21 @@ class LocationDmsEditorFragment : Fragment() {
     class IntRangeValidator(
         private val textView: TextView,
         private val low: Int,
+        private val includeLow : Boolean,
         private val high: Int,
-        private val updateAction : (Int) -> (Unit)
+        private val includeHigh : Boolean,
+        private val updateAction : (Double) -> (Unit)
     ) : TextValidator(textView) {
         override fun validate(textView: TextView?, text: String?):Boolean {
-            var num = 0;
+            var num = 0.0;
 
             try {
-                num = text.toString().toInt()
-                if ((num < low) || num > high)
+                // TODO: Consider locale adapted parsing
+                num = text.toString().toDouble()
+                val withinLow = if (includeLow) num >= low else num > low
+                val withinHigh = if (includeHigh) num <= high else num < high
+
+                if (! (withinHigh && withinLow))
                     textView?.error = "Value must be in range $low to $high"
                 else {
                     textView?.error = null
@@ -115,7 +141,7 @@ class LocationDmsEditorFragment : Fragment() {
         viewModel.latitudeSouth.observe(
             this,
             Observer { mBinding?.latitudeCardinalDirectionSwitch?.isChecked = it })
-        viewModel.longitudeDegrees.observe(this, Observer {
+/*        viewModel.longitudeDegrees.observe(this, Observer {
             mBinding?.longitudeDegreesEditText?.setText(
                 it.toString()
             )
@@ -129,10 +155,10 @@ class LocationDmsEditorFragment : Fragment() {
             mBinding?.longitudeSecondsEditText?.setText(
                 it.toString()
             )
-        })
-        viewModel.longitudeWest.observe(
+        })*/
+/*        viewModel.longitudeWest.observe(
             this,
-            Observer { mBinding?.longitudeCardinalDirectionSwitch?.isChecked = it })
+            Observer { mBinding?.longitudeCardinalDirectionSwitch?.isChecked = it })*/
 
 /*        mViewModel.locations.observe(this, Observer { locAdapter.locations = it })
 

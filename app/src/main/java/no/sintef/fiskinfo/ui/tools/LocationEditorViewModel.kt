@@ -32,7 +32,7 @@ open class LocationEditorViewModel : ViewModel() {
             return doubleArrayOf(sign * degrees, absCoord);
 
         val minutes = floor(absCoord).toInt()
-        absCoord -= minutes.toDouble()
+
         absCoord *= 60.0
 
         return doubleArrayOf(sign * degrees.toDouble(), minutes.toDouble(), absCoord)
