@@ -29,7 +29,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     }
 
     private lateinit var mViewModel: DeploymentViewModel
-    private lateinit var mLocationViewModel : LocationEditorViewModel
+    private lateinit var mLocationViewModel : LocationViewModel
     private var _mBinding: ToolDeploymentEditorFragmentBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -151,17 +151,12 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     }
 
     override fun onDmsEditConfirmed() {
-        val dmsModel = mLocationViewModel as LocationDmsViewModel
-
-        val location =  dmsModel.getLocation()
+        val location =  mLocationViewModel.getLocation()
         if (location != null) {
-            mViewModel.locations.value!![dmsModel.listPosition] = location!!
+            mViewModel.locations.value!![mLocationViewModel.listPosition] = location!!
             mViewModel.locations.postValue(mViewModel.locations.value)
         }
     }
-
-
-
 
     class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         private lateinit var mViewModel: DeploymentViewModel

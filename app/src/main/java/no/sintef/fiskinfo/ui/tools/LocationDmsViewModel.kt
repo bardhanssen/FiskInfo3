@@ -3,13 +3,11 @@ package no.sintef.fiskinfo.ui.tools
 import android.location.Location
 import android.location.Location.*
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import kotlin.math.abs
-import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 
-class LocationDmsViewModel : LocationEditorViewModel() {
+class LocationDmsViewModel : LocationViewModel() {
     var format = FORMAT_SECONDS
     var dmsLocation = MutableLiveData<DMSLocation>()
 
@@ -22,7 +20,7 @@ class LocationDmsViewModel : LocationEditorViewModel() {
         return (dmsLocation != null)
     }
 
-    fun getLocation():Location? {
+    override fun getLocation():Location? {
         if (!validateLocation())
             return null
 

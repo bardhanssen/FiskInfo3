@@ -1,17 +1,14 @@
 package no.sintef.fiskinfo.ui.tools
 
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
-import no.sintef.fiskinfo.databinding.SnapEditorFragmentBinding
 import no.sintef.fiskinfo.util.GpsLocationTracker
 
 class LocationDmmEditorFragment : Fragment() {
@@ -20,7 +17,7 @@ class LocationDmmEditorFragment : Fragment() {
         fun newInstance() = LocationDmmEditorFragment()
     }
 
-    private lateinit var viewModel: LocationDmmEditorViewModel
+    private lateinit var viewModel: LocationDmmViewModel
     private var mBinding: LocationDmsEditorFragmentBinding? = null
 
     override fun onCreateView(
@@ -41,7 +38,7 @@ class LocationDmmEditorFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(LocationDmmEditorViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(LocationDmmViewModel::class.java)
 
   /*      viewModel.dmsLocation.observe(this, Observer { dmsLoc ->
             if (dmsLoc != null) {
