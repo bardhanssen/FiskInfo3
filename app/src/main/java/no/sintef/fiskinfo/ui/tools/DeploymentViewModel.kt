@@ -20,8 +20,6 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     val comment = MutableLiveData<String>()
     val locations = MutableLiveData<MutableList<Location>>()
 
-
-
     //val getDeploymentInfo: LiveData<DeploymentInfo>
     //    get() = deploymentInfo
 

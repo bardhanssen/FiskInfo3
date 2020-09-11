@@ -2,7 +2,6 @@ package no.sintef.fiskinfo.ui.tools
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.location.Location
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
@@ -96,7 +95,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
 
-        mLocationViewModel = ViewModelProviders.of(activity!!).get(LocationDmsEditorViewModel::class.java)
+        mLocationViewModel = ViewModelProviders.of(activity!!).get(LocationDmsViewModel::class.java)
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(
@@ -152,7 +151,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     }
 
     override fun onDmsEditConfirmed() {
-        val dmsModel = mLocationViewModel as LocationDmsEditorViewModel
+        val dmsModel = mLocationViewModel as LocationDmsViewModel
 
         val location =  dmsModel.getLocation()
         if (location != null) {

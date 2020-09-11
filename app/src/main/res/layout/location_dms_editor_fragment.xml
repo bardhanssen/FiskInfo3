@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".ui.tools.LocationDmsEditorFragment">
+        tools:context=".ui.tools.LocationDmsDialogFragment">
 
     <data>
         <import type="no.sintef.fiskinfo.util.DoubleConverter"/>
         <variable
             name="viewmodel"
-            type="no.sintef.fiskinfo.ui.tools.LocationDmsEditorViewModel.DMSLocation" />
+            type="no.sintef.fiskinfo.ui.tools.LocationDmsViewModel.DMSLocation" />
     </data>
 
     <RelativeLayout
