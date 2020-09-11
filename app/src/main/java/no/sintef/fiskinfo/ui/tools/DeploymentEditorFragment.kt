@@ -44,6 +44,8 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        setHasOptionsMenu(true)
         _mBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.tool_deployment_editor_fragment,
@@ -51,7 +53,6 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             false
         )
 
-        setHasOptionsMenu(true)
 
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(
             context,
@@ -59,24 +60,14 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             ToolTypeCode.values()
         )
         mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
-
         mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.toolTypeCode.value = parent.getItemAtPosition(
             position
         ) as ToolTypeCode }
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
-//        mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
         mBinding.toolDetailsDateField.setOnClickListener  {
             val builder : MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
             builder.setSelection(mViewModel.setupTime.value!!.time)
-            //mViewModel.setupTime.value!!.time
-            //mViewModel.setupTime.value?.time
-
-            //val currentTimeInMillis = Calendar.getInstance().timeInMillis
-            //builder.setSelection(currentTimeInMillis)
-
-            //val currentTimeInMillis = Calendar.getInstance().timeInMillis
-            //builder.setSelection(currentTimeInMillis)
             val picker : MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener {
                 var cal = Calendar.getInstance()
