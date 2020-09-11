@@ -5,12 +5,13 @@ import android.app.TimePickerDialog
 import android.location.Location
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.text.format.DateFormat.is24HourFormat
 import android.view.*
-import android.widget.*
+import android.widget.AutoCompleteTextView
+import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -18,9 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
-import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
-import java.time.Instant
 import java.util.*
 
 class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractionListener, Fragment() {
@@ -43,14 +42,25 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_deployment_editor_fragment, container, false)
+        _mBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.tool_deployment_editor_fragment,
+            container,
+            false
+        )
 
         setHasOptionsMenu(true)
 
-        mToolCodeAdapter = ToolTypeCodeArrayAdapter(context, R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
+        mToolCodeAdapter = ToolTypeCodeArrayAdapter(
+            context,
+            R.layout.exposed_dropdown_menu_item,
+            ToolTypeCode.values()
+        )
         mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
 
-        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.toolTypeCode.value = parent.getItemAtPosition(position) as ToolTypeCode }
+        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.toolTypeCode.value = parent.getItemAtPosition(
+            position
+        ) as ToolTypeCode }
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
 //        mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
@@ -69,7 +79,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             picker.addOnPositiveButtonClickListener {
                 var cal = Calendar.getInstance()
                 cal.timeInMillis = it as Long
-                mViewModel.setSetupDate( cal.time )
+                mViewModel.setSetupDate(cal.time)
             }
             picker.show(fragmentManager!!, picker.toString())
         }
@@ -98,8 +108,8 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(
             this, Observer {
-            mBinding.deploymentviewmodel = mViewModel
-        })
+                mBinding.deploymentviewmodel = mViewModel
+            })
 
         mViewModel.setupTime.observe(this, Observer {
             mBinding.deploymentviewmodel = mViewModel
@@ -133,7 +143,19 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
 
     override fun onEditLocationClicked(v: View, location: Location) {
         mLocationViewModel.initWithLocation(location)
-        Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
+        val fm: FragmentManager? = getFragmentManager()
+
+        val locDialogFragment: LocationDmsDialogFragment =
+            LocationDmsDialogFragment.newInstance("Edit location")
+        // SETS the target fragment for use later when sending results
+        locDialogFragment.setTargetFragment(this@DeploymentEditorFragment, 300)
+        locDialogFragment.show(fm!!, "fragment_edit_location")
+
+//        val locDialogFragment: LocationDmsDialogFragment =
+//            LocationDmsDialogFragment.newInstance("Edit location")
+//        editNameDialogFragment.show(fm, "fragment_edit_location")
+
+//        Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
     }
 
 
@@ -148,7 +170,13 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             val minute = c.get(Calendar.MINUTE)
 
             // Create a new instance of TimePickerDialog and return it
-            return TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
+            return TimePickerDialog(
+                activity,
+                this,
+                hour,
+                minute,
+                DateFormat.is24HourFormat(activity)
+            )
         }
 
         override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
