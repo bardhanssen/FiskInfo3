@@ -22,8 +22,15 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
 
     var dmsLocation = MutableLiveData<DMSLocation>()
 
-    override fun initWithLocation(location : Location) {
-        super.initWithLocation(location)
+
+    override fun setNewLocation(location : Location) {
+        if (location != null)
+            dmsLocation.value = locationToDms(location)
+    }
+
+
+/*    override fun initWithLocation(location : Location, index : Int) {
+        super.initWithLocation(location, index)
 
         if (location != null)
             dmsLocation.value = locationToDms(location)
@@ -45,7 +52,7 @@ class LocationDmsEditorViewModel : LocationEditorViewModel() {
         )
         */
    }
-
+*/
     fun validateLocation():Boolean {
         return (dmsLocation != null)
     }

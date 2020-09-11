@@ -20,6 +20,11 @@ class LocationDmmEditorViewModel : LocationEditorViewModel() {
     val longitudeDegrees = MutableLiveData<Double>()
     val longitudeDecimalMinutes = MutableLiveData<Double>()
 
+    override fun setNewLocation(location : Location) {
+//        if (location != null)
+//            dmmLocation.value = locationToDms(location)
+    }
+/*
     override fun initWithLocation(location : Location) {
         super.initWithLocation(location)
         latitudeSouth.value = location.latitude < 0
@@ -40,7 +45,7 @@ class LocationDmmEditorViewModel : LocationEditorViewModel() {
 
 
    }
-
+*/
     fun validateLocation():Boolean {
         return true
     }

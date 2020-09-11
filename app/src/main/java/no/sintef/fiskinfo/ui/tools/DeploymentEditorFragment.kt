@@ -20,9 +20,11 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
 import java.util.*
 
-class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractionListener, Fragment() {
+class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractionListener, Fragment(),
+    LocationDmsDialogListener {
     companion object {
         fun newInstance() = DeploymentEditorFragment()
     }
@@ -141,8 +143,8 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         _mBinding = null
     }
 
-    override fun onEditLocationClicked(v: View, location: Location) {
-        mLocationViewModel.initWithLocation(location)
+    override fun onEditLocationClicked(v: View, itemClicked: Int) {
+        mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
         val fm: FragmentManager? = getFragmentManager()
 
         val locDialogFragment: LocationDmsDialogFragment =
@@ -157,6 +159,18 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
 
 //        Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
     }
+
+    override fun onDmsEditConfirmed() {
+        val dmsModel = mLocationViewModel as LocationDmsEditorViewModel
+
+        val location =  dmsModel.getLocation()
+        if (location != null) {
+            mViewModel.locations.value!![dmsModel.listPosition] = location!!
+            mViewModel.locations.postValue(mViewModel.locations.value)
+        }
+    }
+
+
 
 
     class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
@@ -184,5 +198,6 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             // Do something with the time chosen by the user
         }
     }
+
 
 }

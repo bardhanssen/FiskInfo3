@@ -9,14 +9,21 @@ import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 
-open class LocationEditorViewModel : ViewModel() {
+abstract class LocationEditorViewModel : ViewModel() {
     val latitudeSouth = MutableLiveData<Boolean>()
     val longitudeWest = MutableLiveData<Boolean>()
+    var listPosition = 0;
 
-    open fun initWithLocation(location : Location) {
-        latitudeSouth.value = location.latitude < 0
-        longitudeWest.value = location.longitude < 0
+    open fun initWithLocation(location : Location, index : Int) {
+        //latitudeSouth.value = location.latitude < 0
+        //longitudeWest.value = location.longitude < 0
+        listPosition = index;
+        setNewLocation(location)
    }
+
+
+    abstract fun setNewLocation(location : Location)
+
 
     fun splitCoordinate(coordinate: Double, outputType: Int): DoubleArray {
         if (outputType == FORMAT_DEGREES)

@@ -150,7 +150,7 @@ class LocationDmsEditorFragment : Fragment() {
 
             var loc = tracker.location
             if (loc != null) {
-                viewModel.initWithLocation(loc)
+                viewModel.setNewLocation(loc)
             }
 
         } else {

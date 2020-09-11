@@ -33,7 +33,7 @@ class LocationRecyclerViewAdapter(private val mListener: LocationRecyclerViewAda
         holder.bind(item)
         holder.binding.root
             .setOnClickListener { v ->
-            mListener.onEditLocationClicked(v, locations[holder.adapterPosition] )
+            mListener.onEditLocationClicked(v, holder.adapterPosition )
         }
     }
 
@@ -55,7 +55,7 @@ class LocationRecyclerViewAdapter(private val mListener: LocationRecyclerViewAda
     }
 
     interface OnLocationInteractionListener {
-        fun onEditLocationClicked(v: View, location: Location)
+        fun onEditLocationClicked(v: View, itemClicked : Int)
         //fun onViewSnapInMapClicked(v: View, snap: SnapMessage?)
     }
 

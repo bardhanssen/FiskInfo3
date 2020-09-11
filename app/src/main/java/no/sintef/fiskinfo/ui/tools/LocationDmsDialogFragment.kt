@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.ui.tools
 
+import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +12,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.location_dms_editor_fragment.view.*
+import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
 import no.sintef.fiskinfo.util.GpsLocationTracker
 
@@ -22,9 +25,12 @@ class LocationDmsDialogFragment : DialogFragment() {
     private lateinit var mBinding: LocationDmsEditorFragmentBinding
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    interface LocationDmsDialogListener {
+        fun onDmsEditConfirmed()
+    }
+
+    fun createView(
+        inflater: LayoutInflater, container: ViewGroup?
     ): View? {
         mBinding = DataBindingUtil.inflate<LocationDmsEditorFragmentBinding>(
             inflater,
@@ -96,6 +102,34 @@ class LocationDmsDialogFragment : DialogFragment() {
     }
 
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        val view = createView(activity!!.layoutInflater, null)
+
+        val builder = MaterialAlertDialogBuilder(context)
+            .setTitle("Edit position")
+//            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+//                dismiss();
+//            }
+//            .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+                dismiss()
+                // Respond to negative button press
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                // Respond to positive button press
+                //TODO: Add setting of values
+
+                val listener: LocationDmsDialogListener? = targetFragment as LocationDmsDialogListener?
+                listener?.onDmsEditConfirmed()
+                dismiss()
+
+            }
+        builder.setView(view)
+
+        return builder.create()
+    }
+
     fun setLocationToCurrentPosition() {
         viewModel.getLocation();
 
@@ -104,7 +138,7 @@ class LocationDmsDialogFragment : DialogFragment() {
 
             var loc = tracker.location
             if (loc != null) {
-                viewModel.initWithLocation(loc)
+                viewModel.setNewLocation(loc)
             }
 
         } else {
@@ -112,7 +146,7 @@ class LocationDmsDialogFragment : DialogFragment() {
         }
     }
 
-
+/*
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Get field from view
@@ -127,8 +161,9 @@ class LocationDmsDialogFragment : DialogFragment() {
       // )
     }
 
+*/
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(LocationDmsEditorViewModel::class.java)
 
         viewModel.dmsLocation.observe(this, Observer { dmsLoc ->
@@ -136,6 +171,8 @@ class LocationDmsDialogFragment : DialogFragment() {
                 mBinding?.viewmodel = dmsLoc
             }
         })
+        super.onActivityCreated(savedInstanceState)
+
 /*
         viewModel.latitudeSouth.observe(
             this,
@@ -175,10 +212,10 @@ class LocationDmsDialogFragment : DialogFragment() {
     class IntRangeValidator(
         private val textView: TextView,
         private val low: Int,
-        private val includeLow : Boolean,
+        private val includeLow: Boolean,
         private val high: Int,
-        private val includeHigh : Boolean,
-        private val updateAction : (Double) -> (Unit)
+        private val includeHigh: Boolean,
+        private val updateAction: (Double) -> (Unit)
     ) : TextValidator(textView) {
         override fun validate(textView: TextView?, text: String?):Boolean {
             var num = 0.0;
