@@ -7,29 +7,29 @@ import kotlin.math.abs
 import kotlin.math.floor
 
 
-class LocationDmmViewModel : LocationViewModel() {
+class LocationDdmViewModel : LocationViewModel() {
     var format = FORMAT_MINUTES
-    var dmmLocation = MutableLiveData<DMMLocation>();
+    var ddmLocation = MutableLiveData<DDMLocation>();
 
     override fun setNewLocation(location : Location) {
         if (location != null)
-            dmmLocation.value = locationToDmm(location)
+            ddmLocation.value = locationToDdm(location)
     }
 
     fun validateLocation():Boolean {
-        return (dmmLocation != null)
+        return (ddmLocation != null)
     }
 
     override fun getLocation():Location? {
         if (!validateLocation())
             return null
 
-        return dmmToLocation(dmmLocation.value!!)
+        return dmmToLocation(ddmLocation.value!!)
     }
 
-    fun dmmToLocation(dmm : DMMLocation):Location? {
+    fun dmmToLocation(dmm : DDMLocation):Location? {
         var loc = Location("")
-        with(dmmLocation.value!!) {
+        with (ddmLocation.value!!) {
             loc.latitude = latitudeDegrees + (latitudeDecimalMinutes/60.0)
             if (latitudeSouth) loc.latitude = -loc.latitude
 
@@ -39,9 +39,9 @@ class LocationDmmViewModel : LocationViewModel() {
         return loc
     }
 
-    fun locationToDmm(location : Location): DMMLocation {
-        var dmm = DMMLocation()
-        with (dmm) {
+    fun locationToDdm(location : Location): DDMLocation {
+        var ddm = DDMLocation()
+        with (ddm) {
             latitudeSouth = location.latitude < 0
             var absCoord = abs(location.latitude)
             latitudeDegrees = floor(absCoord).toInt()
@@ -55,10 +55,10 @@ class LocationDmmViewModel : LocationViewModel() {
             absCoord *= 60.0
             longitudeDecimalMinutes = absCoord * 60.0
         }
-        return dmm;
+        return ddm;
     }
 
-    data class DMMLocation(var latitudeSouth : Boolean = false,
+    data class DDMLocation(var latitudeSouth : Boolean = false,
                            var latitudeDegrees : Int = 0,
                            var latitudeDecimalMinutes : Double = 0.0,
 
