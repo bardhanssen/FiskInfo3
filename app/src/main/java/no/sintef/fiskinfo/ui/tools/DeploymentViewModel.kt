@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations
 import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
+import no.sintef.fiskinfo.util.locationsToWTK
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
 
@@ -24,7 +25,8 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     //    get() = deploymentInfo
 
     private fun createDeploymentInfo():DeploymentInfo {
-        val info = DeploymentInfo(setupTime = setupTime.value!!, ircs = "", contactPersonEmail = "", contactPersonName = "", contactPersonPhone = "", toolTypeCode = toolTypeCode.value!!, comment = comment.value!!, geometryWKT = "")
+        val geometryStr = locationsToWTK(locations.value!!)
+        val info = DeploymentInfo(setupTime = setupTime.value!!, ircs = "", contactPersonEmail = "", contactPersonName = "", contactPersonPhone = "", toolTypeCode = toolTypeCode.value!!, comment = comment.value!!, geometryWKT = geometryStr)
         return info;
 
         //val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())

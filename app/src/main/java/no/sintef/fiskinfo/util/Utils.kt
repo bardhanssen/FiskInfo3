@@ -43,3 +43,24 @@ fun formatLocation(location : Location, context: Context):String {
     val longStr = Location.convert(location.longitude, formatCode)
     return latStr + " " + longStr
 }
+
+// Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
+
+fun locationsToWTK(locations : List<Location>):String {
+    if (locations.size == 0) {
+        return ""
+    } else if (locations.size == 1) {
+        return "POINT(${locations[0].latitude} ${locations[0].longitude})"
+    } else {
+        var result : String = "LINESTRING("
+        var first = true
+        locations.forEach( {
+            if (!first)
+                result += ","
+            result += it.latitude.toString() + " " + it.longitude.toString()
+            first = false
+        })
+        result += ")"
+        return result
+    }
+}
