@@ -2,7 +2,7 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="Server settings">
+    <PreferenceCategory android:title="Snapfish server settings">
 
         <EditTextPreference
             android:defaultValue="http://esushi.no:37789/"
@@ -21,7 +21,7 @@
                 android:title="Snapfish web server address" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="User settings">
+    <PreferenceCategory android:title="Snapfish user settings">
 
         <EditTextPreference
             android:defaultValue="per@fiskinfo.no"
@@ -37,10 +37,40 @@
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
                 android:inputType="number"
+                android:digits="0123456789"
                 app:useSimpleSummaryProvider="true"
                 android:title="User id" />
 
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="Vessel info">
+
+        <EditTextPreference
+                android:key="@string/contact_person_email"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                app:useSimpleSummaryProvider="true"
+                android:title="Contact person e-mail" />
+
+        <EditTextPreference
+                android:key="@string/contact_person_name"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:inputType="textPersonName"
+                app:useSimpleSummaryProvider="true"
+                android:title="Contact person name" />
+
+        <EditTextPreference
+                android:key="@string/contact_person_phone"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:inputType="phone"
+                app:useSimpleSummaryProvider="true"
+                android:title="Contact person phone" />
+
+    </PreferenceCategory>
+
 
 
     <PreferenceCategory android:title="App settings">
@@ -74,4 +104,5 @@
             android:summary="Conditions, privacy, etc"/>
     </PreferenceCategory>
 
+    
 </androidx.preference.PreferenceScreen>

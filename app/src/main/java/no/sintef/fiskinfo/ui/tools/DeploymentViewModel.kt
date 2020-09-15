@@ -25,8 +25,20 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     //    get() = deploymentInfo
 
     private fun createDeploymentInfo():DeploymentInfo {
+        val fishingFacilityRepository = FishingFacilityRepository.getInstance(this.getApplication())
+        val profile = fishingFacilityRepository.getFiskInfoProfileDTO()
+        // TODO: Add validation of the profile somewhere
+        val fiskInfoProfile = profile.value?.fiskinfoProfile!!
+
         val geometryStr = locationsToWTK(locations.value!!)
-        val info = DeploymentInfo(setupTime = setupTime.value!!, ircs = "", contactPersonEmail = "", contactPersonName = "", contactPersonPhone = "", toolTypeCode = toolTypeCode.value!!, comment = comment.value!!, geometryWKT = geometryStr)
+        val info = DeploymentInfo(setupTime = setupTime.value!!,
+            ircs =  fiskInfoProfile.ircs,
+            contactPersonEmail = "",
+            contactPersonName = "",
+            contactPersonPhone = "",
+            toolTypeCode = toolTypeCode.value!!,
+            comment = comment.value!!,
+            geometryWKT = geometryStr)
         return info;
 
         //val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
@@ -44,9 +56,20 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         locations.value = mutableListOf(defaultLoc)
     }
 
+
+    fun isProfileValid():Boolean {
+        val fishingFacilityRepository = FishingFacilityRepository.getInstance(this.getApplication())
+        val profile = fishingFacilityRepository.getFiskInfoProfileDTO()
+        val fiskInfoProfile = profile.value?.fiskinfoProfile
+        if (fiskInfoProfile == null)
+            return false
+        return (fiskInfoProfile.ircs != null)
+        // TODO: Add check on contact person etc.
+   }
+
     fun canSendReport():Boolean {
-        // TODO: Check that all required fields are present
-        return true
+        // TODO: Check that all required fields of report are present
+        return isProfileValid()
     }
 
     fun sendReport() {

@@ -19,6 +19,8 @@ package no.sintef.fiskinfo.ui.preferences
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.InputType
+import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.repository.SnapRepository
@@ -29,7 +31,20 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.user_preferences, rootKey)
+
+        configureEditTextInputType("contact_person_email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+        configureEditTextInputType("contact_person_name", InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
+        configureEditTextInputType("contact_person_phone", InputType.TYPE_CLASS_PHONE)
+
     }
+
+    private fun configureEditTextInputType(key : String, inputType : Int) {
+        val editTextPreference = preferenceManager.findPreference<EditTextPreference>(key)
+        editTextPreference?.setOnBindEditTextListener { editText ->
+            editText.inputType = inputType
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -45,6 +60,6 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if ((key == "server_address") && (context != null))
-            SnapRepository.getInstance(context!!).updateFromPreferences(context)
+            SnapRepository.getInstance(requireContext()).updateFromPreferences(context)
     }
 }
