@@ -35,6 +35,10 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
         configureEditTextInputType("contact_person_email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
         configureEditTextInputType("contact_person_name", InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
         configureEditTextInputType("contact_person_phone", InputType.TYPE_CLASS_PHONE)
+        configureEditTextInputType("snap_api_server_address", InputType.TYPE_TEXT_VARIATION_URI)
+        configureEditTextInputType("snap_web_server_address", InputType.TYPE_TEXT_VARIATION_URI)
+        configureEditTextInputType("user_identity", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+        configureEditTextInputType("user_id", InputType.TYPE_NUMBER_VARIATION_NORMAL)
 
     }
 

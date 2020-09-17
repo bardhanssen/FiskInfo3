@@ -1,13 +1,17 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.app.Application
+import android.content.Context
 import android.location.Location
+import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
+import no.sintef.fiskinfo.repository.SnapRepository
 import no.sintef.fiskinfo.util.locationsToWTK
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
@@ -47,9 +51,19 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     }
 
     fun clearInfo() {
+        var context : Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        toolTypeCode.value = ToolTypeCode.valueOf(prefs.getString( context.getString(R.string.default_tool_type)!!,
+            ToolTypeCode.NETS.code))
+
+        //snapFishUserId = prefs.getString( context.getString(R.string.coordinate_format_setting),"2").toInt()
+
+        // TODO use format from preferencs
+
+
         comment.value = ""
         setupTime.value = Date()
-        toolTypeCode.value = ToolTypeCode.NETS
+        //toolTypeCode.value = ToolTypeCode.NETS
         val defaultLoc = Location("")
         defaultLoc.latitude = 68.333332  //your coords of course
         defaultLoc.longitude = 14.666664

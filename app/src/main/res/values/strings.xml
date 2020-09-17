@@ -35,9 +35,14 @@
     <string name="user_identity">user_identity</string>
     <string name="user_id">user_id</string>
 
+    <string name="snap_enable_service">snap_enable_service</string>
+
     <string name="contact_person_email">contact_person_email</string>
     <string name="contact_person_name">contact_person_name</string>
     <string name="contact_person_phone">contact_person_phone</string>
+
+    <string name="default_tool_type">default_tool_type</string>
+    <string name="coordinate_format_setting">coordinate_format_setting</string>
 
     <!-- Map fragment string -->
     <string name="tool_legend">Tegnforklaring for redskaper</string>
