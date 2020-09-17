@@ -30,19 +30,19 @@
 
 
     <!-- User preferences strings -->
-    <string name="snap_api_server_address">snap_api_server_address</string>
-    <string name="snap_web_server_address">snap_web_server_address</string>
-    <string name="user_identity">user_identity</string>
-    <string name="user_id">user_id</string>
+    <string name="pref_snap_api_server_address">pref_snap_api_server_address</string>
+    <string name="pref_snap_web_server_address">pref_snap_web_server_address</string>
+    <string name="pref_user_identity">pref_user_identity</string>
+    <string name="pref_user_id">pref_user_id</string>
 
-    <string name="snap_enable_service">snap_enable_service</string>
+    <string name="pref_snap_enable_service">pref_snap_enable_service</string>
 
-    <string name="contact_person_email">contact_person_email</string>
-    <string name="contact_person_name">contact_person_name</string>
-    <string name="contact_person_phone">contact_person_phone</string>
+    <string name="pref_contact_person_email">pref_contact_person_email</string>
+    <string name="pref_contact_person_name">pref_contact_person_name</string>
+    <string name="pref_contact_person_phone">pref_contact_person_phone</string>
 
-    <string name="default_tool_type">default_tool_type</string>
-    <string name="coordinate_format_setting">coordinate_format_setting</string>
+    <string name="pref_tool_type">pref_tool_type</string>
+    <string name="pref_coordinate_format">pref_coordinate_format</string>
 
     <!-- Map fragment string -->
     <string name="tool_legend">Tegnforklaring for redskaper</string>

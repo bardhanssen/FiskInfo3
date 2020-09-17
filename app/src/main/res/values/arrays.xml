@@ -28,6 +28,14 @@
         <item>Mooring system</item>
         <item>Unknown</item>
     </string-array>
+
+    <string-array name="tool_type_code_labels"  >
+        <item>@string/tool_type_code_nets</item>
+        <item>@string/tool_type_code_longline</item>
+        <item>@string/tool_type_code_crabpot</item>
+        <item>@string/tool_type_code_danpurseine</item>
+    </string-array>
+
     <string-array name="tool_type_codes" translatable="false" >
         <item>NETS</item>
         <item>LONGLINE</item>

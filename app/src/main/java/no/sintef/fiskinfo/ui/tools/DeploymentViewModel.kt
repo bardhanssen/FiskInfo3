@@ -53,7 +53,7 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     fun clearInfo() {
         var context : Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        toolTypeCode.value = ToolTypeCode.valueOf(prefs.getString( context.getString(R.string.default_tool_type)!!,
+        toolTypeCode.value = ToolTypeCode.valueOf(prefs.getString( context.getString(R.string.pref_tool_type)!!,
             ToolTypeCode.NETS.code))
 
         //snapFishUserId = prefs.getString( context.getString(R.string.coordinate_format_setting),"2").toInt()

@@ -6,7 +6,7 @@
     <PreferenceCategory android:title="Profile for tool reporting">
 
         <EditTextPreference
-            android:key="@string/contact_person_email"
+            android:key="@string/pref_contact_person_email"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:inputType="textEmailAddress"
@@ -14,7 +14,7 @@
             android:title="Contact person e-mail" />
 
         <EditTextPreference
-            android:key="@string/contact_person_name"
+            android:key="@string/pref_contact_person_name"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:inputType="textPersonName"
@@ -22,7 +22,7 @@
             android:title="Contact person name" />
 
         <EditTextPreference
-            android:key="@string/contact_person_phone"
+            android:key="@string/pref_contact_person_phone"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:inputType="phone"
@@ -38,14 +38,14 @@
             android:entries="@array/coordinate_format_labels"
             android:entryValues="@array/coordinate_formats"
             app:useSimpleSummaryProvider="true"
-            android:key="coordinate_format_setting"
+            android:key="@string/pref_coordinate_format"
             android:title="Coordinate format" />
         <ListPreference
             android:defaultValue="LONG_LINE"
-            android:entries="@array/tool_type_labels"
-            android:entryValues="@array/tool_types"
+            android:entries="@array/tool_type_code_labels"
+            android:entryValues="@array/tool_type_codes"
             app:useSimpleSummaryProvider="true"
-            android:key="default_tool_type"
+            android:key="@string/pref_tool_type"
             android:title="Default tool type" />
 
     </PreferenceCategory>
@@ -53,12 +53,12 @@
 
     <PreferenceCategory android:title="Snapfish settings">
         <SwitchPreferenceCompat
-            android:key="@string/snap_enable_service"
+            android:key="@string/pref_snap_enable_service"
             android:title="Enable Snapfish"/>
 
         <EditTextPreference
             android:defaultValue="http://esushi.no:37789/"
-            android:key="@string/snap_api_server_address"
+            android:key="@string/pref_snap_api_server_address"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"
@@ -66,7 +66,7 @@
 
         <EditTextPreference
                 android:defaultValue="https://esushi.no:37457/"
-                android:key="@string/snap_web_server_address"
+                android:key="@string/pref_snap_web_server_address"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
                 app:useSimpleSummaryProvider="true"
@@ -74,7 +74,7 @@
 
         <EditTextPreference
             android:defaultValue="per@fiskinfo.no"
-            android:key="@string/user_identity"
+            android:key="@string/pref_user_identity"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"
@@ -82,7 +82,7 @@
 
         <EditTextPreference
                 android:defaultValue="1"
-                android:key="@string/user_id"
+                android:key="@string/pref_user_id"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
                 android:inputType="number"

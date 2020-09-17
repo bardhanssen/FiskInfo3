@@ -59,7 +59,7 @@ class EchogramViewerFragment : Fragment() {
 
     fun configureWebView() {
         if (getView() == null) return
-        webView = getView()!!.findViewById(R.id.echogramviewer_fragment_web_view)
+        webView = requireView().findViewById(R.id.echogramviewer_fragment_web_view)
         with (webView.settings) {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
@@ -88,7 +88,7 @@ class EchogramViewerFragment : Fragment() {
                 return
 
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val snapFishServerUrl = prefs.getString(getString(R.string.snap_web_server_address), DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS)
+            val snapFishServerUrl = prefs.getString(getString(R.string.pref_snap_web_server_address), DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS)
             if (snapFishServerUrl != null) {
                 //val snapFishWebServerUrl = snapFishServerUrl.replace("5002", "5006").replace("http:", "https:")
                 //val url = snapFishWebServerUrl + "snap/" + snapId

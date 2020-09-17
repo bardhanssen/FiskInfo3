@@ -59,9 +59,9 @@ class SnapDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
+        mViewModel = ViewModelProviders.of(requireActivity()).get(SnapViewModel::class.java)
         configureWebView()
-        mViewModel.getSelectedSnap().observe(this, Observer { snap ->
+        mViewModel.getSelectedSnap().observe(viewLifecycleOwner, Observer { snap ->
             mBinding.setSnap(snap)
             mBinding.setSnapMetadata(snap?.snapMetadata)
             mBinding.setIncomming(mViewModel!!.isIncomming().value)
@@ -74,7 +74,7 @@ class SnapDetailFragment : Fragment() {
 
     fun configureWebView() {
         if (getView() == null) return
-        webView = getView()!!.findViewById(R.id.snapdetail_web_view)
+        webView = requireView().findViewById(R.id.snapdetail_web_view)
         with (webView.settings) {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
@@ -105,7 +105,7 @@ class SnapDetailFragment : Fragment() {
                 return
 
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val snapFishServerUrl = prefs.getString(getString(R.string.snap_web_server_address), DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS)
+            val snapFishServerUrl = prefs.getString(getString(R.string.pref_snap_web_server_address), DEFAULT_SNAP_FISH_WEB_SERVER_ADDRESS)
             if (snapFishServerUrl != null) {
                 val url = snapFishServerUrl + "snap/" + snapId
                 webView.loadUrl(url)
