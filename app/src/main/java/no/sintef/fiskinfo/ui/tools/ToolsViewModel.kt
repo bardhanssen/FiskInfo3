@@ -50,6 +50,10 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
         return unconfirmedTools
     }
 
+    fun refreshTools() {
+        FishingFacilityRepository.getInstance(getApplication()).refreshFishingFacilityChanges();
+    }
+
     fun getProfile(): LiveData<FiskInfoProfileDTO>? {
         if (profile == null) {
             profile = FishingFacilityRepository.getInstance(getApplication()).getFiskInfoProfileDTO()

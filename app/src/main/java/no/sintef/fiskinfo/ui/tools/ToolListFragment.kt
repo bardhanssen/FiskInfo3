@@ -56,7 +56,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         super.onActivityCreated(savedInstanceState)
         val tools = if (mIsConfirmed) mViewModel!!.getConfirmedTools() else mViewModel!!.getUnconfirmedTools()
 
-        tools?.observe(this,
+        tools?.observe(viewLifecycleOwner,
             Observer<List<FishingFacility>> { _tools ->
                 mAdapter!!.setTools(_tools)
                 if (mSwipeLayout != null)
@@ -84,7 +84,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
                         .show()
                 } else {
 
-                    var depViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
+                    var depViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
                     depViewModel.clearInfo()
 
                     Navigation.findNavController(view)
@@ -100,9 +100,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
         mSwipeLayout = view.findViewById(R.id.toollistswipelayout) as SwipeRefreshLayout
         //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
-
-//        if (mIsInbox) // Refresh only supported on inbox as outbox is currently only local on phone
-//            mSwipeLayout!!.setOnRefreshListener { mViewModel!!.refreshInboxContent() }
+        mSwipeLayout!!.setOnRefreshListener { mViewModel!!.refreshTools() }
 
         return view
     }
