@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.api.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
@@ -12,6 +13,7 @@ import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import no.sintef.fiskinfo.util.AuthStateManager
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,21 +56,32 @@ class FishingFacilityRepository(context: Context) {
         return fiskInfoProfileDTO
     }
 
+    data class SendDeploymentResult(val success : Boolean, val errorMsg : String )
 
-    fun sendDeploymentInfo(info : DeploymentInfo) {
+    fun sendDeploymentInfo(info : DeploymentInfo):LiveData<SendDeploymentResult> {
+
+        var result = MutableLiveData<SendDeploymentResult>()
         if (fishingFacilityService == null)
             initService()
 
-        fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<JsonElement> {
-            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                TODO("Not yet implemented")
+        fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<JsonElement?> {
+            override fun onFailure(call: Call<JsonElement?>, t: Throwable) {
+                result.value = SendDeploymentResult(false, t.stackTrace.toString())
             }
 
-            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                // TODO("Not yet implemented")
+            override fun onResponse(call: Call<JsonElement?>, response: Response<JsonElement?>) {
+                if (response.code() == 200)
+                    result.value = SendDeploymentResult(true, "")
+                else {
+                    var errorMsg = "Response code " + response.code()
+                    if (response.body() != null)
+                        errorMsg += " " + response.body()
+                    result.value = SendDeploymentResult(false, errorMsg)
+                }
             }
 
         })
+        return result;
     }
 
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
+import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.repository.SnapRepository
@@ -33,13 +34,17 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         val profile = fishingFacilityRepository.getFiskInfoProfileDTO()
         // TODO: Add validation of the profile somewhere
         val fiskInfoProfile = profile.value?.fiskinfoProfile!!
+        //var context : Context = getApplication()
+        //val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+        getContactInfoFromPreferences()
 
         val geometryStr = locationsToWTK(locations.value!!)
         val info = DeploymentInfo(setupTime = setupTime.value!!,
             ircs =  fiskInfoProfile.ircs,
-            contactPersonEmail = "",
-            contactPersonName = "",
-            contactPersonPhone = "",
+            contactPersonEmail = this.contactPersonEmail!!, // prefs.getString(context.getString(R.string.pref_contact_person_email), ""),
+            contactPersonName = this.contactPersonName!!, // prefs.getString(context.getString(R.string.pref_contact_person_name), ""),
+            contactPersonPhone = this.contactPersonPhone!!, // prefs.getString(context.getString(R.string.pref_contact_person_phone), ""),
             toolTypeCode = toolTypeCode.value!!,
             comment = comment.value!!,
             geometryWKT = geometryStr)
@@ -48,6 +53,19 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         //val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
         //info.toolTypeCode = ToolTypeCode.valueOf(prefs.getString("default_tool_type", ToolTypeCode.NETS.code))
         //deploymentInfo.value = info
+    }
+
+    var contactPersonEmail: String? = null
+    var contactPersonName: String? = null
+    var contactPersonPhone: String? = null
+
+    fun getContactInfoFromPreferences() {
+        var context : Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+        contactPersonEmail = prefs.getString(context.getString(R.string.pref_contact_person_email), "")
+        contactPersonName = prefs.getString(context.getString(R.string.pref_contact_person_name), "")
+        contactPersonPhone = prefs.getString(context.getString(R.string.pref_contact_person_phone), "")
     }
 
     fun clearInfo() {
@@ -70,15 +88,23 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         locations.value = mutableListOf(defaultLoc)
     }
 
+    private var fiskInfoProfileDTO: LiveData<FiskInfoProfileDTO>? = null
+
+    fun getFiskInfoProfileDTO():LiveData<FiskInfoProfileDTO>? {
+        if (fiskInfoProfileDTO == null) {
+            val fishingFacilityRepository =
+                FishingFacilityRepository.getInstance(this.getApplication())
+            fiskInfoProfileDTO = fishingFacilityRepository.getFiskInfoProfileDTO()
+        }
+        return fiskInfoProfileDTO
+    }
 
     fun isProfileValid():Boolean {
-        val fishingFacilityRepository = FishingFacilityRepository.getInstance(this.getApplication())
-        val profile = fishingFacilityRepository.getFiskInfoProfileDTO()
-        val fiskInfoProfile = profile.value?.fiskinfoProfile
-        if (fiskInfoProfile == null)
-            return false
-        return (fiskInfoProfile.ircs != null)
-        // TODO: Add check on contact person etc.
+        getFiskInfoProfileDTO()?.value?.let {
+            return it.fiskinfoProfile?.ircs != null
+            // TODO: Add check on contact person etc.
+        }
+        return false
    }
 
     fun canSendReport():Boolean {
@@ -86,14 +112,12 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         return isProfileValid()
     }
 
-    fun sendReport() {
-        if (canSendReport()) {
-            val info = createDeploymentInfo()
-            FishingFacilityRepository.getInstance(getApplication()).sendDeploymentInfo(info)
-            // TODO: How to handle feedback. Use a kind of notification object with Livedata? C
-            // Could also use error mechanism in views similar to:
-            // https://www.journaldev.com/22561/android-mvvm-livedata-data-binding
-        }
+    fun sendReport():LiveData<FishingFacilityRepository.SendDeploymentResult> {
+        val info = createDeploymentInfo()
+        return FishingFacilityRepository.getInstance(getApplication()).sendDeploymentInfo(info)
+        // TODO: How to handle feedback. Use a kind of notification object with Livedata?
+        // Could also use error mechanism in views similar to:
+        // https://www.journaldev.com/22561/android-mvvm-livedata-data-binding
     }
 /*
     fun setToolTypeCode(code: ToolTypeCode) {

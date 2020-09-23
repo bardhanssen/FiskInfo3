@@ -7,6 +7,7 @@ import android.text.format.DateFormat
 import android.view.*
 import android.widget.AutoCompleteTextView
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
@@ -52,7 +54,6 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             false
         )
 
-
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(
             context,
             R.layout.exposed_dropdown_menu_item,
@@ -73,11 +74,11 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
                 cal.timeInMillis = it as Long
                 mViewModel.setSetupDate(cal.time)
             }
-            picker.show(fragmentManager!!, picker.toString())
+            picker.show(parentFragmentManager, picker.toString())
         }
 
         mBinding.toolDetailsTimeField.setOnClickListener {
-            TimePickerFragment().show(fragmentManager!!, "timePicker")
+            TimePickerFragment().show(parentFragmentManager, "timePicker")
         }
 
 
@@ -93,21 +94,27 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
+        mViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
 
-        mLocationViewModel = ViewModelProviders.of(activity!!).get(LocationDmsViewModel::class.java)
+        mLocationViewModel = ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(
-            this, Observer {
+            viewLifecycleOwner, Observer {
                 mBinding.deploymentviewmodel = mViewModel
             })
 
-        mViewModel.setupTime.observe(this, Observer {
+        mViewModel.setupTime.observe(viewLifecycleOwner, Observer {
             mBinding.deploymentviewmodel = mViewModel
         })
 
-        mViewModel.locations.observe(this, Observer { locAdapter.locations = it })
+        mViewModel.locations.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
+
+        mViewModel.getFiskInfoProfileDTO()?.observe(viewLifecycleOwner, Observer {
+            // Set up observer for fisk info profile so it is ready for when we need it
+            // Maybe activate send button when this is done?
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -117,10 +124,24 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.send_tool_report_action) {
+
             if (mViewModel.canSendReport()) {
-                mViewModel.sendReport();
-                Navigation.findNavController(this.view!!).navigateUp()
+                var result = mViewModel.sendReport();
+                result.observe(this, Observer {
+                    if (it.success) {
+                        val text = "Tool deployment sent!"
+                        val toast = Toast.makeText(this.requireActivity(), text,  Toast.LENGTH_SHORT)
+                        toast.show()
+                        Navigation.findNavController(this.requireView()).navigateUp()
+                    }
+                    else {
+                        Snackbar.make(requireView(), "Tool deployment error: " + it.errorMsg, Snackbar.LENGTH_LONG)
+                            .show()
+                    }
+                })
             } else {
+                Snackbar.make(requireView(), "Tool report or profile not complete" , Snackbar.LENGTH_LONG)
+                    .show()
                 // TODO give feedback that it cannot be sent
             }
             return true
@@ -135,7 +156,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
         mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
-        val fm: FragmentManager? = getFragmentManager()
+        val fm: FragmentManager? = parentFragmentManager
 
         val locDialogFragment: LocationDmsDialogFragment =
             LocationDmsDialogFragment.newInstance("Edit location")
@@ -161,7 +182,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         private lateinit var mViewModel: DeploymentViewModel
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            mViewModel = ViewModelProviders.of(activity!!).get(DeploymentViewModel::class.java)
+            mViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
             // Use the current time as the default values for the picker
             val c = Calendar.getInstance()
             c.time = mViewModel.setupTime.value
