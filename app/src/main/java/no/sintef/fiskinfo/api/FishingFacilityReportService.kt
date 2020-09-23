@@ -32,7 +32,7 @@ interface FishingFacilityReportService {
     fun getFishingFacilityChanges(): Call<FishingFacilityChanges>
 
     @POST(deployed)
-    fun sendDeploymentInfo(@Body deploymentInfo: DeploymentInfo):Call<JsonElement?>
+    fun sendDeploymentInfo(@Body deploymentInfo: DeploymentInfo):Call<Void?> // Call<JsonElement?>
 
     /*
     @GET(geoDataSubscription)

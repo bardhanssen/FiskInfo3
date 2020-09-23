@@ -64,12 +64,12 @@ class FishingFacilityRepository(context: Context) {
         if (fishingFacilityService == null)
             initService()
 
-        fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<JsonElement?> {
-            override fun onFailure(call: Call<JsonElement?>, t: Throwable) {
+        fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<Void?> {//<JsonElement?> {
+            override fun onFailure(call: Call<Void?>, t: Throwable) {
                 result.value = SendDeploymentResult(false, t.stackTrace.toString())
             }
 
-            override fun onResponse(call: Call<JsonElement?>, response: Response<JsonElement?>) {
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                 if (response.code() == 200)
                     result.value = SendDeploymentResult(true, "")
                 else {

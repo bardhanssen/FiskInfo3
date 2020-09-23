@@ -30,10 +30,10 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     //    get() = deploymentInfo
 
     private fun createDeploymentInfo():DeploymentInfo {
-        val fishingFacilityRepository = FishingFacilityRepository.getInstance(this.getApplication())
-        val profile = fishingFacilityRepository.getFiskInfoProfileDTO()
+        //val fishingFacilityRepository = FishingFacilityRepository.getInstance(this.getApplication())
+        val profile = getFiskInfoProfileDTO()
         // TODO: Add validation of the profile somewhere
-        val fiskInfoProfile = profile.value?.fiskinfoProfile!!
+        val fiskInfoProfile = profile?.value?.fiskinfoProfile!!
         //var context : Context = getApplication()
         //val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
