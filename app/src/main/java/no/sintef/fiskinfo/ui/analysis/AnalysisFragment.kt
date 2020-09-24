@@ -1,11 +1,13 @@
 package no.sintef.fiskinfo.ui.analysis
 
+import android.net.http.SslError
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -36,7 +38,7 @@ class AnalysisFragment : Fragment() {
 
     fun configureWebView() {
         if (getView() == null) return
-        webView = getView()!!.findViewById(R.id.analysis_fragment_web_view)
+        webView = requireView().findViewById(R.id.analysis_fragment_web_view)
         with (webView.settings) {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
@@ -49,9 +51,13 @@ class AnalysisFragment : Fragment() {
                 view?.loadUrl(url)
                 return true
             }
+
+            override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+                handler?.proceed()
+            }
         }
 
-        webView.loadUrl("https://www.fangstanalyse.no")
+        webView.loadUrl("https://www.fangstanalyse.no/")
     }
 
 }
