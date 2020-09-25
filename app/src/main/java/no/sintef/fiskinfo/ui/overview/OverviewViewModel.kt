@@ -1,6 +1,8 @@
 package no.sintef.fiskinfo.ui.overview
 
 import android.app.Application
+import android.content.Context
+import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
@@ -10,6 +12,7 @@ import no.sintef.fiskinfo.api.*
 import no.sintef.fiskinfo.model.Token
 import no.sintef.fiskinfo.model.barentswatch.Subscription
 import no.sintef.fiskinfo.repository.SnapRepository
+import no.sintef.fiskinfo.util.isUserProfileValid
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,15 +73,44 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
 
     var overviewList = MutableLiveData<List<OverviewCardItem>>()
 
+/*
+    private fun refreshFromPreferences() {
+        var context : Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-    fun getOverViewItems() : MutableLiveData<List<OverviewCardItem>> {
-        val itemList = ArrayList<OverviewCardItem>()
+        var irccontactPersonEmail = prefs.getString(context.getString(R.string.pref_contact_person_email), "")
+        var contactPersonEmail = prefs.getString(context.getString(R.string.pref_contact_person_email), "")
+
+    }
+
+*/
+    fun getOverviewItems() : MutableLiveData<List<OverviewCardItem>> {
+/*        val itemList = ArrayList<OverviewCardItem>()
         addMapSummary(itemList)
-        addSnapSummary(itemList)
+        if (hasToolDeploymentRights())
+            addToolsSummary(itemList)
         addCatchAnalysis(itemList)
-        overviewList.value = itemList
+        if (snapFishIsActivated())
+            addSnapSummary(itemList)
+        overviewList.value = itemList/
+ */
+        refreshOverviewItems()
         return overviewList
     }
+
+    fun refreshOverviewItems() {
+//        refreshFromPreferences()
+        val itemList = ArrayList<OverviewCardItem>()
+        addMapSummary(itemList)
+        if (hasToolDeploymentRights())
+            addToolsSummary(itemList)
+        addCatchAnalysis(itemList)
+        if (snapFishIsActivated())
+            addSnapSummary(itemList)
+        overviewList.value = itemList
+
+    }
+
 
     private fun addMapSummary(list : ArrayList<OverviewCardItem>) {
         val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "", "View map", "")
@@ -105,5 +137,35 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         list.add(item)
     }
 
+    private fun isProfileValid():Boolean {
+        return isUserProfileValid(getApplication())
+    }
+
+    private fun hasToolDeploymentRights():Boolean {
+        return true
+    }
+
+    private fun snapFishIsActivated():Boolean {
+        var context : Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+        var active= prefs.getBoolean(context.getString(R.string.pref_snap_enable_service), false)
+
+        return active
+    }
+
+    private fun addToolsSummary(list : ArrayList<OverviewCardItem>) {
+        if (isProfileValid()) {
+            val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "", "View reports", "Report new tool")
+            item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_tools, null)
+            // TODO: Add parameter and initialize to empty viewmodel when navigating to editor
+            item.action2Listener = Navigation.createNavigateOnClickListener(R.id.deployment_editor_fragment, null)
+            list.add(item)
+        } else {
+            val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature, contact person, phone and email must first be filled in preferences.", "Edit preferences", "")
+            item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_preferences, null)
+            list.add(item)
+        }
+    }
 
 }

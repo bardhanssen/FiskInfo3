@@ -6,13 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.login.LoginViewModel
@@ -62,6 +61,10 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
         mAdapter = OverviewRecyclerViewAdapter(this)
         recyclerView.adapter = mAdapter
 
+
+        var mSwipeLayout = view.findViewById(R.id.overview_fragement_swipe_layout) as SwipeRefreshLayout
+        //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
+        mSwipeLayout!!.setOnRefreshListener { viewModel?.refreshOverviewItems() }
         return view
     }
 
@@ -70,7 +73,7 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-        viewModel!!.getOverViewItems().observe(this, Observer { mAdapter?.setOverviewItems(it) })
+        viewModel?.getOverviewItems().observe(viewLifecycleOwner, Observer { mAdapter?.setOverviewItems(it) })
     }
 
 }
