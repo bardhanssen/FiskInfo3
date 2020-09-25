@@ -196,7 +196,7 @@ vesselsLayer.addSelection({
 function selectFeature(feature) {
     if (feature.getFeatureKey() !== selectedKey) return;
     map.getSelectionHandler().clearSelection();
-    map.getSelectionHandler().triggerSingleSelection(feature);
+    map.getSelectionHandler()._setSelection(feature);
     selectedKey = null;
 }
 

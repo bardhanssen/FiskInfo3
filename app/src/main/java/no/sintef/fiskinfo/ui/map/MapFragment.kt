@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.ui.map
 
 //import no.sintef.fiskinfo.ui.login.LoginViewModel
 import android.Manifest.permission
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -9,15 +10,21 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.JsonReader
+import android.util.JsonToken
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.webkit.*
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TableLayout
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import net.openid.appauth.AuthState.AuthStateAction
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.MainActivity
 import no.sintef.fiskinfo.R
@@ -26,6 +33,8 @@ import no.sintef.fiskinfo.utilities.ui.ToolLegendRow
 import no.sintef.fiskinfo.utilities.ui.UtilityDialogs
 import org.json.JSONArray
 import org.json.JSONException
+import java.io.IOException
+import java.io.StringReader
 import java.util.*
 
 
@@ -39,7 +48,6 @@ class MapFragment : Fragment() {
     private lateinit var dialogInterface : UtilityDialogs
     private lateinit var viewModel: MapViewModel
     private lateinit var webView: WebView
-//    private val loginViewModel: LoginViewModel by activityViewModels()
     private lateinit var authStateManager : AuthStateManager
     private var mAccessToken : String? = null
 
@@ -58,11 +66,70 @@ class MapFragment : Fragment() {
             if (ex == null) {
                 mAccessToken = accessToken
             }
-        } )
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_map, menu)
+
+
+        // Get the search menu.
+        val searchMenu = menu.findItem(R.id.app_bar_menu_search)
+        // Get SearchView object.
+        val searchView: SearchView = searchMenu.getActionView() as SearchView
+        // Get SearchView autocomplete object.
+        val searchAutoComplete: SearchView.SearchAutoComplete =
+            searchView.findViewById(androidx.appcompat.R.id.search_src_text)
+        searchAutoComplete.setBackgroundColor(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.colorBarentsDarkBlue, //.barentswatch_blue,
+                null
+            )
+        )
+        searchAutoComplete.setTextColor(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.colorBarentsLightBlue,   // .text_white,
+                null
+            )
+        )
+        searchAutoComplete.setDropDownBackgroundResource(android.R.color.holo_blue_light)
+
+        //TODO add again: searchAutoComplete.setHint(getString(R.string.vessel_search_hint))
+
+        searchAutoCompleteAdapter = ArrayAdapter<VesselWrapper?>(
+            context,
+            android.R.layout.simple_dropdown_item_1line,
+            ArrayList<VesselWrapper?>()
+        )
+        searchAutoComplete.setAdapter(searchAutoCompleteAdapter)
+
+        // Listen to search view item on click event.
+        searchAutoComplete.setOnItemClickListener(OnItemClickListener { adapterView, view, itemIndex, id ->
+            val selected = adapterView.getItemAtPosition(itemIndex)
+            if (selected != null && selected is VesselWrapper) {
+                val vesselWrapper = adapterView.getItemAtPosition(itemIndex) as VesselWrapper
+                searchAutoComplete.setText(vesselWrapper.toString())
+                searchAutoComplete.clearFocus()
+                hideKeyboard()
+                webView.loadUrl("javascript:showVesselAndBottomsheet('" + vesselWrapper.callSignal + "');")
+                //browser.loadUrl("javascript:locateVessel('" + vesselWrapper.toString() + "');");
+            }
+        })
+
+        // Below event is triggered when submit search query.
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                //hideKeyboard();
+                //browser.loadUrl("javascript:showVesselAndBottomsheet('" + query + "');");
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -103,8 +170,8 @@ class MapFragment : Fragment() {
 
     fun configureWebView() {
         if (getView() == null) return
-        webView = getView()!!.findViewById(R.id.map_fragment_web_view)
-        with (webView.settings) {
+        webView = requireView().findViewById(R.id.map_fragment_web_view)
+        with(webView.settings) {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
             domStorageEnabled = true
@@ -112,7 +179,7 @@ class MapFragment : Fragment() {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         }
         //webView.webViewClient =
-        webView.addJavascriptInterface(WebAppInterface(context!!), "Android" )  //, loginViewModel),"Android" )
+        webView.addJavascriptInterface(WebAppInterface(requireContext()), "Android")  //, loginViewModel),"Android" )
         webView.setWebViewClient(BarentswatchFiskInfoWebClient())
 
         webView.setWebChromeClient(object : WebChromeClient() {
@@ -188,9 +255,9 @@ class MapFragment : Fragment() {
         @android.webkit.JavascriptInterface
         fun setAutoCompleteData(vesselObjectsString: String) {
             try {
-                //val wrappers = createVesselWrappers(vesselObjectsString) // vesselObject.names()); //vesselObjects);
-                //searchAutoCompleteAdapter.clear()
-                //searchAutoCompleteAdapter.addAll(wrappers)
+                val wrappers = createVesselWrappers(vesselObjectsString) // vesselObject.names()); //vesselObjects);
+                searchAutoCompleteAdapter?.clear()
+                searchAutoCompleteAdapter?.addAll(wrappers)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -259,7 +326,11 @@ class MapFragment : Fragment() {
             Log.d("barentswatchFiskInfoWC", url)
         }
 
-        override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+        override fun onReceivedError(
+            view: WebView,
+            request: WebResourceRequest,
+            error: WebResourceError
+        ) {
             // Added just for debug purposes
             super.onReceivedError(view, request, error)
             Log.d("barentswatchFiskInfoErr", "$request $error")
@@ -281,7 +352,9 @@ class MapFragment : Fragment() {
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest?): Boolean {
             val a = ""
 
-            if (request != null && (request.url.toString().startsWith("http://") || request.url.toString().startsWith("https://"))) {
+            if (request != null && (request.url.toString().startsWith("http://") || request.url.toString().startsWith(
+                    "https://"
+                ))) {
                 view.context.startActivity(
                     Intent(Intent.ACTION_VIEW, Uri.parse(request.url.toString()))
                 )
@@ -342,7 +415,7 @@ class MapFragment : Fragment() {
 
     private fun zoomToUserPosition() {
         if (ContextCompat.checkSelfPermission(
-                context!!,
+                requireContext(),
                 permission.ACCESS_FINE_LOCATION
             ) !== PackageManager.PERMISSION_GRANTED)
         {
@@ -386,6 +459,75 @@ class MapFragment : Fragment() {
         }
         dismissButton.setOnClickListener { dialog.dismiss() }
         dialog.show()
+    }
+
+
+    /****
+     * Search functionality
+     */
+    protected var searchAutoCompleteAdapter: ArrayAdapter<VesselWrapper?>? = null
+
+
+    class VesselWrapper( var name: String, var callSignal: String) {
+
+        override fun toString(): String {
+            return callSignal + " - " + name
+        }
+
+        init {
+            callSignal = callSignal
+        }
+    }
+
+
+    fun createVesselWrappers(jsonStr: String?): ArrayList<VesselWrapper>? {
+        val vesselWrappers = ArrayList<VesselWrapper>()
+        val reader = JsonReader(StringReader(jsonStr))
+        try {
+            reader.beginArray()
+            while (reader.hasNext()) {
+                vesselWrappers.add(readVessel(reader))
+            }
+            reader.endArray()
+        } catch (ex: IOException) {
+        } finally {
+            try {
+                reader.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return vesselWrappers
+    }
+
+    @Throws(IOException::class)
+    fun readVessel(reader: JsonReader): VesselWrapper {
+        var callSign = ""
+        var name = ""
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val propName = reader.nextName()
+            if (propName.equals("Name", true) && reader.peek() != JsonToken.NULL) {
+                name = reader.nextString()
+            } else if (propName.equals("Callsign", true) && reader.peek() != JsonToken.NULL) {
+                callSign = reader.nextString()
+            } else {
+                reader.skipValue()
+            }
+        }
+        reader.endObject()
+        return VesselWrapper(name, callSign)
+    }
+
+    fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val act: Activity? = activity
+        var view = act!!.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(act)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
