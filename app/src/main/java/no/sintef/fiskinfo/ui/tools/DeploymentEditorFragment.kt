@@ -95,6 +95,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
+        mViewModel.initContent()
 
         mLocationViewModel = ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
 
@@ -132,6 +133,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
                         val text = "Tool deployment sent!"
                         val toast = Toast.makeText(this.requireActivity(), text,  Toast.LENGTH_SHORT)
                         toast.show()
+                        mViewModel.clear()
                         Navigation.findNavController(this.requireView()).navigateUp()
                     }
                     else {

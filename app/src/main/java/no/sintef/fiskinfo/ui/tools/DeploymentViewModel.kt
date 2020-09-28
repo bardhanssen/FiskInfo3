@@ -25,6 +25,7 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     val setupTime = MutableLiveData<Date>()
     val comment = MutableLiveData<String>()
     val locations = MutableLiveData<MutableList<Location>>()
+    var initialized = false
 
     //val getDeploymentInfo: LiveData<DeploymentInfo>
     //    get() = deploymentInfo
@@ -68,24 +69,31 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         contactPersonPhone = prefs.getString(context.getString(R.string.pref_contact_person_phone), "")
     }
 
-    fun clearInfo() {
-        var context : Context = getApplication()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        toolTypeCode.value = ToolTypeCode.valueOf(prefs.getString( context.getString(R.string.pref_tool_type)!!,
-            ToolTypeCode.NETS.code))
 
-        //snapFishUserId = prefs.getString( context.getString(R.string.coordinate_format_setting),"2").toInt()
+    fun clear() {
+        initialized = false
+    }
 
-        // TODO use format from preferencs
+    fun initContent() {
+        if (!initialized) {
+            var context : Context = getApplication()
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            toolTypeCode.value = ToolTypeCode.valueOf(prefs.getString( context.getString(R.string.pref_tool_type)!!,
+                ToolTypeCode.NETS.code))
+
+            //snapFishUserId = prefs.getString( context.getString(R.string.coordinate_format_setting),"2").toInt()
+
+            // TODO use format from preferencs
 
 
-        comment.value = ""
-        setupTime.value = Date()
-        //toolTypeCode.value = ToolTypeCode.NETS
-        val defaultLoc = Location("")
-        defaultLoc.latitude = 68.333332  //your coords of course
-        defaultLoc.longitude = 14.666664
-        locations.value = mutableListOf(defaultLoc)
+            comment.value = ""
+            setupTime.value = Date()
+            //toolTypeCode.value = ToolTypeCode.NETS
+            val defaultLoc = Location("")
+            defaultLoc.latitude = 68.333332  //your coords of course
+            defaultLoc.longitude = 14.666664
+            locations.value = mutableListOf(defaultLoc)
+        }
     }
 
     private var fiskInfoProfileDTO: LiveData<FiskInfoProfileDTO>? = null

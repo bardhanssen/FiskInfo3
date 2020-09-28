@@ -85,7 +85,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
                 } else {
 
                     var depViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
-                    depViewModel.clearInfo()
+                    depViewModel.clear()
 
                     Navigation.findNavController(view)
                         .navigate(R.id.action_fragment_tools_to_deployment_editor_fragment)
