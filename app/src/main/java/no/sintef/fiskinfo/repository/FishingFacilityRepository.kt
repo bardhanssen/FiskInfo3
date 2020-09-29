@@ -64,23 +64,28 @@ class FishingFacilityRepository(context: Context) {
         if (fishingFacilityService == null)
             initService()
 
-        fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<Void?> {//<JsonElement?> {
-            override fun onFailure(call: Call<Void?>, t: Throwable) {
-                result.value = SendDeploymentResult(false, t.stackTrace.toString())
-            }
+        authStateManager.current.performActionWithFreshTokens(authService) { accessToken, _, ex ->
+            if (ex == null) {
+                fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<Void?> {
+                    //<JsonElement?> {
+                    override fun onFailure(call: Call<Void?>, t: Throwable) {
+                        result.value = SendDeploymentResult(false, t.stackTrace.toString())
+                    }
 
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                if (response.code() == 200)
-                    result.value = SendDeploymentResult(true, "")
-                else {
-                    var errorMsg = "Response code " + response.code()
-                    if (response.body() != null)
-                        errorMsg += " " + response.body()
-                    result.value = SendDeploymentResult(false, errorMsg)
-                }
-            }
+                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                        if (response.code() == 200)
+                            result.value = SendDeploymentResult(true, "")
+                        else {
+                            var errorMsg = "Response code " + response.code()
+                            if (response.body() != null)
+                                errorMsg += " " + response.body()
+                            result.value = SendDeploymentResult(false, errorMsg)
+                        }
+                    }
 
-        })
+                })
+            }
+        }
         return result;
     }
 
@@ -94,18 +99,26 @@ class FishingFacilityRepository(context: Context) {
         if (fishingFacilityService == null)
             initService()
 
-        fishingFacilityService?.getFishingFacilityProfile()?.enqueue(object : Callback<FiskInfoProfileDTO> {
-            override fun onResponse(call: Call<FiskInfoProfileDTO>, response: Response<FiskInfoProfileDTO>) {
-                if (response.body() != null) {
-                    fiskInfoProfileDTO.value = response.body()
-                }
-            }
+        authStateManager.current.performActionWithFreshTokens(authService) { accessToken, _, ex ->
+            if (ex == null) {
+                fishingFacilityService?.getFishingFacilityProfile()
+                    ?.enqueue(object : Callback<FiskInfoProfileDTO> {
+                        override fun onResponse(
+                            call: Call<FiskInfoProfileDTO>,
+                            response: Response<FiskInfoProfileDTO>
+                        ) {
+                            if (response.body() != null) {
+                                fiskInfoProfileDTO.value = response.body()
+                            }
+                        }
 
-            override fun onFailure(call: Call<FiskInfoProfileDTO>, t: Throwable) {
-                t.stackTrace
-                // TODO: log problem?
+                        override fun onFailure(call: Call<FiskInfoProfileDTO>, t: Throwable) {
+                            t.stackTrace
+                            // TODO: log problem?
+                        }
+                    })
             }
-        })
+        }
     }
 
 
@@ -113,24 +126,33 @@ class FishingFacilityRepository(context: Context) {
         if (fishingFacilityService == null)
             initService()
 
+        authStateManager.current.performActionWithFreshTokens(authService) { accessToken, _, ex ->
+            if (ex == null) {
+                fishingFacilityService?.getFishingFacilityChanges()
+                    ?.enqueue(object : Callback<FishingFacilityChanges> {
+                        override fun onResponse(
+                            call: Call<FishingFacilityChanges>,
+                            response: Response<FishingFacilityChanges>
+                        ) {
+                            if (response.body() != null) {
+                                confirmedTools.value = response.body()!!.confirmedTools
+                                unconfirmedTools.value = response.body()!!.unconfirmedTools
+                                // TODO: Reports?
+                            }
+                        }
+
+                        override fun onFailure(call: Call<FishingFacilityChanges>, t: Throwable) {
+                            confirmedTools.value = ArrayList()
+                            unconfirmedTools.value = ArrayList()
+                            // TODO: log problem?
+                        }
+                    })
+            }
+        }
+
 
 //            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
 //            createService(BarentswatchService::class.java,bwServerUrl )
-        fishingFacilityService?.getFishingFacilityChanges()?.enqueue(object : Callback<FishingFacilityChanges> {
-            override fun onResponse(call: Call<FishingFacilityChanges>, response: Response<FishingFacilityChanges>) {
-                if (response.body() != null) {
-                    confirmedTools.value = response.body()!!.confirmedTools
-                    unconfirmedTools.value = response.body()!!.unconfirmedTools
-                    // TODO: Reports?
-                }
-            }
-
-            override fun onFailure(call: Call<FishingFacilityChanges>, t: Throwable) {
-                confirmedTools.value = ArrayList()
-                unconfirmedTools.value = ArrayList()
-                // TODO: log problem?
-            }
-        })
     }
 
     companion object {

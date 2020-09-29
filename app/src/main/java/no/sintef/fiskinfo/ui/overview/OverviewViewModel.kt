@@ -11,6 +11,8 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.*
 import no.sintef.fiskinfo.model.Token
 import no.sintef.fiskinfo.model.barentswatch.Subscription
+import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
+import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.repository.SnapRepository
 import no.sintef.fiskinfo.util.isUserProfileValid
 import retrofit2.Call
@@ -110,6 +112,22 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         overviewList.value = itemList
 
     }
+
+/*
+    fun prepareItems() {
+        var confirmedTools = FishingFacilityRepository.getInstance(getApplication()).getConfirmedTools()
+        var unconfirmedTools = FishingFacilityRepository.getInstance(getApplication()).getUnconfirmedTools()
+
+        confirmedTools.observe(getApplication(),
+            Observer<List<FishingFacility>> { _tools ->
+                mAdapter!!.setTools(_tools)
+                if (mSwipeLayout != null)
+                    mSwipeLayout!!.isRefreshing = false
+            })
+
+
+    }
+*/
 
 
     private fun addMapSummary(list : ArrayList<OverviewCardItem>) {

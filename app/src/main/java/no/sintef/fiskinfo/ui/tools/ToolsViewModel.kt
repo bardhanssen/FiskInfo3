@@ -91,7 +91,7 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
         }
     }
 
-
+/*
     fun canSendReport():Boolean {
         if (draftReport.value == null)
             return false
@@ -105,7 +105,7 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
 
         }
     }
-
+*/
 
     /*
     fun getSelectedToolCodeName():String { this.selectedToolCodeName
