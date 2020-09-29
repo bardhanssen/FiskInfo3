@@ -150,12 +150,12 @@ class SnapRepository(context: Context) {
 
         snapMessageService!!.getSnapMetadata(snapFishUserId).enqueue(object : Callback<List<SnapMetadata>> {
             override fun onResponse(call: Call<List<SnapMetadata>>, response: Response<List<SnapMetadata>>) {
-                echogramInfos.setValue(response.body()?.sortedByDescending {it.timestamp} ?: ArrayList() )
+                echogramInfos.value = response.body()?.sortedByDescending {it.timestamp} ?: ArrayList()
             }
 
             override fun onFailure(call: Call<List<SnapMetadata>>, t: Throwable) {
                 // TODO: log problem
-                echogramInfos.setValue(ArrayList())
+                echogramInfos.value = ArrayList()
             }
         })
     }

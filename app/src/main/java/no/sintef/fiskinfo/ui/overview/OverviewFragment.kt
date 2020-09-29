@@ -35,20 +35,12 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
 
     private val loginViewModel: LoginViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val navController = findNavController()
-        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState) {
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> showWelcomeMessage()
-                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
-            }
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
+        viewModel?.overviewList.observe(viewLifecycleOwner, Observer {
+            mAdapter?.setOverviewItems(it)
+            mSwipeLayout?.isRefreshing = false
         })
-
-    }
-
-    private fun showWelcomeMessage() {
     }
 
     override fun onCreateView(
@@ -62,9 +54,7 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
         mAdapter = OverviewRecyclerViewAdapter(this)
         recyclerView.adapter = mAdapter
 
-
-        var mSwipeLayout = view.findViewById(R.id.overview_fragement_swipe_layout) as SwipeRefreshLayout
-        //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
+        mSwipeLayout = view.findViewById(R.id.overview_fragement_swipe_layout) as SwipeRefreshLayout
         mSwipeLayout!!.setOnRefreshListener {
             viewModel?.refreshOverviewItems()
         }
@@ -75,11 +65,12 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-//        viewModel?.getOverviewItems().observe(viewLifecycleOwner, Observer { mAdapter?.setOverviewItems(it) })
-        viewModel?.overviewList.observe(viewLifecycleOwner, Observer {
-            mAdapter?.setOverviewItems(it)
-            mSwipeLayout?.isRefreshing = false
+        val navController = findNavController()
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when (authenticationState) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> initViewModel()
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
+            }
         })
     }
 
