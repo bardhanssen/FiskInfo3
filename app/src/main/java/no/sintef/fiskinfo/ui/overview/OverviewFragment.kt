@@ -31,6 +31,7 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
     }
 
     private lateinit var viewModel: OverviewViewModel
+    private var mSwipeLayout: SwipeRefreshLayout? = null
 
     private val loginViewModel: LoginViewModel by activityViewModels()
 
@@ -64,7 +65,9 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
 
         var mSwipeLayout = view.findViewById(R.id.overview_fragement_swipe_layout) as SwipeRefreshLayout
         //swipeLayout.setProgressBackgroundColorSchemeResource(R.color.colorBrn);
-        mSwipeLayout!!.setOnRefreshListener { viewModel?.refreshOverviewItems() }
+        mSwipeLayout!!.setOnRefreshListener {
+            viewModel?.refreshOverviewItems()
+        }
         return view
     }
 
@@ -73,7 +76,11 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-        viewModel?.getOverviewItems().observe(viewLifecycleOwner, Observer { mAdapter?.setOverviewItems(it) })
+//        viewModel?.getOverviewItems().observe(viewLifecycleOwner, Observer { mAdapter?.setOverviewItems(it) })
+        viewModel?.overviewList.observe(viewLifecycleOwner, Observer {
+            mAdapter?.setOverviewItems(it)
+            mSwipeLayout?.isRefreshing = false
+        })
     }
 
 }

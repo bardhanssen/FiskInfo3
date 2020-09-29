@@ -18,64 +18,60 @@ import no.sintef.fiskinfo.util.isUserProfileValid
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
-    // TODO: Implement the ViewModel
 
-    /*
-    val userName = ""
-    val passWord = ""
+    val repository = FishingFacilityRepository(application)
 
-    var token : Token? = null
+    //var confirmedTools = FishingFacilityRepository.getInstance(getApplication()).getConfirmedTools()
+    //var unconfirmedTools = FishingFacilityRepository.getInstance(getApplication()).getUnconfirmedTools()
 
-    private val barentsWatchProdAddress = "https://www.barentswatch.no/"
-    fun testLogin() {
-        try {
-            val cred_type_pw = "password"
-            val cred_type_client = "client_credentials"
-
-            var loginClient : BarentswatchTokenService = createService(BarentswatchTokenService::class.java, barentsWatchProdAddress)
-            var tokenRequest = loginClient.requestToken(cred_type_pw, userName, passWord)
-            var token = tokenRequest.enqueue(object : Callback<Token> {
-                override fun onResponse(call: Call<Token>, response: Response<Token>) {
-                    token = response.body()
-                    testNextCall()
-                }
-
-                override fun onFailure(call: Call<Token>, t: Throwable) {
-                    t.printStackTrace()
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-            })
-        } catch (ex : Exception) {
-            ex.printStackTrace()
-        }
-        //var bwService : BarentswatchService = BasicAuthClient<BarentswatchService>(accessToken = ).create()
-
-
-    }
-
-    fun testNextCall() {
-        var serviceClient : BarentswatchService = createService(BarentswatchService::class.java, barentsWatchProdAddress, token!!.access_token)
-        var subRequest = serviceClient.getSubscriptions()
-        var token = subRequest.enqueue(object : Callback<List<Subscription>> {
-            override fun onResponse(call: Call<List<Subscription>>, response: Response<List<Subscription>>) {
-                response.body()?.size
-            }
-
-            override fun onFailure(call: Call<List<Subscription>>, t: Throwable) {
-                t.printStackTrace()
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
-
-    }
-
+//    var overviewList = MutableLiveData<List<OverviewCardItem>>()
+/*    var overviewList = CombinedLiveData<List<OverviewCardItem>>(
+        FishingFacilityRepository.getInstance(getApplication()).getConfirmedTools(),
+        FishingFacilityRepository.getInstance(getApplication()).getUnconfirmedTools() ) { datas: List<Any?> -> refreshOverviewItems(datas) }
 */
 
-    var overviewList = MutableLiveData<List<OverviewCardItem>>()
+
+    fun initOverviewItemsList(): MutableLiveData<List<OverviewCardItem>> {
+        val overviewItemList = MediatorLiveData<List<OverviewCardItem>>()
+        //val repo = FishingFacilityRepository.getInstance(getApplication())
+        val confirmedTools = repository.getConfirmedTools()
+        val unconfirmedTools = repository.getUnconfirmedTools()
+
+        overviewItemList.addSource(confirmedTools) { value ->
+            overviewItemList.value = refreshOverviewItems(confirmedTools, unconfirmedTools)
+        }
+        overviewItemList.addSource(unconfirmedTools) { value ->
+            overviewItemList.value = refreshOverviewItems(confirmedTools, unconfirmedTools)
+        }
+        return overviewItemList
+    }
+
+    var overviewList = initOverviewItemsList() //MutableLiveData<List<OverviewCardItem>>()
+    /*
+    fun getOverviewItems():MutableLiveData<List<OverviewCardItem>>() {
+        if (overviewItemList)
+    }
+*/
 
 /*
+            val itemList = ArrayList<OverviewCardItem>()
+            addMapSummary(itemList)
+            if (hasToolDeploymentRights())
+                addToolsSummary(itemList)
+            addCatchAnalysis(itemList)
+            if (snapFishIsActivated())
+                addSnapSummary(itemList)
+            return@CombinedLiveData itemList
+
+        // Use datas[0], datas[1], ..., datas[N] to return a SomeType value
+         } )
+
+*/
+    /*
     private fun refreshFromPreferences() {
         var context : Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
@@ -86,7 +82,29 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     }
 
 */
+    /*
     fun getOverviewItems() : MutableLiveData<List<OverviewCardItem>> {
+        refreshOverviewItems()
+        return overviewList
+    }
+*/
+    fun refreshOverviewItems(confirmed: LiveData<List<FishingFacility>>, unconfirmed: LiveData<List<FishingFacility>>):ArrayList<OverviewCardItem> {
+        val itemList = ArrayList<OverviewCardItem>()
+        addMapSummary(itemList)
+        if (hasToolDeploymentRights())
+            addToolsSummary(itemList, confirmed, unconfirmed)
+        addCatchAnalysis(itemList)
+        if (snapFishIsActivated())
+            addSnapSummary(itemList)
+        return itemList
+    }
+
+
+    fun refreshOverviewItems() {
+//        refreshFromPreferences()
+
+        repository.refreshFishingFacilityChanges()
+        //FishingFacilityRepository.getInstance(getApplication()).refreshFishingFacilityChanges()
 /*        val itemList = ArrayList<OverviewCardItem>()
         addMapSummary(itemList)
         if (hasToolDeploymentRights())
@@ -94,23 +112,8 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         addCatchAnalysis(itemList)
         if (snapFishIsActivated())
             addSnapSummary(itemList)
-        overviewList.value = itemList/
- */
-        refreshOverviewItems()
-        return overviewList
-    }
-
-    fun refreshOverviewItems() {
-//        refreshFromPreferences()
-        val itemList = ArrayList<OverviewCardItem>()
-        addMapSummary(itemList)
-        if (hasToolDeploymentRights())
-            addToolsSummary(itemList)
-        addCatchAnalysis(itemList)
-        if (snapFishIsActivated())
-            addSnapSummary(itemList)
         overviewList.value = itemList
-
+*/
     }
 
 /*
@@ -172,11 +175,14 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         return active
     }
 
-    private fun addToolsSummary(list : ArrayList<OverviewCardItem>) {
+    private fun addToolsSummary(list : ArrayList<OverviewCardItem>, confirmed : LiveData<List<FishingFacility>>, unconfirmed : LiveData<List<FishingFacility>>) {
         if (isProfileValid()) {
-            val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "", "View reports", "Report new tool")
+            val numConfirmed = confirmed?.value?.size ?: 0
+            val numUnconfirmed = unconfirmed?.value?.size ?: 0
+
+            var description = "You have $numConfirmed confirmed and $numUnconfirmed unconfirmed tools"
+            val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, description, "View reports", "Report new tool")
             item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_tools, null)
-            // TODO: Add parameter and initialize to empty viewmodel when navigating to editor
             item.action2Listener = Navigation.createNavigateOnClickListener(R.id.deployment_editor_fragment, null)
             list.add(item)
         } else {
@@ -185,5 +191,38 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
             list.add(item)
         }
     }
+
+
+
+    /**
+     * CombinedLiveData is a helper class to combine results from multiple LiveData sources.
+     * @param liveDatas Variable number of LiveData arguments.
+     * @param combine   Function reference that will be used to combine all LiveData data.
+     * @param R         The type of data returned after combining all LiveData data.
+     * Usage:
+     * CombinedLiveData<SomeType>(
+     *     getLiveData1(),
+     *     getLiveData2(),
+     *     ... ,
+     *     getLiveDataN()
+     * ) { datas: List<Any?> ->
+     *     // Use datas[0], datas[1], ..., datas[N] to return a SomeType value
+     * }
+     */
+/*    class CombinedLiveData<R>(vararg liveDatas: LiveData<*>,
+                              private val combine: (datas: List<Any?>) -> R) : MediatorLiveData<R>() {
+
+        private val datas: MutableList<Any?> = MutableList(liveDatas.size) { null }
+
+        init {
+            for(i in liveDatas.indices){
+                super.addSource(liveDatas[i]) {
+                    datas[i] = it
+                    value = combine(datas)
+                }
+            }
+        }
+    }
+*/
 
 }
