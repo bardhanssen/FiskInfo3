@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.util.formatLocation
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -85,9 +86,23 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
         }
 
         holder.detail1View.text = tool.toolTypeCode?.code
-        holder.detail2View.text = tool.geometryWKT
+
+        var locationString = ""
+        for (loc in tool.getLocations()) {
+            locationString += formatLocation(loc, holder.mView.context) + ", "
+        }
+        holder.detail2View.text = locationString //tool.geometryWKT
 //            sdf.format(holder.mItem!!.snapMetadata!!.timestamp) //holder.mItem.getEchogramInfo().latitude);
         //holder.shareButton.setOnClickListener({mListener?.onViewSnapInMapClicked(it, holder.mItem)})
+
+        holder.statusButton.visibility = if (mConfirmed) View.GONE else View.VISIBLE
+        holder.removeButton.visibility = if (mConfirmed) View.VISIBLE else View.GONE
+
+        if (mConfirmed) {
+            holder.removeButton.setOnClickListener({mListener?.onRemoveToolClicked(it, tools!![holder.adapterPosition])})
+        } else {
+            holder.statusButton.setOnClickListener({mListener?.onToolStatusClicked(it, tools!![holder.adapterPosition])})
+        }
 
         holder.mView.setOnClickListener { v ->
             //holder.mItem?.seen = true
@@ -105,6 +120,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
         val detail1View: TextView
         val detail2View: TextView
         val statusButton: ImageButton
+        val removeButton: ImageButton
 
         init {
             iconView = mView.findViewById<View>(R.id.tool_item_image_view) as ImageView
@@ -112,6 +128,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
             detail1View = mView.findViewById<View>(R.id.tool_item_detail_1_view) as TextView
             detail2View = mView.findViewById<View>(R.id.tool_item_detail_2_view) as TextView
             statusButton = mView.findViewById<View>(R.id.tool_status_button) as ImageButton
+            removeButton = mView.findViewById<View>(R.id.tool_remove_button) as ImageButton
         }
 
         override fun toString(): String {
@@ -121,6 +138,8 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
 
     interface OnToolInteractionListener {
         fun onViewToolClicked(v: View, tool: FishingFacility?)
+        fun onRemoveToolClicked(v: View, tool: FishingFacility?)
+        fun onToolStatusClicked(v: View, tool: FishingFacility?)
         //fun onViewSnapInMapClicked(v: View, snap: SnapMessage?)
     }
 }

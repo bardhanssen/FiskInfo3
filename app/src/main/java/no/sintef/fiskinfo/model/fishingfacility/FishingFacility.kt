@@ -1,5 +1,7 @@
 package no.sintef.fiskinfo.model.fishingfacility
 
+import android.location.Location
+import no.sintef.fiskinfo.util.wktToLocations
 import java.util.*
 
 /*
@@ -69,7 +71,11 @@ data class FishingFacility (
     //var shortComment: String?,
     var lastChangedBySource: Date?, //
     var geometryWKT: String? // TODO: Object
-)
+) {
+    fun getLocations():List<Location> {
+        return wktToLocations(geometryWKT)
+    }
+}
 
 /* Example
       "toolId": "0FB332A8-ABB1-4782-9048-6299FE2D949F",

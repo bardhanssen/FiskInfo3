@@ -69,7 +69,14 @@ limitations under the License.
 
     <ImageButton
         android:id="@+id/tool_status_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_width="@dimen/list_item_icon_width"
+        android:layout_height="@dimen/list_item_icon_height"
         app:srcCompat="@drawable/ic_info" />
+    <ImageButton
+        android:id="@+id/tool_remove_button"
+        android:visibility="gone"
+        android:layout_width="@dimen/list_item_icon_width"
+        android:layout_height="@dimen/list_item_icon_height"
+        app:srcCompat="@drawable/ic_baseline_remove_24" />
 </TableRow>

@@ -64,3 +64,23 @@ fun locationsToWTK(locations : List<Location>):String {
         return result
     }
 }
+
+fun wktToLocations(wkt : String?):List<Location> {
+    var result = ArrayList<Location>()
+    if (wkt != null) {
+        try {
+            var numString = wkt.substring( wkt.indexOf("(")+1, wkt.lastIndexOf(")"))
+//                .replace("\\(", "")
+//                .replace("\\)", "")
+            var coordinateStrs = numString.split("[, ]".toRegex())
+            for (i in coordinateStrs.indices step 2) {
+                val loc = Location("")
+                loc.latitude = coordinateStrs[i].toDouble()
+                loc.longitude = coordinateStrs[i+1].toDouble()
+                result.add(loc)
+            }
+        } catch (e: Exception) {
+        }
+    }
+    return result
+}

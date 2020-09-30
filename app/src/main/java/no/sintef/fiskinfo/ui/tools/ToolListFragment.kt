@@ -29,6 +29,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -95,7 +96,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
         val context = view.context
         listView.layoutManager = LinearLayoutManager(context)
-        mAdapter = ToolsRecyclerViewAdapter(this, true)
+        mAdapter = ToolsRecyclerViewAdapter(this, mIsConfirmed)
         listView.adapter = mAdapter
 
         mSwipeLayout = view.findViewById(R.id.toollistswipelayout) as SwipeRefreshLayout
@@ -134,5 +135,27 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     override fun onViewToolClicked(v: View, tool: FishingFacility?) {
         mViewModel!!.selectTool(tool, mIsConfirmed)
         Navigation.findNavController(v).navigate(R.id.action_tools_fragment_to_tool_details_fragment)
+    }
+
+    override fun onRemoveToolClicked(v: View, tool: FishingFacility?) {
+        val builder = MaterialAlertDialogBuilder(context)
+            .setTitle("Report the tool as hauled?")
+//            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+//                dismiss();
+//            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+                dialog.cancel()
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                // TODO: call remove functionality
+                dialog.dismiss()
+
+            }
+        //builder.setView(view)
+        builder.create().show()
+    }
+
+    override fun onToolStatusClicked(v: View, tool: FishingFacility?) {
+        // TODO: Show info about status of tool
     }
 }
