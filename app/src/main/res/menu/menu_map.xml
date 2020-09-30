@@ -35,5 +35,6 @@ limitations under the License.
         android:title="@string/map_symbol_explanation"/>
     <item
         android:id="@+id/setProximityAlert"
-        android:title="@string/set_alert_watcher"/>
+        android:title="@string/set_alert_watcher"
+        android:visible="false"/>
 </menu>

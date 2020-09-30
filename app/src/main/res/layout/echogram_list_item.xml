@@ -43,7 +43,7 @@ limitations under the License.
             android:id="@+id/snap_item_title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Snap title or other main aspect"
+            android:text="@string/echogram_snap_title_or_other_main_aspect"
             android:duplicateParentState="true"
             android:textStyle="bold"
             />
@@ -53,7 +53,7 @@ limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:duplicateParentState="true"
-            android:text="Date and time or other first detail"
+            android:text="@string/echogram_date_and_time_or_other_first_detail"
             />
         <!--            android:layout_marginTop="@dimen/utility_row_margin_top" -->
 
@@ -62,7 +62,7 @@ limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:duplicateParentState="true"
-            android:text="Position or other second detail"
+            android:text="@string/echogram_position_or_other_second_detail"
             />
         <!--            android:layout_marginTop="@dimen/utility_row_margin_top" -->
     </LinearLayout>

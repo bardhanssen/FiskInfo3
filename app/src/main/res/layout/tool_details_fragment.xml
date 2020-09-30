@@ -59,7 +59,7 @@
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Time"
+                android:hint="@string/tool_time"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 app:startIconDrawable="@drawable/ic_time"
@@ -82,7 +82,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tool type"
+                android:hint="@string/tool_tool_type"
                 app:startIconDrawable="@drawable/ic_hook"
                 app:startIconContentDescription="@string/proto_close_drawer"
                 android:layout_marginTop="16dp"
@@ -100,7 +100,7 @@
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Comment"
+                android:hint="@string/tool_comment"
                 android:layout_marginTop="16dp">
             >
 

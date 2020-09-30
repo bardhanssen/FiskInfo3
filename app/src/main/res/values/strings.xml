@@ -60,10 +60,6 @@
     <string name="menu_search_tools">Søk i redskap</string>
 
     <!-- Strings related to login -->
-    <string name="authorization_issuer_uri" translatable="false">https://id.barentswatch.net/</string>
-    <string name="authorization_redirect_uri" translatable="false">no.sintef.fiskinfo.android://</string>
-
-
 
     <string name="login_remember_login">Husk meg</string>
     <string name="login_prompt_email">Epostadresse</string>
@@ -114,6 +110,20 @@
     <string name="util_gps_enable_question">gps is not enabled . do you want to enable ?</string>
     <string name="util_value_must_be_in_range">\"Value must be in range \"</string>
     <string name="util_range_to_separator">\" to \"</string>
+    <string name="echogram_snap_title_or_other_main_aspect" translatable="false">Snap title or other main aspect</string>
+    <string name="echogram_date_and_time_or_other_first_detail" translatable="false">Date and time or other first detail</string>
+    <string name="echogram_position_or_other_second_detail" translatable="false">Position or other second detail</string>
+    <string name="fiskinfo_header">Fiskinfo</string>
+    <string name="one_stop_shop_header">One-stop-shop</string>
+    <string name="snap_from">From</string>
+    <string name="snap_to">To</string>
+    <string name="snap_message">Message</string>
+    <string name="snap_share_with">Share with</string>
+    <string name="snap_share_publicly_with_everyone">Share publicly (with everyone)</string>
+    <string name="tool_time">Time</string>
+    <string name="tool_tool_type">Tool type</string>
+    <string name="tool_comment">Comment</string>
+    <string name="profile_title">Profile</string>
 
 
     <!--

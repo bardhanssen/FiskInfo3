@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="coordinate_formats" translatable="false" >
+        <item>D_M_S</item>
+        <item>D_DM</item>
+    </string-array>
+    <string-array name="coordinate_format_labels">
+        <item>Grader, minutter og sekunder</item>
+        <item>Grader og desimalminuter</item>
+    </string-array>
+    <string-array name="tool_type_labels">
+        <item>Line</item>
+        <item>Garn</item>
+        <item>Teine</item>
+        <item>Seismikk</item>
+        <item>Sensor kabel</item>
+        <item>Snurpenot</item>
+        <item>Fortøyningssystem</item>
+        <item>Ukjent</item>
+    </string-array>
+
+    <string-array name="tool_type_code_labels"  >
+        <item>@string/tool_type_code_nets</item>
+        <item>@string/tool_type_code_longline</item>
+        <item>@string/tool_type_code_crabpot</item>
+        <item>@string/tool_type_code_danpurseine</item>
+    </string-array>
+
+    <string-array name="snap_tab_titles">
+        <item>Innboks</item>
+        <item>Utboks</item>
+        <item>Mine snaps</item>
+    </string-array>
+
+    <string-array name="tool_tab_titles">
+        <item>Ubekreftet</item>
+        <item>Bekreftet</item>
+    </string-array>
+</resources>

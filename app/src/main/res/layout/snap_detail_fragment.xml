@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="From"
+            android:text="@string/snap_from"
             android:visibility="@{incomming ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
             app:layout_constraintBaseline_toBaselineOf="@id/snapFromTextView" />
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="To"
+                android:text="@string/snap_to"
                 android:visibility="@{incomming ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/guidelineLeft"
                 app:layout_constraintBaseline_toBaselineOf="@id/snapFromTextView" />
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Message"
+                android:text="@string/snap_message"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@id/snapCommentTextView"
                 tools:layout_editor_absoluteY="163dp" />

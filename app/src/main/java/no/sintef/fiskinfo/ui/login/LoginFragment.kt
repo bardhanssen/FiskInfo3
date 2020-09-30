@@ -89,9 +89,9 @@ class LoginFragment : Fragment() {
         })
     }
 
-    val ISSUER_URI = getString(R.string.authorization_issuer_uri)
+    val ISSUER_URI = "https://id.barentswatch.net/"
     val CLIENT_ID = BuildConfig.FISKINFO_BW_CLIENT_ID;
-    val REDIRECT_URI = getString(R.string.authorization_redirect_uri)
+    val REDIRECT_URI = "no.sintef.fiskinfo.android://"
     val SCOPE = "api openid offline_access"
     val REQCODE_AUTH = 100
     val CLIENT_SECRET = BuildConfig.FISKINFO_BW_CLIENT_SECRET;
