@@ -1,4 +1,6 @@
 /**
+ * Copyright (C) 2020 SINTEF
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -217,8 +219,8 @@ flag for network status
                 R.style.AppTheme
             )
         )
-        mAlertDialog.setTitle("Gps Disabled")
-        mAlertDialog.setMessage("gps is not enabled . do you want to enable ?")
+        mAlertDialog.setTitle(getString(R.string.util_gps_settings_disabled))
+        mAlertDialog.setMessage(getString(R.string.util_gps_enable_question))
         mAlertDialog.setPositiveButton(
             "dialog_settings"
         ) { dialog, which ->

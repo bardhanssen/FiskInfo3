@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2019 SINTEF
+ * Copyright (C) 2020 SINTEF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
                 if (!isUserProfileValid()) {
                     Snackbar.make(
                         view,
-                        "The user profile must be completed before tools can be added. See settings.",
+                        getString(R.string.tool_list_profile_warning),
                         Snackbar.LENGTH_LONG
                     )
                         .setAction("Action", null)
@@ -157,8 +157,8 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
             var toolTypeStr = if (tool.toolTypeCode != null) tool.toolTypeCode?.getLocalizedName(requireContext())!!.toLowerCase() else "tool"
 
             val builder = MaterialAlertDialogBuilder(context)
-                .setTitle("Report retrieval of $toolTypeStr")
-                .setMessage("Please enter a comment if the tool is lost or if the retrieval was overdue")
+                .setTitle(getString(R.string.tool_report_retrieval_heading) + toolTypeStr)
+                .setMessage(getString(R.string.tool_report_retrieval_message))
                 //            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
                 //                dismiss();
                 //            }
@@ -167,10 +167,12 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
                 }
                 .setView(editText) // textInputLayout)
                 .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                    mViewModel.sendRetrievedReport(tool!!, editText.text.toString())
-                    // TODO: call remove functionality
+                    val sendRetrievedReport =
+                        mViewModel.sendRetrievedReport(tool!!, editText.text.toString())
+                    //sendRetrievedReport.observe(viewLifecycleOwner, Observer {
+                    //    sendRetrievedReport.removeObservers(viewLifecycleOwner)
+                    //})
                     dialog.dismiss()
-
                 }
             //builder.setView(view)
             builder.create().show()

@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2020 SINTEF
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.sintef.fiskinfo.ui.tools
 
 import android.content.Context
@@ -51,7 +69,7 @@ class ToolDetailsFragment : Fragment() {
             //builder.setSelection(currentTimeInMillis)
             val picker : MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener { mViewModel.setSelectedToolDate(it as Date) }
-            picker.show(fragmentManager!!, picker.toString())
+            picker.show(requireFragmentManager(), picker.toString())
         }
 
         return mBinding!!.root
@@ -59,16 +77,16 @@ class ToolDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProviders.of(activity!!).get(ToolsViewModel::class.java)
+        mViewModel = ViewModelProviders.of(requireActivity()).get(ToolsViewModel::class.java)
 
-        mViewModel.getSelectedTool().observe(this, Observer { tool ->
+        mViewModel.getSelectedTool().observe(viewLifecycleOwner, Observer { tool ->
             if (tool != null) {
                 mBinding.tool = tool
                 mBinding.toolviewmodel = mViewModel
             }
         })
 
-        mViewModel.selectedToolCodeName.observe(this, Observer { toolCodeName ->
+        mViewModel.selectedToolCodeName.observe(viewLifecycleOwner, Observer { toolCodeName ->
             if (toolCodeName != null) {
                 mBinding.toolcodename = toolCodeName
             }
