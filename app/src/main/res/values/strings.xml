@@ -69,7 +69,7 @@
 
 
     <!-- Tool type code resources -->
-    <string name="tool_type_code_nets">Nets</string>
+    <string name="tool_type_code_nets">Net</string>
     <string name="tool_type_code_longline">Longline</string>
     <string name="tool_type_code_crabpot">Crab pot</string>
     <string name="tool_type_code_danpurseine">Danish purseine</string>

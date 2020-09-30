@@ -12,7 +12,6 @@ import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
-import no.sintef.fiskinfo.repository.SnapRepository
 import no.sintef.fiskinfo.util.locationsToWTK
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
@@ -106,7 +105,6 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     fun isProfileValid():Boolean {
         getFiskInfoProfileDTO()?.value?.let {
             return it.fiskinfoProfile?.ircs != null
-            // TODO: Add check on contact person etc.
         }
         return false
    }
@@ -116,7 +114,7 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         return isProfileValid()
     }
 
-    fun sendReport():LiveData<FishingFacilityRepository.SendDeploymentResult> {
+    fun sendReport():LiveData<FishingFacilityRepository.SendResult> {
         val info = createDeploymentInfo()
         return FishingFacilityRepository.getInstance(getApplication()).sendDeploymentInfo(info)
         // TODO: How to handle feedback. Use a kind of notification object with Livedata?

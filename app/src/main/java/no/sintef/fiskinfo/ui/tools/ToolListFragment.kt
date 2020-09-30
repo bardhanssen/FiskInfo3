@@ -18,9 +18,12 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
+import com.google.android.material.textfield.TextInputEditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -32,9 +35,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-
+import com.google.android.material.textfield.TextInputLayout
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
+
 
 /**
  * A fragment for showing the active tools.
@@ -80,12 +84,18 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
             fab.setOnClickListener { view ->
 
                 if (!isUserProfileValid()) {
-                    Snackbar.make(view, "The user profile must be completed before tools can be added. See settings.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        view,
+                        "The user profile must be completed before tools can be added. See settings.",
+                        Snackbar.LENGTH_LONG
+                    )
                         .setAction("Action", null)
                         .show()
                 } else {
 
-                    var depViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
+                    var depViewModel = ViewModelProviders.of(requireActivity()).get(
+                        DeploymentViewModel::class.java
+                    )
                     depViewModel.clear()
 
                     Navigation.findNavController(view)
@@ -138,21 +148,33 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     }
 
     override fun onRemoveToolClicked(v: View, tool: FishingFacility?) {
-        val builder = MaterialAlertDialogBuilder(context)
-            .setTitle("Report the tool as hauled?")
-//            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-//                dismiss();
-//            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
-                dialog.cancel()
-            }
-            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                // TODO: call remove functionality
-                dialog.dismiss()
+        if (mIsConfirmed && (tool != null)){
+            val textInputLayout = TextInputLayout(requireContext())
+            textInputLayout.hint = "Comment"
+//            var params = LinearLayoutCompat.LayoutParams()
+//            textInputLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            val editText = TextInputEditText(requireContext())
+            var toolTypeStr = if (tool.toolTypeCode != null) tool.toolTypeCode?.getLocalizedName(requireContext())!!.toLowerCase() else "tool"
 
-            }
-        //builder.setView(view)
-        builder.create().show()
+            val builder = MaterialAlertDialogBuilder(context)
+                .setTitle("Report retrieval of $toolTypeStr")
+                .setMessage("Please enter a comment if the tool is lost or if the retrieval was overdue")
+                //            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+                //                dismiss();
+                //            }
+                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+                    dialog.cancel()
+                }
+                .setView(editText) // textInputLayout)
+                .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                    mViewModel.sendRetrievedReport(tool!!, editText.text.toString())
+                    // TODO: call remove functionality
+                    dialog.dismiss()
+
+                }
+            //builder.setView(view)
+            builder.create().show()
+        }
     }
 
     override fun onToolStatusClicked(v: View, tool: FishingFacility?) {

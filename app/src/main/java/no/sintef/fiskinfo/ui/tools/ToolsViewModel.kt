@@ -1,16 +1,14 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.app.Application
+import android.content.Context
 import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
-import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
-import no.sintef.fiskinfo.model.fishingfacility.Report
-import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.model.fishingfacility.*
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import java.util.*
 
@@ -90,6 +88,21 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
             selectedTool.value!!.lastChangedDateTime = date
         }
     }
+
+
+    fun sendRetrievedReport(tool: FishingFacility, comment : String?) {
+        var context : Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val contactPersonEmail = prefs.getString(context.getString(R.string.pref_contact_person_email), "")
+        val contactPersonName = prefs.getString(context.getString(R.string.pref_contact_person_name), "")
+        val contactPersonPhone = prefs.getString(context.getString(R.string.pref_contact_person_phone), "")
+        val retrievalDate = Date()
+        val info = RetrievalInfoDto(contactPersonEmail!!, contactPersonName!!, contactPersonPhone!!, retrievalDate, comment)
+
+        FishingFacilityRepository.getInstance(getApplication()).sendRetrieved(tool.toolId, info)
+    }
+
 
 /*
     fun canSendReport():Boolean {

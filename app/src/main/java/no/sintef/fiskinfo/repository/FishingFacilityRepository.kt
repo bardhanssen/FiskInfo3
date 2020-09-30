@@ -3,17 +3,11 @@ package no.sintef.fiskinfo.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.JsonElement
-import com.google.gson.JsonParser
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.api.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
-import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
-import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
-import no.sintef.fiskinfo.model.fishingfacility.FishingFacilityChanges
-import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
+import no.sintef.fiskinfo.model.fishingfacility.*
 import no.sintef.fiskinfo.util.AuthStateManager
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,11 +50,41 @@ class FishingFacilityRepository(context: Context) {
         return fiskInfoProfileDTO
     }
 
-    data class SendDeploymentResult(val success : Boolean, val errorMsg : String )
+    data class SendResult(val success : Boolean, val responseCode : Int, val errorMsg : String )
 
-    fun sendDeploymentInfo(info : DeploymentInfo):LiveData<SendDeploymentResult> {
+    fun sendRetrieved(toolId : String, info : RetrievalInfoDto):LiveData<SendResult> {
+        var result = MutableLiveData<SendResult>()
+        if (fishingFacilityService == null)
+            initService()
 
-        var result = MutableLiveData<SendDeploymentResult>()
+        authStateManager.current.performActionWithFreshTokens(authService) { accessToken, _, ex ->
+            if (ex == null) {
+                fishingFacilityService?.sendRetrieved(toolId, info)?.enqueue(object : Callback<Void?> {
+                    //<JsonElement?> {
+                    override fun onFailure(call: Call<Void?>, t: Throwable) {
+                        result.value = SendResult(false, 0, t.stackTrace.toString())
+                    }
+
+                    override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                        if (response.code() == 200)
+                            result.value = SendResult(true, response.code(),"")
+                        else {
+                            var errorMsg = "Response code " + response.code()
+                            if (response.body() != null)
+                                errorMsg += " " + response.body()
+                            result.value = SendResult(false, response.code(), errorMsg)
+                        }
+                    }
+                })
+            }
+        }
+        return result;
+    }
+
+
+    fun sendDeploymentInfo(info : DeploymentInfo):LiveData<SendResult> {
+
+        var result = MutableLiveData<SendResult>()
         if (fishingFacilityService == null)
             initService()
 
@@ -69,20 +93,19 @@ class FishingFacilityRepository(context: Context) {
                 fishingFacilityService?.sendDeploymentInfo(info)?.enqueue(object : Callback<Void?> {
                     //<JsonElement?> {
                     override fun onFailure(call: Call<Void?>, t: Throwable) {
-                        result.value = SendDeploymentResult(false, t.stackTrace.toString())
+                        result.value = SendResult(false, 0, t.stackTrace.toString())
                     }
 
                     override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                         if (response.code() == 200)
-                            result.value = SendDeploymentResult(true, "")
+                            result.value = SendResult(true, response.code(), "")
                         else {
                             var errorMsg = "Response code " + response.code()
                             if (response.body() != null)
                                 errorMsg += " " + response.body()
-                            result.value = SendDeploymentResult(false, errorMsg)
+                            result.value = SendResult(false, response.code(), errorMsg)
                         }
                     }
-
                 })
             }
         }
