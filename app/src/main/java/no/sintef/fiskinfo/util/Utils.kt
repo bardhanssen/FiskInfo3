@@ -35,13 +35,26 @@ val COORDINATE_FORMAT_MAP = mapOf(
 fun formatLocation(location : Location, context: Context):String {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     val formatCodeStr = prefs.getString("coordinate_format", COORDINATE_FORMAT_DMS)
+
+    if (formatCodeStr == COORDINATE_FORMAT_DDM) {
+        var ddm = DDMLocation.fromLocation(location)
+        val latStr = "${ddm.latitudeDegrees}\u00B0" + "%.4f".format(ddm.latitudeDecimalMinutes) + "\'${if (ddm.latitudeSouth) "S" else "N"}"
+        val longStr = "${ddm.longitudeDegrees}\u00B0" + "%.4f".format(ddm.latitudeDecimalMinutes) + "\'${if (ddm.longitudeWest) "W" else "E"}"
+        return "$latStr $longStr"
+    } else {
+        var dms = DMSLocation.fromLocation(location)
+        val latStr = "${dms.latitudeDegrees}\u00B0${dms.latitudeMinutes}\'" + "%.2f".format(dms.latitudeSeconds) + "\"${if (dms.latitudeSouth) "S" else "N"}"
+        val longStr = "${dms.longitudeDegrees}\u00B0${dms.longitudeMinutes}\'" + "%.2f".format(dms.longitudeSeconds) + "\"${if (dms.longitudeWest) "W" else "E"}"
+        return "$latStr $longStr"
+    }
+/*
     if (formatCodeStr == null)
         return location.toString()
 
     val formatCode = COORDINATE_FORMAT_MAP[formatCodeStr]!!
     val latStr = Location.convert(location.latitude, formatCode)
     val longStr = Location.convert(location.longitude, formatCode)
-    return latStr + " " + longStr
+    return latStr + " " + longStr*/
 }
 
 // Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)

@@ -78,13 +78,9 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
         if (!initialized) {
             var context : Context = getApplication()
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            toolTypeCode.value = ToolTypeCode.valueOf(prefs.getString( context.getString(R.string.pref_tool_type)!!,
-                ToolTypeCode.NETS.code))
 
-            //snapFishUserId = prefs.getString( context.getString(R.string.coordinate_format_setting),"2").toInt()
-
-            // TODO use format from preferencs
-
+            val str = prefs.getString( context.getString(R.string.pref_tool_type)!!, ToolTypeCode.NETS.code)
+            toolTypeCode.value = ToolTypeCode.valueOf(str)
 
             comment.value = ""
             setupTime.value = Date()

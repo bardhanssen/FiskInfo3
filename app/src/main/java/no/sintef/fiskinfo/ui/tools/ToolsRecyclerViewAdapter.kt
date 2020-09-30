@@ -88,9 +88,13 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
         holder.detail1View.text = tool.toolTypeCode?.code
 
         var locationString = ""
-        for (loc in tool.getLocations()) {
+        if (tool.getLocations().size > 0)
+            locationString = formatLocation(tool.getLocations()[0], holder.mView.context)
+
+/*        for (loc in tool.getLocations()) {
             locationString += formatLocation(loc, holder.mView.context) + ", "
-        }
+        }*/
+
         holder.detail2View.text = locationString //tool.geometryWKT
 //            sdf.format(holder.mItem!!.snapMetadata!!.timestamp) //holder.mItem.getEchogramInfo().latitude);
         //holder.shareButton.setOnClickListener({mListener?.onViewSnapInMapClicked(it, holder.mItem)})

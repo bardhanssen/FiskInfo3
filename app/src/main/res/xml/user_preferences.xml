@@ -41,7 +41,7 @@
             android:key="@string/pref_coordinate_format"
             android:title="Coordinate format" />
         <ListPreference
-            android:defaultValue="LONG_LINE"
+            android:defaultValue="LONGLINE"
             android:entries="@array/tool_type_code_labels"
             android:entryValues="@array/tool_type_codes"
             app:useSimpleSummaryProvider="true"

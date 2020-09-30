@@ -8,7 +8,7 @@
         <import type="no.sintef.fiskinfo.util.DoubleConverter"/>
         <variable
             name="viewmodel"
-            type="no.sintef.fiskinfo.ui.tools.LocationDdmViewModel.DDMLocation" />
+            type="no.sintef.fiskinfo.util.DDMLocation" />
     </data>
 
     <RelativeLayout
