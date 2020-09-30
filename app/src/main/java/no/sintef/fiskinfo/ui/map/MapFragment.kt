@@ -1,3 +1,20 @@
+/**
+ * Copyright (C) 2020 SINTEF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.sintef.fiskinfo.ui.map
 
 //import no.sintef.fiskinfo.ui.login.LoginViewModel
@@ -439,13 +456,13 @@ class MapFragment : Fragment() {
         val dismissButton =
             dialog.findViewById<View>(R.id.tool_legend_dismiss_button) as Button
         val toolTypes = arrayOf(
-            "Teine",
-            "Snurpenot",
-            "Line",
-            "Fortøyningssystem",
-            "Garn",
-            "Sensor / kabel",
-            "Ukjent redskap"
+            getString(R.string.tool_type_code_crabpot),
+            getString(R.string.tool_type_code_danpurseine),
+            getString(R.string.tool_type_code_longline),
+            getString(R.string.tool_type_code_mooring),
+            getString(R.string.tool_type_code_nets),
+            getString(R.string.tool_type_code_sensor_cable),
+            getString(R.string.tool_type_code_unknown)
         )
         if (colorsFromSintium.size > 0) {
             var i = 0

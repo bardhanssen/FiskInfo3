@@ -1,3 +1,20 @@
+/**
+ * Copyright (C) 2020 SINTEF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.sintef.fiskinfo.ui.overview
 
 import android.app.Application
@@ -87,7 +104,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         snapRepository.refreshEchogramListContent()
     }
 
-    private fun addMapSummary(list : ArrayList<OverviewCardItem>) {
+    private fun addMapSummary(list : ArrayList<OverviewCardItem>) { //context.getString(R.string.overview_card_map_title)
         val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "", "View map", "")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_map, null)
         list.add(item)
