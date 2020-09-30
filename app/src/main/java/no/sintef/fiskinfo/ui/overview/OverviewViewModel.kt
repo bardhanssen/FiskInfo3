@@ -105,7 +105,8 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun addMapSummary(list : ArrayList<OverviewCardItem>) { //context.getString(R.string.overview_card_map_title)
-        val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "", "View map", "")
+        val item = OverviewCardItem("Kart", "Se kart med ressurser", R.drawable.ic_map, "", "Se kart", "")
+//        val item = OverviewCardItem("Map", "View a map with resources", R.drawable.ic_map, "", "View map", "")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_map, null)
         list.add(item)
     }
@@ -118,13 +119,15 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         val unread = inboxSnaps.value?.count{!it.seen} ?: 0
         val echogramCount = echogramInfos.value?.size ?: 0
         //TODO find number of unread messages and number of new snaps,  and add these numbers to the messsage
-        val item = OverviewCardItem("SnapFish", "Share echo sounder snaps with your contacts", R.drawable.ic_snap, "You have $unread unread snap messages.\nYou have $echogramCount snaps to share.", "View inbox", "Send snap")
+        val item = OverviewCardItem("SnapFish", "Del snaps fra ekkolodd med dine kontakter", R.drawable.ic_snap, "Du har $unread uleste meldinger.\nDu har $echogramCount snaps du kan dele.", "Se meldinger", "Send snap")
+//        val item = OverviewCardItem("SnapFish", "Share echo sounder snaps with your contacts", R.drawable.ic_snap, "You have $unread unread snap messages.\nYou have $echogramCount snaps to share.", "View inbox", "Send snap")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_snap, null)
         list.add(item)
     }
 
     private fun addCatchAnalysis(list : ArrayList<OverviewCardItem>) {
-        val item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
+        val item = OverviewCardItem("Fangstanalyse", "Se og analyser historiske fangstdata", R.drawable.ic_chart, "Oppdatert med data for August 2020.", "Se fangtsanalyse", "")
+//        val item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null)
         list.add(item)
     }
@@ -151,13 +154,17 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
             val numConfirmed = confirmed?.value?.size ?: 0
             val numUnconfirmed = unconfirmed?.value?.size ?: 0
 
-            var description = "You have $numConfirmed confirmed and $numUnconfirmed unconfirmed tools"
-            val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, description, "View reports", "Report new tool")
+            var description = "Du har $numConfirmed bekreftede og  $numUnconfirmed ubekreftede redskap"
+            val item = OverviewCardItem("Redskap", "Rapporter redskap du sender og haler", R.drawable.ic_hook, description, "Se dine redskap", "Sett redskap")
+
+            //var description = "You have $numConfirmed confirmed and $numUnconfirmed unconfirmed tools"
+            //val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, description, "View reports", "Report new tool")
             item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_tools, null)
             item.action2Listener = Navigation.createNavigateOnClickListener(R.id.deployment_editor_fragment, null)
             list.add(item)
         } else {
-            val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature, contact person, phone and email must first be filled in preferences.", "Edit preferences", "")
+            val item = OverviewCardItem("Redskap", "Rapporter redskap du sender og haler", R.drawable.ic_hook, "For å bruke redskaprapportering må du først fylle inn navn, telefon og email for kontaktperson under innstillinger.", "Endre innstillinger", "")
+            //val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature, contact person, phone and email must first be filled in preferences.", "Edit preferences", "")
             item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_preferences, null)
             list.add(item)
         }

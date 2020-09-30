@@ -71,7 +71,12 @@
     <string name="cardinal_direction_symbol_south">S</string>
     <string name="cardinal_direction_symbol_west">W</string>
     <string name="cardinal_direction_symbol_east">E</string>
-    <string name="overview_card_map_title">Map</string>
+
+    <string name="overview_card_map_title">Kart</string>
+    <string name="tool_deployment_sent">Redskapsrapport sendt!</string>
+    <string name="tool_deployment_error">\"Feil ved redskapsrapportering: \"</string>
+    <string name="tool_report_not_complete">Redskapsrapport eller profil er ikke komplett</string>
+    <string name="tool_edit_location">Rediger lokasjon</string>
 
 
     <!--

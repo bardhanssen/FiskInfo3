@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2019 SINTEF
+ * Copyright (C) 2020 SINTEF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ class SnapEditorFragment : Fragment() {
         )
         setHasOptionsMenu(true)
 
-        mContentResolver = context!!.contentResolver
+        mContentResolver = requireContext().contentResolver
         mBinding.snapReceiverEditText.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
         mBinding.snapReceiverEditText.setThreshold(1)
 
@@ -77,7 +77,7 @@ class SnapEditorFragment : Fragment() {
 
         val to = intArrayOf(R.id.tv_contact_name, R.id.tv_contact_email, R.id.iv_contact_photo)
 
-        val adapter = object : SimpleCursorAdapter(context!!, R.layout.contact_row, null, from, to, 0) {
+        val adapter = object : SimpleCursorAdapter(requireContext(), R.layout.contact_row, null, from, to, 0) {
             override fun convertToString(cursor: Cursor): CharSequence {
 
                 val emailIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)
@@ -116,8 +116,8 @@ class SnapEditorFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
-        mViewModel.draft.observe(this, Observer { snap ->
+        mViewModel = ViewModelProviders.of(requireActivity()).get(SnapViewModel::class.java)
+        mViewModel.draft.observe(viewLifecycleOwner, Observer { snap ->
             if (snap != null) {
                 mBinding.snap = snap
                 //mBinding!!.setEchogram(mViewModel?.draftMetadata)
@@ -125,7 +125,7 @@ class SnapEditorFragment : Fragment() {
                 mBinding.snapviewmodel = mViewModel
             }
         })
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity!!.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && requireActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
         }
 
@@ -139,7 +139,7 @@ class SnapEditorFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.send_snap_action) {
             mViewModel.sendSnapAndClear()
-            Navigation.findNavController(this.view!!).navigateUp()
+            Navigation.findNavController(requireView()).navigateUp()
             return true
         }
         return false

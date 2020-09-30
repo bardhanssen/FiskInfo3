@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2019 SINTEF
+ * Copyright (C) 2020 SINTEF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,10 +57,10 @@ class SnapBoxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteractionLis
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProviders.of(activity!!).get(SnapViewModel::class.java)
+        mViewModel = ViewModelProviders.of(requireActivity()).get(SnapViewModel::class.java)
         val box = if (mIsInbox) mViewModel!!.getInboxSnaps() else mViewModel!!.getOutboxSnaps()
 
-        box?.observe(this,
+        box?.observe(viewLifecycleOwner,
             Observer { snaps ->
                 mAdapter!!.setSnaps(snaps)
                 if (mSwipeLayout != null)

@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2020 SINTEF
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.sintef.fiskinfo.ui.tools
 
 import android.app.Dialog
@@ -81,7 +99,6 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             TimePickerFragment().show(parentFragmentManager, "timePicker")
         }
 
-
         mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
         locAdapter = LocationRecyclerViewAdapter(this)
         mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
@@ -130,19 +147,19 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
                 var result = mViewModel.sendReport();
                 result.observe(this, Observer {
                     if (it.success) {
-                        val text = "Tool deployment sent!"
+                        val text = getString(R.string.tool_deployment_sent)
                         val toast = Toast.makeText(this.requireActivity(), text,  Toast.LENGTH_SHORT)
                         toast.show()
                         mViewModel.clear()
                         Navigation.findNavController(this.requireView()).navigateUp()
                     }
                     else {
-                        Snackbar.make(requireView(), "Tool deployment error: " + it.errorMsg, Snackbar.LENGTH_LONG)
+                        Snackbar.make(requireView(), getString(R.string.tool_deployment_error) + it.errorMsg, Snackbar.LENGTH_LONG)
                             .show()
                     }
                 })
             } else {
-                Snackbar.make(requireView(), "Tool report or profile not complete" , Snackbar.LENGTH_LONG)
+                Snackbar.make(requireView(), getString(R.string.tool_report_not_complete) , Snackbar.LENGTH_LONG)
                     .show()
                 // TODO give feedback that it cannot be sent
             }
@@ -161,7 +178,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         val fm: FragmentManager? = parentFragmentManager
 
         val locDialogFragment: LocationDmsDialogFragment =
-            LocationDmsDialogFragment.newInstance("Edit location")
+            LocationDmsDialogFragment.newInstance(getString(R.string.tool_edit_location))
         // SETS the target fragment for use later when sending results
         locDialogFragment.setTargetFragment(this@DeploymentEditorFragment, 300)
         locDialogFragment.show(fm!!, "fragment_edit_location")

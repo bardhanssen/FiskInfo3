@@ -103,6 +103,10 @@
     <string name="cardinal_direction_symbol_east">E</string>
 
     <string name="overview_card_map_title">Map</string>
+    <string name="tool_deployment_sent">Tool deployment sent!</string>
+    <string name="tool_deployment_error">\"Tool deployment error: \"</string>
+    <string name="tool_report_not_complete">Tool report or profile not complete</string>
+    <string name="tool_edit_location">Edit location</string>
 
 
     <!--
