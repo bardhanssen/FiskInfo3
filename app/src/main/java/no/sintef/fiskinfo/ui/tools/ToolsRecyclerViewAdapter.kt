@@ -69,6 +69,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
         if (tools == null)
             return
         val tool = tools!![position]
+        val context = holder.mView.context
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
@@ -85,11 +86,11 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
             ToolTypeCode.NETS -> holder.iconView.setBackgroundResource(R.drawable.ic_net)
         }
 
-        holder.detail1View.text = tool.toolTypeCode?.code
+        holder.detail1View.text = tool.toolTypeCode?.getLocalizedName(context)
 
         var locationString = ""
-        if (tool.getLocations().size > 0)
-            locationString = formatLocation(tool.getLocations()[0], holder.mView.context)
+        if (tool.getLocations().isNotEmpty())
+            locationString = formatLocation(tool.getLocations()[0], context)
 
 /*        for (loc in tool.getLocations()) {
             locationString += formatLocation(loc, holder.mView.context) + ", "

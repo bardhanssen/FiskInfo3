@@ -17,7 +17,7 @@ enum class ToolTypeCode(val code : String, val stringResource : Int) {
     @SerializedName("DANPURSEINE")
     DANPURSEINE("DANPURSEINE", R.string.tool_type_code_danpurseine);
 
-    public fun getLocalizedName(context : Context):String {
+    fun getLocalizedName(context : Context):String {
         return context.resources.getString(stringResource)
     }
 }
