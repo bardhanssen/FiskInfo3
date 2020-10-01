@@ -11,13 +11,13 @@
     <string name="update">Oppdater</string>
     <string name="no_internet_access">Ingen internett-tilgang</string>
 
-    <string name="user_profile_title">Vessels and profile</string>
-    <string name="preferences_title">Preferences</string>
+    <string name="user_profile_title">Fartøy og profil</string>
+    <string name="preferences_title">Innstillinger</string>
     <string name="tools_title">Redskap</string>
     <string name="overview_title">Oversikt</string>
     <string name="proto_open_drawer">Open drawer</string>
     <string name="proto_close_drawer">Close drawer</string>
-    <string name="snap_title">Ekkosnaps</string>
+    <string name="snap_title">SnapFish</string>
     <string name="catch_analysis_title">Fangstanalyse</string>
     <string name="map_title">Kart</string>
 
@@ -56,7 +56,7 @@
     <string name="tool_type_code_unknown">Ukjent redskap</string>
 
     <!-- Position / location -->
-    <string name="position">Posisjon</string>
+    <string name="position">Posisjoner</string>
     <string name="latitude">Breddegrad</string>
     <string name="longitude">Lengdegrad</string>
     <!--<string name="coordinates_help_text">Koordinater skrives inn som grader, minutt, sekund. Du kan legge til og fjerne posisjoner med knappene til høyre.</string>-->
@@ -95,6 +95,34 @@
     <string name="tool_tool_type">Redskapstype</string>
     <string name="tool_comment">Kommentar</string>
     <string name="profile_title">Profil</string>
+    <string name="prefs_contact_email">Kontaktpersons e-mail</string>
+    <string name="prefs_contact_name">Kontaktpersons navn</string>
+    <string name="prefs_contact_phone">Kontaktperson telefon</string>
+    <string name="prefs_coordinate_format">Koordinatformat</string>
+    <string name="pref_default_tool_type">Foretrukket redskapstype</string>
+    <string name="prefs_enable_snapfish">Aktiver SnapFish</string>
+    <string name="prefs_snap_api_server">SnapFish API-server</string>
+    <string name="prefs_snap_web_server">SnapFish web-server</string>
+    <string name="prefs_snap_user_email">SnapFish bruker e-mail</string>
+    <string name="prefs_snap_user_id">SnapFish bruker id</string>
+    <string name="prefs_other_settings">Andre innstillinger</string>
+    <string name="prefs_remember_login">Husk login-informasjon</string>
+    <string name="prefs_conditions_for_use">Conditions for use and consent</string>
+    <string name="prefs_conditions_for_use_summary">Conditions, privacy, etc</string>
+    <string name="fragment_title_tools">Redskap</string>
+    <string name="fragment_title_map">Kart</string>
+    <string name="fragment_title_tool_details">Redskapsdetaljer</string>
+    <string name="fragment_title_overview">FiskInfo oversikt</string>
+    <string name="fragment_title_snapfish">SnapFish</string>
+    <string name="fragment_title_user_profile">Profil</string>
+    <string name="fragment_title_user_preferences">Innstillinger</string>
+    <string name="fragment_title_snap_editor">Ny snapfish melding</string>
+    <string name="fragment_title_snap_detail">SnapFish melding</string>
+    <string name="fragment_title_login">FiskInfo innlogging</string>
+    <string name="fragment_title_analysis">Fangstanalyse</string>
+    <string name="fragment_title_echogram_viewer">Ekkogram</string>
+    <string name="fragment_title_deployment_editor">Sett redskap</string>
+    <string name="tool_setup_date">Dato satt</string>
 
 
     <!--

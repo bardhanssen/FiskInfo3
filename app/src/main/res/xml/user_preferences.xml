@@ -11,7 +11,7 @@
             android:singleLine="true"
             android:inputType="textEmailAddress"
             app:useSimpleSummaryProvider="true"
-            android:title="Contact person e-mail" />
+            android:title="@string/prefs_contact_email" />
 
         <EditTextPreference
             android:key="@string/pref_contact_person_name"
@@ -19,7 +19,7 @@
             android:singleLine="true"
             android:inputType="textPersonName"
             app:useSimpleSummaryProvider="true"
-            android:title="Contact person name" />
+            android:title="@string/prefs_contact_name" />
 
         <EditTextPreference
             android:key="@string/pref_contact_person_phone"
@@ -27,7 +27,7 @@
             android:singleLine="true"
             android:inputType="phone"
             app:useSimpleSummaryProvider="true"
-            android:title="Contact person phone" />
+            android:title="@string/prefs_contact_phone" />
 
     </PreferenceCategory>
 
@@ -39,14 +39,14 @@
             android:entryValues="@array/coordinate_formats"
             app:useSimpleSummaryProvider="true"
             android:key="@string/pref_coordinate_format"
-            android:title="Coordinate format" />
+            android:title="@string/prefs_coordinate_format" />
         <ListPreference
             android:defaultValue="LONGLINE"
             android:entries="@array/tool_type_code_labels"
             android:entryValues="@array/tool_type_codes"
             app:useSimpleSummaryProvider="true"
             android:key="@string/pref_tool_type"
-            android:title="Default tool type" />
+            android:title="@string/pref_default_tool_type" />
 
     </PreferenceCategory>
 
@@ -54,7 +54,7 @@
     <PreferenceCategory android:title="Snapfish settings">
         <SwitchPreferenceCompat
             android:key="@string/pref_snap_enable_service"
-            android:title="Enable Snapfish"/>
+            android:title="@string/prefs_enable_snapfish"/>
 
         <EditTextPreference
             android:defaultValue="http://esushi.no:37789/"
@@ -62,7 +62,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"
-            android:title="Snapfish API server" />
+            android:title="@string/prefs_snap_api_server" />
 
         <EditTextPreference
                 android:defaultValue="https://esushi.no:37457/"
@@ -70,7 +70,7 @@
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
                 app:useSimpleSummaryProvider="true"
-                android:title="Snapfish web server" />
+                android:title="@string/prefs_snap_web_server" />
 
         <EditTextPreference
             android:defaultValue="per@fiskinfo.no"
@@ -78,7 +78,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"
-            android:title="Snapfish user e-mail" />
+            android:title="@string/prefs_snap_user_email" />
 
         <EditTextPreference
                 android:defaultValue="1"
@@ -88,21 +88,21 @@
                 android:inputType="number"
                 android:digits="0123456789"
                 app:useSimpleSummaryProvider="true"
-                android:title="Snapfish user id" />
+                android:title="@string/prefs_snap_user_id" />
 
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="Other settings">
+    <PreferenceCategory android:title="@string/prefs_other_settings">
 
         <SwitchPreferenceCompat
             android:key="remember_login"
-            android:title="Remember login information"/>
+            android:title="@string/prefs_remember_login"/>
 
         <Preference
             android:key="consent"
-            android:title="Conditions for use and consent"
-            android:summary="Conditions, privacy, etc"/>
+            android:title="@string/prefs_conditions_for_use"
+            android:summary="@string/prefs_conditions_for_use_summary"/>
     </PreferenceCategory>
 
     

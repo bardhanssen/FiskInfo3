@@ -39,7 +39,7 @@
                         android:id="@+id/toolDetailsDateLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Setup date"
+                        android:hint="@string/tool_setup_date"
                         app:startIconDrawable="@drawable/ic_date"
                         app:startIconContentDescription="@string/proto_close_drawer"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -59,7 +59,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Time"
+                        android:hint="@string/tool_time"
                         android:layout_marginLeft="16dp"
                         app:startIconDrawable="@drawable/ic_time"
                         app:startIconContentDescription="@string/proto_close_drawer"
@@ -82,7 +82,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Tool type"
+                        android:hint="@string/tool_tool_type"
                         app:startIconDrawable="@drawable/ic_hook"
                         app:startIconContentDescription="@string/proto_close_drawer"
                         android:layout_marginTop="16dp"
@@ -102,7 +102,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Comment"
+                        android:hint="@string/tool_comment"
                         android:layout_marginTop="16dp"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText

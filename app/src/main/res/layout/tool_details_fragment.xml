@@ -39,7 +39,7 @@
                 android:id="@+id/toolDetailsDateLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Setup date"
+                android:hint="@string/tool_setup_date"
                 android:layout_marginTop="16dp"
                 app:startIconDrawable="@drawable/ic_date"
                 app:startIconContentDescription="@string/proto_close_drawer"

@@ -32,6 +32,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.login.LoginViewModel
+import java.util.*
 
 
 class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardInteractionListener {
@@ -83,6 +84,7 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val navController = findNavController()
+
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> initViewModel()

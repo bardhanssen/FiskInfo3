@@ -6,14 +6,14 @@
 
     <!-- General strings -->
     <string name="ok">OK</string>
-    <string name="save">Lagre</string>
-    <string name="cancel">Avbryt</string>
-    <string name="accept">Godta</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
     <string name="zero_number">0</string>
-    <string name="yes">Ja</string>
-    <string name="no">Nei</string>
-    <string name="update">Oppdater</string>
-    <string name="no_internet_access">Ingen internett-tilgang</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="update">Update</string>
+    <string name="no_internet_access">No internet access</string>
 
 
 
@@ -24,8 +24,8 @@
     <string name="overview_title">Overview</string>
     <string name="proto_open_drawer">Open drawer</string>
     <string name="proto_close_drawer">Close drawer</string>
-    <string name="snap_title">Echo snaps</string>
-    <string name="catch_analysis_title">Catch analysis</string>
+    <string name="snap_title">SnapFish</string>
+    <string name="catch_analysis_title">Catch Analysis</string>
     <string name="map_title">Map</string>
 
 
@@ -47,28 +47,28 @@
     <!-- Map fragment string -->
     <string name="catch_analysis_url" translatable="false">https://www.fangstanalyse.no/</string>
 
-    <string name="tool_legend">Tegnforklaring for redskaper</string>
+    <string name="tool_legend">Legend for tools</string>
 
     <!-- Map fragment menu strings -->
-    <string name="map_update_button">Oppdater kartet</string>
-    <string name="map_zoom_button">Zoom til min posisjon</string>
-    <string name="map_export_metadata">Last ned kartlag</string>
-    <string name="map_symbol_explanation">Tegnforklaring for redskaper</string>
-    <string name="set_alert_watcher">Sett opp kollisjonsvarsling</string>
+    <string name="map_update_button">Update map</string>
+    <string name="map_zoom_button">Zoom to my position</string>
+    <string name="map_export_metadata">Download map layer</string>
+    <string name="map_symbol_explanation">Legend for tools</string>
+    <string name="set_alert_watcher">Set collision warnings</string>
     <!--  <string name="check_polar_low">Sjekk polart lavtrykk</string> -->
-     <string name="choose_map_layers">Velg kartlag</string>
-    <string name="menu_search_tools">Søk i redskap</string>
+     <string name="choose_map_layers">Choose map layer</string>
+    <string name="menu_search_tools">Search tools</string>
 
     <!-- Strings related to login -->
 
-    <string name="login_remember_login">Husk meg</string>
-    <string name="login_prompt_email">Epostadresse</string>
-    <string name="login_prompt_password">Passord</string>
-    <string name="login_action_sign_in_short">Logg inn</string>
-    <string name="login_action_sign_in">Logg inn</string>
-    <string name="login_action_forgot_password">Glemt passord</string>
-    <string name="login_action_sign_up">Registrer bruker</string>
-    <string name="login_error_incorrect_password">Feil passord</string>
+    <string name="login_remember_login">Remember me</string>
+    <string name="login_prompt_email">Email</string>
+    <string name="login_prompt_password">Password</string>
+    <string name="login_action_sign_in_short">Log in</string>
+    <string name="login_action_sign_in">Log in</string>
+    <string name="login_action_forgot_password">Forgotten password</string>
+    <string name="login_action_sign_up">Register user</string>
+    <string name="login_error_incorrect_password">Wrong password</string>
 
 
     <!-- Tool type code resources -->
@@ -82,17 +82,17 @@
     <string name="tool_type_code_unknown">Unknown tool</string>
 
     <!-- Position / location -->
-    <string name="position">Posisjon</string>
-    <string name="latitude">Breddegrad</string>
-    <string name="longitude">Lengdegrad</string>
+    <string name="position">Positions</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
     <!--<string name="coordinates_help_text">Koordinater skrives inn som grader, minutt, sekund. Du kan legge til og fjerne posisjoner med knappene til høyre.</string>-->
-    <string name="coordinates_help_text">Koordinatformat er <b>%1$s</b>. Du kan endre dette i appinnstillingene.\nDu kan legge til og fjerne posisjoner med knappene til høyre.</string>
-    <string name="degrees_minutes_seconds">grader, minutt, sekund</string>
-    <string name="degrees_decimal_minutes">grader, desimalminutter</string>
+    <string name="coordinates_help_text">Coordinate format is <b>%1$s</b>. You can change this in preferences.\nYou can add and remove positions with the buttons to the right.</string>
+    <string name="degrees_minutes_seconds">Degrees, minutes, seconds</string>
+    <string name="degrees_decimal_minutes">Degrees, decimal minutes</string>
     <string name="symbol_geographical_degrees">°</string>
     <string name="symbol_geographical_minutes">’</string>
     <string name="symbol_geographical_seconds">\"</string>
-    <string name="coordinate_format">Koordinatformat</string>
+    <string name="coordinate_format">Coordinate format</string>
     <string name="cardinal_direction_symbol_north">N</string>
     <string name="cardinal_direction_symbol_south">S</string>
     <string name="cardinal_direction_symbol_west">W</string>
@@ -124,6 +124,34 @@
     <string name="tool_tool_type">Tool type</string>
     <string name="tool_comment">Comment</string>
     <string name="profile_title">Profile</string>
+    <string name="prefs_contact_email">Contact person e-mail</string>
+    <string name="prefs_contact_name">Contact person name</string>
+    <string name="prefs_contact_phone">Contact person phone</string>
+    <string name="prefs_coordinate_format">Coordinate format</string>
+    <string name="pref_default_tool_type">Default tool type</string>
+    <string name="prefs_enable_snapfish">Enable SnapFish</string>
+    <string name="prefs_snap_api_server">SnapFish API server</string>
+    <string name="prefs_snap_web_server">SnapFish web server</string>
+    <string name="prefs_snap_user_email">SnapFish user e-mail</string>
+    <string name="prefs_snap_user_id">SnapFish user id</string>
+    <string name="prefs_other_settings">Other settings</string>
+    <string name="prefs_remember_login">Remember login information</string>
+    <string name="prefs_conditions_for_use">Conditions for use and consent</string>
+    <string name="prefs_conditions_for_use_summary">Conditions, privacy, etc</string>
+    <string name="fragment_title_tools">Tools</string>
+    <string name="fragment_title_map">Map</string>
+    <string name="fragment_title_tool_details">Tool Details</string>
+    <string name="fragment_title_overview">FiskInfo Overview</string>
+    <string name="fragment_title_snapfish">SnapFish</string>
+    <string name="fragment_title_user_profile">User Profile</string>
+    <string name="fragment_title_user_preferences">Preferences</string>
+    <string name="fragment_title_snap_editor">New Snap Message</string>
+    <string name="fragment_title_snap_detail">Snap Message</string>
+    <string name="fragment_title_login">FiskInfo Login</string>
+    <string name="fragment_title_analysis">Catch Analysis</string>
+    <string name="fragment_title_echogram_viewer">Echogram Viewer</string>
+    <string name="fragment_title_deployment_editor">Report Tool</string>
+    <string name="tool_setup_date">Setup date</string>
 
 
     <!--

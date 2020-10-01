@@ -23,10 +23,10 @@
             android:title="@string/catch_analysis_title" />
 
     </group>
-    <!-- TODO STEP 9.8 - Add a menu item for settings_fragment -->
     <item
         android:id="@id/fragment_user_profile"
         android:icon="@drawable/ic_vessel"
+        android:visible="false"
         android:title="@string/user_profile_title" />
     <item
         android:id="@id/fragment_preferences"

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragment_tools"
         android:name="no.sintef.fiskinfo.ui.tools.ToolsFragment"
-        android:label="Tools"
+        android:label="@string/fragment_title_tools"
         tools:layout="@layout/tools_fragment" >
         <action
             android:id="@+id/action_tools_fragment_to_tool_details_fragment"
@@ -20,17 +20,17 @@
     <fragment
         android:id="@+id/fragment_map"
         android:name="no.sintef.fiskinfo.ui.map.MapFragment"
-        android:label="Map"
+        android:label="@string/fragment_title_map"
         tools:layout="@layout/map_fragment" />
     <fragment
         android:id="@+id/fragment_tool_details"
         android:name="no.sintef.fiskinfo.ui.tools.ToolDetailsFragment"
-        android:label="Tool Details"
+        android:label="@string/fragment_title_tool_details"
         tools:layout="@layout/tool_details_fragment" />
     <fragment
         android:id="@+id/fragment_overview"
         android:name="no.sintef.fiskinfo.ui.overview.OverviewFragment"
-        android:label="FiskInfo Overview"
+        android:label="@string/fragment_title_overview"
         tools:layout="@layout/overview_fragment" >
         <action
             android:id="@+id/action_overview_fragment_to_tools_fragment"
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/fragment_snap"
         android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
-        android:label="Snapfish"
+        android:label="@string/fragment_title_snapfish"
         tools:layout="@layout/snap_fragment" >
         <action
             android:id="@+id/action_snap_fragment_to_newSnapFragment"
@@ -70,34 +70,34 @@
     <fragment
         android:id="@+id/fragment_user_profile"
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"
-        android:label="User Profile"
+        android:label="@string/fragment_title_user_profile"
         tools:layout="@layout/user_profile_fragment" />
     <fragment
         android:id="@+id/fragment_preferences"
         android:name="no.sintef.fiskinfo.ui.preferences.UserPreferencesFragment"
-        android:label="User Preferences" />
+        android:label="@string/fragment_title_user_preferences" />
     <fragment
             android:id="@+id/fragment_snap_editor"
             android:name="no.sintef.fiskinfo.ui.snap.SnapEditorFragment"
-            android:label="New Snap Message"
+            android:label="@string/fragment_title_snap_editor"
             tools:layout="@layout/snap_editor_fragment"/>
     <fragment
             android:id="@+id/snapDetailFragment"
             android:name="no.sintef.fiskinfo.ui.snap.SnapDetailFragment"
-            android:label="Snap Message"
+            android:label="@string/fragment_title_snap_detail"
             tools:layout="@layout/snap_detail_fragment">
         <action android:id="@+id/action_snapDetailFragment_to_echogramViewerFragment"
                 app:destination="@id/echogram_viewer_fragment"/>
     </fragment>
     <fragment android:id="@+id/login_fragment" android:name="no.sintef.fiskinfo.ui.login.LoginFragment"
-              android:label="FiskInfo Login" tools:layout="@layout/login_fragment"/>
+              android:label="@string/fragment_title_login" tools:layout="@layout/login_fragment"/>
     <fragment android:name="no.sintef.fiskinfo.ui.analysis.AnalysisFragment"
-              android:label="Catch Analysis" tools:layout="@layout/analysis_fragment"
+              android:label="@string/fragment_title_analysis" tools:layout="@layout/analysis_fragment"
               android:id="@+id/fragment_analysis"/>
     <fragment android:id="@+id/echogram_viewer_fragment" android:name="no.sintef.fiskinfo.ui.snap.EchogramViewerFragment"
-              android:label="Echogram Viewer"/>
+              android:label="@string/fragment_title_echogram_viewer"/>
     <fragment
         android:id="@+id/deployment_editor_fragment"
         android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
-        android:label="Report tool"/>
+        android:label="@string/fragment_title_deployment_editor"/>
 </navigation>

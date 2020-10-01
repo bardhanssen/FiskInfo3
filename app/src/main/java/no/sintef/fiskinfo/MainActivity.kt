@@ -19,6 +19,7 @@ package no.sintef.fiskinfo
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -96,6 +97,13 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
     protected fun setupNavigationMenu(navController: NavController) {
         val view = findViewById<NavigationView>(R.id.navigation_view)
         NavigationUI.setupWithNavController(view, navController)
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        var snapEnabled= prefs.getBoolean(getString(R.string.pref_snap_enable_service), false)
+        val snapItem = view.menu.findItem(R.id.fragment_snap)
+        snapItem.isVisible = snapEnabled
+        //val toolItem = view.menu.findItem(R.id.fragment_tools)
+        //toolItem.isEnabled = false
     }
 
     override fun onSupportNavigateUp(): Boolean {
