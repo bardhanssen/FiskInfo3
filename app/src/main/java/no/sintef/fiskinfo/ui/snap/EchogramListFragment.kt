@@ -90,7 +90,7 @@ class EchogramListFragment : Fragment(), EchogramRecyclerViewAdapter.OnEchogramI
     override fun onViewEchogramClicked(v: View, echogram: SnapMetadata?) {
         if (echogram?.snapId != null) {
             var snapId = echogram.snapId.toString()
-            var bundle = bundleOf(ARG_SNAP_ID to snapId)
+            var bundle = bundleOf(EchogramViewerFragment.ARG_SNAP_ID to snapId)
             v.findNavController().navigate(R.id.action_fragment_snap_to_echogram_viewer_fragment, bundle)
         }
     }

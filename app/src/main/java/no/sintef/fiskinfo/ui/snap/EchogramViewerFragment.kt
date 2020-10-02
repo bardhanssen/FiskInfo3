@@ -39,14 +39,11 @@ import android.widget.Toast
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 
-
-
-const val ARG_SNAP_ID = "snap_id"
-
 class EchogramViewerFragment : Fragment() {
 
     companion object {
         fun newInstance() = EchogramViewerFragment()
+        const val ARG_SNAP_ID = "snap_id"
     }
 
 
@@ -57,7 +54,7 @@ class EchogramViewerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            snapId = it.getString(ARG_SNAP_ID)
+            snapId = it.getString(Companion.ARG_SNAP_ID)
         }
     }
 

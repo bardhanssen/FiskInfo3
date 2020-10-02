@@ -124,7 +124,7 @@ class SnapDetailFragment : Fragment() {
             if (! (mViewModel.getSelectedSnap()?.value?.snapMetadata?.snapId != null))
                 return
             var snapId = mViewModel.getSelectedSnap()?.value?.snapMetadata?.snapId.toString()
-            var bundle = bundleOf(ARG_SNAP_ID to snapId)
+            var bundle = bundleOf(EchogramViewerFragment.ARG_SNAP_ID to snapId)
             v.findNavController().navigate(R.id.action_snapDetailFragment_to_echogramViewerFragment, bundle)
         } catch (ex: Exception) {
         }
