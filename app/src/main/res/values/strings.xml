@@ -15,9 +15,6 @@
     <string name="update">Update</string>
     <string name="no_internet_access">No internet access</string>
 
-
-
-
     <string name="user_profile_title">Vessels and profile</string>
     <string name="preferences_title">Preferences</string>
     <string name="tools_title">Tools</string>
@@ -27,7 +24,6 @@
     <string name="snap_title">SnapFish</string>
     <string name="catch_analysis_title">Catch Analysis</string>
     <string name="map_title">Map</string>
-
 
     <!-- User preferences strings -->
     <string name="pref_snap_api_server_address" translatable="false">pref_snap_api_server_address</string>
@@ -98,7 +94,6 @@
     <string name="cardinal_direction_symbol_west">W</string>
     <string name="cardinal_direction_symbol_east">E</string>
 
-    <string name="overview_card_map_title">Map</string>
     <string name="tool_deployment_sent">Tool deployment sent!</string>
     <string name="tool_deployment_error">\"Tool deployment error: \"</string>
     <string name="tool_report_not_complete">Tool report or profile not complete</string>
@@ -153,6 +148,30 @@
     <string name="fragment_title_deployment_editor">Report Tool</string>
     <string name="tool_setup_date">Setup date</string>
 
+
+    // Overview fragment resources
+    <string name="overview_card_map_title">Map</string>
+    <string name="overview_card_map_subtitle">View map with resources</string>
+    <string name="overview_card_view_map">Vew map</string>
+
+    <string name="overview_card_snap_title">SnapFish</string>
+    <string name="overview_card_snap_subtitle">Share echo sounder snaps with your contacts</string>
+    <string name="overview_card_snap_description">You have %1$d unread snap messages.\nYou have %2$d snaps to share.</string>
+    <string name="overview_card_snap_view_messages">View inbox</string>
+    <string name="overview_card_snap_send_snap">Send snap</string>
+
+    <string name="overview_card_analysis_title">Catch</string>
+    <string name="overview_card_analysis_subtitle">View and analyse catch history</string>
+    <string name="overview_card_analysis_description">Updated with data for %1$s</string>
+    <string name="overview_card_analysis_view_analysis">View catch analysis</string>
+
+    <string name="overview_card_tools_description">You have %1$d confirmed and %2$d unconfirmed tools</string>
+    <string name="overview_card_tools_title">Tools</string>
+    <string name="overview_card_tools_subtitle">Create and view tool deployment reports</string>
+    <string name="overview_card_tools_view_tools">View tools</string>
+    <string name="overview_card_tools_new_tool">Report new tool</string>
+    <string name="overview_card_tools_description_missing_info">To use this feature, contact person, phone and email must first be filled in preferences.</string>
+    <string name="overview_card_tools_edit_preferences">Edit preferences</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

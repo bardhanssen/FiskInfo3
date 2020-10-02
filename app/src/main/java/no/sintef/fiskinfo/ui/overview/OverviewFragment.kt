@@ -59,6 +59,11 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
             mAdapter?.setOverviewItems(it)
             mSwipeLayout?.isRefreshing = false
         })
+        viewModel?.overviewInfo.observe(viewLifecycleOwner, Observer {
+            viewModel.updateOverviewCardItems(requireContext())
+            mSwipeLayout?.isRefreshing = false
+        })
+
     }
 
     override fun onCreateView(

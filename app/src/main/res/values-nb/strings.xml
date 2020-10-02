@@ -72,7 +72,6 @@
     <string name="cardinal_direction_symbol_west">W</string>
     <string name="cardinal_direction_symbol_east">E</string>
 
-    <string name="overview_card_map_title">Kart</string>
     <string name="tool_deployment_sent">Redskapsrapport sendt!</string>
     <string name="tool_deployment_error">Feil ved redskapsrapportering: </string>
     <string name="tool_report_not_complete">Redskapsrapport eller profil er ikke komplett</string>
@@ -123,6 +122,27 @@
     <string name="fragment_title_echogram_viewer">Ekkogram</string>
     <string name="fragment_title_deployment_editor">Sett redskap</string>
     <string name="tool_setup_date">Dato satt</string>
+
+    // Overview fragment resources
+    <string name="overview_card_map_title">Kart</string>
+    <string name="overview_card_map_subtitle">Se kart med ressurser</string>
+    <string name="overview_card_view_map">Se kart</string>
+    <string name="overview_card_snap_title">SnapFish</string>
+    <string name="overview_card_snap_subtitle">Del snaps fra ekkolodd med dine kontakter</string>
+    <string name="overview_card_snap_description">Du har %1$d uleste meldinger.\nDu har %2$d snaps du kan dele.</string>
+    <string name="overview_card_snap_view_messages">Se meldinger</string>
+    <string name="overview_card_snap_send_snap">Send snap</string>
+    <string name="overview_card_analysis_title">Fangstanalyse</string>
+    <string name="overview_card_analysis_subtitle">Se og analyser historiske fangstdata</string>
+    <string name="overview_card_analysis_description">Oppdatert med data for %1$s</string>
+    <string name="overview_card_analysis_view_analysis">Se fangtsanalyse</string>
+    <string name="overview_card_tools_description">Du har %d bekreftede og %d ubekreftede redskap</string>
+    <string name="overview_card_tools_title">Redskap</string>
+    <string name="overview_card_tools_subtitle">Rapporter redskap du sender og haler</string>
+    <string name="overview_card_tools_view_tools">Se dine redskap</string>
+    <string name="overview_card_tools_new_tool">Sett redskap</string>
+    <string name="overview_card_tools_description_missing_info">For å bruke redskaprapportering må du først fylle inn navn, telefon og email for kontaktperson under innstillinger.</string>
+    <string name="overview_card_tools_edit_preferences">Endre innstillinger</string>
 
 
     <!--
