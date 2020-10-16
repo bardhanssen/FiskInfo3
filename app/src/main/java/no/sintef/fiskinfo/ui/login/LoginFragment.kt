@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,12 +32,14 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import net.openid.appauth.*
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.util.AuthStateManager
+import no.sintef.fiskinfo.util.COORDINATE_FORMAT_DMS
 
 
 class LoginFragment : Fragment() {
@@ -105,36 +108,41 @@ class LoginFragment : Fragment() {
 
 
     fun startAuthentication() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val consent = prefs.getBoolean("user_consent_to_terms", false)
+        if (!consent)
+            Navigation.findNavController(this.requireView()).navigate(R.id.consentFragment)
+        else {
+            AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(ISSUER_URI),
+                fun(config: AuthorizationServiceConfiguration?, ex: AuthorizationException?) {
+                    if (config != null) {
+                        // man viewModel.appAuthState = AuthState(config) // TODO: Store?
+                        //viewModel.appAuthState = authStateManager.current
 
-        AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(ISSUER_URI),
-            fun(config: AuthorizationServiceConfiguration?, ex: AuthorizationException?) {
-                if (config != null) {
-                    // man viewModel.appAuthState = AuthState(config) // TODO: Store?
-                    //viewModel.appAuthState = authStateManager.current
+                        val req = AuthorizationRequest
+                            .Builder(
+                                config,
+                                CLIENT_ID,
+                                ResponseTypeValues.CODE,
+                                Uri.parse(REDIRECT_URI)
+                            )
+                            .setScope(SCOPE)
+                            .build()
 
-                    val req = AuthorizationRequest
-                        .Builder(
-                            config,
-                            CLIENT_ID,
-                            ResponseTypeValues.CODE,
-                            Uri.parse(REDIRECT_URI)
-                        )
-                        .setScope(SCOPE)
-                        .build()
+                        mAuthService = AuthorizationService(this.requireActivity())
+                        val intent =
+                            mAuthService.getAuthorizationRequestIntent(req)
 
-                    mAuthService = AuthorizationService(this.requireActivity())
-                    val intent =
-                        mAuthService.getAuthorizationRequestIntent(req)
-
-                    startActivityForResult(intent, REQCODE_AUTH)
-                } else {
-                    if (ex != null) {
-                        val m = Throwable().stackTrace[0]
-                        //Log.e(LOG_TAG, "${m}: ${ex}")
+                        startActivityForResult(intent, REQCODE_AUTH)
+                    } else {
+                        if (ex != null) {
+                            val m = Throwable().stackTrace[0]
+                            //Log.e(LOG_TAG, "${m}: ${ex}")
+                        }
+                        whenAuthorizationFails(ex)
                     }
-                    whenAuthorizationFails(ex)
-                }
-            })
+                })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

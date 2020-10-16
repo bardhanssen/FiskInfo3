@@ -90,7 +90,11 @@
                 app:destination="@id/echogram_viewer_fragment"/>
     </fragment>
     <fragment android:id="@+id/login_fragment" android:name="no.sintef.fiskinfo.ui.login.LoginFragment"
-              android:label="@string/fragment_title_login" tools:layout="@layout/login_fragment"/>
+              android:label="@string/fragment_title_login" tools:layout="@layout/login_fragment">
+        <action
+                android:id="@+id/action_login_fragment_to_consentFragment"
+                app:destination="@id/consentFragment" />
+    </fragment>
     <fragment android:name="no.sintef.fiskinfo.ui.analysis.AnalysisFragment"
               android:label="@string/fragment_title_analysis" tools:layout="@layout/analysis_fragment"
               android:id="@+id/fragment_analysis"/>
@@ -100,4 +104,9 @@
         android:id="@+id/deployment_editor_fragment"
         android:name="no.sintef.fiskinfo.ui.tools.DeploymentEditorFragment"
         android:label="@string/fragment_title_deployment_editor"/>
+    <fragment
+            android:id="@+id/consentFragment"
+            android:name="no.sintef.fiskinfo.ui.consent.ConsentFragment"
+            android:label="@string/fragment_title_consent"
+            tools:layout="@layout/consent_fragment" />
 </navigation>

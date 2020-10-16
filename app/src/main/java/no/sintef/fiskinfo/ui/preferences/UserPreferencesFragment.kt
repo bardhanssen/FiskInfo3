@@ -20,7 +20,9 @@ package no.sintef.fiskinfo.ui.preferences
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
+import androidx.navigation.Navigation
 import androidx.preference.EditTextPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.repository.SnapRepository
@@ -39,6 +41,12 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
         configureEditTextInputType("snap_web_server_address", InputType.TYPE_TEXT_VARIATION_URI)
         configureEditTextInputType("user_identity", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
         configureEditTextInputType("user_id", InputType.TYPE_NUMBER_VARIATION_NORMAL)
+
+        val consentPreference : Preference? = findPreference("consent")
+        consentPreference?.setOnPreferenceClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.consentFragment)
+            true
+        }
 
     }
 

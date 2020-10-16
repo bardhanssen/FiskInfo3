@@ -52,7 +52,7 @@
     <string name="map_symbol_explanation">Legend for tools</string>
     <string name="set_alert_watcher">Set collision warnings</string>
     <!--  <string name="check_polar_low">Sjekk polart lavtrykk</string> -->
-     <string name="choose_map_layers">Choose map layer</string>
+    <string name="choose_map_layers">Choose map layer</string>
     <string name="menu_search_tools">Search tools</string>
 
     <!-- Strings related to login -->
@@ -146,6 +146,7 @@
     <string name="fragment_title_analysis">Catch Analysis</string>
     <string name="fragment_title_echogram_viewer">Echogram Viewer</string>
     <string name="fragment_title_deployment_editor">Report Tool</string>
+    <string name="fragment_title_consent">Consent to terms of use</string>
     <string name="tool_setup_date">Setup date</string>
 
 
@@ -172,6 +173,66 @@
     <string name="overview_card_tools_new_tool">Report new tool</string>
     <string name="overview_card_tools_description_missing_info">To use this feature, contact person, phone and email must first be filled in preferences.</string>
     <string name="overview_card_tools_edit_preferences">Edit preferences</string>
+
+    <string name="user_consent_to_terms_label">I consent to the terms of use</string>
+    <string name="user_consent_description">
+        <![CDATA[
+        <h2>Samtykke for behandling av personopplysninger</h2>
+        <p>
+            Tjenestene som FiskInfo-appen tilbyr er avhengig av noe informasjon som regnes som personopplysninger for å fungere.
+            <b>Vi trenger derfor ditt samtykke</b> til hvordan appen samler inn og benytter disse opplysningene.
+        </p>
+
+        <h3>Hvilken informasjon registrerer og behandler vi?</h3>
+
+        <h4>Informasjon du selv fyller inn</h4>
+        <p>
+            For å benytte appen kreves en innlogging med brukernavn og passord for Barentswatch.
+        <p/>
+        <p>
+            Ditt navn, telefonnummer, epost, og informasjon om ditt fartøy (for eksempel IRCS, MMSI-nummer, IMO-nummer, og registreringsnummer) registreres i brukerprofilen.
+            Posisjon registreres (enten ved inntasting eller fra GPS) som del av registrering av redskap.
+        </p>
+        <p>
+            Appen logger også informasjon om din mobile enhet (inkl. dennes tilstand, operativsystem og nettverksadresse) og bruksmønster for appen.
+        </p>
+
+        <h4>Informasjon fra andre kilder</h4>
+        <p>
+            Fra Barentswatch henter vi informasjon om hvilke kartlag du abonnerer på, og vi laster ned
+            oversikt over redskap satt av deg (og andre). Disse er informasjon om redskaper som er
+            registrert hos Kystvaktsentralen (via appen eller på andre måter).
+        </p>
+
+        <h3>Hvordan bruker vi informasjonen vi samler inn?</h3>
+        <p>
+            Informasjonen du oppgir brukes til å generere rapporter som du kan sende inn til Kystvaktsentralen via epost,
+            og til å holde oversikt over aktive og utrapporterte redskap.  Formålet er å gjøre det enklere å sende inn pålagte redskapsrapporter.
+        </p>
+        <p>
+            Logger med informasjon om din mobile enhet brukes som gjør det mulig å spore feil som oppstår i appen
+            og for å analyse av bruksmønster for å forbedre appen via verktøyene Google Analytics for Firebase og
+            <a href="http://try.crashlytics.com/terms/privacy-policy.pdf">Firebase Crashlytics.</a>
+        </p>
+
+        <h3>Hvordan deler vi informasjon vi har samlet inn?</h3>
+        <p>
+        FiskInfo appen deler ikke informasjon direkte, men når du velger å sende en inn rapport for redskap genereres det en redskapsrapport som åpnes i din epost-app og innhold med vedlegg blir gjort klar for innsending til Kystvaktsentralen. Selve innsendingen gjør du som et eget steg fra epost-appen.
+        </p>
+        <h3>Hvordan lager og sikrer vi informasjonen som samles inn?</h3>
+        <p>
+        Informasjonen som lagres lokalt på mobiltelefonen lagres slik at den bare er tilgjengelig for FiskInfo appen.
+        Kommunikasjonen med Barentswatch er sikret og krever innlogging med brukernavn og passord.
+        </p>
+
+        <h3>Hvordan kan jeg trekke tilbake samtykket?</h3>
+        <p>
+            Du kan trekke tilbake ditt samtykke ved å åpne denne siden igjen og fjerne avkryssingen for at du samtykker.
+            Du vil da få en dialog som varsler om at alle data i appen blir slettet og at du ikke kan bruke appen videre uten nytt samtykke.
+            Du finner denne siden ved å velge «Innstillinger» fra menyen og så velge «Vilkår og personvern».
+        </p>
+        ]]>
+    </string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>
