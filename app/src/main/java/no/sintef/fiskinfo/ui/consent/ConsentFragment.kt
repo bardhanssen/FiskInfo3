@@ -10,11 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.ui.login.LoginViewModel
 
 class ConsentFragment : Fragment() {
+
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,10 +33,33 @@ class ConsentFragment : Fragment() {
         var consentSwitch = v.findViewById<SwitchMaterial>(R.id.consent_switch)
         consentSwitch.isChecked = consent
         consentSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            prefs.edit().putBoolean("user_consent_to_terms", isChecked).apply()
-            Navigation.findNavController(v).popBackStack()
-            // TODO add check on removing consent
-            // Responds to switch being checked/unchecked
+            if (!isChecked) {
+
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(resources.getString(R.string.withdraw_consent_title))
+                    .setMessage(resources.getString(R.string.withdraw_consent_description))
+                    .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+                        // Revert the switch back
+                        consentSwitch.isChecked = true
+                    }
+                    .setPositiveButton(resources.getString(R.string.withdraw_consent_confirm)) { dialog, which ->
+                        prefs.edit().putBoolean("user_consent_to_terms", isChecked).apply()
+                        //prefs.edit().clear().commit()
+                        loginViewModel.clearAuthentication()
+                        // clear login
+
+                        // navigate back to root
+                        while (Navigation.findNavController(v).popBackStack());
+                        //Navigation.findNavController(v).popBackStack()
+                    }
+                    .show()
+
+                // Responds to switch being checked/unchecked
+
+            } else {
+                prefs.edit().putBoolean("user_consent_to_terms", isChecked).apply()
+                Navigation.findNavController(v).popBackStack()
+            }
         }
         var textView = v.findViewById<TextView>(R.id.consent_text);
 //        Spanned htmlAsSpanned = Html.fromHtml(htmlAsString)

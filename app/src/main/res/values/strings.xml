@@ -174,6 +174,10 @@
     <string name="overview_card_tools_description_missing_info">To use this feature, contact person, phone and email must first be filled in preferences.</string>
     <string name="overview_card_tools_edit_preferences">Edit preferences</string>
 
+    <string name="withdraw_consent_title">Withdraw consent?</string>
+    <string name="withdraw_consent_description">Are you sure that you want to withdraw your consent to the user terms? All data saved in the app will be deleted, and you can not use the app before he terms are accepted again.</string>
+    <string name="withdraw_consent_confirm">Yes</string>
+
     <string name="user_consent_to_terms_label">I consent to the terms of use</string>
     <string name="user_consent_description">
         <![CDATA[

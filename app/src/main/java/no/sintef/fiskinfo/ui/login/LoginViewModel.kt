@@ -22,15 +22,14 @@ import androidx.lifecycle.ViewModel;
 
 class LoginViewModel : ViewModel() {
     enum class AuthenticationState {
-        AUTHENTICATED,          // Initial state, the user needs to authenticate
-        UNAUTHENTICATED,        // The user has authenticated successfully
+        UNAUTHENTICATED,        // Initial state, the user needs to authenticate
+        AUTHENTICATED,          // The user has authenticated successfully
         INVALID_AUTHENTICATION  // Authentication failed
     }
 
     val authenticationState = MutableLiveData<AuthenticationState>()
 
     init {
-        // In this example, the user is always unauthenticated when MainActivity is launched
         authenticationState.value = AuthenticationState.UNAUTHENTICATED
     }
 
@@ -40,5 +39,9 @@ class LoginViewModel : ViewModel() {
 
     fun authenticate() {
         authenticationState.value = AuthenticationState.AUTHENTICATED
+    }
+
+    fun clearAuthentication() {
+        authenticationState.value = AuthenticationState.UNAUTHENTICATED
     }
 }

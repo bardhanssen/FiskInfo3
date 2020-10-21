@@ -145,6 +145,9 @@
     <string name="overview_card_tools_description_missing_info">For å bruke redskaprapportering må du først fylle inn navn, telefon og email for kontaktperson under innstillinger.</string>
     <string name="overview_card_tools_edit_preferences">Endre innstillinger</string>
 
+    <string name="withdraw_consent_title">Trekke tilbake samtykke?</string>
+    <string name="withdraw_consent_description">Er du sikker på at du vil trekke tilbake ditt samtykke til vilkårene? Du vil ikke kunne bruke appen igjen før du samtykker på nytt, og alle data du har lagret i appen vil fjernes.</string>
+    <string name="withdraw_consent_confirm">Ja</string>
     <string name="user_consent_to_terms_label">Jeg samtykker til bruksvilkårene</string>
     <string name="user_consent_description">
         <![CDATA[
