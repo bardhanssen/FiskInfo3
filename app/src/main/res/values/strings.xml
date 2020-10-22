@@ -66,7 +66,6 @@
     <string name="login_action_sign_up">Register user</string>
     <string name="login_error_incorrect_password">Wrong password</string>
 
-
     <!-- Tool type code resources -->
     <string name="tool_type_code_nets">Net</string>
     <string name="tool_type_code_longline">Longline</string>

@@ -44,7 +44,6 @@
     <string name="login_action_sign_up">Registrer bruker</string>
     <string name="login_error_incorrect_password">Feil passord</string>
 
-
     <!-- Tool type code resources -->
     <string name="tool_type_code_nets">Garn</string>
     <string name="tool_type_code_longline">Line</string>

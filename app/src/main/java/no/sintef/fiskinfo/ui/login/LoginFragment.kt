@@ -21,13 +21,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -39,7 +43,6 @@ import net.openid.appauth.*
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.util.AuthStateManager
-import no.sintef.fiskinfo.util.COORDINATE_FORMAT_DMS
 
 
 class LoginFragment : Fragment() {
@@ -80,11 +83,13 @@ class LoginFragment : Fragment() {
             when (authenticationState) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
                     navController.popBackStack()
-                    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
                 }
                 LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION ->
-                    Snackbar.make(view,
+                    Snackbar.make(
+                        view,
                         R.string.login_error_incorrect_password,
                         Snackbar.LENGTH_SHORT
                     ).show()
@@ -156,16 +161,19 @@ class LoginFragment : Fragment() {
 
                 val clientAuth: ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
                 mAuthService
-                    .performTokenRequest(resp!!.createTokenExchangeRequest(), clientAuth, { resp2, ex2 -> // TODO: Investigae possible null pointer exception on this line
-                        if (resp2 != null) {
+                    .performTokenRequest(
+                        resp!!.createTokenExchangeRequest(),
+                        clientAuth,
+                        { resp2, ex2 -> // TODO: Investigae possible null pointer exception on this line
+                            if (resp2 != null) {
 
-                            authStateManager.updateAfterTokenResponse(resp2, ex2)
-                            viewModel.authenticate()
+                                authStateManager.updateAfterTokenResponse(resp2, ex2)
+                                viewModel.authenticate()
 
-                        } else {
-                            whenAuthorizationFails(ex2)
-                        }
-                    })
+                            } else {
+                                whenAuthorizationFails(ex2)
+                            }
+                        })
 
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
