@@ -48,8 +48,9 @@ class ConsentFragment : Fragment() {
                         loginViewModel.clearAuthentication()
                         // clear login
 
+                        Navigation.findNavController(v).popBackStack(R.id.fragment_overview, false);
                         // navigate back to root
-                        while (Navigation.findNavController(v).popBackStack());
+                        //while (Navigation.findNavController(v).popBackStack());
                         //Navigation.findNavController(v).popBackStack()
                     }
                     .show()
