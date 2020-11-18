@@ -49,53 +49,41 @@ class LoginFragment : Fragment() {
     companion object {
         fun newInstance() = LoginFragment()
     }
+    private val viewModel: LoginViewModel by activityViewModels()
+    private lateinit var mAuthService : AuthorizationService
+    private lateinit var authStateManager : AuthStateManager
+    private lateinit var loginButton: Button
+    private lateinit var consentButton: Button
+    private lateinit var consentStepText: TextView
+    private lateinit var loginStepText: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
-    }
-
-
-    private val viewModel: LoginViewModel by activityViewModels()
-    private lateinit var mAuthService : AuthorizationService
-    private lateinit var authStateManager : AuthStateManager
-    private lateinit var loginButton: Button
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.login_fragment, container, false)
 
         authStateManager = AuthStateManager.getInstance(this.requireContext())
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val consent = prefs.getBoolean("user_consent_to_terms", false)
+        view.findViewById<View>(R.id.consent_step_layout).visibility = if (consent) View.GONE else View.VISIBLE
+        view.findViewById<View>(R.id.login_step_layout).visibility = if (consent) View.VISIBLE else View.GONE
 
         loginButton = view.findViewById(R.id.sign_in_button)
         loginButton.setOnClickListener {
             startAuthentication()
         }
 
-        val navController = findNavController()
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.refuseAuthentication()
-            //TODO: navController.popBackStack(R.id.main_fragment, false)
+        consentButton = view.findViewById(R.id.consent_step_button)
+        consentButton.setOnClickListener {
+            Navigation.findNavController(this.requireView()).navigate(R.id.consentFragment)
         }
 
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState) {
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    navController.popBackStack()
-                    val imm =
-                        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
-                }
-                LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION ->
-                    Snackbar.make(
-                        view,
-                        R.string.login_error_incorrect_password,
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-            }
-        })
+        
+        return view
     }
+
 
     val ISSUER_URI = "https://id.barentswatch.net/"
     val CLIENT_ID = BuildConfig.FISKINFO_BW_CLIENT_ID;
@@ -115,15 +103,12 @@ class LoginFragment : Fragment() {
     fun startAuthentication() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val consent = prefs.getBoolean("user_consent_to_terms", false)
-        if (!consent)
-            Navigation.findNavController(this.requireView()).navigate(R.id.consentFragment)
-        else {
+        if (true) { //!consent)
+            //Navigation.findNavController(this.requireView()).navigate(R.id.consentFragment)
+        //else {
             AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(ISSUER_URI),
                 fun(config: AuthorizationServiceConfiguration?, ex: AuthorizationException?) {
                     if (config != null) {
-                        // man viewModel.appAuthState = AuthState(config) // TODO: Store?
-                        //viewModel.appAuthState = authStateManager.current
-
                         val req = AuthorizationRequest
                             .Builder(
                                 config,
@@ -193,8 +178,29 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        val navController = findNavController()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.refuseAuthentication()
+        }
+
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when (authenticationState) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    navController.popBackStack()
+                    val imm =
+                        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                }
+                LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION ->
+                    Snackbar.make(
+                        requireView(),
+                        R.string.login_error_incorrect_password,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+            }
+        })
+
     }
 
 }

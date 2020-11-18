@@ -66,6 +66,9 @@
     <string name="login_action_sign_up">Register user</string>
     <string name="login_error_incorrect_password">Wrong password</string>
 
+    <string name="login_action_terms_and_consent">Terms and consent</string>
+
+
     <!-- Tool type code resources -->
     <string name="tool_type_code_nets">Net</string>
     <string name="tool_type_code_longline">Longline</string>
@@ -236,6 +239,10 @@
         </p>
         ]]>
     </string>
+    <string name="login_welcome_heading">Welcome to the FiskInfo app!</string>
+    <string name="login_welcome_text">This app allows you to view a map of fishing facilities, and to report your own facilities.\nTo use this app, you first have to consent to the terms of use and log in.</string>
+    <string name="login_consent_step_text">Please press the button below to proceed to the terms of use and consent.</string>
+    <string name="login_login_step_text">Please press the button below to proceed to the login. Links to information about how to register a user will be shown in the login dialog.</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>
