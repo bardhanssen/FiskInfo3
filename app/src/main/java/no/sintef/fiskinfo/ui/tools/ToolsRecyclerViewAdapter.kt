@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.util.formatLocation
 
 import java.text.SimpleDateFormat
@@ -44,18 +45,17 @@ import java.util.TimeZone
 /**
  * [RecyclerView.Adapter] that can display a [FishingFacilityChange] and makes call to the
  * specified {@OnToolInteractionListener} callbacks on interaction
- * TODO: Replace the implementation with code for your data type.
  */
 class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?, private val mConfirmed : Boolean) :
     RecyclerView.Adapter<ToolsRecyclerViewAdapter.ViewHolder>() {
 
-    private var tools: List<FishingFacility>? = null
+    private var tools: List<ToolViewModel>? = null
 
     init {
         tools = ArrayList()
     }
 
-    fun setTools(tools: List<FishingFacility>) {
+    fun setTools(tools: List<ToolViewModel>) {
         this.tools = tools
         this.notifyDataSetChanged()
     }
@@ -143,9 +143,9 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
     }
 
     interface OnToolInteractionListener {
-        fun onViewToolClicked(v: View, tool: FishingFacility?)
-        fun onRemoveToolClicked(v: View, tool: FishingFacility?)
-        fun onToolStatusClicked(v: View, tool: FishingFacility?)
+        fun onViewToolClicked(v: View, tool: ToolViewModel?)
+        fun onRemoveToolClicked(v: View, tool: ToolViewModel?)
+        fun onToolStatusClicked(v: View, tool: ToolViewModel?)
         //fun onViewSnapInMapClicked(v: View, snap: SnapMessage?)
     }
 }

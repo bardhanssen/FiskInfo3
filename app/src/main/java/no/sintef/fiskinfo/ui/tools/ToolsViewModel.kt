@@ -32,34 +32,34 @@ import java.util.*
 
 class ToolsViewModel(application: Application) : AndroidViewModel(application)  {
 
-    private val selectedTool = MutableLiveData<FishingFacility?>()
-    private var confirmedTools: LiveData<List<FishingFacility>>? = null
-    private var unconfirmedTools: LiveData<List<FishingFacility>>? = null
+    private val selectedTool = MutableLiveData<ToolViewModel?>()
+    private var confirmedTools: LiveData<List<ToolViewModel>>? = null
+    private var unconfirmedTools: LiveData<List<ToolViewModel>>? = null
 
     private var profile: LiveData<FiskInfoProfileDTO>? = null
 
     private val draftReport = MutableLiveData<Report>()
     private val selectedToolTypeCodeName = MutableLiveData<String>()
 
-    fun selectTool(tool: FishingFacility?, isConfirmed: Boolean) {
+    fun selectTool(tool: ToolViewModel?, isConfirmed: Boolean) {
         //selectedIsIncomming.value = isConfirmed
         selectedTool.value = tool
         selectedToolTypeCodeName.value = tool?.toolTypeCode?.getLocalizedName(getApplication())
     }
 
-    fun getSelectedTool(): LiveData<FishingFacility?> {
+    fun getSelectedTool(): LiveData<ToolViewModel?> {
         return selectedTool
     }
 
 
-    fun getConfirmedTools(): LiveData<List<FishingFacility>>? {
+    fun getConfirmedTools(): LiveData<List<ToolViewModel>>? {
         if (confirmedTools == null) {
             confirmedTools = FishingFacilityRepository.getInstance(getApplication()).getConfirmedTools()
         }
         return confirmedTools
     }
 
-    fun getUnconfirmedTools(): LiveData<List<FishingFacility>>? {
+    fun getUnconfirmedTools(): LiveData<List<ToolViewModel>>? {
         if (unconfirmedTools == null) {
             unconfirmedTools = FishingFacilityRepository.getInstance(getApplication()).getUnconfirmedTools()
         }
@@ -108,7 +108,7 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
     }
 
 
-    fun sendRetrievedReport(tool: FishingFacility, comment : String?):LiveData<FishingFacilityRepository.SendResult> {
+    fun sendRetrievedReport(tool: ToolViewModel, comment : String?):LiveData<FishingFacilityRepository.SendResult> {
         var context : Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -118,7 +118,7 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
         val retrievalDate = Date()
         val info = RetrievalInfoDto(contactPersonEmail!!, contactPersonName!!, contactPersonPhone!!, retrievalDate, comment)
 
-        return FishingFacilityRepository.getInstance(getApplication()).sendRetrieved(tool.toolId, info)
+        return FishingFacilityRepository.getInstance(getApplication()).sendRetrieved(tool.toolId!!, info)
     }
 
 

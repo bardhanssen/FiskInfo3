@@ -7,7 +7,7 @@
         <import type="no.sintef.fiskinfo.util.UtilsKt"/>
         <import type="android.text.InputType" />
         <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
-        <variable name="tool" type="no.sintef.fiskinfo.model.fishingfacility.FishingFacility"/>
+        <variable name="tool" type="no.sintef.fiskinfo.model.fishingfacility.ToolViewModel"/>
         <variable name="toolcodename" type="String"/>
         <variable
                 name="toolviewmodel"

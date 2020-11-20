@@ -38,6 +38,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
+import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 
 
 /**
@@ -62,7 +63,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         val tools = if (mIsConfirmed) mViewModel!!.getConfirmedTools() else mViewModel!!.getUnconfirmedTools()
 
         tools?.observe(viewLifecycleOwner,
-            Observer<List<FishingFacility>> { _tools ->
+            Observer<List<ToolViewModel>> { _tools ->
                 mAdapter!!.setTools(_tools)
                 if (mSwipeLayout != null)
                     mSwipeLayout!!.isRefreshing = false
@@ -142,12 +143,12 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         }
     }
 
-    override fun onViewToolClicked(v: View, tool: FishingFacility?) {
+    override fun onViewToolClicked(v: View, tool: ToolViewModel?) {
         mViewModel!!.selectTool(tool, mIsConfirmed)
         Navigation.findNavController(v).navigate(R.id.action_tools_fragment_to_tool_details_fragment)
     }
 
-    override fun onRemoveToolClicked(v: View, tool: FishingFacility?) {
+    override fun onRemoveToolClicked(v: View, tool: ToolViewModel?) {
         if (mIsConfirmed && (tool != null)){
             val textInputLayout = TextInputLayout(requireContext())
             textInputLayout.hint = "Comment"
@@ -179,7 +180,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         }
     }
 
-    override fun onToolStatusClicked(v: View, tool: FishingFacility?) {
+    override fun onToolStatusClicked(v: View, tool: ToolViewModel?) {
         // TODO: Show info about status of tool
     }
 }

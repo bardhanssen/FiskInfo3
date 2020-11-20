@@ -35,8 +35,11 @@ class FishingFacilityRepository(context: Context) {
     internal var snapFishServerUrl: String? = DEFAULT_SNAP_FISH_SERVER_URL
 
 
-    internal var confirmedTools = MutableLiveData<List<FishingFacility>>()
-    internal val unconfirmedTools = MutableLiveData<List<FishingFacility>>()
+    internal var confirmedTools = MutableLiveData<List<ToolViewModel>>()
+    internal val unconfirmedTools = MutableLiveData<List<ToolViewModel>>()
+    //internal var pendingReports = MutableLiveData<List<Report>>()
+    //internal var failedReports = MutableLiveData<List<Report>>()
+    //internal var declinedReports = MutableLiveData<List<Report>>()
     internal val fiskInfoProfileDTO = MutableLiveData<FiskInfoProfileDTO>()
 
     internal val authStateManager = AuthStateManager.getInstance(context)
@@ -51,13 +54,13 @@ class FishingFacilityRepository(context: Context) {
     fun updateFromPreferences(context: Context) {}
 
 
-    fun getConfirmedTools(): LiveData<List<FishingFacility>> {
+    fun getConfirmedTools(): LiveData<List<ToolViewModel>> {
         refreshFishingFacilityChanges()
         return confirmedTools
     }
 
 
-    fun getUnconfirmedTools(): LiveData<List<FishingFacility>> {
+    fun getUnconfirmedTools(): LiveData<List<ToolViewModel>> {
         refreshFishingFacilityChanges()
         return unconfirmedTools
     }
@@ -98,7 +101,6 @@ class FishingFacilityRepository(context: Context) {
         }
         return result;
     }
-
 
     fun sendDeploymentInfo(info : DeploymentInfo):LiveData<SendResult> {
 
@@ -164,6 +166,59 @@ class FishingFacilityRepository(context: Context) {
     }
 
 
+    fun toUnconfirmedToolModels(changes : FishingFacilityChanges):List<ToolViewModel> {
+        // changes.confirmedTools
+        val unconfirmed = ArrayList<ToolViewModel>()
+
+        unconfirmed.addAll(changes.failedReports.map { toToolModel(it) })
+        unconfirmed.addAll(changes.declinedReports.map { toToolModel(it) })
+        unconfirmed.addAll(changes.pendingReports.map { toToolModel(it) })
+/*
+        for (report in changes.failedReports) {
+            unconfirmed.add(toToolModel(report))
+        }
+
+        for (report in changes.declinedReports) {
+            unconfirmed.add(toToolModel(report))
+        }
+
+        for (report in changes.pendingReports) {
+            unconfirmed.add(toToolModel(report))
+            changes.pendingReports.map {  }
+        }
+*/
+        for (facility in changes.unconfirmedTools) {
+            val vm = unconfirmed.find { it -> it.toolId == facility.toolId }
+            vm?.setupDateTime = facility.setupDateTime
+            vm?.lastChangedDateTime = facility.lastChangedDateTime
+        }
+
+        return unconfirmed
+    }
+
+    fun toConfirmedToolModels(changes : FishingFacilityChanges):List<ToolViewModel> {
+        val confirmed = ArrayList<ToolViewModel>()
+        confirmed.addAll(changes.confirmedTools.map { toToolModel(it) })
+        /*
+        for (facility in changes.confirmedTools) {
+            confirmed.add(toToolModel(facility))
+        }*/
+        return confirmed
+    }
+
+    fun toToolModel(report : Report):ToolViewModel {
+        with (report) {
+            return ToolViewModel(toolId, id, toolTypeCode, geometryWKT, comment, type, confirmed, responseStatus, responseReason, responseDateTime, errorReportedFromApi, setupDateTime = null, lastChangedDateTime = null)
+        }
+    }
+
+    fun toToolModel(facility : FishingFacility):ToolViewModel {
+        with (facility) {
+            return ToolViewModel(toolId, null, toolTypeCode, geometryWKT, comment, FishingFacilityChangeType.DEPLOYED, true, setupDateTime = setupDateTime, lastChangedDateTime = lastChangedDateTime)
+        }
+    }
+
+
     fun refreshFishingFacilityChanges() {
         if (fishingFacilityService == null)
             initService()
@@ -177,8 +232,9 @@ class FishingFacilityRepository(context: Context) {
                             response: Response<FishingFacilityChanges>
                         ) {
                             if (response.body() != null) {
-                                confirmedTools.value = response.body()!!.confirmedTools
-                                unconfirmedTools.value = response.body()!!.unconfirmedTools
+                                //toToolModels(response.body()!!)
+                                confirmedTools.value = toConfirmedToolModels(response.body()!!) // response.body()!!.confirmedTools
+                                unconfirmedTools.value =  toUnconfirmedToolModels(response.body()!!) //response.body()!!.unconfirmedTools
                                 // TODO: Reports?
                             }
                         }
