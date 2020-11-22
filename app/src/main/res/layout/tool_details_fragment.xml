@@ -4,137 +4,140 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="no.sintef.fiskinfo.util.UtilsKt"/>
+        <import type="no.sintef.fiskinfo.util.UtilsKt" />
         <import type="android.text.InputType" />
-        <variable name="handlers" type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
-        <variable name="tool" type="no.sintef.fiskinfo.model.fishingfacility.ToolViewModel"/>
-        <variable name="toolcodename" type="String"/>
+        <variable
+                name="handlers"
+                type="no.sintef.fiskinfo.ui.snap.SnapEditorFragment" />
+        <variable
+                name="tool"
+                type="no.sintef.fiskinfo.model.fishingfacility.ToolViewModel" />
+        <variable
+                name="toolcodename"
+                type="String" />
         <variable
                 name="toolviewmodel"
                 type="no.sintef.fiskinfo.ui.tools.ToolsViewModel" />
     </data>
 
-
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.map.MapFragment">
-
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_margin="16dp"
-        >
+            tools:context=".ui.map.MapFragment">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
 
-    <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/toolDetailsDateLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/tool_setup_date"
-                app:startIconDrawable="@drawable/ic_date"
-                app:startIconContentDescription="@string/proto_close_drawer"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/toolDetailsDateField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:text="@{UtilsKt.formatDate(tool.lastChangedDateTime)}"
-                    />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/tool_time"
-                android:layout_marginLeft="16dp"
-                app:startIconDrawable="@drawable/ic_time"
-                app:startIconContentDescription="@string/proto_close_drawer"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/toolDetailsTimeField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="time"
-                    android:text="@{UtilsKt.formatTime(tool.lastChangedDateTime)}"
-                    />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/tool_tool_type"
-                app:startIconDrawable="@drawable/ic_hook"
-                app:startIconContentDescription="@string/proto_close_drawer"
-                android:layout_marginTop="16dp"
-                >
+                android:layout_height="match_parent"
+                tools:context=".ui.map.MapFragment">
 
-            <AutoCompleteTextView
-                    android:id="@+id/toolDetailsTypeField"
+
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="@{InputType.TYPE_NULL}"
-                    android:text="@{toolcodename}"
-                    />
-        </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/tool_comment"
-                android:layout_marginTop="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            >
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/toolDetailsCommentField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:text="@{tool.comment}"
-                    />
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/toolDetailsDateLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/tool_setup_date"
+                            app:startIconContentDescription="@string/proto_close_drawer"
+                            app:startIconDrawable="@drawable/ic_date">
+                        >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/toolDetailsDateField"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:inputType="date"
+                                android:focusable="false"
+                                android:text="@{UtilsKt.formatDate(tool.lastChangedDateTime)}" />
 
-        <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/positions_label"
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/position"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="16dp"
-                android:id="@+id/toolPositionRecyclerView"
-                android:layout_width="match_parent"
-                android:background="@color/colorBarentsLightBlue"
-                android:layout_height="match_parent" />
+                    <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:hint="@string/tool_time"
+                            app:startIconContentDescription="@string/proto_close_drawer"
+                            app:startIconDrawable="@drawable/ic_time">
+                        >
 
-    </LinearLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/toolDetailsTimeField"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:inputType="time"
+                                android:text="@{UtilsKt.formatTime(tool.lastChangedDateTime)}" />
 
-    <!-- TODO: Update blank fragment layout -->
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="@string/tool_tool_type"
+                        app:startIconContentDescription="@string/proto_close_drawer"
+                        app:startIconDrawable="@drawable/ic_hook">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <AutoCompleteTextView
+                            android:id="@+id/toolDetailsTypeField"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="@{InputType.TYPE_NULL}"
+                            android:text="@{toolcodename}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="@string/tool_comment">
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/toolDetailsCommentField"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:focusable="false"
+                            android:text="@{tool.comment}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/positions_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/position"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                        tools:listitem="@layout/location_list_compact_item"
+                        android:id="@+id/toolPositionRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_border_background"
+                        android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

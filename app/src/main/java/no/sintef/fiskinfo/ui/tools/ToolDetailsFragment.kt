@@ -50,8 +50,7 @@ class ToolDetailsFragment : Fragment() {
 
     private lateinit var mToolCodeAdapter : ToolTypeCodeArrayAdapter
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
-    private lateinit var locAdapter : LocationRecyclerViewAdapter
-    private lateinit var mLocationAdapter : ArrayAdapter<String>
+    private lateinit var mLocationAdapter : CompactLocationRecyclerViewAdapter
 
     //private lateinit val mBinding: ToolDetailsFragmentBinding = null
 
@@ -62,19 +61,19 @@ class ToolDetailsFragment : Fragment() {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_details_fragment, container, false)
 
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(context, R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
-        mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
+        //mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
 
-        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.setSelectedToolCode(parent.getItemAtPosition(position) as ToolTypeCode) }
-        mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
+        //mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.setSelectedToolCode(parent.getItemAtPosition(position) as ToolTypeCode) }
+        //mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
-        mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
+        /*mBinding.toolDetailsDateLayout.setStartIconOnClickListener  {
             val builder : MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
             //val currentTimeInMillis = Calendar.getInstance().timeInMillis
             //builder.setSelection(currentTimeInMillis)
             val picker : MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener { mViewModel.setSelectedToolDate(it as Date) }
             picker.show(requireFragmentManager(), picker.toString())
-        }
+        }*/
 
         mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -83,13 +82,13 @@ class ToolDetailsFragment : Fragment() {
 //        if (locations != null)
 //            locAdapter.locations = locations
 
-        locAdapter = LocationRecyclerViewAdapter(null)
+        mLocationAdapter = CompactLocationRecyclerViewAdapter()
 //        mViewModel = ViewModelProviders.of(requireActivity()).get(ToolsViewModel::class.java)
 //        val locations = mViewModel?.getSelectedTool().value?.getLocations()
 //        if (locations != null)
 //            locAdapter.locations = locations
 
-        mBinding.toolPositionRecyclerView.adapter = locAdapter
+        mBinding.toolPositionRecyclerView.adapter = mLocationAdapter
 
         return mBinding!!.root
     }
@@ -102,7 +101,7 @@ class ToolDetailsFragment : Fragment() {
             if (tool != null) {
                 mBinding.tool = tool
                 mBinding.toolviewmodel = mViewModel
-                locAdapter.locations = tool.getLocations()
+                mLocationAdapter.locations = tool.getLocations()
             }
         })
 
