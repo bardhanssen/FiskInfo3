@@ -23,11 +23,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import no.sintef.fiskinfo.databinding.LocationListItemBinding
+import no.sintef.fiskinfo.databinding.LocationListCompactItemBinding
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.util.formatLocation
 
-class LocationRecyclerViewAdapter(private val mListener: LocationRecyclerViewAdapter.OnLocationInteractionListener?) : RecyclerView.Adapter<LocationRecyclerViewAdapter.ViewHolder>() {
+class CompactLocationRecyclerViewAdapter() : RecyclerView.Adapter<CompactLocationRecyclerViewAdapter.ViewHolder>() {
 
     var locations =  listOf<Location>()
         set(value) {
@@ -38,7 +38,7 @@ class LocationRecyclerViewAdapter(private val mListener: LocationRecyclerViewAda
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): LocationRecyclerViewAdapter.ViewHolder {
+    ): CompactLocationRecyclerViewAdapter.ViewHolder {
         return ViewHolder.from(parent)
     }
 
@@ -46,36 +46,24 @@ class LocationRecyclerViewAdapter(private val mListener: LocationRecyclerViewAda
         return locations.size
     }
 
-    override fun onBindViewHolder(holder: LocationRecyclerViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CompactLocationRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = locations[position]
         holder.bind(item)
-        holder.binding.root
-            .setOnClickListener { v ->
-            mListener?.onEditLocationClicked(v, holder.adapterPosition )
-        }
     }
 
-    class ViewHolder private constructor(val binding : LocationListItemBinding ) : RecyclerView.ViewHolder(binding.root){
+    class ViewHolder private constructor(val binding : LocationListCompactItemBinding ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Location) {
             binding.locationItemTextView.text = formatLocation(item, binding.root.context)
-            //binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = LocationListItemBinding.inflate(layoutInflater, parent, false)
+                val binding = LocationListCompactItemBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }
         }
     }
-
-    interface OnLocationInteractionListener {
-        fun onEditLocationClicked(v: View, itemClicked : Int)
-        //fun onViewSnapInMapClicked(v: View, snap: SnapMessage?)
-    }
-
-
 }

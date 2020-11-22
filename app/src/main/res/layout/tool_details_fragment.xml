@@ -40,9 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/tool_setup_date"
-                android:layout_marginTop="16dp"
                 app:startIconDrawable="@drawable/ic_date"
                 app:startIconContentDescription="@string/proto_close_drawer"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
             >
 
@@ -60,10 +60,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/tool_time"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 app:startIconDrawable="@drawable/ic_time"
                 app:startIconContentDescription="@string/proto_close_drawer"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
             >
 
@@ -79,7 +79,7 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/tool_tool_type"
@@ -101,7 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/tool_comment"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -114,7 +115,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/positions_label"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/position"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="16dp"
+                android:id="@+id/toolPositionRecyclerView"
+                android:layout_width="match_parent"
+                android:background="@color/colorBarentsLightBlue"
+                android:layout_height="match_parent" />
 
     </LinearLayout>
 

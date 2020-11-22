@@ -37,9 +37,6 @@ class FishingFacilityRepository(context: Context) {
 
     internal var confirmedTools = MutableLiveData<List<ToolViewModel>>()
     internal val unconfirmedTools = MutableLiveData<List<ToolViewModel>>()
-    //internal var pendingReports = MutableLiveData<List<Report>>()
-    //internal var failedReports = MutableLiveData<List<Report>>()
-    //internal var declinedReports = MutableLiveData<List<Report>>()
     internal val fiskInfoProfileDTO = MutableLiveData<FiskInfoProfileDTO>()
 
     internal val authStateManager = AuthStateManager.getInstance(context)
@@ -167,26 +164,12 @@ class FishingFacilityRepository(context: Context) {
 
 
     fun toUnconfirmedToolModels(changes : FishingFacilityChanges):List<ToolViewModel> {
-        // changes.confirmedTools
         val unconfirmed = ArrayList<ToolViewModel>()
 
         unconfirmed.addAll(changes.failedReports.map { toToolModel(it) })
         unconfirmed.addAll(changes.declinedReports.map { toToolModel(it) })
         unconfirmed.addAll(changes.pendingReports.map { toToolModel(it) })
-/*
-        for (report in changes.failedReports) {
-            unconfirmed.add(toToolModel(report))
-        }
 
-        for (report in changes.declinedReports) {
-            unconfirmed.add(toToolModel(report))
-        }
-
-        for (report in changes.pendingReports) {
-            unconfirmed.add(toToolModel(report))
-            changes.pendingReports.map {  }
-        }
-*/
         for (facility in changes.unconfirmedTools) {
             val vm = unconfirmed.find { it -> it.toolId == facility.toolId }
             vm?.setupDateTime = facility.setupDateTime
@@ -199,10 +182,6 @@ class FishingFacilityRepository(context: Context) {
     fun toConfirmedToolModels(changes : FishingFacilityChanges):List<ToolViewModel> {
         val confirmed = ArrayList<ToolViewModel>()
         confirmed.addAll(changes.confirmedTools.map { toToolModel(it) })
-        /*
-        for (facility in changes.confirmedTools) {
-            confirmed.add(toToolModel(facility))
-        }*/
         return confirmed
     }
 
@@ -218,7 +197,6 @@ class FishingFacilityRepository(context: Context) {
         }
     }
 
-
     fun refreshFishingFacilityChanges() {
         if (fishingFacilityService == null)
             initService()
@@ -232,10 +210,8 @@ class FishingFacilityRepository(context: Context) {
                             response: Response<FishingFacilityChanges>
                         ) {
                             if (response.body() != null) {
-                                //toToolModels(response.body()!!)
-                                confirmedTools.value = toConfirmedToolModels(response.body()!!) // response.body()!!.confirmedTools
-                                unconfirmedTools.value =  toUnconfirmedToolModels(response.body()!!) //response.body()!!.unconfirmedTools
-                                // TODO: Reports?
+                                confirmedTools.value = toConfirmedToolModels(response.body()!!)
+                                unconfirmedTools.value =  toUnconfirmedToolModels(response.body()!!)
                             }
                         }
 
@@ -247,8 +223,6 @@ class FishingFacilityRepository(context: Context) {
                     })
             }
         }
-
-
 //            createService(BarentswatchService::class.java,bwServerUrl , AuthorizationService(this.requireActivity()), viewModel.appAuthState)
 //            createService(BarentswatchService::class.java,bwServerUrl )
     }

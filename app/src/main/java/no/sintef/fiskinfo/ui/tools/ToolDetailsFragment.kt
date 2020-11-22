@@ -28,6 +28,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDetailsFragmentBinding
@@ -49,6 +50,9 @@ class ToolDetailsFragment : Fragment() {
 
     private lateinit var mToolCodeAdapter : ToolTypeCodeArrayAdapter
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
+    private lateinit var locAdapter : LocationRecyclerViewAdapter
+    private lateinit var mLocationAdapter : ArrayAdapter<String>
+
     //private lateinit val mBinding: ToolDetailsFragmentBinding = null
 
     override fun onCreateView(
@@ -72,6 +76,21 @@ class ToolDetailsFragment : Fragment() {
             picker.show(requireFragmentManager(), picker.toString())
         }
 
+        mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
+
+//        mViewModel = ViewModelProviders.of(requireActivity()).get(ToolsViewModel::class.java)
+//        val locations = mViewModel?.getSelectedTool().value?.getLocations()
+//        if (locations != null)
+//            locAdapter.locations = locations
+
+        locAdapter = LocationRecyclerViewAdapter(null)
+//        mViewModel = ViewModelProviders.of(requireActivity()).get(ToolsViewModel::class.java)
+//        val locations = mViewModel?.getSelectedTool().value?.getLocations()
+//        if (locations != null)
+//            locAdapter.locations = locations
+
+        mBinding.toolPositionRecyclerView.adapter = locAdapter
+
         return mBinding!!.root
     }
 
@@ -83,6 +102,7 @@ class ToolDetailsFragment : Fragment() {
             if (tool != null) {
                 mBinding.tool = tool
                 mBinding.toolviewmodel = mViewModel
+                locAdapter.locations = tool.getLocations()
             }
         })
 
