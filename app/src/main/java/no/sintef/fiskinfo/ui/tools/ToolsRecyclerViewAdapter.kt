@@ -28,6 +28,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
+import no.sintef.fiskinfo.model.fishingfacility.ResponseStatus
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.util.formatLocation
@@ -36,7 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Locale
 import java.util.TimeZone
-
+import kotlin.random.Random
 
 
 // TODO: Add attribution
@@ -104,10 +105,21 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
         holder.statusButton.visibility = if (mConfirmed) View.GONE else View.VISIBLE
         holder.removeButton.visibility = if (mConfirmed) View.VISIBLE else View.GONE
 
+
         if (mConfirmed) {
             holder.removeButton.setOnClickListener({mListener?.onRemoveToolClicked(it, tools!![holder.adapterPosition])})
         } else {
-            holder.statusButton.setOnClickListener({mListener?.onToolStatusClicked(it, tools!![holder.adapterPosition])})
+            //holder.statusButton.setOnClickListener({mListener?.onToolStatusClicked(it, tools!![holder.adapterPosition])})
+            //val responseStatus = ResponseStatus.values().random() // For testing
+            val responseStatus = tool.responseStatus
+
+            val statusIcon = when (responseStatus) {
+                ResponseStatus.RESPONSE_APPROVED -> R.drawable.ic_baseline_check_circle_outline_24
+                ResponseStatus.RESPONSE_REJECTED -> R.drawable.ic_baseline_error_outline_24
+                ResponseStatus.NO_RESPONSE -> R.drawable.ic_baseline_hourglass_top_24
+                else -> R.drawable.ic_baseline_help_outline_24
+            }
+            holder.statusButton.setBackgroundResource(statusIcon)
         }
 
         holder.mView.setOnClickListener { v ->
@@ -125,7 +137,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
         val titleView: TextView
         val detail1View: TextView
         val detail2View: TextView
-        val statusButton: ImageButton
+        val statusButton: ImageView
         val removeButton: ImageButton
 
         init {
@@ -133,7 +145,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
             titleView = mView.findViewById<View>(R.id.tool_item_title_view) as TextView
             detail1View = mView.findViewById<View>(R.id.tool_item_detail_1_view) as TextView
             detail2View = mView.findViewById<View>(R.id.tool_item_detail_2_view) as TextView
-            statusButton = mView.findViewById<View>(R.id.tool_status_button) as ImageButton
+            statusButton = mView.findViewById<View>(R.id.tool_status_button) as ImageView
             removeButton = mView.findViewById<View>(R.id.tool_remove_button) as ImageButton
         }
 
