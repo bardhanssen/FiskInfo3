@@ -106,8 +106,8 @@ class ToolDetailsFragment : Fragment() {
                 mBinding.toolviewmodel = mViewModel
                 mLocationAdapter.locations = tool.getLocations()
 
-                tool.responseReason = "This is a test on a response reason string that is quite long, just to test"
-                tool.responseDateTime = Date()
+                // Testing tool.responseReason = "This is a test on a response reason string that is quite long, just to test"
+                // Testing tool.responseDateTime = Date()
 
 
                 var responseStr = when(tool.responseStatus) {
