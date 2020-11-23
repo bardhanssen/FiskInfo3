@@ -43,8 +43,8 @@ class ConsentFragment : Fragment() {
                         consentSwitch.isChecked = true
                     }
                     .setPositiveButton(resources.getString(R.string.withdraw_consent_confirm)) { dialog, which ->
-                        prefs.edit().putBoolean("user_consent_to_terms", isChecked).apply()
-                        //prefs.edit().clear().commit()
+                        //prefs.edit().putBoolean("user_consent_to_terms", isChecked).apply()
+                        prefs.edit().clear().commit()
                         loginViewModel.clearAuthentication()
                         // clear login
 
@@ -72,4 +72,12 @@ class ConsentFragment : Fragment() {
         }
         return v
     }
+/*
+    private fun removeConsent() {
+        loginViewModel.clearAuthentication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        prefs.edit().clear().apply()
+    }
+*/
+
 }

@@ -17,7 +17,7 @@
     <string name="overview_title">Oversikt</string>
     <string name="proto_open_drawer">Open drawer</string>
     <string name="proto_close_drawer">Close drawer</string>
-    <string name="snap_title">SnapFish</string>
+    <string name="snap_title">SnapFish demo</string>
     <string name="catch_analysis_title">Fangstanalyse</string>
     <string name="map_title">Kart</string>
 
@@ -99,7 +99,7 @@
     <string name="prefs_contact_phone">Kontaktperson telefon</string>
     <string name="prefs_coordinate_format">Koordinatformat</string>
     <string name="pref_default_tool_type">Foretrukket redskapstype</string>
-    <string name="prefs_enable_snapfish">Aktiver SnapFish</string>
+    <string name="prefs_enable_snapfish">Aktiver SnapFish demo</string>
     <string name="prefs_snap_api_server">SnapFish API-server</string>
     <string name="prefs_snap_web_server">SnapFish web-server</string>
     <string name="prefs_snap_user_email">SnapFish bruker e-mail</string>
@@ -211,12 +211,15 @@
     <string name="login_welcome_text">Denne appen gir deg mulighet til å se redskap i kart og rapportere egne redskap.\nFor å bruke appen må du først samtykke til bruksvilkår og logge inn.</string>
     <string name="login_consent_step_text">Trykk knappen under for å fortsette til bruksvilkår og samtykke.</string>
     <string name="login_login_step_text">Trykk knappen under for å fortsette til innlogging. Innloggingssiden gir også en lenke til informasjon om hvordan du kan registrere en bruker.</string>
-    <string name="tool_response">Response</string>
-    <string name="tool_response_approved">Approved</string>
-    <string name="tool_response_rejected">Rejected</string>
-    <string name="tool_response_no_response">No response</string>
-    <string name="tool_response_unknown">Unknown</string>
-    <string name="tool_report_api_error">An error occurred when submitting the tool report</string>
+    <string name="tool_response">Respons</string>
+    <string name="tool_response_approved">Godkjent</string>
+    <string name="tool_response_rejected">Avvist</string>
+    <string name="tool_response_no_response">Ingen respons</string>
+    <string name="tool_response_unknown">Ukjent</string>
+    <string name="tool_report_api_error">En feil oppstod ved rapportering av redskap</string>
+    <string name="prefs_category_profile">Profil for redskapsrapportering</string>
+    <string name="prefs_category_app_settings">App preferanser</string>
+    <string name="prefs_category_snapfish">SnapFish demo innstillinger</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>
