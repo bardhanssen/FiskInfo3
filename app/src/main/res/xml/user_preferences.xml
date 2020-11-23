@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <PreferenceCategory android:title="@string/prefs_category_profile">
+    <PreferenceCategory android:title="@string/prefs_category_profile" android:icon="@drawable/ic_person" >
 
         <EditTextPreference
             android:key="@string/pref_contact_person_email"
@@ -31,7 +31,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/prefs_category_app_settings">
+    <PreferenceCategory android:title="@string/prefs_category_app_settings" android:icon="@drawable/ic_settings">
 
         <ListPreference
             android:defaultValue="D_M_S"
@@ -51,7 +51,7 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="@string/prefs_category_snapfish">
+    <PreferenceCategory android:title="@string/prefs_category_snapfish" android:icon="@drawable/ic_snap">
         <SwitchPreferenceCompat
             android:key="@string/pref_snap_enable_service"
             android:title="@string/prefs_enable_snapfish"/>
@@ -93,13 +93,14 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="@string/prefs_other_settings">
+    <PreferenceCategory
+            android:icon="@drawable/ic_settings"
+            android:title="@string/prefs_other_settings">
 
         <Preference
-            android:key="consent"
-            android:title="@string/prefs_conditions_for_use"
-            android:summary="@string/prefs_conditions_for_use_summary">
-        </Preference>
+                android:key="consent"
+                android:summary="@string/prefs_conditions_for_use_summary"
+                android:title="@string/prefs_conditions_for_use"></Preference>
     </PreferenceCategory>
 
     
