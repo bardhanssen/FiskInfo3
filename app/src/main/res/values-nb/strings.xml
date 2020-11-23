@@ -211,6 +211,12 @@
     <string name="login_welcome_text">Denne appen gir deg mulighet til å se redskap i kart og rapportere egne redskap.\nFor å bruke appen må du først samtykke til bruksvilkår og logge inn.</string>
     <string name="login_consent_step_text">Trykk knappen under for å fortsette til bruksvilkår og samtykke.</string>
     <string name="login_login_step_text">Trykk knappen under for å fortsette til innlogging. Innloggingssiden gir også en lenke til informasjon om hvordan du kan registrere en bruker.</string>
+    <string name="tool_response">Response</string>
+    <string name="tool_response_approved">Approved</string>
+    <string name="tool_response_rejected">Rejected</string>
+    <string name="tool_response_no_response">No response</string>
+    <string name="tool_response_unknown">Unknown</string>
+    <string name="tool_report_api_error">An error occurred when submitting the tool report</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

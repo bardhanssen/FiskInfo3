@@ -32,7 +32,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDetailsFragmentBinding
+import no.sintef.fiskinfo.model.fishingfacility.ResponseStatus
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.util.formatDate
 import java.util.*
 
 
@@ -99,9 +101,36 @@ class ToolDetailsFragment : Fragment() {
 
         mViewModel.getSelectedTool().observe(viewLifecycleOwner, Observer { tool ->
             if (tool != null) {
+
                 mBinding.tool = tool
                 mBinding.toolviewmodel = mViewModel
                 mLocationAdapter.locations = tool.getLocations()
+
+                tool.responseReason = "This is a test on a response reason string that is quite long, just to test"
+                tool.responseDateTime = Date()
+
+
+                var responseStr = when(tool.responseStatus) {
+                    ResponseStatus.RESPONSE_APPROVED -> getString(R.string.tool_response_approved)
+                    ResponseStatus.RESPONSE_REJECTED -> getString(R.string.tool_response_rejected)
+                    ResponseStatus.NO_RESPONSE -> getString(R.string.tool_response_no_response)
+                    ResponseStatus.RESPONSE_UNKNOWN -> getString(R.string.tool_response_unknown)
+                    else -> getString(R.string.tool_response_unknown)
+                }
+
+                if (tool.responseDateTime != null) {
+                    responseStr = formatDate(tool.responseDateTime) + ": " + responseStr
+                }
+
+                if (tool.responseReason != null) {
+                    responseStr += "\n" + tool.responseReason
+                }
+
+                if (tool.errorReportedFromApi == true)  {
+                    responseStr += "\n" + getString(R.string.tool_report_api_error)
+                }
+
+                mBinding.toolResponseField.setText(responseStr)
             }
         })
 
