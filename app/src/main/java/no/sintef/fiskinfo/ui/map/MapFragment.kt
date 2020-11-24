@@ -176,16 +176,18 @@ class MapFragment : Fragment() {
         fragmentIsActive = true
 
         configureWebView()
-/*
-        val authService = AuthorizationService(requireContext())
+
+/*        val authService = AuthorizationService(requireContext())
         authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
             if (ex == null) {
                 mAccessToken = accessToken
-                webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
+                requireActivity().runOnUiThread(java.lang.Runnable {
+                    webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
+                })
             }
-        })
+        })*/
 
- */
+
     }
 
     fun configureWebView() {
@@ -239,7 +241,7 @@ class MapFragment : Fragment() {
 
     private inner class WebAppInterface(private val mContext: Context) { //, private val loginViewModel: LoginViewModel) {
         // TODO: Check which parts of this should be implemented again
-
+/*
         @android.webkit.JavascriptInterface
         fun getToken(): String? {
             val manTok = authStateManager.current.accessToken
@@ -256,7 +258,7 @@ class MapFragment : Fragment() {
 
             //return loginViewModel.token?.access_token
         }
-
+*/
 
         @android.webkit.JavascriptInterface
         fun dismissKeyboard() {
@@ -293,7 +295,11 @@ class MapFragment : Fragment() {
             authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
                 if (ex == null) {
                     mAccessToken = accessToken
-                    webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
+                    requireActivity().runOnUiThread(java.lang.Runnable {
+                        webView.loadUrl("javascript:setToken('" + mAccessToken + "')")
+                    })
+
+//                    webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
                 }
             })
 
