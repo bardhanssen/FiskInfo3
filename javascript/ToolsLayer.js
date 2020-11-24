@@ -91,10 +91,8 @@ function setupToolsLayer() {
 
     toolsLayer.getFeatureSource().onFeatureChange(function(features) {
         features.forEach(selectFeature);
-    });
-
+    }); 
 }
-
 
 function selectFeature(feature) {
     if (feature.getFeatureKey() !== selectedKey) return;
