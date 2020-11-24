@@ -78,12 +78,6 @@ class MapFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
         authStateManager = AuthStateManager.getInstance(this.requireContext())
-        val authService = AuthorizationService(requireContext())
-        authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
-            if (ex == null) {
-                mAccessToken = accessToken
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -182,7 +176,16 @@ class MapFragment : Fragment() {
         fragmentIsActive = true
 
         configureWebView()
-        // TODO: Use the ViewModel
+/*
+        val authService = AuthorizationService(requireContext())
+        authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
+            if (ex == null) {
+                mAccessToken = accessToken
+                webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
+            }
+        })
+
+ */
     }
 
     fun configureWebView() {
@@ -196,7 +199,8 @@ class MapFragment : Fragment() {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         }
         //webView.webViewClient =
-        webView.addJavascriptInterface(WebAppInterface(requireContext()), "Android")  //, loginViewModel),"Android" )
+        webView.addJavascriptInterface(WebAppInterface(requireContext()),"App")  //, loginViewModel),"Android" )
+
         webView.setWebViewClient(BarentswatchFiskInfoWebClient())
 
         webView.setWebChromeClient(object : WebChromeClient() {
@@ -279,6 +283,24 @@ class MapFragment : Fragment() {
                 e.printStackTrace()
             }
 
+        }
+
+        @android.webkit.JavascriptInterface
+        fun ready() {
+
+            //TODO: Implement
+            val authService = AuthorizationService(requireContext())
+            authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
+                if (ex == null) {
+                    mAccessToken = accessToken
+                    webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
+                }
+            })
+
+            //if (waitingForAIS) {
+            //    waitingForAIS = false
+            //    refreshMapLayersIfReady()
+            //}
         }
 
         @android.webkit.JavascriptInterface
@@ -400,7 +422,7 @@ class MapFragment : Fragment() {
             pageLoaded = true
             refreshMapLayersIfReady()
             webView.loadUrl("javascript:getLayers()")
-            webView.loadUrl("javascript:getColors()")
+            //webView.loadUrl("javascript:getColors()")
 
             //loadProgressSpinner.setVisibility(View.GONE);
 
