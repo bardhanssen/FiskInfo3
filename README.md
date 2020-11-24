@@ -11,4 +11,5 @@ Currently this version mainly contains the following:
 * New navigation structure with empty placeholders for main fragments
 * Initial prototype of Snapfish - a new feature for sharing echograms
 
-The goal is to have a more complete rewrite available in Autumn 2019.
+The map implementation is based on the Sintium map, which is contained as a git subtree in this repository. To update the subtree, use
+git subtree pull --prefix app/src/main/assets/sintium_app https://github.com/torbval/fiskinfo3-sintium-app.git master --squash
