@@ -169,25 +169,13 @@ class MapFragment : Fragment() {
         fragmentIsActive = true
 
         configureWebView()
-
-/*        val authService = AuthorizationService(requireContext())
-        authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
-            if (ex == null) {
-                mAccessToken = accessToken
-                requireActivity().runOnUiThread(java.lang.Runnable {
-                    webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
-                })
-            }
-        })*/
-
-
     }
 
     var settingsStored = false;
 
     override fun onPause() {
         settingsStored = false
-        webView.loadUrl("javascript:requestSelectedLayers()")
+        webView.loadUrl("javascript:requestVisibleLayerNames()")
         var counter = 0;
         while ((settingsStored == false) && (counter < 10)) {
             Thread.sleep(100)
@@ -245,41 +233,7 @@ class MapFragment : Fragment() {
 
 
 
-    private inner class WebAppInterface(private val mContext: Context) { //, private val loginViewModel: LoginViewModel) {
-        // TODO: Check which parts of this should be implemented again
-/*
-        @android.webkit.JavascriptInterface
-        fun getToken(): String? {
-            val manTok = authStateManager.current.accessToken
-            if (mAccessToken != null) {
-                if (manTok.equals(mAccessToken))
-                    return manTok
-                else
-                    return mAccessToken
-            }
-            else
-                return manTok
-            //return mAccessToken
-            //return authStateManager.current.accessToken
-
-            //return loginViewModel.token?.access_token
-        }
-*/
-
-        @android.webkit.JavascriptInterface
-        fun dismissKeyboard() {
-            /*
-            val imm = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-            val act = getActivity()
-            var view = act.getCurrentFocus()
-            //If no view currently has focus, create a new one, just so we can grab a window token from it
-            if (view == null) {
-                view = View(act)
-            }
-            imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
-            */
-        }
+    private inner class WebAppInterface(private val mContext: Context) {
 
         @android.webkit.JavascriptInterface
         fun setAutoCompleteData(vesselObjectsString: String) {
@@ -295,8 +249,6 @@ class MapFragment : Fragment() {
 
         @android.webkit.JavascriptInterface
         fun ready() {
-
-            //TODO: Implement
             val authService = AuthorizationService(requireContext())
             authStateManager.current.performActionWithFreshTokens(authService, { accessToken, _, ex ->
                 if (ex == null) {
@@ -304,8 +256,6 @@ class MapFragment : Fragment() {
                     requireActivity().runOnUiThread(java.lang.Runnable {
                         webView.loadUrl("javascript:setToken('" + mAccessToken + "')")
                     })
-
-//                    webView.loadUrl("javascript:setToken(" + mAccessToken + ")")
                 }
             })
 
@@ -347,14 +297,14 @@ class MapFragment : Fragment() {
         }
 
         @android.webkit.JavascriptInterface
-        fun setSelectedLayers(layers: String) {
+        fun setVisibleLayerNames(layers: String) {
             try {
                 val layersJSONArray = JSONArray(layers)
                 var selectedLayers = HashSet<String>()
                 for (i in 0 until layersJSONArray.length()) {
                     selectedLayers.add(layersJSONArray.get(i).toString())
                 }
-                // TODO: Store to settings
+
                 val prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 prefs.edit().putStringSet(getString(R.string.pref_map_selected_layers), selectedLayers).apply();
                 settingsStored = true
@@ -365,7 +315,7 @@ class MapFragment : Fragment() {
         }
 
         @android.webkit.JavascriptInterface
-        fun setLayers(layers: String) {
+        fun setLayerNames(layers: String) {
             try {
                 val layersJSONArray = JSONArray(layers)
                 layersFromSintium.clear()
@@ -376,11 +326,9 @@ class MapFragment : Fragment() {
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-
         }
-
-
     }
+
     var layersFromSintium = mutableListOf<String>()
 
     private var fragmentIsActive = false
@@ -439,8 +387,8 @@ class MapFragment : Fragment() {
 
             pageLoaded = true
             refreshMapLayersIfReady()
-            webView.loadUrl("javascript:requestLayers()")
-            webView.loadUrl("javascript:requestColors()")
+            webView.loadUrl("javascript:requestLayerNames()")
+            webView.loadUrl("javascript:requestToolColors()")
         }
     }
 
