@@ -1,19 +1,61 @@
 
-function getColors() {
-    const stringifiedColors = JSON.stringify(toolsLayerColors);
-    if (!!App.setToolColors) {
-        App.setToolColors(stringifiedColors);
-    }
-    return (stringifiedColors);
+function isLayerSwitcherOpen() {
+    return layerSwitcher.isOpen();
 }
 
-function getLayers() {
-    const layerNames = map.getLayerHandler().getLayerNames().slice().reverse();
-    const stringifiedLayerNames = JSON.stringify(layerNames);
-    if (!!App.setLayers) {
-        App.setLayers(stringifiedLayerNames);
+function closeLayerSwitcher() {
+    layerSwitcher.close()
+}
+
+function isBottomSheetOpen() {
+    return infoDrawer.isOpen() || vesselInfoDrawer.isOpen();
+}
+
+function closeBottomSheet() {
+    infoDrawer.close();
+    vesselInfoDrawer.close();
+    map.getSelectionHandler().clearSelection();
+}
+
+function getToolColors() {
+    return JSON.stringify(toolsLayerColors);
+}
+
+function requestToolColors() {
+    if (!!App.setToolColors) {
+        const stringifiedColors = getToolColors();
+        App.setToolColors(stringifiedColors);
+    } else {
+        console.warn('Before calling requestColors, App must implement setToolColors')
     }
-    return (stringifiedLayerNames);
+}
+
+function getLayerNames() {
+    const layerNames = map.getLayerHandler().getLayerNames().slice().reverse();
+    return JSON.stringify(layerNames);
+}
+
+function requestLayerNames() {
+    if (!!App.setLayerNames) {
+        const stringifiedLayerNames = getLayers();
+        App.setLayerNames(stringifiedLayerNames);
+    } else {
+        console.warn('Before calling requestLayers, App must implement setLayers')
+    }
+}
+
+function getVisibleLayerNames() {
+    const layerNames = map.getLayerHandler().getVisibleLayerNames().slice().reverse();
+    return JSON.stringify(layerNames);
+}
+
+function requestVisibleLayerNames() {
+    if (!!App.setVisibleLayerNames) {
+        const stringifiedLayerNames = getVisibleLayerNames();
+        App.setVisibleLayerNames(stringifiedLayerNames);
+    } else {
+        console.warn('Before calling requestVisibleLayerNames, App must implement setVisibleLayerNames')
+    }
 }
 
 function toggleLayers(layers) {
@@ -48,12 +90,6 @@ function zoomToUserPosition() {
         const userPosition = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', 'EPSG:3857');
         map.zoomToCoordinates([position.coords.longitude, position.coords.latitude], 10)
     });
-}
-
-function closeBottomSheet() {
-    infoDrawer.close();
-    vesselInfoDrawer.close();
-    map.getSelectionHandler().clearSelection();
 }
 
 function setToken(_token) {

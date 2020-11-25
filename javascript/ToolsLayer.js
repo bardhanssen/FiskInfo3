@@ -49,7 +49,7 @@ const toolsLayerColors = [
 let toolsSource;
 let toolsLayer;
 
-function setupToolsLayer() {
+function ssetupToolsLayer() {
     toolsSource = Sintium.dataSource({
         url: "https://pilot.barentswatch.net/bwapi/v1/geodata/fishingfacility/",
         useCrossfilter: true,
@@ -91,7 +91,7 @@ function setupToolsLayer() {
 
     toolsLayer.getFeatureSource().onFeatureChange(function(features) {
         features.forEach(selectFeature);
-    }); 
+    });
 }
 
 function selectFeature(feature) {

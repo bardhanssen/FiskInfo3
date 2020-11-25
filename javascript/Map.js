@@ -24,10 +24,16 @@ const seaMapLayer = Sintium.wmsLayer({
     visible: true
 });
 
+const baseLayer = Sintium.baseLayer({
+    layerId: "Verdenskart",
+    layer: Sintium.getDefaultLightTileLayer(),
+    darkLayer: Sintium.getDefaultDarkTileLayer()
+});
+
 // Instantiating map
 const map = Sintium.map({
     domId: "map",
-    layers: [seaBottomInstallationsLayer, maritimeBordersLayer, fishRegulationsGroup, seismicGroup, iceGroup, tradeAreaGroup, seaMapLayer],
+    layers: [baseLayer, seaBottomInstallationsLayer, maritimeBordersLayer, fishRegulationsGroup, seismicGroup, iceGroup, tradeAreaGroup, seaMapLayer],
     use: [infoDrawer, layerSwitcher],
     controls: [zoomControl],
     zoomOnClusterClick: true,
