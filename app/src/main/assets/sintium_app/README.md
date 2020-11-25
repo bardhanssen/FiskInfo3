@@ -5,14 +5,21 @@ Functions available for each mobile app to interact with javascript code:
 
 Function | Description
 ------------ | ------------ 
-```getColors()``` | Get stringified list of colors for different tooltypes in tool layer
-```getLayers()``` | Get stringified list of layer names
+```getToolColors()``` | Get stringified list of colors for different tooltypes in tool layer
+```requestToolColors()``` | Calls getToolColors() and passes the output as parameters to App.setToolColors(stringifiedColors)
+```getLayerNames()``` | Get stringified list of layer names
+```requestLayerNames()``` | Calls getLayerNames() and passes the output as parameters to App.setLayerNames(stringifiedColors)
+```getVisibleLayerNames()``` | Get stringified list of names of visible layers
+```requestVisibleLayerNames()``` | Calls getVisibleLayerNames() and passes the output as parameters to App.setVisibleLayerNames(stringifiedColors)
 ```toggleLayers(layers)``` | Takes a list of layers, layers in list will be toggled visible, layers not in layer will be toggled invisible.
 ```toggleLayer(layer, visibility)``` | Takes layer and toggles visibility
 ```fail()``` | Triggers fail alert in webview
 ```populateUserPosition(callback)``` | Calls navigator.geolocation.getCurrentPosition with the given callback
 ```zoomToUserPosition()``` | Zooms to user position
+```isBottomSheetOpen()``` | Check if web apps bottom sheet is open
 ```closeBottomSheet()``` | Close web apps bottom sheet
+```isLayerSwitcherOpen()``` | Check if web apps layer switcher is open
+```closeLayerSwitcher()``` | Close web apps layer switcher
 ```setToken(token)``` | Sets authentication token for the Vessels- and Toolslayer
 
 #### Bottom up
@@ -26,4 +33,5 @@ Function | Description
 ```App.aisFinishedLoading()``` | Tells the mobile app that the webview has finished loading AIS data.
 ```App.ready()``` | Tells the mobile app that the webview is ready to accept token.
 ```App.setToolColors(stringifiedColors)``` | Gets called when the mobile app calls 'javascript:getColors()'
-```App.setLayers(stringifiedLayerNames)``` | Gets called when the mobile app calls 'javascript:getLayers()'
+```App.setLayerNames(stringifiedLayerNames)``` | Gets called when the mobile app calls 'javascript:getLayers()'
+```App.setVisibleLayerNames(stringifiedLayerNames)``` | Gets called when the mobile app calls 'javascript:getLayers()'
