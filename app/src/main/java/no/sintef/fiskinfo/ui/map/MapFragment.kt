@@ -27,6 +27,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.Log
@@ -107,7 +108,7 @@ class MapFragment : Fragment() {
         )
         searchAutoComplete.setDropDownBackgroundResource(android.R.color.holo_blue_light)
 
-        //TODO add again: searchAutoComplete.setHint(getString(R.string.vessel_search_hint))
+        searchAutoComplete.setHint(getString(R.string.map_vessel_search_hint))
 
         searchAutoCompleteAdapter = ArrayAdapter<VesselWrapper?>(
             context,
@@ -146,11 +147,6 @@ class MapFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.update_map -> {
-                //updateMap()
-                return true
-            }
-
             R.id.zoom_to_user_position -> {
                 zoomToUserPosition()
                 return true
@@ -158,9 +154,6 @@ class MapFragment : Fragment() {
 
             R.id.symbol_explanation -> {
                 createToolSymbolExplanationDialog()
-                return true
-            }
-            R.id.setProximityAlert -> {
                 return true
             }
         }
@@ -188,6 +181,19 @@ class MapFragment : Fragment() {
         })*/
 
 
+    }
+
+    var settingsStored = false;
+
+    override fun onPause() {
+        settingsStored = false
+        webView.loadUrl("javascript:requestSelectedLayers()")
+        var counter = 0;
+        while ((settingsStored == false) && (counter < 10)) {
+            Thread.sleep(100)
+            counter++
+        }
+        super.onPause()
     }
 
     fun configureWebView() {
@@ -341,6 +347,24 @@ class MapFragment : Fragment() {
         }
 
         @android.webkit.JavascriptInterface
+        fun setSelectedLayers(layers: String) {
+            try {
+                val layersJSONArray = JSONArray(layers)
+                var selectedLayers = HashSet<String>()
+                for (i in 0 until layersJSONArray.length()) {
+                    selectedLayers.add(layersJSONArray.get(i).toString())
+                }
+                // TODO: Store to settings
+                val prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                prefs.edit().putStringSet(getString(R.string.pref_map_selected_layers), selectedLayers).apply();
+                settingsStored = true
+
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+
+        @android.webkit.JavascriptInterface
         fun setLayers(layers: String) {
             try {
                 val layersJSONArray = JSONArray(layers)
@@ -413,48 +437,24 @@ class MapFragment : Fragment() {
             if (!fragmentIsActive)
                 return
 
-            //List<String> layers = user.getActiveLayers(); //.getActiveLayers();
-            //if (!layers.contains(getString(R.string.primary_background_map)))
-            //    layers.add(getString(R.string.primary_background_map));
-            //JSONArray json = new JSONArray(layers);
-
-            //view.loadUrl("javascript:populateMap();");
-            //view.loadUrl("javascript:toggleLayers(" + json + ");");
-
-            //if(toolsFeatureCollection != null && (getActivity() != null && (new FiskInfoUtility().isNetworkAvailable(getActivity())) && !user.getOfflineMode())) {
-            //TODO: Check with Bård if this is needed now;   view.loadUrl("javascript:getToolDataFromAndroid();");
-            //}
-
             pageLoaded = true
             refreshMapLayersIfReady()
-            webView.loadUrl("javascript:getLayers()")
-            //webView.loadUrl("javascript:getColors()")
-
-            //loadProgressSpinner.setVisibility(View.GONE);
-
-            /*            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    getLayersAndVisibility();
-                }
-            }, 200);*/
+            webView.loadUrl("javascript:requestLayers()")
+            webView.loadUrl("javascript:requestColors()")
         }
     }
 
     fun refreshMapLayersIfReady() {
         if (pageLoaded && !waitingForAIS && !waitingForTools) {
             activity?.runOnUiThread(Runnable {
-                val json = JSONArray(layersFromSintium)
+                val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                val selectedLayers = prefs.getStringSet(getString(R.string.pref_map_selected_layers), null)
+                // Default to showing all layers if selected layers not found
+                val json = JSONArray(selectedLayers ?: layersFromSintium)
+
                 webView.loadUrl("javascript:toggleLayers($json);")
                 //loadProgressSpinner.setVisibility(View.GONE)
-
             })
-            /*activity.runOnUiThread(Runnable {
-                val layers = user.getActiveLayers()
-                val json = JSONArray(layers)
-                webView.loadUrl("javascript:toggleLayers($json);")
-                loadProgressSpinner.setVisibility(View.GONE)
-            })*/
         }
     }
 

@@ -40,6 +40,9 @@
     <string name="pref_tool_type" translatable="false">pref_tool_type</string>
     <string name="pref_coordinate_format" translatable="false">pref_coordinate_format</string>
 
+    <string name="pref_map_selected_layers" translatable="false">pref_map_selected_layers</string>
+
+
     <!-- Map fragment string -->
     <string name="catch_analysis_url" translatable="false">https://www.fangstanalyse.no/</string>
 
@@ -54,6 +57,8 @@
     <!--  <string name="check_polar_low">Sjekk polart lavtrykk</string> -->
     <string name="choose_map_layers">Choose map layer</string>
     <string name="menu_search_tools">Search tools</string>
+
+    <string name="map_vessel_search_hint">Call signal / vessel name</string>
 
     <!-- Strings related to login -->
 

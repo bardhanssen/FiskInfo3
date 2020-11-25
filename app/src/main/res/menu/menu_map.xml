@@ -25,16 +25,9 @@ limitations under the License.
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
-        android:id="@+id/update_map"
-        android:title="@string/map_update_button"/>
-    <item
         android:id="@+id/zoom_to_user_position"
         android:title="@string/map_zoom_button"/>
     <item
         android:id="@+id/symbol_explanation"
         android:title="@string/map_symbol_explanation"/>
-    <item
-        android:id="@+id/setProximityAlert"
-        android:title="@string/set_alert_watcher"
-        android:visible="false"/>
 </menu>
