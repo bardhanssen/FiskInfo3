@@ -157,7 +157,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
             val editText = TextInputEditText(requireContext())
             var toolTypeStr = if (tool.toolTypeCode != null) tool.toolTypeCode?.getLocalizedName(requireContext())!!.toLowerCase() else "tool"
 
-            val builder = MaterialAlertDialogBuilder(context)
+            val builder = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.tool_report_retrieval_heading) + toolTypeStr)
                 .setMessage(getString(R.string.tool_report_retrieval_message))
                 //            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->

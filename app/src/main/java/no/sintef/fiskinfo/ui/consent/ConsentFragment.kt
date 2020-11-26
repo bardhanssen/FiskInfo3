@@ -35,7 +35,7 @@ class ConsentFragment : Fragment() {
         consentSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (!isChecked) {
 
-                MaterialAlertDialogBuilder(context)
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle(resources.getString(R.string.withdraw_consent_title))
                     .setMessage(resources.getString(R.string.withdraw_consent_description))
                     .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->

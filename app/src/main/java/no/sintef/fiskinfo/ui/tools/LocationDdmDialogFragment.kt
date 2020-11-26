@@ -102,7 +102,7 @@ class LocationDdmDialogFragment : DialogFragment() {
 
         val view = createView(requireActivity().layoutInflater, null)
 
-        val builder = MaterialAlertDialogBuilder(context)
+        val builder = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.tool_edit_location))
 //            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
 //                dismiss();
