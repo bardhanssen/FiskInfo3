@@ -37,7 +37,7 @@ function getLayerNames() {
 
 function requestLayerNames() {
     if (!!App.setLayerNames) {
-        const stringifiedLayerNames = getLayers();
+        const stringifiedLayerNames = getLayerNames();
         App.setLayerNames(stringifiedLayerNames);
     } else {
         console.warn('Before calling requestLayers, App must implement setLayers')
