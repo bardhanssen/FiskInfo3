@@ -19,6 +19,7 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.graphics.Typeface
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +33,11 @@ import no.sintef.fiskinfo.model.fishingfacility.ResponseStatus
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.util.formatLocation
+import no.sintef.fiskinfo.util.isToolOld
 
 import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 
@@ -72,6 +73,11 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
             return
         val tool = tools!![position]
         val context = holder.mView.context
+
+        if (mConfirmed) {
+            val bkCol = if (isToolOld(tool, context)) R.color.colorBarentsOrange else R.color.colorBarentsLightBlue
+            holder.removeButton.setBackgroundColor(context.resources.getColor(bkCol))
+        }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()

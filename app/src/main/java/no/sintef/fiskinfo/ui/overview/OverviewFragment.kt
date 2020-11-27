@@ -19,6 +19,7 @@ package no.sintef.fiskinfo.ui.overview
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.ui.login.LoginViewModel
 import java.util.*
 
@@ -59,6 +61,8 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
+        viewModel.refreshFromPreferences(requireContext())
+
         viewModel?.overviewList.observe(viewLifecycleOwner, Observer {
             mAdapter?.setOverviewItems(it)
             mSwipeLayout?.isRefreshing = false
@@ -85,7 +89,7 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
 
         mSwipeLayout = view.findViewById(R.id.overview_fragement_swipe_layout) as SwipeRefreshLayout
         mSwipeLayout!!.setOnRefreshListener {
-            viewModel?.refreshOverviewItems()
+            viewModel?.refreshOverviewItems(requireContext())
         }
         return view
     }

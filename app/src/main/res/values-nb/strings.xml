@@ -138,9 +138,10 @@
     <string name="overview_card_snap_send_snap">Send snap</string>
     <string name="overview_card_analysis_title">Fangstanalyse</string>
     <string name="overview_card_analysis_subtitle">Se og analyser historiske fangstdata</string>
-    <string name="overview_card_analysis_description">Data oppdateres daglig</string>
+    <string name="overview_card_analysis_description">Data oppdateres daglig,</string>
     <string name="overview_card_analysis_view_analysis">Se fangtsanalyse</string>
-    <string name="overview_card_tools_description">Du har %d bekreftede og %d ubekreftede redskap</string>
+    <string name="overview_card_tools_description">Du har %d bekreftede og %d ubekreftede redskap.</string>
+    <string name="overview_card_tools_overdue_description">%d redskap har stått for lenge.</string>
     <string name="overview_card_tools_title">Redskap</string>
     <string name="overview_card_tools_subtitle">Rapporter redskap du sender og haler</string>
     <string name="overview_card_tools_view_tools">Se dine redskap</string>
@@ -223,6 +224,7 @@
     <string name="prefs_category_profile">Profil for redskapsrapportering</string>
     <string name="prefs_category_app_settings">App preferanser</string>
     <string name="prefs_category_snapfish">SnapFish demo innstillinger</string>
+    <string name="prefs_days_before_old">Maksimum dager i vannet</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

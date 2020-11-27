@@ -109,7 +109,8 @@ class LoginFragment : Fragment() {
                             .setScope(SCOPE)
                             .build()
 
-                        mAuthService = AuthorizationService(this.requireActivity())
+                        if (mAuthService == null)
+                            mAuthService = AuthorizationService(this.requireActivity())
                         val intent =
                             mAuthService.getAuthorizationRequestIntent(req)
 
@@ -171,6 +172,7 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mAuthService = AuthorizationService(this.requireActivity())
 
         val navController = findNavController()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

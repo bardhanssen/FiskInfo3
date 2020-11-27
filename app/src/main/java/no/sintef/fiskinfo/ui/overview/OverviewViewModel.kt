@@ -32,6 +32,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import no.sintef.fiskinfo.model.SnapMessage
 import no.sintef.fiskinfo.model.SnapMetadata
+import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
+import no.sintef.fiskinfo.util.isToolOld
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -42,6 +44,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
 
     val overviewInfo = initOverviewInfo()
     var overviewList = MutableLiveData<List<OverviewCardItem>>()
+    var maxDaysBeforeOld = ToolViewModel.DEFAULT_DAYS_BEFORE_OLD
 
     private fun initOverviewInfo(): MutableLiveData<OverviewInfo> {
         val overview = MediatorLiveData<OverviewInfo>()
@@ -54,6 +57,9 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
 
         overview.addSource(confirmedTools) { value ->
             overview.value?.numConfirmedTools = value.size
+            overview.value?.numToolsOverdue =
+                value!!.count { isToolOld(it, maxDaysBeforeOld) }
+
             overview.postValue(overview.value!!)
         }
         overview.addSource(unconfirmedTools) { value ->
@@ -95,8 +101,13 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         overviewList.value = itemList
     }
 
+    fun refreshFromPreferences(context : Context) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        maxDaysBeforeOld = prefs.getString(context.getString(R.string.pref_tool_days_before_old), ToolViewModel.DEFAULT_DAYS_BEFORE_OLD.toString()).toInt()
+    }
 
-    fun refreshOverviewItems() {
+    fun refreshOverviewItems(context : Context) {
+        refreshFromPreferences(context)
         toolRepository.refreshFishingFacilityChanges()
         snapRepository.refreshInboxContent()
         snapRepository.refreshEchogramListContent()
@@ -158,10 +169,17 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         if (isProfileValid()) {
             val numConfirmed = overviewInfo.value?.numConfirmedTools // confirmed?.value?.size ?: 0
             val numUnconfirmed = overviewInfo.value?.numUnconfirmedTools //unconfirmed?.value?.size ?: 0
+            val numOverdue = overviewInfo.value?.numToolsOverdue
+
+            val overdueText =
+                if (numOverdue == 0)
+                    ""
+                else
+                    "\n" + context.getString(R.string.overview_card_tools_overdue_description).format(numOverdue)
 
             val item = OverviewCardItem(context.getString(R.string.overview_card_tools_title),
                 context.getString(R.string.overview_card_tools_subtitle), R.drawable.ic_hook,
-                context.getString(R.string.overview_card_tools_description).format(numConfirmed, numUnconfirmed),
+                context.getString(R.string.overview_card_tools_description).format(numConfirmed, numUnconfirmed) + overdueText,
                 context.getString(R.string.overview_card_tools_view_tools),
                 context.getString(R.string.overview_card_tools_new_tool))
 
@@ -184,6 +202,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     data class OverviewInfo(
         var numConfirmedTools: Int = 0,
         var numUnconfirmedTools: Int = 0,
+        var numToolsOverdue: Int = 0,
         var catchDataLastUpdated: String = "September 2020",
         var numInboxMsg: Int = 0,
         var numUnreadMsg: Int = 0,

@@ -39,6 +39,7 @@
 
     <string name="pref_tool_type" translatable="false">pref_tool_type</string>
     <string name="pref_coordinate_format" translatable="false">pref_coordinate_format</string>
+    <string name="pref_tool_days_before_old" translatable="false">pref_tool_days_before_old</string>
 
     <string name="pref_map_selected_layers" translatable="false">pref_map_selected_layers</string>
 
@@ -170,10 +171,11 @@
 
     <string name="overview_card_analysis_title">Catch</string>
     <string name="overview_card_analysis_subtitle">View and analyse catch history</string>
-    <string name="overview_card_analysis_description">Data is update daily</string>
+    <string name="overview_card_analysis_description">Data are updated daily.</string>
     <string name="overview_card_analysis_view_analysis">View catch analysis</string>
 
-    <string name="overview_card_tools_description">You have %1$d confirmed and %2$d unconfirmed tools</string>
+    <string name="overview_card_tools_description">You have %1$d confirmed and %2$d unconfirmed tools.</string>
+    <string name="overview_card_tools_overdue_description">%d tools are overdue for hauling.</string>
     <string name="overview_card_tools_title">Tools</string>
     <string name="overview_card_tools_subtitle">Create and view tool deployment reports</string>
     <string name="overview_card_tools_view_tools">View tools</string>
@@ -257,6 +259,7 @@
     <string name="prefs_category_profile">Profile for tool reporting</string>
     <string name="prefs_category_app_settings">App preferences</string>
     <string name="prefs_category_snapfish">SnapFish demo settings</string>
+    <string name="prefs_days_before_old">Days deployed limit</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

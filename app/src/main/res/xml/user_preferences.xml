@@ -48,6 +48,15 @@
             android:key="@string/pref_tool_type"
             android:title="@string/pref_default_tool_type" />
 
+        <EditTextPreference
+            android:defaultValue="7"
+            android:key="@string/pref_tool_days_before_old"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:inputType="number"
+            android:digits="0123456789"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/prefs_days_before_old" />
     </PreferenceCategory>
 
 

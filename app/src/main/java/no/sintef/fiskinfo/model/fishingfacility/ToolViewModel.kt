@@ -23,10 +23,13 @@ data class ToolViewModel(
     // Fields from FishingFacilities
     var setupDateTime: Date? = null,
     var lastChangedDateTime: Date? = null
-    )
-  {
+    ) {
+
     fun getLocations():List<Location> {
         return wktToLocations(geometryWKT)
-  }
+    }
 
+    companion object{
+        const val DEFAULT_DAYS_BEFORE_OLD = 7
+    }
 }

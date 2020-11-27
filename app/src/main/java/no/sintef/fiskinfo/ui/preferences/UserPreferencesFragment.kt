@@ -34,13 +34,17 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.user_preferences, rootKey)
 
-        configureEditTextInputType("contact_person_email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+        configureEditTextInputType(
+            "contact_person_email",
+            InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+        )
         configureEditTextInputType("contact_person_name", InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
         configureEditTextInputType("contact_person_phone", InputType.TYPE_CLASS_PHONE)
         configureEditTextInputType("snap_api_server_address", InputType.TYPE_TEXT_VARIATION_URI)
         configureEditTextInputType("snap_web_server_address", InputType.TYPE_TEXT_VARIATION_URI)
         configureEditTextInputType("user_identity", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-        configureEditTextInputType("user_id", InputType.TYPE_NUMBER_VARIATION_NORMAL)
+        //configureEditTextInputType("pref_user_id", InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL)
+        //configureEditTextInputType("pref_tool_days_before_old", InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL)
 
         val consentPreference : Preference? = findPreference("consent")
         consentPreference?.setOnPreferenceClickListener {
@@ -50,7 +54,7 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
 
     }
 
-    private fun configureEditTextInputType(key : String, inputType : Int) {
+    private fun configureEditTextInputType(key: String, inputType: Int) {
         val editTextPreference = preferenceManager.findPreference<EditTextPreference>(key)
         editTextPreference?.setOnBindEditTextListener { editText ->
             editText.inputType = inputType
