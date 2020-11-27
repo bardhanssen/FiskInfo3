@@ -42,3 +42,4 @@ Thumbs.db
 build/
 
 app/release/output.json
+/app/google-services.json
