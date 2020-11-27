@@ -130,7 +130,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     private fun addCatchAnalysis(list : ArrayList<OverviewCardItem>, context: Context) {
         val item = OverviewCardItem(context.getString(R.string.overview_card_analysis_title),
             context.getString(R.string.overview_card_analysis_subtitle), R.drawable.ic_chart,
-            context.getString(R.string.overview_card_analysis_description).format(overviewInfo.value?.catchDataLastUpdated),
+            context.getString(R.string.overview_card_analysis_description), //.format(overviewInfo.value?.catchDataLastUpdated),
             context.getString(R.string.overview_card_analysis_view_analysis), "")
 //        val item = OverviewCardItem("Catch", "View and analyse catch history", R.drawable.ic_chart, "Updated with data for January 2020.", "View catch analysis", "")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_analysis, null)

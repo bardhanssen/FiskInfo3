@@ -161,7 +161,6 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             } else {
                 Snackbar.make(requireView(), getString(R.string.tool_report_not_complete) , Snackbar.LENGTH_LONG)
                     .show()
-                // TODO give feedback that it cannot be sent
             }
             return true
         }

@@ -170,7 +170,7 @@
 
     <string name="overview_card_analysis_title">Catch</string>
     <string name="overview_card_analysis_subtitle">View and analyse catch history</string>
-    <string name="overview_card_analysis_description">Updated with data for %1$s</string>
+    <string name="overview_card_analysis_description">Data is update daily</string>
     <string name="overview_card_analysis_view_analysis">View catch analysis</string>
 
     <string name="overview_card_tools_description">You have %1$d confirmed and %2$d unconfirmed tools</string>

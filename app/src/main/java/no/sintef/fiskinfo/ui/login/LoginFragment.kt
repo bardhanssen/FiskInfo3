@@ -80,10 +80,8 @@ class LoginFragment : Fragment() {
             Navigation.findNavController(this.requireView()).navigate(R.id.consentFragment)
         }
 
-        
         return view
     }
-
 
     val ISSUER_URI = "https://id.barentswatch.net/"
     val CLIENT_ID = BuildConfig.FISKINFO_BW_CLIENT_ID;
@@ -91,14 +89,6 @@ class LoginFragment : Fragment() {
     val SCOPE = "api openid offline_access"
     val REQCODE_AUTH = 100
     val CLIENT_SECRET = BuildConfig.FISKINFO_BW_CLIENT_SECRET;
-
-    //val ISSUER_URI = "https://id.barentswatch.net/"
-    //val CLIENT_ID = "sinteffiskinfoapp"
-    //val REDIRECT_URI = "iOSFiskInfoApp://"
-    //val SCOPE = "api openid offline_access"
-    //val REQCODE_AUTH = 100
-    //val CLIENT_SECRET = ""
-
 
     fun startAuthentication() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
@@ -129,7 +119,7 @@ class LoginFragment : Fragment() {
                             val m = Throwable().stackTrace[0]
                             //Log.e(LOG_TAG, "${m}: ${ex}")
                         }
-                        whenAuthorizationFails(ex)
+                        showLoginFailedMessage("Login authorization failed", ex?.toString())
                     }
                 })
         }
@@ -144,34 +134,37 @@ class LoginFragment : Fragment() {
 
                 authStateManager.updateAfterAuthorization(resp, ex)
 
-                val clientAuth: ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
-                mAuthService
-                    .performTokenRequest(
-                        resp!!.createTokenExchangeRequest(),
-                        clientAuth,
-                        { resp2, ex2 -> // TODO: Investigae possible null pointer exception on this line
-                            if (resp2 != null) {
+                // Proceed with token request if response is not null, otherwise just
+                // stay on the login page
+                if (resp != null) {
+                    val clientAuth: ClientAuthentication = ClientSecretBasic(CLIENT_SECRET)
+                    mAuthService
+                        .performTokenRequest(
+                            resp!!.createTokenExchangeRequest(),
+                            clientAuth,
+                            { resp2, ex2 ->
+                                if (resp2 != null) {
 
-                                authStateManager.updateAfterTokenResponse(resp2, ex2)
-                                viewModel.authenticate()
+                                    authStateManager.updateAfterTokenResponse(resp2, ex2)
+                                    viewModel.authenticate()
 
-                            } else {
-                                whenAuthorizationFails(ex2)
-                            }
-                        })
-
+                                } else {
+                                    showLoginFailedMessage("Could not get login token", ex2.toString())
+                                }
+                            })
+                } else  {
+                    showLoginFailedMessage("Login cancelled", "")
+                }
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
-                val ex = AuthorizationException.fromIntent(data)
-                // TODO: Handle this
+                showLoginFailedMessage("Login cancelled", "")
             }
         }
     }
 
-    private fun whenAuthorizationFails(ex: AuthorizationException?) {
-        // TODO: Implement feedback when authorization fails
-        //uResponseView.text = "%s\n\n%s".format(getText(R.string.msg_auth_ng), ex?.message)
-        //doShowAppAuthState()
+    private fun showLoginFailedMessage(message : String, details : String?) {
+        Snackbar.make(requireView(), message , Snackbar.LENGTH_LONG)
+            .show()
     }
 
 

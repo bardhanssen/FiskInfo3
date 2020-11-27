@@ -138,7 +138,7 @@
     <string name="overview_card_snap_send_snap">Send snap</string>
     <string name="overview_card_analysis_title">Fangstanalyse</string>
     <string name="overview_card_analysis_subtitle">Se og analyser historiske fangstdata</string>
-    <string name="overview_card_analysis_description">Oppdatert med data for %1$s</string>
+    <string name="overview_card_analysis_description">Data oppdateres daglig</string>
     <string name="overview_card_analysis_view_analysis">Se fangtsanalyse</string>
     <string name="overview_card_tools_description">Du har %d bekreftede og %d ubekreftede redskap</string>
     <string name="overview_card_tools_title">Redskap</string>
