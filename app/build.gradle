@@ -40,6 +40,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "SERVER_URL", "\"https://barentswatch.no/\"")
+            buildConfigField("String", "SERVER_ID_URL", "\"https://id.barentswatch.no/\"")
+        }
+        debug {
+            debuggable true
+            buildConfigField("String", "SERVER_URL", "\"https://pilot.barentswatch.net/\"")
+            buildConfigField("String", "SERVER_ID_URL", "\"https://id.barentswatch.net/\"")
         }
     }
 }

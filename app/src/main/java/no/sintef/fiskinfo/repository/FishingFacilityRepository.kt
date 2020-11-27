@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.openid.appauth.AuthorizationService
+import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.api.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.fishingfacility.*
@@ -42,7 +43,7 @@ class FishingFacilityRepository(context: Context) {
     internal val authStateManager = AuthStateManager.getInstance(context)
     internal val authService = AuthorizationService(context)
 
-    val bwServerUrl = "https://pilot.barentswatch.net/"
+    val bwServerUrl = BuildConfig.SERVER_URL;
 
     init {
         updateFromPreferences(context)
