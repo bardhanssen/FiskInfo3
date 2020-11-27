@@ -28,6 +28,8 @@ import android.webkit.SslErrorHandler
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 
 import no.sintef.fiskinfo.R
 
@@ -37,6 +39,7 @@ class AnalysisFragment : Fragment() {
         fun newInstance() = AnalysisFragment()
     }
 
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var viewModel: AnalysisViewModel
     private lateinit var webView: WebView
 
@@ -44,6 +47,7 @@ class AnalysisFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
         return inflater.inflate(R.layout.analysis_fragment, container, false)
     }
 
@@ -75,6 +79,14 @@ class AnalysisFragment : Fragment() {
         }
 
         webView.loadUrl(getString(R.string.catch_analysis_url))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, "Catch Analytics")
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "AnalyticsFragment")
+        }
     }
 
 }

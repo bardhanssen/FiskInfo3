@@ -17,7 +17,6 @@
  */
 package no.sintef.fiskinfo
 
-import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.MenuItem
@@ -32,14 +31,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationResponse
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSelectedListener {
 
-
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var controller : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
@@ -57,6 +55,8 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_launcher_background)
 
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         val host = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         controller = host!!.navController
@@ -142,7 +142,9 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return NavigationUI.onNavDestinationSelected(item, controller) || super.onOptionsItemSelected(item)
+        return NavigationUI.onNavDestinationSelected(item, controller) || super.onOptionsItemSelected(
+            item
+        )
     }
 
 

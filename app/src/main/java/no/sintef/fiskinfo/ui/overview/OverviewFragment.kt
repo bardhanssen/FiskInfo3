@@ -29,6 +29,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.login.LoginViewModel
@@ -36,6 +38,8 @@ import java.util.*
 
 
 class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardInteractionListener {
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     override fun onAction2Clicked(v: View, item: OverviewCardItem?) {
         item?.action2Listener?.onClick(v);
     }
@@ -70,6 +74,8 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
+
         val view = inflater.inflate(R.layout.overview_fragment, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.overview_recycler_view)
@@ -96,6 +102,14 @@ class OverviewFragment : Fragment(), OverviewRecyclerViewAdapter.OnOverviewCardI
                 LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, "Overview")
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "OverviewFragment")
+        }
     }
 
 }

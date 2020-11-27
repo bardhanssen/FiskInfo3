@@ -29,6 +29,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMessage
@@ -44,6 +46,7 @@ import no.sintef.fiskinfo.model.SnapMessage
  * fragment (e.g. upon screen orientation changes).
  */
 class SnapBoxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteractionListener {
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var mViewModel: SnapViewModel? = null
     private var mAdapter: SnapRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
@@ -85,6 +88,8 @@ class SnapBoxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteractionLis
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
+
         val view = inflater.inflate(R.layout.snap_inbox_fragment, container, false)
 
         val listView = view.findViewById<RecyclerView>(R.id.inbox_list)
@@ -119,6 +124,14 @@ class SnapBoxFragment : Fragment(), SnapRecyclerViewAdapter.OnSnapInteractionLis
     override fun onViewSnapInMapClicked(v: View, snap: SnapMessage?) {
         val toast = Toast.makeText(this.context, "Not yet implemented!", Toast.LENGTH_SHORT)
         toast.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, "Snap List")
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "SnapBoxFragment")
+        }
     }
 
     companion object {

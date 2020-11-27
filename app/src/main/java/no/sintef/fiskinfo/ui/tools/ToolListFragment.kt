@@ -36,6 +36,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
@@ -45,6 +47,7 @@ import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
  * A fragment for showing the active tools.
  */
 class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionListener {  //, SnapRecyclerViewAdapter.OnSnapInteractionListener {
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     private val mViewModel: ToolsViewModel by activityViewModels()
 
@@ -74,6 +77,8 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
+
         val view = inflater.inflate(R.layout.tool_list_fragment, container, false)
 
         val listView = view.findViewById<RecyclerView>(R.id.tool_list)
@@ -183,4 +188,13 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     override fun onToolStatusClicked(v: View, tool: ToolViewModel?) {
         // TODO: Show info about status of tool
     }
+
+    override fun onResume() {
+        super.onResume()
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, "Tool List")
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "ToolListFragment")
+        }
+    }
+
 }

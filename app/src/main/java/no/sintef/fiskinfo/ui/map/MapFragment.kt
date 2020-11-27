@@ -43,6 +43,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.MainActivity
 import no.sintef.fiskinfo.R
@@ -58,6 +60,7 @@ import java.util.*
 
 class MapFragment : Fragment() {
     val FRAGMENT_TAG = "MapFragment"
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     companion object {
         fun newInstance() = MapFragment()
@@ -73,6 +76,7 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
         return inflater.inflate(R.layout.map_fragment, container, false)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,6 +173,14 @@ class MapFragment : Fragment() {
         fragmentIsActive = true
 
         configureWebView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, "Map")
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "MapFragment")
+        }
     }
 
     var settingsStored = false;
