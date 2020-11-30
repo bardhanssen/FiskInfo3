@@ -9,6 +9,14 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    signingConfigs {
+        signing_config {
+        storeFile file('<path-to-store-file>')
+            keyAlias '<alias>'
+            keyPassword '<password>'
+            storePassword '<password>'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "fiskinfoo.no.sintef.fiskinfoo"
@@ -34,19 +42,32 @@ android {
     }
     buildTypes {
         buildTypes.each {
-            it.buildConfigField 'String', 'FISKINFO_BW_CLIENT_ID', fiskinfo_bwclientid
-            it.buildConfigField 'String', 'FISKINFO_BW_CLIENT_SECRET', fiskinfo_bwclientsecret
+//            Configs that apply to all build types can be placed here.
         }
         release {
             minifyEnabled false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "SERVER_URL", "\"https://barentswatch.no/\"")
             buildConfigField("String", "SERVER_ID_URL", "\"https://id.barentswatch.no/\"")
+//            buildConfigField("String", "SERVER_URL", prod_fiskinfo_server_url)
+//            buildConfigField("String", "SERVER_ID_URL", prod_fiskinfo_server_url)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_ID", prod_fiskinfo_bwclientid)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_SECRET", prod_fiskinfo_bwclientsecret)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", prod_fiskinfo_bwclient_redirect_url)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
+            signingConfig signingConfigs.signing_config
         }
         debug {
             debuggable true
             buildConfigField("String", "SERVER_URL", "\"https://pilot.barentswatch.net/\"")
             buildConfigField("String", "SERVER_ID_URL", "\"https://id.barentswatch.net/\"")
+//            buildConfigField("String", "SERVER_URL", pilot_fiskinfo_server_url)
+//            buildConfigField("String", "SERVER_ID_URL", pilot_fiskinfo_server_url)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_ID", pilot_fiskinfo_bwclientid)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_SECRET", pilot_fiskinfo_bwclientsecret)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", pilot_fiskinfo_bwclient_redirect_url)
+            buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", pilot_fiskinfo_bwclient_scope)
         }
     }
 }

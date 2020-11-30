@@ -85,8 +85,8 @@ class LoginFragment : Fragment() {
 
     val ISSUER_URI = BuildConfig.SERVER_ID_URL;
     val CLIENT_ID = BuildConfig.FISKINFO_BW_CLIENT_ID;
-    val REDIRECT_URI = "no.sintef.fiskinfo.android://"
-    val SCOPE = "api openid offline_access"
+    val REDIRECT_URI = BuildConfig.FISKINFO_BW_CLIENT_REDIRECT_URL;
+    val SCOPE = BuildConfig.FISKINFO_BW_CLIENT_SCOPE;
     val REQCODE_AUTH = 100
     val CLIENT_SECRET = BuildConfig.FISKINFO_BW_CLIENT_SECRET;
 

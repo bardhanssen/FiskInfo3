@@ -51,7 +51,8 @@ let toolsLayer;
 
 function setupToolsLayer() {
     toolsSource = Sintium.dataSource({
-        url: "https://pilot.barentswatch.net/bwapi/v1/geodata/fishingfacility/",
+//        url: "https://pilot.barentswatch.net/bwapi/v1/geodata/fishingfacility/",
+        url: "https://barentswatch.no/bwapi/v1/geodata/fishingfacility/",
         useCrossfilter: true,
         preprocess: data => JSON.parse(data).fishingFacilities,
         columns: {
