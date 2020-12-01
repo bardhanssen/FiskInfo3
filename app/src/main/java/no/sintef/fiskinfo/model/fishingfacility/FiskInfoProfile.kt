@@ -18,37 +18,29 @@
 package no.sintef.fiskinfo.model.fishingfacility
 
 /*
-    FiskInfoProfileDto:
-      type: object
-      description: Profile information for a user. Information about rights and if the
-        user is connected to a vessel.
-      required:
-        - HaveProfile
-        - HaveDownloadRights
-      properties:
-        HaveProfile:
-          type: boolean
-          description: Wether the user has a FiskInfo profile.
-          example: true
-        HaveDownloadRights:
-          type: boolean
-          description: Wether the user has download rights for the full FishingFacility-dataset
         FiskinfoProfile:
           type: object
           required:
-            - UserId
-            - Ircs
-            - VesselName
+            - userId
+            - userName
+            - ircs
+            - vesselName
           properties:
-            UserId:
+            userId:
               type: string
               description: Username
-            Ircs:
+            ircs:
               $ref: '#/components/schemas/IRCS'
-            Mmsi:
+            mmsi:
               $ref: '#/components/schemas/MMSI'
-            VesselName:
+            vesselName:
               $ref: '#/components/schemas/VesselName'
  */
 
-data class FiskInfoProfile ( var userId : String, var ircs : String, var mmsi: String? = null, var vesselName: String )
+data class FiskInfoProfile(
+    var userId: String,
+    var usedName: String,
+    var ircs: String,
+    var mmsi: Int,
+    var vesselName: String
+)

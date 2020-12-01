@@ -67,13 +67,13 @@ DeploymentInfo:
  */
 
 data class DeploymentInfo (
-    var ircs: String,
-    var mmsi: Int? = null,
-    var imo: Int? = null,
-    var regNum: String? = null,
-
-    var vesselName: String? = null,
-    var vesselPhone: String? = null,
+//    var ircs: String,
+//    var mmsi: Int? = null,
+//    var imo: Int? = null,
+//    var regNum: String? = null,
+//
+//    var vesselName: String? = null,
+//    var vesselPhone: String? = null,
 
     var toolTypeCode: ToolTypeCode = ToolTypeCode.NETS,
 
@@ -81,9 +81,9 @@ data class DeploymentInfo (
 
     var contactPersonName: String ,
     var contactPersonPhone: String,
-    var contactPersonEmail: String, // format: email
+//    var contactPersonEmail: String, // format: email
 
     var comment: String?  = null,
-    var setupTime: Date,
-    var currentTime: Date?  = null
+    var setupTime: Date
+//    var currentTime: Date?  = null
 )

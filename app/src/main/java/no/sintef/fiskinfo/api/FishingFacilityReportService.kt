@@ -31,10 +31,10 @@ interface FishingFacilityReportService {
     companion object {
         const val v1prefix = "bwapi/v1/geodata/"
         const val v2prefix = "bwapi/v2/geodata/"
-        const val fishingfacilityprofile = v1prefix + "fishingfacilityprofile"
+        const val fishingfacilityprofile = v2prefix + "fishingfacilityprofile"
         const val fishingfacilitychanges = v2prefix + "fishingfacilitychanges"
-        const val deployed = v1prefix + "fishingfacilitychange/deployed"
-        const val retrieved = v1prefix + "fishingfacilitychange/retrieved/{toolid}"
+        const val deployed = v2prefix + "fishingfacilitychange/deployed"
+        const val retrieved = v2prefix + "fishingfacilitychange/retrieved/{toolid}"
         //const val geoDataSubscription = prefix + "subscription/"
         //const val geoDataSubscriptionManagement = prefix + "subscription/{Id}"
         //const val geoDataDownload = prefix + "download/{ApiName}"

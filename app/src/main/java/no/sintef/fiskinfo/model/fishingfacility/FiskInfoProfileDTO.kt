@@ -52,4 +52,10 @@ package no.sintef.fiskinfo.model.fishingfacility
  */
 
 
-data class FiskInfoProfileDTO (var haveProfile: Boolean, var haveDownloadRights: Boolean, var fiskinfoProfile: FiskInfoProfile? = null)
+data class FiskInfoProfileDTO(
+    var haveProfile: Boolean,
+    var haveDownloadRights: Boolean,
+    var fiskinfoProfile: FiskInfoProfile? = null,
+    var contactPersonDetail: ContactPersonDetail? = null,
+    var vesselInfo: VesselInfo? = null
+)

@@ -81,7 +81,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
-        holder.titleView.text = sdf.format(tool.lastChangedDateTime) // TODO: Check if this should be setupDateTime and check for null
+        holder.titleView.text = if(tool.lastChangedDateTime != null) sdf.format(tool.lastChangedDateTime) else tool.responseStatus.toString() // TODO: Check if this should be setupDateTime and check for null
 
         val textStyle =  Typeface.BOLD//if (holder.mItem!!.seen) Typeface.NORMAL else Typeface.BOLD
         holder.titleView.setTypeface(null, textStyle)

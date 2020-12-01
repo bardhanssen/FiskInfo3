@@ -59,8 +59,8 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
 
         val geometryStr = locationsToWTK(locations.value!!)
         val info = DeploymentInfo(setupTime = setupTime.value!!,
-            ircs =  fiskInfoProfile.ircs,
-            contactPersonEmail = this.contactPersonEmail!!, // prefs.getString(context.getString(R.string.pref_contact_person_email), ""),
+//            ircs =  fiskInfoProfile.ircs,
+//            contactPersonEmail = this.contactPersonEmail!!, // prefs.getString(context.getString(R.string.pref_contact_person_email), ""),
             contactPersonName = this.contactPersonName!!, // prefs.getString(context.getString(R.string.pref_contact_person_name), ""),
             contactPersonPhone = this.contactPersonPhone!!, // prefs.getString(context.getString(R.string.pref_contact_person_phone), ""),
             toolTypeCode = toolTypeCode.value!!,

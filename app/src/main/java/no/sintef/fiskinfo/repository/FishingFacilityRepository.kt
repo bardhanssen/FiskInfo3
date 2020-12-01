@@ -43,6 +43,7 @@ class FishingFacilityRepository(context: Context) {
     internal val authStateManager = AuthStateManager.getInstance(context)
     internal val authService = AuthorizationService(context)
 
+//    val bwServerUrl = "https://www.barentswatch.no/";
     val bwServerUrl = BuildConfig.SERVER_URL;
 
     init {
