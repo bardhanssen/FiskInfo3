@@ -62,7 +62,7 @@ class ToolDetailsFragment : Fragment() {
     ): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.tool_details_fragment, container, false)
 
-        mToolCodeAdapter = ToolTypeCodeArrayAdapter(context, R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
+        mToolCodeAdapter = ToolTypeCodeArrayAdapter(requireContext(), R.layout.exposed_dropdown_menu_item, ToolTypeCode.values())
         //mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
 
         //mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.setSelectedToolCode(parent.getItemAtPosition(position) as ToolTypeCode) }

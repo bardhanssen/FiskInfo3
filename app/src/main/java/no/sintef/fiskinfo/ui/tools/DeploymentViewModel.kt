@@ -96,7 +96,7 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
             var context : Context = getApplication()
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-            val str = prefs.getString( context.getString(R.string.pref_tool_type)!!, ToolTypeCode.NETS.code)
+            val str = prefs.getString( context.getString(R.string.pref_tool_type)!!, ToolTypeCode.NETS.code)!!
             toolTypeCode.value = ToolTypeCode.valueOf(str)
 
             comment.value = ""

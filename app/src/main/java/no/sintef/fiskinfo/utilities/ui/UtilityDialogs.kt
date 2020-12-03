@@ -33,13 +33,13 @@ class UtilityDialogs : DialogInterface {
         layoutId: Int,
         titleId: Int
     ): Dialog? {
-        val dialog = Dialog(context)
+        if (context == null)
+            return null
+        val dialog = Dialog(context!!)
         dialog.setContentView(layoutId)
         dialog.setTitle(titleId)
         dialog.setCanceledOnTouchOutside(false)
-        if (dialog.window != null) {
-            dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         return dialog
     }
 
@@ -48,13 +48,13 @@ class UtilityDialogs : DialogInterface {
         layoutId: Int,
         title: String?
     ): Dialog? {
-        val dialog = Dialog(context)
+        if (context == null)
+            return null
+        val dialog = Dialog(context!!)
         dialog.setContentView(layoutId)
         dialog.setTitle(title)
         dialog.setCanceledOnTouchOutside(false)
-        if (dialog.window != null) {
-            dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         return dialog
     }
 /*

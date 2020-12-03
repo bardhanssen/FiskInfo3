@@ -38,9 +38,9 @@ import no.sintef.fiskinfo.R
 
     fun isUserProfileValid(context: Context):Boolean {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        var email = prefs.getString(context.getString(R.string.pref_contact_person_email), "")
-        var phone = prefs.getString(context.getString(R.string.pref_contact_person_phone), "")
-        var name = prefs.getString(context.getString(R.string.pref_contact_person_name), "")
+        var email = prefs.getString(context.getString(R.string.pref_contact_person_email), "")!!
+        var phone = prefs.getString(context.getString(R.string.pref_contact_person_phone), "")!!
+        var name = prefs.getString(context.getString(R.string.pref_contact_person_name), "")!!
         return isEmailValid(email) && isNameValid(name) && isPhoneValid(phone)
     }
 

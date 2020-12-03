@@ -73,7 +73,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         )
 
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(
-            context,
+            requireContext(),
             R.layout.exposed_dropdown_menu_item,
             ToolTypeCode.values()
         )

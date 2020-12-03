@@ -17,13 +17,13 @@ android {
             storePassword '<password>'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "fiskinfoo.no.sintef.fiskinfoo"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 35
-        versionName "3.0"
+        versionCode 36
+        versionName "3.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 appAuthRedirectScheme: "no.sintef.fiskinfo.android"

@@ -103,7 +103,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
 
     fun refreshFromPreferences(context : Context) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        maxDaysBeforeOld = prefs.getString(context.getString(R.string.pref_tool_days_before_old), ToolViewModel.DEFAULT_DAYS_BEFORE_OLD.toString()).toInt()
+        maxDaysBeforeOld = prefs.getString(context.getString(R.string.pref_tool_days_before_old), ToolViewModel.DEFAULT_DAYS_BEFORE_OLD.toString())!!.toInt()
     }
 
     fun refreshOverviewItems(context : Context) {

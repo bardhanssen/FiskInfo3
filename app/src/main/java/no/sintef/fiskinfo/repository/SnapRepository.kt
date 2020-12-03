@@ -166,7 +166,7 @@ class SnapRepository(context: Context) {
             // Find preferences
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             snapFishServerUrl = prefs.getString( context.getString(R.string.pref_snap_api_server_address), DEFAULT_SNAP_FISH_SERVER_URL)
-            snapFishUserId = prefs.getString( context.getString(R.string.pref_user_id),"2").toInt()
+            snapFishUserId = prefs.getString( context.getString(R.string.pref_user_id),"2")!!.toInt()
             snapMessageService = null
         }
         refreshInboxContent()

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 fun isToolOld(tool : ToolViewModel, context : Context):Boolean {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-    val daysBeforeOld = prefs.getString(context.getString(R.string.pref_tool_days_before_old), ToolViewModel.DEFAULT_DAYS_BEFORE_OLD.toString()).toInt()
+    val daysBeforeOld = prefs.getString(context.getString(R.string.pref_tool_days_before_old), ToolViewModel.DEFAULT_DAYS_BEFORE_OLD.toString())!!.toInt()
     return isToolOld(tool, daysBeforeOld)
 }
 

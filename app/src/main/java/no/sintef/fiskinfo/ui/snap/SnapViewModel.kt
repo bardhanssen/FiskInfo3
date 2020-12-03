@@ -100,7 +100,7 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
         }
         val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
         draft?.senderEmail =
-            prefs.getString(getApplication<Application>().getString(R.string.pref_user_identity), "ola@fiskinfo.no")
+            prefs.getString(getApplication<Application>().getString(R.string.pref_user_identity), "ola@fiskinfo.no")!!
 
         SnapRepository.getInstance(getApplication()).sendSnap(draft)
         draftMessage.setValue(null)

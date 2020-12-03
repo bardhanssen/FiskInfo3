@@ -84,7 +84,7 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
         val report = Report()
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
-        report.toolTypeCode = ToolTypeCode.valueOf(prefs.getString("default_tool_type", ToolTypeCode.NETS.code))
+        report.toolTypeCode = ToolTypeCode.valueOf(prefs.getString("default_tool_type", ToolTypeCode.NETS.code)!!)
         draftReport.value = report
     }
 

@@ -115,7 +115,7 @@ class MapFragment : Fragment() {
         searchAutoComplete.setHint(getString(R.string.map_vessel_search_hint))
 
         searchAutoCompleteAdapter = ArrayAdapter<VesselWrapper?>(
-            context,
+            requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             ArrayList<VesselWrapper?>()
         )
@@ -250,7 +250,7 @@ class MapFragment : Fragment() {
         @android.webkit.JavascriptInterface
         fun setAutoCompleteData(vesselObjectsString: String) {
             try {
-                val wrappers = createVesselWrappers(vesselObjectsString) // vesselObject.names()); //vesselObjects);
+                val wrappers = createVesselWrappers(vesselObjectsString)
                 searchAutoCompleteAdapter?.clear()
                 searchAutoCompleteAdapter?.addAll(wrappers)
             } catch (e: Exception) {
@@ -398,7 +398,7 @@ class MapFragment : Fragment() {
                 return
 
             pageLoaded = true
-            refreshMapLayersIfReady()
+            //refreshMapLayersIfReady()
             webView.loadUrl("javascript:requestLayerNames()")
             webView.loadUrl("javascript:requestToolColors()")
         }
@@ -407,13 +407,16 @@ class MapFragment : Fragment() {
     fun refreshMapLayersIfReady() {
         if (pageLoaded && !waitingForAIS && !waitingForTools) {
             activity?.runOnUiThread(Runnable {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-                val selectedLayers = prefs.getStringSet(getString(R.string.pref_map_selected_layers), null)
-                // Default to showing all layers if selected layers not found
-                val json = JSONArray(selectedLayers ?: layersFromSintium)
+                if (context != null) {
+                    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                    val selectedLayers =
+                        prefs.getStringSet(getString(R.string.pref_map_selected_layers), null)
+                    // Default to showing all layers if selected layers not found
+                    val json = JSONArray(selectedLayers ?: layersFromSintium)
 
-                webView.loadUrl("javascript:toggleLayers($json);")
-                //loadProgressSpinner.setVisibility(View.GONE)
+                    webView.loadUrl("javascript:toggleLayers($json);")
+                    //loadProgressSpinner.setVisibility(View.GONE)
+                }
             })
         }
     }
@@ -485,7 +488,7 @@ class MapFragment : Fragment() {
     }
 
 
-    fun createVesselWrappers(jsonStr: String?): ArrayList<VesselWrapper>? {
+    fun createVesselWrappers(jsonStr: String?): ArrayList<VesselWrapper> {
         val vesselWrappers = ArrayList<VesselWrapper>()
         val reader = JsonReader(StringReader(jsonStr))
         try {
