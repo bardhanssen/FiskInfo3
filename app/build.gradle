@@ -11,10 +11,10 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     signingConfigs {
         signing_config {
-        storeFile file('<path-to-store-file>')
-            keyAlias '<alias>'
-            keyPassword '<password>'
-            storePassword '<password>'
+        storeFile file(prod_store_file_path)
+        keyAlias prod_key_alias
+            keyPassword prod_key_password
+            storePassword prod_store_password
         }
     }
     compileSdkVersion 29
@@ -22,7 +22,7 @@ android {
         applicationId "fiskinfoo.no.sintef.fiskinfoo"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 36
+        versionCode 37
         versionName "3.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
