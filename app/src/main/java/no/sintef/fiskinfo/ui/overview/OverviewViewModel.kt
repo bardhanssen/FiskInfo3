@@ -19,28 +19,30 @@ package no.sintef.fiskinfo.ui.overview
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.net.wifi.p2p.WifiP2pManager
 import android.preference.PreferenceManager
+import android.view.View
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.fishingfacility.FishingFacility
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.repository.SnapRepository
 import no.sintef.fiskinfo.util.isUserProfileValid
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import no.sintef.fiskinfo.model.SnapMessage
-import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.util.isToolOld
-import java.util.*
 import kotlin.collections.ArrayList
 
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
     val toolRepository = FishingFacilityRepository(application)
     val snapRepository = SnapRepository.getInstance(application)
+    val fishingFacilityRepository =
+        FishingFacilityRepository.getInstance(application)
 
     val overviewInfo = initOverviewInfo()
     var overviewList = MutableLiveData<List<OverviewCardItem>>()
@@ -54,6 +56,12 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
 
         val inboxSnaps = snapRepository.getInboxSnaps()
         val echogramInfos = snapRepository.getEchogramInfos()
+        val fiskInfoProfileDTO = fishingFacilityRepository.getFiskInfoProfileDTO()
+
+        overview.addSource(fiskInfoProfileDTO) {value ->
+            overview.value?.hasDownloadRights = value.haveDownloadRights
+            overview.value?.hasValidReportingProfile = value.haveProfile && (value.fiskinfoProfile?.ircs != null)
+        }
 
         overview.addSource(confirmedTools) { value ->
             overview.value?.numConfirmedTools = value.size
@@ -93,8 +101,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     {
         val itemList = ArrayList<OverviewCardItem>()
         addMapSummary(itemList, context)
-        if (hasToolDeploymentRights())
-            addToolsSummary(itemList, context)
+        addToolsSummary(itemList, context)
         addCatchAnalysis(itemList, context)
         if (snapFishIsActivated())
             addSnapSummary(itemList, context)
@@ -148,12 +155,16 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         list.add(item)
     }
 
-    private fun isProfileValid():Boolean {
+    private fun isUserProfileValid():Boolean {
         return isUserProfileValid(getApplication())
     }
 
+    private fun hasDownloadRights():Boolean {
+        return overviewInfo.value?.hasDownloadRights ?: false
+    }
+
     private fun hasToolDeploymentRights():Boolean {
-        return true
+        return overviewInfo.value?.hasValidReportingProfile ?: false
     }
 
     private fun snapFishIsActivated():Boolean {
@@ -165,8 +176,45 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         return active
     }
 
+    private fun addToolsNoDownloadRightsSummary(list : ArrayList<OverviewCardItem>, context: Context) {
+        val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature you must first request download and reporting permissions from the Barentswatch FiskInfo web site.",
+            "Request access", "")
+
+        item.action1Listener = View.OnClickListener() { view : View ->
+            val url = "https://www.barentswatch.no/s/Tilgang-til-bruksdata/"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
+    }
+
+    private fun addToolsNoDeploymentRightsSummary(list : ArrayList<OverviewCardItem>, context: Context) {
+        val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature, you must first request reporting permissions from the Barentswatch FiskInfo web site.",
+            "Request access", "")
+        item.action1Listener = View.OnClickListener() { view : View ->
+            val url = "https://www.barentswatch.no/s/Tilgang-til-bruksdata/"  // TODO: Update with correct URI
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
+    }
+
+    private fun addToolsIncompleteUserProfileSummary(list : ArrayList<OverviewCardItem>, context: Context) {
+        val item = OverviewCardItem(context.getString(R.string.overview_card_tools_title),
+            context.getString(R.string.overview_card_tools_subtitle), R.drawable.ic_hook,
+            context.getString(R.string.overview_card_tools_description_missing_info),
+            context.getString(R.string.overview_card_tools_edit_preferences), "")
+        //val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature, contact person, phone and email must first be filled in preferences.", "Edit preferences", "")
+        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_preferences, null)
+        list.add(item)
+    }
+
     private fun addToolsSummary(list : ArrayList<OverviewCardItem>, context: Context) { //confirmed : LiveData<List<FishingFacility>>, unconfirmed : LiveData<List<FishingFacility>>) {
-        if (isProfileValid()) {
+        if (!hasDownloadRights())
+            addToolsNoDownloadRightsSummary(list, context)
+        else if (!hasToolDeploymentRights())
+            addToolsNoDeploymentRightsSummary(list, context)
+        else if (!isUserProfileValid())
+            addToolsIncompleteUserProfileSummary(list, context)
+        else  {
             val numConfirmed = overviewInfo.value?.numConfirmedTools // confirmed?.value?.size ?: 0
             val numUnconfirmed = overviewInfo.value?.numUnconfirmedTools //unconfirmed?.value?.size ?: 0
             val numOverdue = overviewInfo.value?.numToolsOverdue
@@ -188,14 +236,6 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
             item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_tools, null)
             item.action2Listener = Navigation.createNavigateOnClickListener(R.id.deployment_editor_fragment, null)
             list.add(item)
-        } else {
-            val item = OverviewCardItem(context.getString(R.string.overview_card_tools_title),
-                context.getString(R.string.overview_card_tools_subtitle), R.drawable.ic_hook,
-                context.getString(R.string.overview_card_tools_description_missing_info),
-                context.getString(R.string.overview_card_tools_edit_preferences), "")
-            //val item = OverviewCardItem("Tools", "Create and view tool deployment reports", R.drawable.ic_hook, "To use this feature, contact person, phone and email must first be filled in preferences.", "Edit preferences", "")
-            item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_preferences, null)
-            list.add(item)
         }
     }
 
@@ -206,7 +246,9 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         var catchDataLastUpdated: String = "September 2020",
         var numInboxMsg: Int = 0,
         var numUnreadMsg: Int = 0,
-        var numEchogram: Int = 0
+        var numEchogram: Int = 0,
+        var hasDownloadRights: Boolean = false,
+        var hasValidReportingProfile: Boolean = false
     )
 
 }
