@@ -43,7 +43,9 @@ const toolsLayerColors = [
     "#6bb0af",
     "#d7191c",
     "#ea643f",
-    "#222831"
+    "#222831",
+    "#7C3275",
+    "#10AB94"
 ];
 
 let toolsSource;
