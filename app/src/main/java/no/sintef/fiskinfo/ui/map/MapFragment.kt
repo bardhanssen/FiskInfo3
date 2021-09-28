@@ -365,7 +365,7 @@ class MapFragment : Fragment() {
             Log.d("barentswatchFiskInfoErr", "$request $error")
         }
 
-        override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             Log.d("URL TEST", url)
             if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
                 view.context.startActivity(
