@@ -1,6 +1,7 @@
 package no.sintef.fiskinfo.model.fishingfacility
 
 import android.location.Location
+import no.sintef.fiskinfo.util.geoJsonGeometryToLocations
 import no.sintef.fiskinfo.util.wktToLocations
 import java.util.*
 
@@ -9,7 +10,7 @@ data class ToolViewModel(
     var toolId : String? = null,
     var reportId : String? = null,
     var toolTypeCode: ToolTypeCode? = ToolTypeCode.NETS,
-    var geometryWKT: String? = null, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
+    var geometry: GeoJsonGeometry = GeoJsonGeometry(GeometryType.POINT.value, arrayOf(0, 0)),
     var comment: String?  = null,
 
     // Fields from Report
@@ -26,7 +27,7 @@ data class ToolViewModel(
     ) {
 
     fun getLocations():List<Location> {
-        return wktToLocations(geometryWKT)
+        return geoJsonGeometryToLocations(geometry)
     }
 
     companion object{

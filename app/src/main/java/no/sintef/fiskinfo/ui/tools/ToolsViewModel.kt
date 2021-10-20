@@ -108,17 +108,11 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application)  
     }
 
 
-    fun sendRetrievedReport(tool: ToolViewModel, comment : String?):LiveData<FishingFacilityRepository.SendResult> {
-        var context : Context = getApplication()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-
-        val contactPersonEmail = prefs.getString(context.getString(R.string.pref_contact_person_email), "")
-        val contactPersonName = prefs.getString(context.getString(R.string.pref_contact_person_name), "")
-        val contactPersonPhone = prefs.getString(context.getString(R.string.pref_contact_person_phone), "")
+    fun sendRetrievedReport(tool: ToolViewModel):LiveData<FishingFacilityRepository.SendResult> {
         val retrievalDate = Date()
-        val info = RetrievalInfoDto(contactPersonEmail!!, contactPersonName!!, contactPersonPhone!!, retrievalDate, comment)
+        val info = RetrievalInfoDto(toolId = tool.toolId!!, removedTime = retrievalDate)
 
-        return FishingFacilityRepository.getInstance(getApplication()).sendRetrieved(tool.toolId!!, info)
+        return FishingFacilityRepository.getInstance(getApplication()).sendRetrieved(info)
     }
 
 

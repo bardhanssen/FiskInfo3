@@ -40,6 +40,7 @@
     <string name="pref_tool_type" translatable="false">pref_tool_type</string>
     <string name="pref_coordinate_format" translatable="false">pref_coordinate_format</string>
     <string name="pref_tool_days_before_old" translatable="false">pref_tool_days_before_old</string>
+    <string name="pref_tool_count" translatable="false">pref_tool_count</string>
 
     <string name="pref_map_selected_layers" translatable="false">pref_map_selected_layers</string>
 
@@ -109,6 +110,7 @@
     <string name="tool_list_profile_warning">The user profile must be completed before tools can be added. See settings.</string>
     <string name="tool_report_retrieval_heading">\"Report retrieval of \"</string>
     <string name="tool_report_retrieval_message">Please enter a comment if the tool is lost or if the retrieval was overdue</string>
+    <string name="tool_report_retrieval_message_confirm">Are you sure you want to report this tool as retrieved?</string>
     <string name="util_gps_settings_disabled">Gps Disabled</string>
     <string name="util_gps_enable_question">gps is not enabled . do you want to enable ?</string>
     <string name="util_value_must_be_in_range">\"Value must be in range \"</string>
@@ -125,6 +127,8 @@
     <string name="snap_share_publicly_with_everyone">Share publicly (with everyone)</string>
     <string name="tool_time">Time</string>
     <string name="tool_tool_type">Tool type</string>
+    <string name="tool_tool_count">Tool count</string>
+    <string name="tool_tool_count_length">Length</string>
     <string name="tool_comment">Comment</string>
     <string name="profile_title">Profile</string>
     <string name="prefs_contact_email">Contact person e-mail</string>
@@ -132,6 +136,7 @@
     <string name="prefs_contact_phone">Contact person phone</string>
     <string name="prefs_coordinate_format">Coordinate format</string>
     <string name="pref_default_tool_type">Default tool type</string>
+    <string name="pref_default_tool_length">Default tool count or length (m)</string>
     <string name="prefs_enable_snapfish">Enable SnapFish demo</string>
     <string name="prefs_snap_api_server">SnapFish API server</string>
     <string name="prefs_snap_web_server">SnapFish web server</string>
@@ -161,7 +166,7 @@
     // Overview fragment resources
     <string name="overview_card_map_title">Map</string>
     <string name="overview_card_map_subtitle">View map with resources</string>
-    <string name="overview_card_view_map">Vew map</string>
+    <string name="overview_card_view_map">View map</string>
 
     <string name="overview_card_snap_title">SnapFish</string>
     <string name="overview_card_snap_subtitle">Share echo sounder snaps with your contacts</string>

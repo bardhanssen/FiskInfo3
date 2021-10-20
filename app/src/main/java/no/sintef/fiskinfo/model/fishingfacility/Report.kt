@@ -87,7 +87,7 @@ data class Report (
     var vesselPhone: String? = null,
     var toolTypeCode: ToolTypeCode? = ToolTypeCode.NETS,
 
-    var geometryWKT: String? = null, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
+    var geometry: GeoJsonGeometry = GeoJsonGeometry(GeometryType.POINT.value, arrayOf(0, 0)),
 
     var type: FishingFacilityChangeType? = FishingFacilityChangeType.DEPLOYED,
     var confirmed: Boolean? = false,

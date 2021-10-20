@@ -18,7 +18,7 @@
 package no.sintef.fiskinfo.model.fishingfacility
 
 import android.location.Location
-import no.sintef.fiskinfo.util.wktToLocations
+import no.sintef.fiskinfo.util.geoJsonGeometryToLocations
 import java.util.*
 
 /*
@@ -87,10 +87,24 @@ data class FishingFacility (
     //var geometry: Any?, // TODO: Object
     //var shortComment: String?,
     var lastChangedBySource: Date?, //
-    var geometryWKT: String? // TODO: Object
+    var geometry: GeoJsonGeometry,
+
+    var changeRecievedByBwapiDateTime: String,
+    var mostRecentFetchByKvsDateTime: String,
+    var processedByKvsRecievedDateTime: String,
+    var errorMessage: String,
+    var errorConfirmedByUserDateTime: String,
+    var changeId: String,
+    var changeReportType: String,
+    var changeDateTime: String,
+    var contactPhone: String,
+    var contactEmail: String,
+    var newToolId: String,
+    var toolCount: Int?
+
 ) {
     fun getLocations():List<Location> {
-        return wktToLocations(geometryWKT)
+        return geoJsonGeometryToLocations(geometry)
     }
 }
 

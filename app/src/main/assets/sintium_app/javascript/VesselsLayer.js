@@ -173,12 +173,12 @@ let vesselsSource;
 let vesselsLayer;
 
 function setupVesselsLayer() {
-
     vesselsSource = Sintium.dataSource({
-//        url: "https://pilot.barentswatch.net/bwapi/v1/geodata/ais/positions?xmin=0&ymin=25&xmax=60&ymax=95",
-        url: "https://www.barentswatch.no/bwapi/v1/geodata/ais/positions?xmin=0&ymin=25&xmax=60&ymax=95",
+        url: "https://pilot.barentswatch.net/bwapi/v1/geodata/ais/positions?xmin=0&ymin=25&xmax=60&ymax=95",
         authenticator: authenticator
     });
+
+
 
     vesselsLayer = Sintium.vectorLayer2({
         layerId: 'AIS',

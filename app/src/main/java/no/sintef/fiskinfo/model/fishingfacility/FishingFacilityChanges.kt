@@ -51,7 +51,5 @@ package no.sintef.fiskinfo.model.fishingfacility
 
 data class FishingFacilityChanges (
     var confirmedTools : List<FishingFacility>,
-    var unconfirmedTools : List<FishingFacility>,
-    var pendingReports : List<Report>,
-    var declinedReports : List<Report>,
-    var failedReports : List<Report>)
+    var pendingChangeReports: List<FishingFacility>,
+    var failedChangeReports: List<FishingFacility>)

@@ -31,10 +31,11 @@ interface FishingFacilityReportService {
     companion object {
         const val v1prefix = "bwapi/v1/geodata/"
         const val v2prefix = "bwapi/v2/geodata/"
+        const val v3prefix = "bwapi/v3/geodata/"
         const val fishingfacilityprofile = v2prefix + "fishingfacilityprofile"
-        const val fishingfacilitychanges = v2prefix + "fishingfacilitychanges"
-        const val deployed = v2prefix + "fishingfacilitychange/deployed"
-        const val retrieved = v2prefix + "fishingfacilitychange/retrieved/{toolid}"
+        const val fishingfacilitychanges = v3prefix + "fishingfacilitychanges"
+        const val deployed = v3prefix + "fishingfacilitychange/deployed"
+        const val retrieved = v3prefix + "fishingfacilitychange/retrieved"
         //const val geoDataSubscription = prefix + "subscription/"
         //const val geoDataSubscriptionManagement = prefix + "subscription/{Id}"
         //const val geoDataDownload = prefix + "download/{ApiName}"
@@ -52,7 +53,7 @@ interface FishingFacilityReportService {
     fun sendDeploymentInfo(@Body deploymentInfo: DeploymentInfo):Call<Void?> // Call<JsonElement?>
 
     @POST(retrieved)
-    fun sendRetrieved(@Path("toolid") toolId: String, @Body retrievalInfo: RetrievalInfoDto):Call<Void?>
+    fun sendRetrieved(@Body retrievalInfo: RetrievalInfoDto):Call<Void?>
 
     /*
     @GET(geoDataSubscription)

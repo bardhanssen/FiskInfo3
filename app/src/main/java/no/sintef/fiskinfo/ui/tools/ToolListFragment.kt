@@ -155,26 +155,20 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
     override fun onRemoveToolClicked(v: View, tool: ToolViewModel?) {
         if (mIsConfirmed && (tool != null)){
-            val textInputLayout = TextInputLayout(requireContext())
-            textInputLayout.hint = "Comment"
-//            var params = LinearLayoutCompat.LayoutParams()
-//            textInputLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            val editText = TextInputEditText(requireContext())
             var toolTypeStr = if (tool.toolTypeCode != null) tool.toolTypeCode?.getLocalizedName(requireContext())!!.toLowerCase() else "tool"
 
             val builder = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.tool_report_retrieval_heading) + toolTypeStr)
-                .setMessage(getString(R.string.tool_report_retrieval_message))
+                .setMessage(getString(R.string.tool_report_retrieval_message_confirm))
                 //            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
                 //                dismiss();
                 //            }
                 .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
                     dialog.cancel()
                 }
-                .setView(editText) // textInputLayout)
                 .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
                     val sendRetrievedReport =
-                        mViewModel.sendRetrievedReport(tool!!, editText.text.toString())
+                        mViewModel.sendRetrievedReport(tool)
                     //sendRetrievedReport.observe(viewLifecycleOwner, Observer {
                     //    sendRetrievedReport.removeObservers(viewLifecycleOwner)
                     //})

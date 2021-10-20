@@ -36,28 +36,34 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
+import no.sintef.fiskinfo.util.getToolCountType
 import java.util.*
 
-class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractionListener, Fragment(),
+class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
+    Fragment(),
     LocationDmsDialogListener {
     companion object {
         fun newInstance() = DeploymentEditorFragment()
     }
 
     private lateinit var mViewModel: DeploymentViewModel
-    private lateinit var mLocationViewModel : LocationViewModel
+    private lateinit var mLocationViewModel: LocationViewModel
     private var _mBinding: ToolDeploymentEditorFragmentBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val mBinding get() = _mBinding!!
 
-    private lateinit var mToolCodeAdapter : ToolTypeCodeArrayAdapter
+    private lateinit var mToolCodeAdapter: ToolTypeCodeArrayAdapter
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
-    private lateinit var locAdapter : LocationRecyclerViewAdapter
+    private lateinit var mEditTextToolCountLayout: TextInputLayout
+    private lateinit var mEditTextToolCountInput: TextInputEditText
+    private lateinit var locAdapter: LocationRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,15 +84,23 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
             ToolTypeCode.values()
         )
         mEditTextFilledExposedDropdown = mBinding.toolDetailsTypeField
-        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id -> mViewModel.toolTypeCode.value = parent.getItemAtPosition(
-            position
-        ) as ToolTypeCode }
+        mEditTextToolCountLayout = mBinding.toolDetailsToolCountLayout
+        mEditTextToolCountInput = mBinding.toolDetailsToolCountField
+
+        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id ->
+            mViewModel.toolTypeCode.value = parent.getItemAtPosition(
+                position
+            ) as ToolTypeCode
+            mEditTextToolCountLayout.hint = getToolCountType(parent.getItemAtPosition(
+                position
+            ) as ToolTypeCode, requireContext())
+        }
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
-        mBinding.toolDetailsDateField.setOnClickListener  {
-            val builder : MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
+        mBinding.toolDetailsDateField.setOnClickListener {
+            val builder: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
             builder.setSelection(mViewModel.setupTime.value!!.time)
-            val picker : MaterialDatePicker<*> = builder.build()
+            val picker: MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener {
                 var cal = Calendar.getInstance()
                 cal.timeInMillis = it as Long
@@ -103,7 +117,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         locAdapter = LocationRecyclerViewAdapter(this)
         mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
 
-        mBinding.addPositionButton.setOnClickListener { mViewModel.addLocation()}
+        mBinding.addPositionButton.setOnClickListener { mViewModel.addLocation() }
         mBinding.removePositionButton.setOnClickListener { mViewModel.removeLastLocation() }
 
         return mBinding!!.root
@@ -114,7 +128,10 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
         mViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
         mViewModel.initContent()
 
-        mLocationViewModel = ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
+        mEditTextToolCountLayout.hint = getToolCountType(mViewModel.toolTypeCode.value!!, requireContext())
+
+        mLocationViewModel =
+            ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(
@@ -148,18 +165,25 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
                 result.observe(this, Observer {
                     if (it.success) {
                         val text = getString(R.string.tool_deployment_sent)
-                        val toast = Toast.makeText(this.requireActivity(), text,  Toast.LENGTH_SHORT)
+                        val toast = Toast.makeText(this.requireActivity(), text, Toast.LENGTH_SHORT)
                         toast.show()
                         mViewModel.clear()
                         Navigation.findNavController(this.requireView()).navigateUp()
-                    }
-                    else {
-                        Snackbar.make(requireView(), getString(R.string.tool_deployment_error) + it.errorMsg, Snackbar.LENGTH_LONG)
+                    } else {
+                        Snackbar.make(
+                            requireView(),
+                            getString(R.string.tool_deployment_error) + it.errorMsg,
+                            Snackbar.LENGTH_LONG
+                        )
                             .show()
                     }
                 })
             } else {
-                Snackbar.make(requireView(), getString(R.string.tool_report_not_complete) , Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.tool_report_not_complete),
+                    Snackbar.LENGTH_LONG
+                )
                     .show()
             }
             return true
@@ -190,7 +214,7 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     }
 
     override fun onDmsEditConfirmed() {
-        val location =  mLocationViewModel.getLocation()
+        val location = mLocationViewModel.getLocation()
         if (location != null) {
             mViewModel.locations.value!![mLocationViewModel.listPosition] = location!!
             mViewModel.locations.postValue(mViewModel.locations.value)
@@ -200,7 +224,8 @@ class DeploymentEditorFragment: LocationRecyclerViewAdapter.OnLocationInteractio
     class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         private lateinit var mViewModel: DeploymentViewModel
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            mViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
+            mViewModel =
+                ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
             // Use the current time as the default values for the picker
             val c = Calendar.getInstance()
             c.time = mViewModel.setupTime.value

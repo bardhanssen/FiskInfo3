@@ -71,14 +71,14 @@ class FishingFacilityRepository(context: Context) {
 
     data class SendResult(val success : Boolean, val responseCode : Int, val errorMsg : String )
 
-    fun sendRetrieved(toolId : String, info : RetrievalInfoDto):LiveData<SendResult> {
+    fun sendRetrieved(info : RetrievalInfoDto):LiveData<SendResult> {
         var result = MutableLiveData<SendResult>()
         if (fishingFacilityService == null)
             initService()
 
         authStateManager.current.performActionWithFreshTokens(authService) { accessToken, _, ex ->
             if (ex == null) {
-                fishingFacilityService?.sendRetrieved(toolId, info)?.enqueue(object : Callback<Void?> {
+                fishingFacilityService?.sendRetrieved(info)?.enqueue(object : Callback<Void?> {
                     //<JsonElement?> {
                     override fun onFailure(call: Call<Void?>, t: Throwable) {
                         result.value = SendResult(false, 0, t.stackTrace.toString())
@@ -168,11 +168,10 @@ class FishingFacilityRepository(context: Context) {
     fun toUnconfirmedToolModels(changes : FishingFacilityChanges):List<ToolViewModel> {
         val unconfirmed = ArrayList<ToolViewModel>()
 
-        unconfirmed.addAll(changes.failedReports.map { toToolModel(it) })
-        unconfirmed.addAll(changes.declinedReports.map { toToolModel(it) })
-        unconfirmed.addAll(changes.pendingReports.map { toToolModel(it) })
+        unconfirmed.addAll(changes.pendingChangeReports.map { toToolModel(it) })
+        unconfirmed.addAll(changes.failedChangeReports.map { toToolModel(it) })
 
-        for (facility in changes.unconfirmedTools) {
+        for (facility in changes.pendingChangeReports) {
             val vm = unconfirmed.find { it -> it.toolId == facility.toolId }
             vm?.setupDateTime = facility.setupDateTime
             vm?.lastChangedDateTime = facility.lastChangedDateTime
@@ -189,13 +188,13 @@ class FishingFacilityRepository(context: Context) {
 
     fun toToolModel(report : Report):ToolViewModel {
         with (report) {
-            return ToolViewModel(toolId, id, toolTypeCode, geometryWKT, comment, type, confirmed, responseStatus, responseReason, responseDateTime, errorReportedFromApi, setupDateTime = null, lastChangedDateTime = null)
+            return ToolViewModel(toolId, id, toolTypeCode, geometry, comment, type, confirmed, responseStatus, responseReason, responseDateTime, errorReportedFromApi, setupDateTime = null, lastChangedDateTime = null)
         }
     }
 
     fun toToolModel(facility : FishingFacility):ToolViewModel {
         with (facility) {
-            return ToolViewModel(toolId, null, toolTypeCode, geometryWKT, comment, FishingFacilityChangeType.DEPLOYED, true, setupDateTime = setupDateTime, lastChangedDateTime = lastChangedDateTime)
+            return ToolViewModel(toolId, null, toolTypeCode, geometry, comment, FishingFacilityChangeType.DEPLOYED, true, setupDateTime = setupDateTime, lastChangedDateTime = lastChangedDateTime)
         }
     }
 

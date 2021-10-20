@@ -18,6 +18,7 @@
  */
 package no.sintef.fiskinfo.ui.tools
 
+import android.content.res.Resources
 import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.LayoutInflater
@@ -81,7 +82,8 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
-        holder.titleView.text = if(tool.lastChangedDateTime != null) sdf.format(tool.lastChangedDateTime) else tool.responseStatus.toString() // TODO: Check if this should be setupDateTime and check for null
+        val title = if(tool.lastChangedDateTime != null) sdf.format(tool.lastChangedDateTime) else tool.responseStatus.toString() // TODO: Check if this should be setupDateTime and check for null
+        holder.titleView.text = title
 
         val textStyle =  Typeface.BOLD//if (holder.mItem!!.seen) Typeface.NORMAL else Typeface.BOLD
         holder.titleView.setTypeface(null, textStyle)

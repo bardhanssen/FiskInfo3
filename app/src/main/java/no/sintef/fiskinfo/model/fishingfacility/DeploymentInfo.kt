@@ -67,23 +67,14 @@ DeploymentInfo:
  */
 
 data class DeploymentInfo (
-//    var ircs: String,
-//    var mmsi: Int? = null,
-//    var imo: Int? = null,
-//    var regNum: String? = null,
-//
-//    var vesselName: String? = null,
-//    var vesselPhone: String? = null,
-
+    var toolId: String, // Actual type: UUID
     var toolTypeCode: ToolTypeCode = ToolTypeCode.NETS,
 
-    var geometryWKT: String, // TODO:  Geometry in WKT (WellKnownText) format. Coordinates in latlong (epsg:4326). Points and LineStrings are valid. Example linestring with two points LINESTRING(5.592542 62.573817,5.593198 62.574123) example: POINT(5.7348 62.320717)
+    var geometry: GeoJsonGeometry,
 
-    var contactPersonName: String ,
-    var contactPersonPhone: String,
-//    var contactPersonEmail: String, // format: email
+    var contactEmail: String,
+    var contactPhone: String,
 
-    var comment: String?  = null,
+    var toolCount: Int,
     var setupTime: Date
-//    var currentTime: Date?  = null
 )

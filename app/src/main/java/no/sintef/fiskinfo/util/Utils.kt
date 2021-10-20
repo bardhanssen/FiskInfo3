@@ -20,8 +20,8 @@ package no.sintef.fiskinfo.util
 import android.content.Context
 import android.location.Location
 import android.preference.PreferenceManager
-import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.model.fishingfacility.GeoJsonGeometry
+import no.sintef.fiskinfo.model.fishingfacility.GeometryType
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,14 +80,16 @@ fun locationsToWTK(locations : List<Location>):String {
     if (locations.size == 0) {
         return ""
     } else if (locations.size == 1) {
-        return "POINT(${locations[0].latitude} ${locations[0].longitude})"
+        return "POINT(${locations[0].longitude} ${locations[0].latitude})"
+//        return "POINT(${locations[0].latitude} ${locations[0].longitude})"
     } else {
         var result : String = "LINESTRING("
         var first = true
         locations.forEach( {
             if (!first)
                 result += ","
-            result += it.latitude.toString() + " " + it.longitude.toString()
+            result += it.longitude.toString() + " " + it.latitude.toString()
+//            result += it.latitude.toString() + " " + it.longitude.toString()
             first = false
         })
         result += ")"
@@ -111,6 +113,71 @@ fun wktToLocations(wkt : String?):List<Location> {
             }
         } catch (e: Exception) {
         }
+    }
+    return result
+}
+
+
+fun locationsToGeoJsonGeometry(locations : List<Location>): GeoJsonGeometry {
+    var retval: GeoJsonGeometry? = null
+
+    if (locations.isEmpty()) {
+        retval = GeoJsonGeometry(
+            type = GeometryType.POINT.value,
+            coordinates = arrayOf(0, 0)
+        )
+    } else if (locations.size == 1) {
+        retval = GeoJsonGeometry(
+            type = GeometryType.POINT.value,
+            coordinates = arrayOf(locations[0].longitude, locations[0].latitude)
+        )
+    } else {
+        val coordinates: Array<DoubleArray> = Array(locations.size) { DoubleArray(2)}
+
+        for (i in locations.indices) {
+            coordinates[i] = doubleArrayOf(locations[i].longitude, locations[i].latitude)
+        }
+
+        retval = GeoJsonGeometry(
+            type = GeometryType.LINESTRING.value,
+            coordinates = coordinates
+        )
+    }
+
+    return retval
+}
+
+fun geoJsonGeometryToLocations(geometry : GeoJsonGeometry):List<Location> {
+    var result = ArrayList<Location>()
+    try {
+        if(GeometryType.POINT.value.equals(geometry.type)) {
+            val location = Location("")
+            location.latitude = geometry.coordinates[1] as Double
+            location.longitude = geometry.coordinates[0] as Double
+
+            result.add(location)
+        } else {
+            for(i in geometry.coordinates) {
+                val location = Location("")
+                location.latitude =(i as DoubleArray)[1]
+                location.longitude = i[0]
+
+                result.add(location)
+            }
+        }
+
+
+//        var numString = geometry.substring( geometry.indexOf("(")+1, geometry.lastIndexOf(")"))
+////                .replace("\\(", "")
+////                .replace("\\)", "")
+//        var coordinateStrs = numString.split("[, ]".toRegex())
+//        for (i in coordinateStrs.indices step 2) {
+//            val loc = Location("")
+//            loc.latitude = coordinateStrs[i].toDouble()
+//            loc.longitude = coordinateStrs[i+1].toDouble()
+//            result.add(loc)
+//        }
+    } catch (e: Exception) {
     }
     return result
 }

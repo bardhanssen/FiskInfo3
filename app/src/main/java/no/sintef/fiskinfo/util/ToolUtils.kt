@@ -3,6 +3,7 @@ package no.sintef.fiskinfo.util
 import android.content.Context
 import android.preference.PreferenceManager
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
 import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -21,4 +22,11 @@ fun isToolOld(tool : ToolViewModel, daysBeforeOld : Int):Boolean {
     val diffMillis = Date().time - tool.setupDateTime!!.time
     val diffInDays = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS)
     return (diffInDays > daysBeforeOld)
+}
+
+fun getToolCountType(tool: ToolTypeCode, context: Context): String {
+    return when(tool) {
+        ToolTypeCode.CRABPOT -> context.getString(R.string.tool_tool_count)
+        else -> context.getString(R.string.tool_tool_count_length)
+    }
 }

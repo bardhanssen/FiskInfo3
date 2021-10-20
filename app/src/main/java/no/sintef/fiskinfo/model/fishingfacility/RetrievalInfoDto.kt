@@ -67,9 +67,6 @@ import java.util.*
 
 
 data class RetrievalInfoDto(
-    val contactPersonEmail : String,
-    val contactPersonName : String,
-    val contactPersonPhone : String,
-    val removedDateTime : Date,
-    val comment : String? = null,
-    val currentTime : Date? = null)
+    val toolId: String,
+    val removedTime : Date
+)

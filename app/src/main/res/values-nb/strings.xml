@@ -82,6 +82,7 @@
     <string name="tool_list_profile_warning">Brukerprofilen må være komplett før redskap kan legges til. Se i innstillinger.</string>
     <string name="tool_report_retrieval_heading">Rapporter haling av "</string>
     <string name="tool_report_retrieval_message">Legg til en kommentar om redskapet er tapt eller fristen ble overskredet</string>
+    <string name="tool_report_retrieval_message_confirm">Er du sikker på at du vil rapportere dette bruket som halt? </string>
     <string name="util_gps_settings_disabled">Gps er ikke på</string>
     <string name="util_gps_enable_question">Gps er ikke på. Vil du sette på?</string>
     <string name="util_value_must_be_in_range">Verdien må være i området </string>
@@ -95,6 +96,8 @@
     <string name="snap_share_publicly_with_everyone">Del offentlig (med alle)</string>
     <string name="tool_time">Tid</string>
     <string name="tool_tool_type">Redskapstype</string>
+    <string name="tool_tool_count">Antall</string>
+    <string name="tool_tool_count_length">Lengde</string>
     <string name="tool_comment">Kommentar</string>
     <string name="profile_title">Profil</string>
     <string name="prefs_contact_email">Kontaktpersons e-mail</string>
@@ -102,6 +105,7 @@
     <string name="prefs_contact_phone">Kontaktperson telefon</string>
     <string name="prefs_coordinate_format">Koordinatformat</string>
     <string name="pref_default_tool_type">Foretrukket redskapstype</string>
+    <string name="pref_default_tool_length">Redskapsantall eller lengde (m)</string>
     <string name="prefs_enable_snapfish">Aktiver SnapFish demo</string>
     <string name="prefs_snap_api_server">SnapFish API-server</string>
     <string name="prefs_snap_web_server">SnapFish web-server</string>
