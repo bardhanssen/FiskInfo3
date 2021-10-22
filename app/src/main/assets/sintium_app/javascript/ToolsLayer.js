@@ -53,6 +53,7 @@ let toolsLayer;
 
 function setupToolsLayer() {
     toolsSource = Sintium.dataSource({
+        // TODO: Should get url based on build variant to target the correct API.
 //        url: "https://pilot.barentswatch.net/bwapi/v1/geodata/fishingfacility/",
         url: "https://www.barentswatch.no/bwapi/v1/geodata/fishingfacility/",
         useCrossfilter: true,

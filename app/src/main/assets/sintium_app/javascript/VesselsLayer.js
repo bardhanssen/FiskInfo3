@@ -174,11 +174,21 @@ let vesselsLayer;
 
 function setupVesselsLayer() {
     vesselsSource = Sintium.dataSource({
-        url: "https://pilot.barentswatch.net/bwapi/v1/geodata/ais/positions?xmin=0&ymin=25&xmax=60&ymax=95",
+        /*
+         *  TODO: Use /positions if user has access, otherwise use /openpositions
+         *
+         *  TODO: Should also get url based on build variant to target the correct API.
+         */
+//        url: "https://pilot.barentswatch.net/bwapi/v2/geodata/ais/openpositions",
+//        url: "https://pilot.barentswatch.net/bwapi/v2/geodata/ais/positions",
+
+//        url: "https://www.barentswatch.no/bwapi/v2/geodata/ais/openpositions",
+        url: "https://www.barentswatch.no/bwapi/v2/geodata/ais/positions",
         authenticator: authenticator
     });
 
-
+    vesselsSource.addColumn('lat', record => record.get('geometry').coordinates[1]);
+    vesselsSource.addColumn('lon', record => record.get('geometry').coordinates[0]);
 
     vesselsLayer = Sintium.vectorLayer2({
         layerId: 'AIS',
