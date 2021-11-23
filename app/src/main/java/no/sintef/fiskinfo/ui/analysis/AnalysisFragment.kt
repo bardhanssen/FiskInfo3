@@ -74,7 +74,7 @@ class AnalysisFragment : Fragment() {
             }
 
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
-                handler?.proceed()
+                handler?.cancel()
             }
         }
 

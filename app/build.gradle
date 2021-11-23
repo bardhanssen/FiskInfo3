@@ -22,8 +22,8 @@ android {
         applicationId "fiskinfoo.no.sintef.fiskinfoo"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 42
-        versionName "3.0.1.1"
+        versionCode 44
+        versionName "3.0.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 appAuthRedirectScheme: "no.sintef.fiskinfo.android"

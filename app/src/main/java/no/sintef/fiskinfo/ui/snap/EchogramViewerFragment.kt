@@ -87,8 +87,7 @@ class EchogramViewerFragment : Fragment() {
                 return true
             }
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-                // TODO: Remove this when we have valid certificates
-                handler.proceed() // Ignore SSL certificate errors
+                handler.cancel() // Ignore SSL certificate errors
             }
         }
 
