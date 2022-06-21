@@ -131,19 +131,38 @@
     <string name="fragment_title_consent">Samtykke til bruksbetingelser</string>
     <string name="tool_setup_date">Dato satt</string>
 
+    // SPRICE and icing
+    <string name="icing_type_code_light_icing">Lett ising (0,05 – 0.5 cm/t)</string>
+    <string name="icing_type_code_moderate_icing">Moderat ising (0,5 – 1.34 cm/t)</string>
+    <string name="icing_type_code_heavy_icing">Kraftig ising (over 1.34 cm/t)</string>
+
+    <string name="icing_icing_type">Istype</string>
+    <string name="icing_report_date">Dato</string>
+    <string name="icing_report_time">Tidspunkt</string>
+
+    <string name="fragment_title_icing">Ising</string>
+    <string name="fragment_title_report_icing">Rapporter ising</string>
+
     // Overview fragment resources
     <string name="overview_card_map_title">Kart</string>
     <string name="overview_card_map_subtitle">Se kart med ressurser</string>
     <string name="overview_card_view_map">Se kart</string>
+
     <string name="overview_card_snap_title">SnapFish</string>
     <string name="overview_card_snap_subtitle">Del snaps fra ekkolodd med dine kontakter</string>
     <string name="overview_card_snap_description">Du har %1$d uleste meldinger.\nDu har %2$d snaps du kan dele.</string>
     <string name="overview_card_snap_view_messages">Se meldinger</string>
     <string name="overview_card_snap_send_snap">Send snap</string>
+
     <string name="overview_card_analysis_title">Fangstanalyse</string>
     <string name="overview_card_analysis_subtitle">Se og analyser historiske fangstdata</string>
     <string name="overview_card_analysis_description">Data oppdateres daglig,</string>
     <string name="overview_card_analysis_view_analysis">Se fangtsanalyse</string>
+
+    <string name="overview_card_icing_title">Ising</string>
+    <string name="overview_card_icing_subtitle">Se isingdetaljer</string>
+    <string name="overview_card_view_icing_details">Se ising</string>
+
     <string name="overview_card_tools_description">Du har %d bekreftede og %d ubekreftede redskap.</string>
     <string name="overview_card_tools_overdue_description">%d redskap har stått for lenge.</string>
     <string name="overview_card_tools_title">Redskap</string>

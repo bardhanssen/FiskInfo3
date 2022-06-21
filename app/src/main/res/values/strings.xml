@@ -162,6 +162,17 @@
     <string name="fragment_title_consent">Consent to terms of use</string>
     <string name="tool_setup_date">Setup date</string>
 
+    // SPRICE and icing
+    <string name="icing_type_code_light_icing">Light icing (0,05 – 0.5 cm/h)</string>
+    <string name="icing_type_code_moderate_icing">Light icing (0,5 – 1.34 cm/h)</string>
+    <string name="icing_type_code_heavy_icing">Heavy icing (over 1.34 cm/h)</string>
+
+    <string name="icing_icing_type">Icing type</string>
+    <string name="icing_report_date">Date</string>
+    <string name="icing_report_time">Time</string>
+
+    <string name="fragment_title_icing">Icing</string>
+    <string name="fragment_title_report_icing">Report icing</string>
 
     // Overview fragment resources
     <string name="overview_card_map_title">Map</string>
@@ -178,6 +189,10 @@
     <string name="overview_card_analysis_subtitle">View and analyse catch history</string>
     <string name="overview_card_analysis_description">Data are updated daily.</string>
     <string name="overview_card_analysis_view_analysis">View catch analysis</string>
+
+    <string name="overview_card_icing_title">Icing</string>
+    <string name="overview_card_icing_subtitle">View icing details</string>
+    <string name="overview_card_view_icing_details">View icing</string>
 
     <string name="overview_card_tools_description">You have %1$d confirmed and %2$d unconfirmed tools.</string>
     <string name="overview_card_tools_overdue_description">%d tools are overdue for hauling.</string>

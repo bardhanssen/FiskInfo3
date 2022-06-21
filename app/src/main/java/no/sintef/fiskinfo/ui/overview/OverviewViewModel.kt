@@ -101,6 +101,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     {
         val itemList = ArrayList<OverviewCardItem>()
         addMapSummary(itemList, context)
+        addIcingSummary(itemList, context)
         addToolsSummary(itemList, context)
         addCatchAnalysis(itemList, context)
         if (snapFishIsActivated())
@@ -127,6 +128,15 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_map, null)
         list.add(item)
     }
+
+    private fun addIcingSummary(list: ArrayList<OverviewCardItem>, context: Context) {
+        val item = OverviewCardItem(context.getString(R.string.overview_card_icing_title), context.getString(
+            R.string.overview_card_icing_subtitle), R.drawable.ic_icing_24, "", context.getString(R.string.overview_card_view_icing_details), context.getString(R.string.fragment_title_report_icing))
+        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_icing_map, null)
+        item.action2Listener = Navigation.createNavigateOnClickListener(R.id.fragment_report_icing, null)
+        list.add(item)
+    }
+
 
     private fun addSnapSummary(list : ArrayList<OverviewCardItem>, context: Context) {
                                //inboxSnaps : LiveData<List<SnapMessage>>,
