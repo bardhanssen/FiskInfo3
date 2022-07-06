@@ -167,7 +167,12 @@
     <string name="icing_type_code_moderate_icing">Light icing (0,5 – 1.34 cm/h)</string>
     <string name="icing_type_code_heavy_icing">Heavy icing (over 1.34 cm/h)</string>
 
+    <string name="wind_type_code_light_wind">Light wind (0 – 3 m/s)</string>
+    <string name="wind_type_code_moderate_wind">Light wind (3 – 7 m/s)</string>
+    <string name="wind_type_code_heavy_wind">Heavy wind (over 7 m/s)</string>
+
     <string name="icing_icing_type">Icing type</string>
+    <string name="icing_wind_type">Wind type</string>
     <string name="icing_report_date">Date</string>
     <string name="icing_report_time">Time</string>
 

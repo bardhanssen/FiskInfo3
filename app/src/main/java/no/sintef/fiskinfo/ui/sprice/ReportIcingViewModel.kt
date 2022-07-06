@@ -12,6 +12,7 @@ import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
 import no.sintef.fiskinfo.model.sprice.IcingReport
 import no.sintef.fiskinfo.model.sprice.IcingTypeCode
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
+import no.sintef.fiskinfo.model.sprice.WindTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.util.locationsToGeoJsonGeometry
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
@@ -21,6 +22,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     val reportingTime = MutableLiveData<Date>()
     val locations = MutableLiveData<MutableList<Location>>()
     val icingTypeCode = MutableLiveData<IcingTypeCode>()
+    val windTypeCode = MutableLiveData<WindTypeCode>()
 
     var contactPersonEmail: String? = null
     var contactPersonPhone: String? = null
@@ -102,6 +104,10 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     }
 
     val icingTypeCodeName: LiveData<String> = Transformations.map(icingTypeCode) { code ->
+        code.getLocalizedName(getApplication())
+    }
+
+    val windTypeCodeName: LiveData<String> = Transformations.map(windTypeCode) { code ->
         code.getLocalizedName(getApplication())
     }
 

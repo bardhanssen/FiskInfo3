@@ -24,7 +24,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.BuildConfig
-import no.sintef.fiskinfo.api.FishingFacilityReportService
+import no.sintef.fiskinfo.api.barentswatch.FishingFacilityReportService
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.fishingfacility.*
 import no.sintef.fiskinfo.util.AuthStateManager

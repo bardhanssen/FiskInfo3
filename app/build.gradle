@@ -59,6 +59,9 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_SECRET", prod_fiskinfo_bwclientsecret)
             buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", prod_fiskinfo_bwclient_redirect_url)
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
+
+            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "https://orap.met.no/")
+
             signingConfig signingConfigs.signing_config
         }
         DebugabbleRelease {
@@ -75,6 +78,9 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_SECRET", prod_fiskinfo_bwclientsecret)
             buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", prod_fiskinfo_bwclient_redirect_url)
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
+
+            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "https://orap.met.no/")
+
             signingConfig signingConfigs.signing_config
         }
         debug {
@@ -89,6 +95,8 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_SECRET", pilot_fiskinfo_bwclientsecret)
             buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", pilot_fiskinfo_bwclient_redirect_url)
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", pilot_fiskinfo_bwclient_scope)
+
+            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "https://orap.met.no/")
         }
     }
 }

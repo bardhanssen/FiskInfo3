@@ -110,7 +110,13 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 mBinding.reporticingviewmodel = mViewModel
             })
 
-        mViewModel.reportingTime.observe(viewLifecycleOwner, Observer {
+        mViewModel.windTypeCodeName.observe(
+            viewLifecycleOwner, Observer {
+                mBinding.reporticingviewmodel = mViewModel
+            })
+
+        mViewModel.reportingTime.observe(
+            viewLifecycleOwner, Observer {
             mBinding.reporticingviewmodel = mViewModel
         })
 

@@ -26,7 +26,7 @@ import no.sintef.fiskinfo.R
 
 import java.util.ArrayList
 
-import no.sintef.fiskinfo.api.SnapMessageService
+import no.sintef.fiskinfo.api.snapfish.SnapMessageService
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.model.SnapMetadata
 import no.sintef.fiskinfo.model.SnapMessage
@@ -34,8 +34,6 @@ import no.sintef.fiskinfo.model.SnapMessageDraft
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SnapRepository(context: Context) {
     internal var snapMessageService: SnapMessageService? = null

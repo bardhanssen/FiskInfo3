@@ -136,7 +136,12 @@
     <string name="icing_type_code_moderate_icing">Moderat ising (0,5 – 1.34 cm/t)</string>
     <string name="icing_type_code_heavy_icing">Kraftig ising (over 1.34 cm/t)</string>
 
+    <string name="wind_type_code_light_wind">Lett vind (0 – 3 m/s)</string>
+    <string name="wind_type_code_moderate_wind">Moderat vind (3 – 7 m/s)</string>
+    <string name="wind_type_code_heavy_wind">Kraftig vind (over 7 m/s)</string>
+
     <string name="icing_icing_type">Istype</string>
+    <string name="icing_wind_type">vindtype</string>
     <string name="icing_report_date">Dato</string>
     <string name="icing_report_time">Tidspunkt</string>
 
