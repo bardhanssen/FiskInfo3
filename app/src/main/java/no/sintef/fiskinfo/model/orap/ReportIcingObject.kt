@@ -17,13 +17,16 @@
  */
 package no.sintef.fiskinfo.model.orap
 
+import no.sintef.fiskinfo.util.OrapUtils
 import java.lang.StringBuilder
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 class ReportIcingObject private constructor(
+    val webKitFormBoundaryId: String = OrapUtils.GetBoundaryIdString(OrapConstants.BOUNDARY_ID_LENGTH),
     val Id: Int,
-    val ObservationTime: LocalDateTime?,
-    val Synop: String?,
+    val ObservationTime: LocalDateTime,
+    val Synop: LocalDateTime,
 
     val CallSign: String?,
     val Latitude: Float?,
@@ -79,72 +82,188 @@ class ReportIcingObject private constructor(
         var IceThicknessInCm: Float? = 0.0F,
         var ChangeInIce: String? = null
     ) {
-        fun Id(id: Int) = apply {this.Id = id}
-        fun ObservationTime(observationTime: LocalDateTime) = apply {this.ObservationTime = observationTime}
-        fun Synop(synop: String) = apply {this.Synop = synop}
-        fun CallSign(callSign: String) = apply {this.CallSign = callSign}
-        fun Latitude(latitude: Float) = apply {this.Latitude = latitude}
-        fun Longitude(longitude: Float) = apply {this.Longitude = longitude}
-        fun AirTemperature(airTemperature: Float) = apply {this.AirTemperature = airTemperature}
-        fun SeaTemperature(seaTemperature: Float) = apply {this.SeaTemperature = seaTemperature}
-        fun MaxMiddleWindTime(maxMiddleWindTime: String) = apply {this.MaxMiddleWindTime = maxMiddleWindTime}
-        fun MaxMiddelWindInKnots(maxMiddelWindInKnots: Float) = apply {this.MaxMiddelWindInKnots = maxMiddelWindInKnots}
-        fun StrongestWindGustInKnots(strongestWindGustInKnots: Float) = apply {this.StrongestWindGustInKnots = strongestWindGustInKnots}
-        fun HeightOfWindWavesInMeters(heightOfWindWavesInMeters: Float) = apply {this.HeightOfWindWavesInMeters = heightOfWindWavesInMeters}
-        fun PeriodForWindWavesInSeconds(periodForWindWavesInSeconds: Float) = apply {this.PeriodForWindWavesInSeconds = periodForWindWavesInSeconds}
-        fun HeightForFirstSwellSystemInMeters(heightForFirstSwellSystemInMeters: Float) = apply {this.HeightForFirstSwellSystemInMeters = heightForFirstSwellSystemInMeters}
-        fun PeriodForFirstSwellSystemInSeconds(periodForFirstSwellSystemInSeconds: Float) = apply {this.PeriodForFirstSwellSystemInSeconds = periodForFirstSwellSystemInSeconds}
-        fun DirectionForFirstSwellSystemInDegrees(directionForFirstSwellSystemInDegrees: Float) = apply {this.DirectionForFirstSwellSystemInDegrees = directionForFirstSwellSystemInDegrees}
-        fun ConcentrationOfSeaIce(concentrationOfSeaIce: String) = apply {this.ConcentrationOfSeaIce = concentrationOfSeaIce}
-        fun SeaIceStageOfDevelopment(seaIceStageOfDevelopment: String) = apply {this.SeaIceStageOfDevelopment = seaIceStageOfDevelopment}
-        fun OceanIce(oceanIce: String) = apply {this.OceanIce = oceanIce}
-        fun DirectionToNearestIceEdge(directionToNearestIceEdge: Float) = apply {this.DirectionToNearestIceEdge = directionToNearestIceEdge}
-        fun SeaIceConditionsAndDevelopmentTheLastThreeHours(seaIceConditionsAndDevelopmentTheLastThreeHours: String) = apply {this.SeaIceConditionsAndDevelopmentTheLastThreeHours = seaIceConditionsAndDevelopmentTheLastThreeHours}
-        fun ReasonForIcing(reasonForIcing: String) = apply {this.ReasonForIcing = reasonForIcing}
-        fun IceThicknessInCm(iceThicknessInCm: Float) = apply {this.IceThicknessInCm = iceThicknessInCm}
-        fun ChangeInIce(changeInIce: String) = apply {this.ChangeInIce = changeInIce}
+        fun Id(id: Int) = apply { this.Id = id }
+        fun ObservationTime(observationTime: LocalDateTime) =
+            apply { this.ObservationTime = observationTime }
+
+        fun Synop(synop: String) = apply { this.Synop = synop }
+        fun CallSign(callSign: String) = apply { this.CallSign = callSign }
+        fun Latitude(latitude: Float) = apply { this.Latitude = latitude }
+        fun Longitude(longitude: Float) = apply { this.Longitude = longitude }
+        fun AirTemperature(airTemperature: Float) = apply { this.AirTemperature = airTemperature }
+        fun SeaTemperature(seaTemperature: Float) = apply { this.SeaTemperature = seaTemperature }
+        fun MaxMiddleWindTime(maxMiddleWindTime: String) =
+            apply { this.MaxMiddleWindTime = maxMiddleWindTime }
+
+        fun MaxMiddelWindInKnots(maxMiddelWindInKnots: Float) =
+            apply { this.MaxMiddelWindInKnots = maxMiddelWindInKnots }
+
+        fun StrongestWindGustInKnots(strongestWindGustInKnots: Float) =
+            apply { this.StrongestWindGustInKnots = strongestWindGustInKnots }
+
+        fun HeightOfWindWavesInMeters(heightOfWindWavesInMeters: Float) =
+            apply { this.HeightOfWindWavesInMeters = heightOfWindWavesInMeters }
+
+        fun PeriodForWindWavesInSeconds(periodForWindWavesInSeconds: Float) =
+            apply { this.PeriodForWindWavesInSeconds = periodForWindWavesInSeconds }
+
+        fun HeightForFirstSwellSystemInMeters(heightForFirstSwellSystemInMeters: Float) =
+            apply { this.HeightForFirstSwellSystemInMeters = heightForFirstSwellSystemInMeters }
+
+        fun PeriodForFirstSwellSystemInSeconds(periodForFirstSwellSystemInSeconds: Float) =
+            apply { this.PeriodForFirstSwellSystemInSeconds = periodForFirstSwellSystemInSeconds }
+
+        fun DirectionForFirstSwellSystemInDegrees(directionForFirstSwellSystemInDegrees: Float) =
+            apply {
+                this.DirectionForFirstSwellSystemInDegrees = directionForFirstSwellSystemInDegrees
+            }
+
+        fun ConcentrationOfSeaIce(concentrationOfSeaIce: String) =
+            apply { this.ConcentrationOfSeaIce = concentrationOfSeaIce }
+
+        fun SeaIceStageOfDevelopment(seaIceStageOfDevelopment: String) =
+            apply { this.SeaIceStageOfDevelopment = seaIceStageOfDevelopment }
+
+        fun OceanIce(oceanIce: String) = apply { this.OceanIce = oceanIce }
+        fun DirectionToNearestIceEdge(directionToNearestIceEdge: Float) =
+            apply { this.DirectionToNearestIceEdge = directionToNearestIceEdge }
+
+        fun SeaIceConditionsAndDevelopmentTheLastThreeHours(
+            seaIceConditionsAndDevelopmentTheLastThreeHours: String
+        ) = apply {
+            this.SeaIceConditionsAndDevelopmentTheLastThreeHours =
+                seaIceConditionsAndDevelopmentTheLastThreeHours
+        }
+
+        fun ReasonForIcing(reasonForIcing: String) = apply { this.ReasonForIcing = reasonForIcing }
+        fun IceThicknessInCm(iceThicknessInCm: Float) =
+            apply { this.IceThicknessInCm = iceThicknessInCm }
+
+        fun ChangeInIce(changeInIce: String) = apply { this.ChangeInIce = changeInIce }
     }
 
     fun GetAsRequestBody(): String {
-        val boundaryId = "CINF2jipI367JKKN" // TODO: Generate random id
-        val messageTimestamp = System.currentTimeMillis() / 1000
-        val messageTimeString = "20220706_01998.debug" // TODO: Generate datetime string from timestamp
         val orapUserName = "" // TODO: Get username from settings
         val orapUserPassword = "" // TODO: Get password from settings
-        val timeOfObservation = System.currentTimeMillis() / 1000 // TODO: Get timestamp for observation time (rounded to nearest hour, GMT+0)
-        val hiddenMessage = "%1$d".format(10) // TODO:
-        val hiddenKlMessage = "" // TODO:
-        val hiddenKlStatus = "" // TODO:
+
+        val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
+        val zoneId = ZoneId.systemDefault()
+        val reportingTimeEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond()
+        val observationEpoch = Synop.atZone(zoneId).toEpochSecond()
+
+        val messageTag =
+            OrapUtils.GetOrapMessageTag(messageReceivedTime, orapUserName)
+
+        val hiddenMessage =
+            "012345678      ${orapUserName},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n\n"
+        val hiddenKlMessage =
+            "kldata/nationalnr=${orapUserName}/type=317/test/received_time=\"${
+                OrapUtils.GetFormattedTimeStamp(
+                    messageReceivedTime,
+                    OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT
+                )
+            }\"\n" +
+                    "IX,WW,VV,HL,NN,NH,CL,CM,CH,W1,W2,HW,PW,DW1,PW1,HW1,DW2,PW2,HW2,DD,FF,CI,SI,BI,DI,ZI,XIS,ES,ERS,MLAT,MLON,TA,UU,UH,PR,PO,PP,AA,MDIR,MSPEED\n" +
+                    "${
+                        OrapUtils.GetFormattedTimeStamp(
+                            Synop,
+                            OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
+                        )
+                    },3,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,-6,,,,,,,\n" +
+                    "Orap_smsformat_input ${reportingTimeEpoch} ${orapUserName},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n" +
+                    "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${orapUserName}/orap_${
+                        OrapUtils.GetFormattedTimeStamp(
+                            messageReceivedTime,
+                            OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP
+                        )
+                    }.txt;"
+        val hiddenKlStatus =
+            "${observationEpoch * 100} || 012345678      ${orapUserName},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n"
 
 
         val stringBuilder = StringBuilder();
 
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SUBMIT_REPORT))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.TAG, messageTimeString))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.REG_EPOC, messageTimestamp))
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.ACTION,
+                OrapConstants.FormValues.ACTION_SUBMIT_REPORT
+            )
+        )
+        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.TAG, messageTag))
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.REG_EPOC,
+                reportingTimeEpoch
+            )
+        )
         stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.USER, orapUserName))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.PASSWORD, orapUserPassword))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.MELDINGSTYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_TERMIN, timeOfObservation))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_MESS, ))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_KL_MESS, ))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_KL_STATUS, ))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE))
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP))
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.PASSWORD,
+                orapUserPassword
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.MESSAGE_TYPE,
+                OrapConstants.FormValues.REPORT_MESSAGE_TYPE
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.HIDDEN_TERMIN,
+                observationEpoch
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.HIDDEN_MESS,
+                hiddenMessage
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.HIDDEN_KL_MESS,
+                hiddenKlMessage
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.HIDDEN_KL_STATUS,
+                hiddenKlStatus
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.HIDDEN_FILE,
+                OrapConstants.FormValues.HIDDEN_FILE_VALUE
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.HIDDEN_TYPE,
+                OrapConstants.FormValues.HIDDEN_TYPE
+            )
+        )
+        stringBuilder.append(
+            GetValueAsWebKitForm(
+                OrapConstants.FormDataNames.LSTEP,
+                OrapConstants.FormValues.LSTEP
+            )
+        )
 
-        return "";
+        return stringBuilder.toString();
     }
 
     fun GetValueAsWebKitForm(actionName: String, value: String): String {
-        return "------WebKitFormBoundaryCINF2jipI367JKKN\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}"
+        return "------WebKitFormBoundary${webKitFormBoundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
     }
 
     fun GetValueAsWebKitForm(actionName: String, value: Long): String {
-        return "------WebKitFormBoundaryCINF2jipI367JKKN\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}"
+        return "------WebKitFormBoundary${webKitFormBoundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
     }
 
     fun GetValueAsWebKitForm(actionName: String, value: Int): String {
-            return "------WebKitFormBoundaryCINF2jipI367JKKN\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}"
+        return "------WebKitFormBoundary${webKitFormBoundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
     }
 }

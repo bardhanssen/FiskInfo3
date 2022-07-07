@@ -31,6 +31,7 @@ android {
         signingConfig signingConfigs.signing_config
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -60,7 +61,7 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", prod_fiskinfo_bwclient_redirect_url)
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
 
-            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "https://orap.met.no/")
+            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
 
             signingConfig signingConfigs.signing_config
         }
@@ -79,7 +80,7 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", prod_fiskinfo_bwclient_redirect_url)
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
 
-            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "https://orap.met.no/")
+            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
 
             signingConfig signingConfigs.signing_config
         }
@@ -96,7 +97,7 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_REDIRECT_URL", pilot_fiskinfo_bwclient_redirect_url)
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", pilot_fiskinfo_bwclient_scope)
 
-            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "https://orap.met.no/")
+            buildConfigField("String", "FISKINFO_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
         }
     }
 }
@@ -127,6 +128,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     implementation 'net.openid:appauth:0.11.1'
     implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.2'
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
 //    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
 //    implementation 'android.arch.navigation:navigation-ui:1.0.0'
