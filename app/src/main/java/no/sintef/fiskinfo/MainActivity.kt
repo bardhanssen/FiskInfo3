@@ -18,7 +18,6 @@
 package no.sintef.fiskinfo
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +29,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
@@ -99,11 +99,12 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         NavigationUI.setupWithNavController(view, navController)
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        var snapEnabled= prefs.getBoolean(getString(R.string.pref_snap_enable_service), false)
+
         val snapItem = view.menu.findItem(R.id.fragment_snap)
-        snapItem.isVisible = snapEnabled
-        //val toolItem = view.menu.findItem(R.id.fragment_tools)
-        //toolItem.isEnabled = false
+        snapItem.isVisible = prefs.getBoolean(getString(R.string.pref_snap_enable_service), false)
+
+        val spriceItem = view.menu.findItem(R.id.fragment_sprice)
+        spriceItem.isVisible = prefs.getBoolean(getString(R.string.pref_sprice_enable_service_key), false)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -120,24 +121,6 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         }
     }
 
-/*
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-    */
-/*
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }*/
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -147,34 +130,6 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         )
     }
 
-
-/*
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_home -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_tools -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
-        }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }*/
     companion object {
         const val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 0x001
         const val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0x002

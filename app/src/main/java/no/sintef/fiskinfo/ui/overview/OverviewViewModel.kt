@@ -21,21 +21,18 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.net.wifi.p2p.WifiP2pManager
-import android.preference.PreferenceManager
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.repository.SnapRepository
-import no.sintef.fiskinfo.util.isUserProfileValid
-import androidx.lifecycle.MediatorLiveData
-import no.sintef.fiskinfo.model.fishingfacility.ToolViewModel
 import no.sintef.fiskinfo.util.isToolOld
-import kotlin.collections.ArrayList
+import no.sintef.fiskinfo.util.isUserProfileValid
 
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -101,11 +98,13 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     {
         val itemList = ArrayList<OverviewCardItem>()
         addMapSummary(itemList, context)
-        addIcingSummary(itemList, context)
         addToolsSummary(itemList, context)
         addCatchAnalysis(itemList, context)
         if (snapFishIsActivated())
             addSnapSummary(itemList, context)
+        if(SpriceIsActivated()) {
+            addSpriceSummary(itemList, context)
+        }
         overviewList.value = itemList
     }
 
@@ -129,15 +128,6 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         list.add(item)
     }
 
-    private fun addIcingSummary(list: ArrayList<OverviewCardItem>, context: Context) {
-        val item = OverviewCardItem(context.getString(R.string.overview_card_icing_title), context.getString(
-            R.string.overview_card_icing_subtitle), R.drawable.ic_icing_24, "", context.getString(R.string.overview_card_view_icing_details), context.getString(R.string.fragment_title_report_icing))
-        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_icing_map, null)
-        item.action2Listener = Navigation.createNavigateOnClickListener(R.id.fragment_report_icing, null)
-        list.add(item)
-    }
-
-
     private fun addSnapSummary(list : ArrayList<OverviewCardItem>, context: Context) {
                                //inboxSnaps : LiveData<List<SnapMessage>>,
                                //echogramInfos : LiveData<List<SnapMetadata>>) {
@@ -153,6 +143,14 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
                                 R.string.overview_card_snap_view_messages), context.getString(R.string.overview_card_snap_send_snap))
 //        val item = OverviewCardItem("SnapFish", "Share echo sounder snaps with your contacts", R.drawable.ic_snap, "You have $unread unread snap messages.\nYou have $echogramCount snaps to share.", "View inbox", "Send snap")
         item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_snap, null)
+        list.add(item)
+    }
+
+    private fun addSpriceSummary(list : ArrayList<OverviewCardItem>, context: Context) {
+        val item = OverviewCardItem(context.getString(R.string.overview_card_icing_title), context.getString(
+            R.string.overview_card_icing_subtitle), R.drawable.ic_icing_24, "", context.getString(R.string.overview_card_view_icing_details), context.getString(R.string.fragment_title_report_icing))
+        item.action1Listener = Navigation.createNavigateOnClickListener(R.id.fragment_icing_map, null)
+        item.action2Listener = Navigation.createNavigateOnClickListener(R.id.fragment_report_icing, null)
         list.add(item)
     }
 
@@ -178,13 +176,18 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         return overviewInfo.value?.hasValidReportingProfile ?: false
     }
 
-    private fun snapFishIsActivated():Boolean {
-        var context : Context = getApplication()
+    private fun snapFishIsActivated(): Boolean {
+        val context: Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-        var active= prefs.getBoolean(context.getString(R.string.pref_snap_enable_service), false)
+        return prefs.getBoolean(context.getString(R.string.pref_snap_enable_service), false)
+    }
 
-        return active
+    private fun SpriceIsActivated(): Boolean {
+        val context: Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+        return prefs.getBoolean(context.getString(R.string.pref_sprice_enable_service_key), false)
     }
 
     private fun addToolsNoDownloadRightsSummary(list : ArrayList<OverviewCardItem>, context: Context) {

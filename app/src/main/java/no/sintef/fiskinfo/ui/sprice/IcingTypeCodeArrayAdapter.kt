@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
-import no.sintef.fiskinfo.model.sprice.IcingTypeCode
+import no.sintef.fiskinfo.model.orap.IcingTypeCode
 
 class IcingTypeCodeArrayAdapter (context: Context, resource: Int, objects: Array<IcingTypeCode>) :
     ArrayAdapter<IcingTypeCode>(context, resource, objects) {

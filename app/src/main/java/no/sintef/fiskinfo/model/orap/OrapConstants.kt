@@ -5,7 +5,7 @@ object OrapConstants {
     const val HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT = "YYYY-MM-DD HH:MM:NN+00"
     const val HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP = "YYYYMMDDHH00"
     const val HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP = "YYYYMMDD_HHMMSS_000"
-    const val ACTION_TAG_DATE_FORMAT = "YYYYMMDD"
+    const val ACTION_TAG_DATE_FORMAT = "yyyyMMDD"
 
     object FormDataNames {
         const val ACTION = "Action"

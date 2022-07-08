@@ -28,16 +28,6 @@
         android:label="@string/fragment_title_tool_details"
         tools:layout="@layout/tool_details_fragment" />
     <fragment
-        android:id="@+id/fragment_icing_map"
-        android:name="no.sintef.fiskinfo.ui.map.IcingMap"
-        android:label="@string/fragment_title_icing"
-        tools:layout="@layout/map_fragment" />
-    <fragment
-        android:id="@+id/fragment_report_icing"
-        android:name="no.sintef.fiskinfo.ui.sprice.ReportIcingFragment"
-        android:label="@string/fragment_title_report_icing"
-        tools:layout="@layout/fragment_report_icing" />
-    <fragment
         android:id="@+id/fragment_overview"
         android:name="no.sintef.fiskinfo.ui.overview.OverviewFragment"
         android:label="@string/fragment_title_overview"
@@ -52,11 +42,8 @@
             android:id="@+id/action_overview_fragment_to_tool_details_fragment"
             app:destination="@id/fragment_tool_details" />
         <action
-            android:id="@+id/action_overview_fragment_to_icing_fragment"
-            app:destination="@id/fragment_icing_map" />
-        <action
-            android:id="@+id/action_overview_fragment_to_report_icing_fragment"
-            app:destination="@id/fragment_report_icing" />
+            android:id="@+id/action_overview_fragment_to_sprice_fragment"
+            app:destination="@id/fragment_sprice" />
         <action
             android:id="@+id/action_overview_fragment_to_user_profile_fragment"
             app:destination="@id/fragment_user_profile" />
@@ -81,8 +68,30 @@
             android:id="@+id/action_fragment_snap_to_snapDetailFragment"
             app:destination="@id/snapDetailFragment" />
         <action android:id="@+id/action_fragment_snap_to_echogram_viewer_fragment"
-                app:destination="@id/echogram_viewer_fragment"/>
+            app:destination="@id/echogram_viewer_fragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/fragment_sprice"
+        android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
+        android:label="@string/fragment_title_sprice"
+        tools:layout="@layout/fragment_sprice" >
+        <action
+            android:id="@+id/action_fragment_sprice_to_icing_map_fragment"
+            app:destination="@id/fragment_icing_map" />
+        <action
+            android:id="@+id/action_sprice_fragment_to_icing_report_fragment"
+            app:destination="@id/fragment_report_icing" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_icing_map"
+        android:name="no.sintef.fiskinfo.ui.map.IcingMap"
+        android:label="@string/fragment_title_icing"
+        tools:layout="@layout/map_fragment" />
+    <fragment
+        android:id="@+id/fragment_report_icing"
+        android:name="no.sintef.fiskinfo.ui.sprice.ReportIcingFragment"
+        android:label="@string/fragment_title_report_icing"
+        tools:layout="@layout/fragment_report_icing" />
     <fragment
         android:id="@+id/fragment_user_profile"
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"

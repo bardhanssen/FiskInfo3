@@ -254,6 +254,11 @@
     <string name="prefs_category_snapfish">SnapFish demo innstillinger</string>
     <string name="prefs_days_before_old">Maksimum dager i vannet</string>
 
+    <string name="prefs_category_sprice">SPRICE innstillinger</string>
+    <string name="prefs_sprice_enable_sprice">Aktiver SPRICE</string>
+    <string name="prefs_sprice_username">SPRICE brukernavn</string>
+    <string name="prefs_sprice_password">SPRICE passord</string>
+
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>
     <string name="error_invalid_password">Passordet er for kort</string>

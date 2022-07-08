@@ -1,6 +1,7 @@
 package no.sintef.fiskinfo.util
 
 import no.sintef.fiskinfo.model.orap.OrapConstants
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -14,9 +15,9 @@ class OrapUtils {
          *
          */
         fun GetOrapMessageTag(datetime: LocalDateTime, username: String): String {
-            val formatter = SimpleDateFormat(OrapConstants.ACTION_TAG_DATE_FORMAT)
+            val formatter = DateTimeFormatter.ofPattern(OrapConstants.ACTION_TAG_DATE_FORMAT)
 
-            return "${LocalDateTime.format(formatter)}_${username}.debug"
+            return "${datetime.format(formatter)}_${username}.debug"
         }
 
         fun GetBoundaryIdString(length: Int) : String {
@@ -27,9 +28,9 @@ class OrapUtils {
         }
 
         fun GetFormattedTimeStamp(datetime: LocalDateTime, format: String): String {
-            val formatter = SimpleDateFormat(format)
+            val formatter = DateTimeFormatter.ofPattern(format, Locale.getDefault());
 
-            return LocalDateTime.format(formatter)
+            return datetime.format(formatter)
 
         }
     }

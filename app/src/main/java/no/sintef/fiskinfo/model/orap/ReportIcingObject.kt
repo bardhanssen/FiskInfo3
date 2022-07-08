@@ -22,20 +22,20 @@ import java.lang.StringBuilder
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class ReportIcingObject private constructor(
+class ReportIcingObject internal constructor(
     val webKitFormBoundaryId: String = OrapUtils.GetBoundaryIdString(OrapConstants.BOUNDARY_ID_LENGTH),
     val Id: Int,
     val ObservationTime: LocalDateTime,
     val Synop: LocalDateTime,
 
-    val CallSign: String?,
+    val CallSign: String,
     val Latitude: Float?,
     val Longitude: Float?,
 
     val AirTemperature: Float?,
     val SeaTemperature: Float?,
 
-    val MaxMiddleWindTime: String?,
+    val MaxMiddleWindTime: String,
     val MaxMiddelWindInKnots: Float?,
     val StrongestWindGustInKnots: Float?,
 
@@ -46,26 +46,26 @@ class ReportIcingObject private constructor(
     val PeriodForFirstSwellSystemInSeconds: Float?,
     val DirectionForFirstSwellSystemInDegrees: Float?,
 
-    val ConcentrationOfSeaIce: String?,
-    val SeaIceStageOfDevelopment: String?,
-    val OceanIce: String?,
-    val DirectionToNearestIceEdge: Float?,
-    val SeaIceConditionsAndDevelopmentTheLastThreeHours: String?,
+    val ConcentrationOfSeaIce: String,
+    val SeaIceStageOfDevelopment: String,
+    val OceanIce: String,
+    val DirectionToNearestIceEdge: String,
+    val SeaIceConditionsAndDevelopmentTheLastThreeHours: String,
 
-    val ReasonForIcing: String?,
-    val IceThicknessInCm: Float?,
-    val ChangeInIce: String?
+    val ReasonForIcing: String,
+    val IceThicknessInCm: Int?,
+    val ChangeInIce: String
 ) {
     data class Builder(
         var Id: Int = 0,
         var ObservationTime: LocalDateTime? = null,
-        var Synop: String? = null,
-        var CallSign: String? = null,
+        var Synop: String = "",
+        var CallSign: String = "",
         var Latitude: Float? = 0.0F,
         var Longitude: Float? = 0.0F,
         var AirTemperature: Float? = 0.0F,
         var SeaTemperature: Float? = 0.0F,
-        var MaxMiddleWindTime: String? = null,
+        var MaxMiddleWindTime: String = "",
         var MaxMiddelWindInKnots: Float? = null,
         var StrongestWindGustInKnots: Float? = null,
         var HeightOfWindWavesInMeters: Float? = 0.0F,
@@ -73,14 +73,14 @@ class ReportIcingObject private constructor(
         var HeightForFirstSwellSystemInMeters: Float? = 0.0F,
         var PeriodForFirstSwellSystemInSeconds: Float? = 0.0F,
         var DirectionForFirstSwellSystemInDegrees: Float? = 0.0F,
-        var ConcentrationOfSeaIce: String? = null,
-        var SeaIceStageOfDevelopment: String? = null,
-        var OceanIce: String? = null,
+        var ConcentrationOfSeaIce: String = "",
+        var SeaIceStageOfDevelopment: String = "",
+        var OceanIce: String = "",
         var DirectionToNearestIceEdge: Float? = null,
-        var SeaIceConditionsAndDevelopmentTheLastThreeHours: String? = null,
-        var ReasonForIcing: String? = null,
+        var SeaIceConditionsAndDevelopmentTheLastThreeHours: String = "",
+        var ReasonForIcing: String = "",
         var IceThicknessInCm: Float? = 0.0F,
-        var ChangeInIce: String? = null
+        var ChangeInIce: String = ""
     ) {
         fun Id(id: Int) = apply { this.Id = id }
         fun ObservationTime(observationTime: LocalDateTime) =
@@ -184,72 +184,20 @@ class ReportIcingObject private constructor(
         val stringBuilder = StringBuilder();
 
         stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.ACTION,
-                OrapConstants.FormValues.ACTION_SUBMIT_REPORT
-            )
-        )
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.TAG, messageTag))
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.REG_EPOC,
-                reportingTimeEpoch
-            )
-        )
-        stringBuilder.append(GetValueAsWebKitForm(OrapConstants.FormDataNames.USER, orapUserName))
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.PASSWORD,
-                orapUserPassword
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.MESSAGE_TYPE,
-                OrapConstants.FormValues.REPORT_MESSAGE_TYPE
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.HIDDEN_TERMIN,
-                observationEpoch
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.HIDDEN_MESS,
-                hiddenMessage
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.HIDDEN_KL_MESS,
-                hiddenKlMessage
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.HIDDEN_KL_STATUS,
-                hiddenKlStatus
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.HIDDEN_FILE,
-                OrapConstants.FormValues.HIDDEN_FILE_VALUE
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.HIDDEN_TYPE,
-                OrapConstants.FormValues.HIDDEN_TYPE
-            )
-        )
-        stringBuilder.append(
-            GetValueAsWebKitForm(
-                OrapConstants.FormDataNames.LSTEP,
-                OrapConstants.FormValues.LSTEP
-            )
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SUBMIT_REPORT),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.TAG, messageTag),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.USER, orapUserName),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.PASSWORD, orapUserPassword),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP),
+            GetWebFormKitEndTag()
         )
 
         return stringBuilder.toString();
@@ -265,5 +213,9 @@ class ReportIcingObject private constructor(
 
     fun GetValueAsWebKitForm(actionName: String, value: Int): String {
         return "------WebKitFormBoundary${webKitFormBoundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
+    }
+
+    fun GetWebFormKitEndTag(): String {
+        return "------WebKitFormBoundary${webKitFormBoundaryId}--"
     }
 }

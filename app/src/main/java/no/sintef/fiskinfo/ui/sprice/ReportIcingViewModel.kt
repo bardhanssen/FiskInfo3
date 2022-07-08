@@ -9,10 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
-import no.sintef.fiskinfo.model.sprice.IcingReport
-import no.sintef.fiskinfo.model.sprice.IcingTypeCode
-import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
-import no.sintef.fiskinfo.model.sprice.WindTypeCode
+import no.sintef.fiskinfo.model.orap.IcingReport
+import no.sintef.fiskinfo.model.orap.IcingTypeCode
+import no.sintef.fiskinfo.model.orap.WindTypeCode
 import no.sintef.fiskinfo.repository.FishingFacilityRepository
 import no.sintef.fiskinfo.util.locationsToGeoJsonGeometry
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel

@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.model.sprice
+package no.sintef.fiskinfo.model.orap
 
 import no.sintef.fiskinfo.model.fishingfacility.GeoJsonGeometry
 import java.util.*

@@ -23,6 +23,7 @@
     <string name="proto_close_drawer">Close drawer</string>
     <string name="snap_title">SnapFish demo</string>
     <string name="catch_analysis_title">Catch Analysis</string>
+    <string name="sprice_menu_title" translatable="false">SPRICE</string>
     <string name="map_title">Map</string>
 
     <!-- User preferences strings -->
@@ -43,6 +44,10 @@
     <string name="pref_tool_count" translatable="false">pref_tool_count</string>
 
     <string name="pref_map_selected_layers" translatable="false">pref_map_selected_layers</string>
+
+    <string name="pref_sprice_enable_service_key" translatable="false">pref_sprice_enable_service_key</string>
+    <string name="pref_sprice_username_key" translatable="false">pref_sprice_username_key</string>
+    <string name="pref_sprice_password_key" translatable="false">pref_sprice_password_key</string>
 
 
     <!-- Map fragment string -->
@@ -151,6 +156,7 @@
     <string name="fragment_title_tool_details">Tool Details</string>
     <string name="fragment_title_overview">Til Havs Overview</string>
     <string name="fragment_title_snapfish">SnapFish</string>
+    <string name="fragment_title_sprice" translatable="false">SPRICE</string>
     <string name="fragment_title_user_profile">User Profile</string>
     <string name="fragment_title_user_preferences">Preferences</string>
     <string name="fragment_title_snap_editor">New Snap Message</string>
@@ -285,6 +291,11 @@
     <string name="prefs_category_app_settings">App preferences</string>
     <string name="prefs_category_snapfish">SnapFish demo settings</string>
     <string name="prefs_days_before_old">Days deployed limit</string>
+
+    <string name="prefs_category_sprice">SPRICE settings</string>
+    <string name="prefs_sprice_enable_sprice">Activate SPRICE</string>
+    <string name="prefs_sprice_username">SPRICE username</string>
+    <string name="prefs_sprice_password">SPRICE password</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

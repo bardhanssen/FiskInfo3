@@ -19,8 +19,12 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import androidx.lifecycle.Observer
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.FragmentReportIcingBinding
-import no.sintef.fiskinfo.model.sprice.IcingTypeCode
+import no.sintef.fiskinfo.model.orap.IcingTypeCode
+import no.sintef.fiskinfo.model.orap.OrapConstants
+import no.sintef.fiskinfo.model.orap.ReportIcingObject
 import no.sintef.fiskinfo.ui.tools.*
+import no.sintef.fiskinfo.util.OrapUtils
+import java.time.LocalDateTime
 import java.util.*
 
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
@@ -121,6 +125,33 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         })
 
         mViewModel.locations.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
+
+        val report = ReportIcingObject(OrapUtils.GetBoundaryIdString(OrapConstants.BOUNDARY_ID_LENGTH),
+            0,
+            LocalDateTime.now(),
+            LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0),
+            "abc123",
+            68.0f,
+            18.0f,
+            1.0f,
+            2.0f,
+            "",
+            2f,
+            3f,
+            null,
+            null,
+            null,
+            null,
+            3.4f,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            5,
+            ""
+        )
     }
 
     override fun onDmsEditConfirmed() {
