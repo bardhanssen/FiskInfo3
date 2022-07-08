@@ -28,6 +28,9 @@ class ReportIcingObject internal constructor(
     val ObservationTime: LocalDateTime,
     val Synop: LocalDateTime,
 
+    val Username: String,
+    val Password: String,
+
     val CallSign: String,
     val Latitude: Float?,
     val Longitude: Float?,
@@ -40,7 +43,7 @@ class ReportIcingObject internal constructor(
     val StrongestWindGustInKnots: Float?,
 
     val HeightOfWindWavesInMeters: Float?,
-    val PeriodForWindWavesInSeconds: Float?,
+    val PeriodForWindWavesInSeconds: Int?,
 
     val HeightForFirstSwellSystemInMeters: Float?,
     val PeriodForFirstSwellSystemInSeconds: Float?,
@@ -60,13 +63,15 @@ class ReportIcingObject internal constructor(
         var Id: Int = 0,
         var ObservationTime: LocalDateTime? = null,
         var Synop: String = "",
+        var Username: String = "",
+        var Password: String = "",
         var CallSign: String = "",
         var Latitude: Float? = 0.0F,
         var Longitude: Float? = 0.0F,
         var AirTemperature: Float? = 0.0F,
         var SeaTemperature: Float? = 0.0F,
         var MaxMiddleWindTime: String = "",
-        var MaxMiddelWindInKnots: Float? = null,
+        var MaxMiddleWindInKnots: Float? = null,
         var StrongestWindGustInKnots: Float? = null,
         var HeightOfWindWavesInMeters: Float? = 0.0F,
         var PeriodForWindWavesInSeconds: Float? = 0.0F,
@@ -87,6 +92,8 @@ class ReportIcingObject internal constructor(
             apply { this.ObservationTime = observationTime }
 
         fun Synop(synop: String) = apply { this.Synop = synop }
+        fun Username(username: String) = apply { this.Username = username }
+        fun Password(password: String) = apply { this.Password = password }
         fun CallSign(callSign: String) = apply { this.CallSign = callSign }
         fun Latitude(latitude: Float) = apply { this.Latitude = latitude }
         fun Longitude(longitude: Float) = apply { this.Longitude = longitude }
@@ -96,7 +103,7 @@ class ReportIcingObject internal constructor(
             apply { this.MaxMiddleWindTime = maxMiddleWindTime }
 
         fun MaxMiddelWindInKnots(maxMiddelWindInKnots: Float) =
-            apply { this.MaxMiddelWindInKnots = maxMiddelWindInKnots }
+            apply { this.MaxMiddleWindInKnots = maxMiddelWindInKnots }
 
         fun StrongestWindGustInKnots(strongestWindGustInKnots: Float) =
             apply { this.StrongestWindGustInKnots = strongestWindGustInKnots }
@@ -143,21 +150,18 @@ class ReportIcingObject internal constructor(
     }
 
     fun GetAsRequestBody(): String {
-        val orapUserName = "" // TODO: Get username from settings
-        val orapUserPassword = "" // TODO: Get password from settings
-
         val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
         val zoneId = ZoneId.systemDefault()
         val reportingTimeEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond()
         val observationEpoch = Synop.atZone(zoneId).toEpochSecond()
 
         val messageTag =
-            OrapUtils.GetOrapMessageTag(messageReceivedTime, orapUserName)
+            OrapUtils.GetOrapMessageTag(messageReceivedTime, Username)
 
         val hiddenMessage =
-            "012345678      ${orapUserName},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n\n"
+            "012345678      ${Username},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n\n"
         val hiddenKlMessage =
-            "kldata/nationalnr=${orapUserName}/type=317/test/received_time=\"${
+            "kldata/nationalnr=${Username}/type=317/test/received_time=\"${
                 OrapUtils.GetFormattedTimeStamp(
                     messageReceivedTime,
                     OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT
@@ -170,15 +174,15 @@ class ReportIcingObject internal constructor(
                             OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
                         )
                     },3,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,-6,,,,,,,\n" +
-                    "Orap_smsformat_input ${reportingTimeEpoch} ${orapUserName},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n" +
-                    "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${orapUserName}/orap_${
+                    "Orap_smsformat_input ${reportingTimeEpoch} ${Username},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n" +
+                    "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${Username}/orap_${
                         OrapUtils.GetFormattedTimeStamp(
                             messageReceivedTime,
                             OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP
                         )
                     }.txt;"
         val hiddenKlStatus =
-            "${observationEpoch * 100} || 012345678      ${orapUserName},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n"
+            "${observationEpoch * 10} || 012345678      ${Username},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n"
 
 
         val stringBuilder = StringBuilder();
@@ -187,8 +191,8 @@ class ReportIcingObject internal constructor(
             GetValueAsWebKitForm(OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SUBMIT_REPORT),
             GetValueAsWebKitForm(OrapConstants.FormDataNames.TAG, messageTag),
             GetValueAsWebKitForm(OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
-            GetValueAsWebKitForm(OrapConstants.FormDataNames.USER, orapUserName),
-            GetValueAsWebKitForm(OrapConstants.FormDataNames.PASSWORD, orapUserPassword),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.USER, Username),
+            GetValueAsWebKitForm(OrapConstants.FormDataNames.PASSWORD, Password),
             GetValueAsWebKitForm(OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
             GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
             GetValueAsWebKitForm(OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),

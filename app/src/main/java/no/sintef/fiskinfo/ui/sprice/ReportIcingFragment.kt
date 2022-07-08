@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.FragmentReportIcingBinding
 import no.sintef.fiskinfo.model.orap.IcingTypeCode
@@ -126,10 +128,16 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
         mViewModel.locations.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
 
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val orapUsername = prefs.getString(getString(R.string.pref_sprice_username_key), "") ?: ""
+        val orapPassword = prefs.getString(getString(R.string.pref_sprice_password_key), "") ?: ""
+
         val report = ReportIcingObject(OrapUtils.GetBoundaryIdString(OrapConstants.BOUNDARY_ID_LENGTH),
             0,
             LocalDateTime.now(),
-            LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0),
+            LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0), // TODO: Get from user input
+            orapUsername,
+            orapPassword,
             "abc123",
             68.0f,
             18.0f,
@@ -138,8 +146,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             "",
             2f,
             3f,
-            null,
-            null,
+            5f,
+            5,
             null,
             null,
             3.4f,
@@ -152,6 +160,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             5,
             ""
         )
+
+        Log.d("TAG", report.GetAsRequestBody())
     }
 
     override fun onDmsEditConfirmed() {

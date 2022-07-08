@@ -2,10 +2,10 @@ package no.sintef.fiskinfo.model.orap
 
 object OrapConstants {
     const val BOUNDARY_ID_LENGTH = 16
-    const val HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT = "YYYY-MM-DD HH:MM:NN+00"
-    const val HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP = "YYYYMMDDHH00"
-    const val HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP = "YYYYMMDD_HHMMSS_000"
-    const val ACTION_TAG_DATE_FORMAT = "yyyyMMDD"
+    const val HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss+00"
+    const val HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP = "yyyyMMddHH00"
+    const val HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP = "yyyyMMdd_HHmmss_000"
+    const val ACTION_TAG_DATE_FORMAT = "yMMdd"
 
     object FormDataNames {
         const val ACTION = "Action"
