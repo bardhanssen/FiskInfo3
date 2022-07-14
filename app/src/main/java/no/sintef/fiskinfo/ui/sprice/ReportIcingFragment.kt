@@ -5,12 +5,11 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -18,14 +17,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.FragmentReportIcingBinding
 import no.sintef.fiskinfo.model.orap.IcingTypeCode
-import no.sintef.fiskinfo.model.orap.OrapConstants
-import no.sintef.fiskinfo.model.orap.ReportIcingObject
+import no.sintef.fiskinfo.model.orap.MaxMiddleWindTimeEnum
+import no.sintef.fiskinfo.model.orap.ReportIcingRequestBody
 import no.sintef.fiskinfo.ui.tools.*
-import no.sintef.fiskinfo.util.OrapUtils
 import java.time.LocalDateTime
 import java.util.*
 
@@ -40,7 +43,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mViewModel: ReportIcingViewModel
     private lateinit var mLocationViewModel: LocationViewModel
 
-    private lateinit var mIceCodeAdapter: IcingTypeCodeArrayAdapter
+    private lateinit var mMaxMiddleWindAdapter: maxMiddleWindTimeArrayAdapter
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
     private var _mBinding: FragmentReportIcingBinding? = null
 
@@ -50,11 +53,16 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var locAdapter: LocationRecyclerViewAdapter
     private lateinit var viewModel: ReportIcingViewModel
 
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+
         setHasOptionsMenu(true)
         _mBinding = DataBindingUtil.inflate(
             inflater,
@@ -63,19 +71,19 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             false
         )
 
-        mIceCodeAdapter = IcingTypeCodeArrayAdapter(
+        mMaxMiddleWindAdapter = maxMiddleWindTimeArrayAdapter(
             requireContext(),
             R.layout.exposed_dropdown_menu_item,
-            IcingTypeCode.values()
+            MaxMiddleWindTimeEnum.values()
         )
         mEditTextFilledExposedDropdown = mBinding.icingDetailsTypeField
 
         mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id ->
-            mViewModel.icingTypeCode.value = parent.getItemAtPosition(
+            mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(
                 position
-            ) as IcingTypeCode
+            ) as MaxMiddleWindTimeEnum
         }
-        mEditTextFilledExposedDropdown.setAdapter(mIceCodeAdapter)
+        mEditTextFilledExposedDropdown.setAdapter(mMaxMiddleWindAdapter)
 
         mBinding.icingReportDateField.setOnClickListener {
             val builder: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
@@ -111,12 +119,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
 
         // Refresh the full UI when there is a change, as this UI is small
-        mViewModel.icingTypeCodeName.observe(
-            viewLifecycleOwner, Observer {
-                mBinding.reporticingviewmodel = mViewModel
-            })
-
-        mViewModel.windTypeCodeName.observe(
+        mViewModel.maxMiddleWindTime.observe(
             viewLifecycleOwner, Observer {
                 mBinding.reporticingviewmodel = mViewModel
             })
@@ -126,54 +129,116 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             mBinding.reporticingviewmodel = mViewModel
         })
 
-        mViewModel.locations.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
+        mViewModel.location.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val orapUsername = prefs.getString(getString(R.string.pref_sprice_username_key), "") ?: ""
         val orapPassword = prefs.getString(getString(R.string.pref_sprice_password_key), "") ?: ""
 
-        val report = ReportIcingObject(OrapUtils.GetBoundaryIdString(OrapConstants.BOUNDARY_ID_LENGTH),
-            0,
-            LocalDateTime.now(),
-            LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0), // TODO: Get from user input
-            orapUsername,
-            orapPassword,
-            "abc123",
-            68.0f,
-            18.0f,
-            1.0f,
-            2.0f,
-            "",
-            2f,
-            3f,
-            5f,
-            5,
-            null,
-            null,
-            3.4f,
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            5,
-            ""
-        )
+        val report = ReportIcingRequestBody.Builder()
+            .Id(0)
+            .ObservationTime(LocalDateTime.now())
+            .Synop(LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0))
+            .Username(orapUsername)
+            .Password(orapPassword)
+            .CallSign("abc123")
+            .Latitude("68.12")
+            .Longitude("18.12")
+            .IceThicknessInCm("5")
+            .build()
 
-        Log.d("TAG", report.GetAsRequestBody())
+        Log.d("TAG", report.GetRequestBodyForReportSubmission())
     }
 
     override fun onDmsEditConfirmed() {
         val location = mLocationViewModel.getLocation()
         if (location != null) {
-            mViewModel.locations.value!![mLocationViewModel.listPosition] = location!!
-            mViewModel.locations.postValue(mViewModel.locations.value)
+            mViewModel.location.value!![mLocationViewModel.listPosition] = location!!
+            mViewModel.location.postValue(mViewModel.location.value)
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.sprice_report_icing_menu, menu)
+
+        menu.getItem(R.id.check_icing_report_action).setVisible(true)
+        menu.getItem(R.id.send_icing_report_action).setVisible(false)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.send_icing_report_action) {
+            val result = mViewModel.sendIcingReport();
+
+            result.observe(this, Observer {
+                if (it.success) {
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, success")
+                        param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+                        param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+                    }
+
+                    val text = getString(R.string.tool_deployment_sent)
+                    val toast = Toast.makeText(this.requireActivity(), text, Toast.LENGTH_SHORT)
+                    toast.show()
+                    mViewModel.clear()
+                    Navigation.findNavController(this.requireView()).navigateUp()
+                } else {
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, error")
+                        param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+                        param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+                    }
+
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.tool_deployment_error) + it.errorMsg,
+                        Snackbar.LENGTH_LONG
+                    )
+                        .show()
+                }
+            })
+
+            return true
+        }
+        else if(item.itemId == R.id.check_icing_report_action) {
+            val result = mViewModel.checkReportValues();
+            result.observe(this, Observer {
+                if (it.success) {
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "Check icing report, success")
+                        param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+                        param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+                    }
+
+                    val text = getString(R.string.tool_deployment_sent)
+                    val toast = Toast.makeText(this.requireActivity(), text, Toast.LENGTH_SHORT)
+                    toast.show()
+                    mViewModel.clear()
+                    Navigation.findNavController(this.requireView()).navigateUp()
+                } else {
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "Check icing report, error")
+                        param(FirebaseAnalytics.Param.SCREEN_NAME, "Report icing")
+                        param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+                    }
+
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.tool_deployment_error) + it.errorMsg,
+                        Snackbar.LENGTH_LONG
+                    )
+                        .show()
+                }
+            })
+            return true
+        }
+        return false
+    }
+
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
-        mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
+        mLocationViewModel.initWithLocation(mViewModel.location.value!![itemClicked], itemClicked)
         val fm: FragmentManager? = parentFragmentManager
 
         val locDialogFragment: LocationDmsDialogFragment =
@@ -194,6 +259,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             mViewModel =
                 ViewModelProviders.of(requireActivity()).get(ReportIcingViewModel::class.java)
+
+
             // Use the current time as the default values for the picker
             val c = Calendar.getInstance()
             c.time = mViewModel.reportingTime.value
@@ -214,6 +281,11 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             mViewModel.setReportingTime(hourOfDay, minute);
             // Do something with the time chosen by the user
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _mBinding = null
     }
 
 }

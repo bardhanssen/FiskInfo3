@@ -7,19 +7,20 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
 import no.sintef.fiskinfo.model.orap.IcingTypeCode
+import no.sintef.fiskinfo.model.orap.MaxMiddleWindTimeEnum
 
-class IcingTypeCodeArrayAdapter (context: Context, resource: Int, objects: Array<IcingTypeCode>) :
-    ArrayAdapter<IcingTypeCode>(context, resource, objects) {
+class maxMiddleWindTimeArrayAdapter (context: Context, resource: Int, objects: Array<MaxMiddleWindTimeEnum>) :
+    ArrayAdapter<MaxMiddleWindTimeEnum>(context, resource, objects) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val theView : TextView = super.getView(position, convertView, parent) as TextView
         theView.text = getItem(position)?.getLocalizedName(context)
         return theView
     }
 
-    private val allIceTypeCodesFilter = object: Filter() {
+    private val allWindTimesFilter = object: Filter() {
         override fun convertResultToString(resultValue: Any?): CharSequence {
             resultValue?.let {
-                var code = it as IcingTypeCode
+                var code = it as MaxMiddleWindTimeEnum
                 return code.getLocalizedName(context!!)
             }
             return ""
@@ -37,6 +38,6 @@ class IcingTypeCodeArrayAdapter (context: Context, resource: Int, objects: Array
     }
 
     override fun getFilter(): Filter {
-        return allIceTypeCodesFilter
+        return allWindTimesFilter
     }
 }

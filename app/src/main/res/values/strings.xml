@@ -48,6 +48,7 @@
     <string name="pref_sprice_enable_service_key" translatable="false">pref_sprice_enable_service_key</string>
     <string name="pref_sprice_username_key" translatable="false">pref_sprice_username_key</string>
     <string name="pref_sprice_password_key" translatable="false">pref_sprice_password_key</string>
+    <string name="pref_sprice_call_sign_key" translatable="false">pref_sprice_call_sign_key</string>
 
 
     <!-- Map fragment string -->
@@ -177,6 +178,20 @@
     <string name="wind_type_code_moderate_wind">Light wind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Heavy wind (over 7 m/s)</string>
 
+    <string name="max_middle_wind_time_not_selected" translatable="false"/>
+    <string name="max_middle_wind_time_0">0- during observation</string>
+    <string name="max_middle_wind_time_1">1- 0 to 1 hour from obs</string>
+    <string name="max_middle_wind_time_2">2- 1 to 2 hours from obs</string>
+    <string name="max_middle_wind_time_3">3- 2 to 3 hours from obs</string>
+    <string name="max_middle_wind_time_4">4- 3 to 6 hours from obs</string>
+    <string name="max_middle_wind_time_5">5- 6 to 9 hours from obs</string>
+    <string name="max_middle_wind_time_6">6- 9 to 12 hours from obs</string>
+    <string name="max_middle_wind_time_7">7- Wind seems to dissipate</string>
+    <string name="max_middle_wind_time_8">8- Wind seems unchanged</string>
+    <string name="max_middle_wind_time_9">9- Wind seems to increase</string>
+    <string name="max_middle_wind_time_x">X- Impossible to say</string>
+
+    <string name="max_middle_wind_when">When Max middle wind</string>
     <string name="icing_icing_type">Icing type</string>
     <string name="icing_wind_type">Wind type</string>
     <string name="icing_report_date">Date</string>
@@ -184,6 +199,9 @@
 
     <string name="fragment_title_icing">Icing</string>
     <string name="fragment_title_report_icing">Report icing</string>
+
+    <string name="orap_icing_action_check_message" translatable="false">Kontroller melding</string>
+    <string name="orap_icing_action_send_message_to_met" translatable="false">Send melding til met.no</string>
 
     // Overview fragment resources
     <string name="overview_card_map_title">Map</string>
@@ -296,6 +314,8 @@
     <string name="prefs_sprice_enable_sprice">Activate SPRICE</string>
     <string name="prefs_sprice_username">SPRICE username</string>
     <string name="prefs_sprice_password">SPRICE password</string>
+    <string name="report_icing_menu_option_send">Report</string>
+    <string name="report_icing_menu_option_check">Check</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

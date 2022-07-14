@@ -88,7 +88,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_weight="1"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
-                        android:hint="@string/icing_icing_type"
+                        android:hint="@string/max_middle_wind_when"
                         app:startIconContentDescription="@string/proto_close_drawer"
                         app:startIconDrawable="@drawable/ic_icing_24">
 
@@ -151,9 +151,16 @@
                             android:text="@string/position"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/icingReportPositionRecyclerView"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <include
+                            layout="@layout/location_ddm_editor_fragment"
+                            android:id="@+id/aaaaaaaaaa"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@id/positions_label"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
 
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -163,7 +170,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            tools:listitem="@layout/location_list_item"></androidx.recyclerview.widget.RecyclerView>
+                            android:visibility="gone"
+                            tools:listitem="@layout/location_list_item" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>

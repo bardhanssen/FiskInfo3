@@ -72,10 +72,10 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
 
         setHasOptionsMenu(true)
         _mBinding = DataBindingUtil.inflate(

@@ -3,76 +3,54 @@ package no.sintef.fiskinfo.ui.sprice
 import android.app.Application
 import android.content.Context
 import android.location.Location
-import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.preference.PreferenceManager
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.fishingfacility.FiskInfoProfileDTO
-import no.sintef.fiskinfo.model.orap.IcingReport
-import no.sintef.fiskinfo.model.orap.IcingTypeCode
-import no.sintef.fiskinfo.model.orap.WindTypeCode
-import no.sintef.fiskinfo.repository.FishingFacilityRepository
-import no.sintef.fiskinfo.util.locationsToGeoJsonGeometry
+import no.sintef.fiskinfo.model.orap.*
+import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
+import java.time.LocalDateTime
 import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     val reportingTime = MutableLiveData<Date>()
-    val locations = MutableLiveData<MutableList<Location>>()
-    val icingTypeCode = MutableLiveData<IcingTypeCode>()
-    val windTypeCode = MutableLiveData<WindTypeCode>()
+    val location = MutableLiveData<Location>()
+    var reportChecked = MutableLiveData<Boolean>()
+    var reportValid = MutableLiveData<Boolean>()
+    val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
 
-    var contactPersonEmail: String? = null
-    var contactPersonPhone: String? = null
-    private var fiskInfoProfileDTO: LiveData<FiskInfoProfileDTO>? = null
-    var initialized = false
+    private fun getCheckIcingReportBody(): CheckReportRequestBody {
+        val context: Context = getApplication()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-    private fun createIcingReport(): IcingReport {
-        val profile = getFiskInfoProfileDTO()
-        val fiskInfoProfile = profile?.value?.fiskinfoProfile!!
+        val orapUsername = prefs.getString(context.getString(R.string.pref_sprice_username_key), "") ?: ""
+        val orapPassword = prefs.getString(context.getString(R.string.pref_sprice_password_key), "") ?: ""
+        val callSign = prefs.getString(context.getString(R.string.pref_sprice_call_sign_key), "") ?: ""
 
-        getContactInfoFromPreferences()
+        return CheckReportRequestBody.Builder() // TODO: Populate values
+            .Action(OrapConstants.FormValues.ACTION_CHECK_MESSAGE)
+            .Username(orapUsername)
+            .Password(orapPassword)
+            .VesselCallSign(callSign)
+            .Build()
+    }
 
-        return IcingReport(
-            geometry = locationsToGeoJsonGeometry(locations.value!!),
-            reportingTime = reportingTime.value!!
-
-        )
+    private fun getIcingReportBody(): ReportIcingRequestBody {
+        return ReportIcingRequestBody.Builder() // TODO: Populate values
+            .build()
     }
 
     fun initContent() {
-        if (!initialized) {
-            var context: Context = getApplication()
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-
-
-            reportingTime.value = Date()
-            val defaultLoc = Location("")
-            // TODO: Default locations
-            defaultLoc.latitude = 0.0  //your coords of course
-            defaultLoc.longitude = 0.0
-            locations.value = mutableListOf(defaultLoc)
-        }
-    }
-
-    fun getContactInfoFromPreferences() {
-        var context: Context = getApplication()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-
-        contactPersonEmail =
-            prefs.getString(context.getString(R.string.pref_contact_person_email), "")
-        contactPersonPhone =
-            prefs.getString(context.getString(R.string.pref_contact_person_phone), "")
-    }
-
-    fun getFiskInfoProfileDTO(): LiveData<FiskInfoProfileDTO>? {
-        if (fiskInfoProfileDTO == null) {
-            val fishingFacilityRepository =
-                FishingFacilityRepository.getInstance(this.getApplication())
-            fiskInfoProfileDTO = fishingFacilityRepository.getFiskInfoProfileDTO()
-        }
-        return fiskInfoProfileDTO
+        reportingTime.value = Date()
+        val defaultLoc = Location("")
+        // TODO: Default locations
+        defaultLoc.latitude = 0.0  //your coords of course
+        defaultLoc.longitude = 0.0
+        location.value = defaultLoc
+        reportChecked.value = false
+        reportValid.value = false
     }
 
     fun setReportingDate(date: Date) {
@@ -98,16 +76,19 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         reportingTime.value = c.time
     }
 
-    fun clear() {
-        initialized = false
+    fun checkReportValues(): LiveData<OrapRepository.SendResult> {
+        val info = getCheckIcingReportBody()
+
+        return OrapRepository.getInstance(getApplication()).checkIcingReportValues(info)
     }
 
-    val icingTypeCodeName: LiveData<String> = Transformations.map(icingTypeCode) { code ->
+    fun sendIcingReport(): LiveData<OrapRepository.SendResult> {
+        val info = getIcingReportBody()
+
+        return OrapRepository.getInstance(getApplication()).SendIcingReport(info)
+    }
+
+    val maxMiddleWindTimeName: LiveData<String> = Transformations.map(maxMiddleWindTime) { code ->
         code.getLocalizedName(getApplication())
     }
-
-    val windTypeCodeName: LiveData<String> = Transformations.map(windTypeCode) { code ->
-        code.getLocalizedName(getApplication())
-    }
-
 }

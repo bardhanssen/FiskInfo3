@@ -140,6 +140,7 @@
     <string name="wind_type_code_moderate_wind">Moderat vind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Kraftig vind (over 7 m/s)</string>
 
+    <string name="max_middle_wind_when">Når maks middelvind</string>
     <string name="icing_icing_type">Istype</string>
     <string name="icing_wind_type">vindtype</string>
     <string name="icing_report_date">Dato</string>
@@ -258,6 +259,20 @@
     <string name="prefs_sprice_enable_sprice">Aktiver SPRICE</string>
     <string name="prefs_sprice_username">SPRICE brukernavn</string>
     <string name="prefs_sprice_password">SPRICE passord</string>
+    <string name="report_icing_menu_option_send">Rapporter</string>
+    <string name="report_icing_menu_option_check">Kontroller</string>
+
+    <string name="max_middle_wind_time_0">0- i observasjonstida</string>
+    <string name="max_middle_wind_time_1">1- 0 til 1 time fra obs</string>
+    <string name="max_middle_wind_time_2">2- 1 til 2 time fra obs</string>
+    <string name="max_middle_wind_time_3">3- 2 til 3 time fra obs</string>
+    <string name="max_middle_wind_time_4">4- 3 til 6 time fra obs</string>
+    <string name="max_middle_wind_time_5">5- 6 til 9 time fra obs</string>
+    <string name="max_middle_wind_time_6">6- 9 til 12 time fra obs</string>
+    <string name="max_middle_wind_time_7">7- Vinden synes å avta</string>
+    <string name="max_middle_wind_time_8">8- Vinden synes uendret</string>
+    <string name="max_middle_wind_time_9">9- Vinden synes å øke</string>
+    <string name="max_middle_wind_time_x">X- Umulig å angi</string>
 
     <!--
     <string name="error_invalid_email">Ugyldig epostadresse</string>

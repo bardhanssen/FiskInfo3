@@ -17,24 +17,18 @@
  */
 package no.sintef.fiskinfo.api.orap
 
-import no.sintef.fiskinfo.model.orap.CheckIcingObject
-import no.sintef.fiskinfo.model.orap.ReportIcingObject
+import no.sintef.fiskinfo.model.orap.CheckReportRequestBody
+import no.sintef.fiskinfo.model.orap.GetReportsRequestBody
+import no.sintef.fiskinfo.model.orap.ReportIcingRequestBody
+import okhttp3.Response
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 /**
  * Interface to API service from Orap
  */
-/*
-object BarentswatchServicePaths {
-    val subscribable = "service/subscribable/"
-    val geoDataSubscription = "subscription/"
-    val geoDataSubscriptionManagement = "subscription/{Id}"
-    val geoDataDownload = "download/{ApiName}"
-    val authorization = "authorization"
-}
-*/
 interface OrapService {
     companion object {
         const val prefix = "cgi-bin/"
@@ -42,10 +36,12 @@ interface OrapService {
     }
 
     @POST( ObsRaport)
-    fun checkReport(@Body body : CheckIcingObject): Call<CheckIcingObject>
+    fun checkReport(@Body body : CheckReportRequestBody): Call<Response>
 
     @POST( ObsRaport)
-    fun submitReport(@Body body : ReportIcingObject): Call<ReportIcingObject>
+    fun submitReport(@Body body : ReportIcingRequestBody): Call<Response>
 
+    @GET( ObsRaport)
+    fun getReports(@Body body : GetReportsRequestBody): Call<Response>
 
 }

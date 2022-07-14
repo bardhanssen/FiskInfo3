@@ -22,22 +22,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/set_to_current_position_icon"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/latitude_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dialog_container_margin_top"
                 android:layout_marginTop="@dimen/dialog_internal_container_large_margin_top"
+                android:layout_marginBottom="@dimen/dialog_container_margin_top"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="1dp"
                 android:paddingLeft="4dp"
-                android:paddingRight="4dp"
                 android:paddingTop="5dp"
-                >
+                android:paddingRight="4dp"
+                android:paddingBottom="1dp">
 
                 <EditText
                     android:id="@+id/latitude_degrees_edit_text"
@@ -50,22 +48,20 @@
                     android:gravity="end"
                     android:inputType="number"
                     android:maxLength="2"
-                    android:nextFocusDown="@+id/latitude_minutes_edit_text"
                     android:nextFocusLeft="@+id/latitude_minutes_edit_text"
                     android:nextFocusRight="@+id/latitude_minutes_edit_text"
                     android:nextFocusUp="@+id/latitude_minutes_edit_text"
+                    android:nextFocusDown="@+id/latitude_minutes_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.latitudeDegrees}"
-                    />
+                    android:text="@{`` + viewmodel.latitudeDegrees}" />
 
                 <TextView
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.1"
-                    android:text="@string/symbol_geographical_degrees"
                     android:labelFor="@+id/latitude_degrees_edit_text"
-                    />
+                    android:text="@string/symbol_geographical_degrees" />
 
                 <EditText
                     android:id="@+id/latitude_minutes_edit_text"
@@ -78,22 +74,20 @@
                     android:gravity="end"
                     android:inputType="numberDecimal"
                     android:maxLength="5"
-                    android:nextFocusDown="@+id/latitude_seconds_edit_text"
                     android:nextFocusLeft="@+id/latitude_seconds_edit_text"
                     android:nextFocusRight="@+id/latitude_seconds_edit_text"
                     android:nextFocusUp="@+id/latitude_seconds_edit_text"
+                    android:nextFocusDown="@+id/latitude_seconds_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.latitudeDecimalMinutes}"
-                    />
+                    android:text="@{`` + viewmodel.latitudeDecimalMinutes}" />
 
                 <TextView
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.1"
-                    android:text="@string/symbol_geographical_minutes"
                     android:labelFor="@+id/latitude_minutes_edit_text"
-                    />
+                    android:text="@string/symbol_geographical_minutes" />
 
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -105,22 +99,20 @@
                     android:paddingEnd="0dp"
                     android:textOff="@string/cardinal_direction_symbol_north"
                     android:textOn="@string/cardinal_direction_symbol_south"
-                    app:showText="true"
-                    />
+                    app:showText="true" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/longitude_container"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dialog_container_margin_top"
                 android:layout_marginTop="@dimen/dialog_internal_container_large_margin_top"
+                android:layout_marginBottom="@dimen/dialog_container_margin_top"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="1.0dp"
                 android:paddingLeft="4.0dp"
                 android:paddingRight="4.0dp"
-                >
+                android:paddingBottom="1.0dp">
 
                 <EditText
                     android:id="@+id/longitude_degrees_edit_text"
@@ -133,22 +125,20 @@
                     android:gravity="end"
                     android:inputType="number"
                     android:maxLength="3"
-                    android:nextFocusDown="@+id/longitude_minutes_edit_text"
                     android:nextFocusLeft="@+id/longitude_minutes_edit_text"
                     android:nextFocusRight="@+id/longitude_minutes_edit_text"
                     android:nextFocusUp="@+id/longitude_minutes_edit_text"
+                    android:nextFocusDown="@+id/longitude_minutes_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.longitudeDegrees}"
-                    />
+                    android:text="@{`` + viewmodel.longitudeDegrees}" />
 
                 <TextView
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.1"
-                    android:text="@string/symbol_geographical_degrees"
                     android:labelFor="@+id/longitude_degrees_edit_text"
-                    />
+                    android:text="@string/symbol_geographical_degrees" />
 
                 <EditText
                     android:id="@+id/longitude_minutes_edit_text"
@@ -161,22 +151,20 @@
                     android:gravity="end"
                     android:inputType="numberDecimal"
                     android:maxLength="5"
-                    android:nextFocusDown="@+id/longitude_seconds_edit_text"
                     android:nextFocusLeft="@+id/longitude_seconds_edit_text"
                     android:nextFocusRight="@+id/longitude_seconds_edit_text"
                     android:nextFocusUp="@+id/longitude_seconds_edit_text"
+                    android:nextFocusDown="@+id/longitude_seconds_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.longitudeDecimalMinutes}"
-                    />
+                    android:text="@{`` + viewmodel.longitudeDecimalMinutes}" />
 
                 <TextView
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.1"
-                    android:text="@string/symbol_geographical_minutes"
                     android:labelFor="@+id/longitude_minutes_edit_text"
-                    />
+                    android:text="@string/symbol_geographical_minutes" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/longitude_cardinal_direction_switch"
@@ -187,8 +175,7 @@
                     android:paddingEnd="0dp"
                     android:textOff="@string/cardinal_direction_symbol_west"
                     android:textOn="@string/cardinal_direction_symbol_east"
-                    app:showText="true"
-                    />
+                    app:showText="true" />
 
             </LinearLayout>
         </LinearLayout>
