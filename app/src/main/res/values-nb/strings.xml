@@ -145,6 +145,12 @@
     <string name="icing_wind_type">vindtype</string>
     <string name="icing_report_date">Dato</string>
     <string name="icing_report_time">Tidspunkt</string>
+    <string name="icing_report_air_temperature_hint">Temperatur</string>
+    <string name="icing_report_sea_temperature_hint">Sjøtemperatur</string>
+
+    <string name="icing_report_check_error">Feil i isingrapport</string>
+    <string name="icing_report_submit_error">Feil i isingrapport</string>
+    <string name="icing_report_sent">Isingrapport sendt</string>
 
     <string name="fragment_title_icing">Ising</string>
     <string name="fragment_title_report_icing">Rapporter ising</string>

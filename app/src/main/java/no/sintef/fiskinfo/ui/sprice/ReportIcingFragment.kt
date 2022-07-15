@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,9 +24,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.FragmentReportIcingBinding
-import no.sintef.fiskinfo.model.orap.IcingTypeCode
 import no.sintef.fiskinfo.model.orap.MaxMiddleWindTimeEnum
 import no.sintef.fiskinfo.model.orap.ReportIcingRequestBody
+import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.tools.*
 import java.time.LocalDateTime
 import java.util.*
@@ -50,7 +49,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     // This property is only valid between onCreateView and onDestroyView.
     private val mBinding get() = _mBinding!!
 
-    private lateinit var locAdapter: LocationRecyclerViewAdapter
     private lateinit var viewModel: ReportIcingViewModel
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
@@ -90,7 +88,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             builder.setSelection(mViewModel.reportingTime.value!!.time)
             val picker: MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener {
-                var cal = Calendar.getInstance()
+                val cal = Calendar.getInstance()
                 cal.timeInMillis = it as Long
                 mViewModel.setReportingDate(cal.time)
             }
@@ -101,22 +99,20 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             TimePickerFragment().show(parentFragmentManager, "timePicker")
         }
 
-        mBinding.icingReportPositionRecyclerView.layoutManager = LinearLayoutManager(context)
-        locAdapter = LocationRecyclerViewAdapter(this)
-        mBinding.icingReportPositionRecyclerView.setAdapter(locAdapter)
-
-        return mBinding!!.root
+        return mBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(ReportIcingViewModel::class.java)
-        mViewModel = ViewModelProviders.of(requireActivity()).get(ReportIcingViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        mViewModel = ViewModelProviders.of(requireActivity()).get(ReportIcingViewModel::class.java)
+        mViewModel = ViewModelProvider(this).get(ReportIcingViewModel::class.java)
+
         // TODO: Use the ViewModel
         mViewModel.initContent()
 
-        mLocationViewModel =
-            ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
+//        mLocationViewModel = ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
+        mLocationViewModel = ViewModelProvider(this).get(LocationDmsViewModel::class.java)
+
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.maxMiddleWindTime.observe(
@@ -126,34 +122,24 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
         mViewModel.reportingTime.observe(
             viewLifecycleOwner, Observer {
-            mBinding.reporticingviewmodel = mViewModel
-        })
+                mBinding.reporticingviewmodel = mViewModel
+            })
 
-        mViewModel.location.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
+        mViewModel.reportingTime.value = null
+        mViewModel.observationTime.value = null
+        mViewModel.location.value = null
+        mViewModel.maxMiddleWindTime.value = null
+        mViewModel.airTemperature.value = 5F
+        mViewModel.seaTemperature.value = 2F
+        mViewModel.vesselIcingThickness.value = 5
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val orapUsername = prefs.getString(getString(R.string.pref_sprice_username_key), "") ?: ""
-        val orapPassword = prefs.getString(getString(R.string.pref_sprice_password_key), "") ?: ""
-
-        val report = ReportIcingRequestBody.Builder()
-            .Id(0)
-            .ObservationTime(LocalDateTime.now())
-            .Synop(LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0))
-            .Username(orapUsername)
-            .Password(orapPassword)
-            .CallSign("abc123")
-            .Latitude("68.12")
-            .Longitude("18.12")
-            .IceThicknessInCm("5")
-            .build()
-
-        Log.d("TAG", report.GetRequestBodyForReportSubmission())
+//        mViewModel.location.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
     }
 
     override fun onDmsEditConfirmed() {
         val location = mLocationViewModel.getLocation()
         if (location != null) {
-            mViewModel.location.value!![mLocationViewModel.listPosition] = location!!
+//            mViewModel.location.value!![mLocationViewModel.listPosition] = location!!
             mViewModel.location.postValue(mViewModel.location.value)
         }
     }
@@ -161,15 +147,15 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sprice_report_icing_menu, menu)
 
-        menu.getItem(R.id.check_icing_report_action).setVisible(true)
-        menu.getItem(R.id.send_icing_report_action).setVisible(false)
+//        menu.getItem(R.id.check_icing_report_action).setVisible(true)
+//        menu.getItem(R.id.send_icing_report_action).setVisible(false)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.send_icing_report_action) {
-            val result = mViewModel.sendIcingReport();
+            val result = OrapRepository.getInstance(requireContext()).SendIcingReport(mViewModel.getIcingReportBody());
 
             result.observe(this, Observer {
                 if (it.success) {
@@ -182,7 +168,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                     val text = getString(R.string.tool_deployment_sent)
                     val toast = Toast.makeText(this.requireActivity(), text, Toast.LENGTH_SHORT)
                     toast.show()
-                    mViewModel.clear()
+//                    mViewModel.clear()
                     Navigation.findNavController(this.requireView()).navigateUp()
                 } else {
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
@@ -203,7 +189,27 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             return true
         }
         else if(item.itemId == R.id.check_icing_report_action) {
-            val result = mViewModel.checkReportValues();
+            val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            val orapUsername = prefs.getString(getString(R.string.pref_sprice_username_key), "") ?: ""
+            val orapPassword = prefs.getString(getString(R.string.pref_sprice_password_key), "") ?: ""
+
+            var report =
+                ReportIcingRequestBody.Builder()
+                .observationTime(LocalDateTime.now())
+                .synop(LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0))
+                .username(orapUsername)
+                .password(orapPassword)
+                .callSign("abc123")
+                .latitude("68.12")
+                .longitude("18.12")
+                .iceThicknessInCm(5)
+                .build()
+            report = mViewModel.getIcingReportBody()
+
+            Log.d("TAG", report.getRequestBodyForReportSubmissionAsString())
+
+            val result = OrapRepository.getInstance(requireContext()).checkIcingReportValues(mViewModel.getIcingReportBody());
+
             result.observe(this, Observer {
                 if (it.success) {
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
@@ -212,11 +218,14 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                         param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
                     }
 
-                    val text = getString(R.string.tool_deployment_sent)
+                    val text = getString(R.string.icing_report_sent)
                     val toast = Toast.makeText(this.requireActivity(), text, Toast.LENGTH_SHORT)
                     toast.show()
-                    mViewModel.clear()
-                    Navigation.findNavController(this.requireView()).navigateUp()
+
+                    mViewModel.reportChecked.value = true;
+//                    mViewModel.clear()
+
+                    // TODO: Switch menu from check to send
                 } else {
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
                         param(FirebaseAnalytics.Param.CONTENT_TYPE, "Check icing report, error")
@@ -226,7 +235,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
                     Snackbar.make(
                         requireView(),
-                        getString(R.string.tool_deployment_error) + it.errorMsg,
+                        getString(R.string.icing_report_check_error) + it.errorMsg,
                         Snackbar.LENGTH_LONG
                     )
                         .show()
@@ -238,7 +247,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
-        mLocationViewModel.initWithLocation(mViewModel.location.value!![itemClicked], itemClicked)
+//        mLocationViewModel.initWithLocation(mViewModel.location.value!![itemClicked], itemClicked)
         val fm: FragmentManager? = parentFragmentManager
 
         val locDialogFragment: LocationDmsDialogFragment =

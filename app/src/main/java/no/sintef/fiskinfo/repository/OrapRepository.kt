@@ -58,10 +58,10 @@ class OrapRepository(context: Context) {
         return result
     }
 
-    fun checkIcingReportValues(info: CheckReportRequestBody): LiveData<SendResult> {
+    fun checkIcingReportValues(info: ReportIcingRequestBody): LiveData<SendResult> {
         var result = MutableLiveData<SendResult>()
 
-        orapService?.checkReport(info)?.enqueue(object : Callback<okhttp3.Response> {
+        orapService?.checkReport(info.getRequestBodyForReportCheckAsString(), info.Username, info.Password)?.enqueue(object : Callback<okhttp3.Response> {
             override fun onResponse(call: Call<okhttp3.Response>, response: Response<okhttp3.Response>) {
                 Log.d("ORAP", "Checking icing report ok!")
 
@@ -82,7 +82,7 @@ class OrapRepository(context: Context) {
     fun SendIcingReport(info: ReportIcingRequestBody): LiveData<SendResult> {
         var result = MutableLiveData<SendResult>()
 
-        orapService?.submitReport(info)?.enqueue(object : Callback<okhttp3.Response> {
+        orapService?.submitReport(info.getRequestBodyForReportSubmissionAsString(), info.Username, info.Password)?.enqueue(object : Callback<okhttp3.Response> {
             override fun onResponse(call: Call<okhttp3.Response>, response: Response<okhttp3.Response>) {
                 Log.d("ORAP", "Checking icing report ok!")
 

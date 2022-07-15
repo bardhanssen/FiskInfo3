@@ -7,21 +7,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.flow.MutableStateFlow
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.orap.*
-import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
-import java.time.LocalDateTime
 import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     val reportingTime = MutableLiveData<Date>()
+    val observationTime = MutableLiveData<Date>()
     val location = MutableLiveData<Location>()
     var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
     val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
+    val airTemperature: MutableStateFlow<Float> = MutableStateFlow(0F)
+    val seaTemperature: MutableStateFlow<Float> = MutableStateFlow(0F)
+    val vesselIcingThickness: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    private fun getCheckIcingReportBody(): CheckReportRequestBody {
+    internal fun getIcingReportBody(): ReportIcingRequestBody {
         val context: Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -29,16 +32,16 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         val orapPassword = prefs.getString(context.getString(R.string.pref_sprice_password_key), "") ?: ""
         val callSign = prefs.getString(context.getString(R.string.pref_sprice_call_sign_key), "") ?: ""
 
-        return CheckReportRequestBody.Builder() // TODO: Populate values
-            .Action(OrapConstants.FormValues.ACTION_CHECK_MESSAGE)
-            .Username(orapUsername)
-            .Password(orapPassword)
-            .VesselCallSign(callSign)
-            .Build()
-    }
-
-    private fun getIcingReportBody(): ReportIcingRequestBody {
         return ReportIcingRequestBody.Builder() // TODO: Populate values
+            .username(orapUsername)
+            .password(orapPassword)
+            .callSign(callSign)
+            .latitude(location.value?.latitude.toString())
+            .longitude(location.value?.longitude.toString())
+            .airTemperature(airTemperature.value.toString())
+            .seaTemperature(seaTemperature.value.toString())
+            .maxMiddleWindTime(maxMiddleWindTime.value!!)
+            .iceThicknessInCm(vesselIcingThickness.value)
             .build()
     }
 
@@ -54,18 +57,16 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     }
 
     fun setReportingDate(date: Date) {
-        if (date != null) {
-            // TODO: pick out only date part (not time)
-            val c = Calendar.getInstance()
-            c.time = reportingTime.value
+        // TODO: pick out only date part (not time)
+        val c = Calendar.getInstance()
+        c.time = reportingTime.value
 
-            val newDateC = Calendar.getInstance()
-            newDateC.time = date
-            c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
-            c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
+        val newDateC = Calendar.getInstance()
+        newDateC.time = date
+        c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
+        c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
 
-            reportingTime.value = c.time
-        }
+        reportingTime.value = c.time
     }
 
     fun setReportingTime(hourOfDay: Int, minutes: Int) {
@@ -74,18 +75,6 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         c.set(Calendar.HOUR_OF_DAY, hourOfDay)
         c.set(Calendar.MINUTE, minutes)
         reportingTime.value = c.time
-    }
-
-    fun checkReportValues(): LiveData<OrapRepository.SendResult> {
-        val info = getCheckIcingReportBody()
-
-        return OrapRepository.getInstance(getApplication()).checkIcingReportValues(info)
-    }
-
-    fun sendIcingReport(): LiveData<OrapRepository.SendResult> {
-        val info = getIcingReportBody()
-
-        return OrapRepository.getInstance(getApplication()).SendIcingReport(info)
     }
 
     val maxMiddleWindTimeName: LiveData<String> = Transformations.map(maxMiddleWindTime) { code ->

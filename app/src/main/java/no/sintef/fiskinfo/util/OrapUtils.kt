@@ -34,6 +34,37 @@ class OrapUtils {
 
         }
 
+        fun getFormattedHiddenMessage(username: String, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String): String {
+            return "012345678      ${username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n\n"
+        }
+
+        fun getFormattedHiddenKlMessage(username: String, messageReceivedTime: LocalDateTime, synop: LocalDateTime, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String, reportingTimeEpoch: Long): String {
+            return "kldata/nationalnr=${username}/type=317/test/received_time=\"${
+                getFormattedTimeStamp(
+                    messageReceivedTime,
+                    OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT
+                )
+            }\"\n" +
+                    "IX,WW,VV,HL,NN,NH,CL,CM,CH,W1,W2,HW,PW,DW1,PW1,HW1,DW2,PW2,HW2,DD,FF,CI,SI,BI,DI,ZI,XIS,ES,ERS,MLAT,MLON,TA,UU,UH,PR,PO,PP,AA,MDIR,MSPEED\n" +
+                    "${
+                        getFormattedTimeStamp(
+                            synop,
+                            OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
+                        )
+                    },3,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},-6,,,,,,,\n" +
+                    "Orap_smsformat_input ${reportingTimeEpoch} ${username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n" +
+                    "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${username}/orap_${
+                        getFormattedTimeStamp(
+                            messageReceivedTime,
+                            OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP
+                        )
+                    }.txt;"
+        }
+
+        fun getFormattedHiddenKlStatus(observationEpoch: Long, Username: String, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String): String {
+            return "${observationEpoch * 10} || 012345678      ${Username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n"
+        }
+
         fun getValueAsWebKitForm(boundaryId: String, actionName: String, value: String): String {
             return "------WebKitFormBoundary${boundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
         }
@@ -42,8 +73,16 @@ class OrapUtils {
             return "------WebKitFormBoundary${boundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
         }
 
+        fun getValueAsWebKitForm(boundaryId: String, actionName: String, value: Long?): String {
+            return "------WebKitFormBoundary${boundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value ?: ""}\n"
+        }
+
         fun getValueAsWebKitForm(boundaryId: String, actionName: String, value: Int): String {
             return "------WebKitFormBoundary${boundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value}\n"
+        }
+
+        fun getValueAsWebKitForm(boundaryId: String, actionName: String, value: Int?): String {
+            return "------WebKitFormBoundary${boundaryId}\nContent-Disposition: form-data; name=\"${actionName}\"\n\n${value ?: ""}\n"
         }
 
         fun getWebFormKitEndTag(boundaryId: String): String {

@@ -196,6 +196,12 @@
     <string name="icing_wind_type">Wind type</string>
     <string name="icing_report_date">Date</string>
     <string name="icing_report_time">Time</string>
+    <string name="icing_report_air_temperature_hint">Temperature</string>
+    <string name="icing_report_sea_temperature_hint">Sea temperature</string>
+
+    <string name="icing_report_check_error">Icing report error</string>
+    <string name="icing_report_submit_error">Icing report error</string>
+    <string name="icing_report_sent">Icing report sent</string>
 
     <string name="fragment_title_icing">Icing</string>
     <string name="fragment_title_report_icing">Report icing</string>

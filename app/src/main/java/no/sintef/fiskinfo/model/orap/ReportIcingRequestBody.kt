@@ -23,45 +23,43 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 class ReportIcingRequestBody internal constructor(
-    val WebKitFormBoundaryId: String,
-    val Id: Int,
-    val ObservationTime: LocalDateTime,
-    val Synop: LocalDateTime,
+    internal val WebKitFormBoundaryId: String,
+    internal val ObservationTime: LocalDateTime,
+    internal val Synop: LocalDateTime,
 
-    val Username: String,
-    val Password: String,
+    internal val Username: String,
+    internal val Password: String,
 
-    val VesselCallSign: String,
-    val Latitude: String,
-    val Longitude: String,
+    internal val VesselCallSign: String,
+    internal val Latitude: String,
+    internal val Longitude: String,
 
-    val AirTemperature: String,
-    val SeaTemperature: String,
+    internal val AirTemperature: String,
+    internal val SeaTemperature: String,
 
-    val MaxMiddleWindTime: MaxMiddleWindTimeEnum,
-    val MaxMiddelWindInKnots: String,
-    val StrongestWindGustInKnots: String,
+    internal val MaxMiddleWindTime: MaxMiddleWindTimeEnum,
+    internal val MaxMiddelWindInKnots: String,
+    internal val StrongestWindGustInKnots: String,
 
-    val HeightOfWindWavesInMeters: String,
-    val PeriodForWindWavesInSeconds: String,
+    internal val HeightOfWindWavesInMeters: String,
+    internal val PeriodForWindWavesInSeconds: String,
 
-    val HeightForFirstSwellSystemInMeters: String,
-    val PeriodForFirstSwellSystemInSeconds: String,
-    val DirectionForFirstSwellSystemInDegrees: String,
+    internal val HeightForFirstSwellSystemInMeters: String,
+    internal val PeriodForFirstSwellSystemInSeconds: String,
+    internal val DirectionForFirstSwellSystemInDegrees: String,
 
-    val ConcentrationOfSeaIce: String,
-    val SeaIceStageOfDevelopment: String,
-    val OceanIce: String,
-    val DirectionToNearestIceEdge: String,
-    val SeaIceConditionsAndDevelopmentTheLastThreeHours: String,
+    internal val ConcentrationOfSeaIce: String,
+    internal val SeaIceStageOfDevelopment: String,
+    internal val OceanIce: String,
+    internal val DirectionToNearestIceEdge: String,
+    internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: String,
 
-    val ReasonForIcing: String,
-    val IceThicknessInCm: String = "",
-    val ChangeInIce: String
+    internal val ReasonForIcing: String,
+    internal val IceThicknessInCm: Int,
+    internal val ChangeInIce: String
 ) {
-    private constructor(builder: ReportIcingRequestBody.Builder) : this(
+    private constructor(builder: Builder) : this(
         builder.WebKitFormBoundaryId,
-        builder.Id,
         builder.ObservationTime,
         builder.Synop,
         builder.Username,
@@ -91,7 +89,6 @@ class ReportIcingRequestBody internal constructor(
 
     data class Builder(
         var WebKitFormBoundaryId: String = OrapUtils.getBoundaryIdString(),
-        var Id: Int = 0,
         var ObservationTime: LocalDateTime = LocalDateTime.now(),
         var Synop: LocalDateTime = LocalDateTime.now(),
         var Username: String = "",
@@ -115,70 +112,71 @@ class ReportIcingRequestBody internal constructor(
         var DirectionToNearestIceEdge: String = "",
         var SeaIceConditionsAndDevelopmentTheLastThreeHours: String = "",
         var ReasonForIcing: String = "",
-        var IceThicknessInCm: String = "",
+        var IceThicknessInCm: Int = -1,
         var ChangeInIce: String = ""
     ) {
-        fun Id(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
-        fun Id(id: Int) = apply { this.Id = id }
-        fun ObservationTime(observationTime: LocalDateTime) =
+        fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
+        fun observationTime(observationTime: LocalDateTime) =
             apply { this.ObservationTime = observationTime }
 
-        fun Synop(synop: LocalDateTime) = apply { this.Synop = synop }
-        fun Username(username: String) = apply { this.Username = username }
-        fun Password(password: String) = apply { this.Password = password }
-        fun CallSign(callSign: String) = apply { this.VesselCallSign = callSign }
-        fun Latitude(latitude: String) = apply { this.Latitude = latitude }
-        fun Longitude(longitude: String) = apply { this.Longitude = longitude }
-        fun AirTemperature(airTemperature: String) = apply { this.AirTemperature = airTemperature }
-        fun SeaTemperature(seaTemperature: String) = apply { this.SeaTemperature = seaTemperature }
-        fun MaxMiddleWindTime(maxMiddleWindTime: MaxMiddleWindTimeEnum) = apply { this.MaxMiddleWindTime = maxMiddleWindTime }
+        fun synop(synop: LocalDateTime) = apply { this.Synop = synop }
+        fun username(username: String) = apply { this.Username = username }
+        fun password(password: String) = apply { this.Password = password }
+        fun callSign(callSign: String) = apply { this.VesselCallSign = callSign }
+        fun latitude(latitude: String) = apply { this.Latitude = latitude }
+        fun longitude(longitude: String) = apply { this.Longitude = longitude }
+        fun airTemperature(airTemperature: String) = apply { this.AirTemperature = airTemperature }
+        fun seaTemperature(seaTemperature: String) = apply { this.SeaTemperature = seaTemperature }
+        fun maxMiddleWindTime(maxMiddleWindTime: MaxMiddleWindTimeEnum) = apply { this.MaxMiddleWindTime = maxMiddleWindTime }
 
-        fun MaxMiddleWindInKnots(maxMiddleWindInKnots: String) = apply { this.MaxMiddleWindInKnots = maxMiddleWindInKnots }
-        fun StrongestWindGustInKnots(strongestWindGustInKnots: String) = apply { this.StrongestWindGustInKnots = strongestWindGustInKnots }
-        fun HeightOfWindWavesInMeters(heightOfWindWavesInMeters: String) =
+        fun maxMiddleWindInKnots(maxMiddleWindInKnots: String) = apply { this.MaxMiddleWindInKnots = maxMiddleWindInKnots }
+        fun strongestWindGustInKnots(strongestWindGustInKnots: String) = apply { this.StrongestWindGustInKnots = strongestWindGustInKnots }
+        fun heightOfWindWavesInMeters(heightOfWindWavesInMeters: String) =
             apply { this.HeightOfWindWavesInMeters = heightOfWindWavesInMeters }
 
-        fun PeriodForWindWavesInSeconds(periodForWindWavesInSeconds: String) =
+        fun periodForWindWavesInSeconds(periodForWindWavesInSeconds: String) =
             apply { this.PeriodForWindWavesInSeconds = periodForWindWavesInSeconds }
 
-        fun HeightForFirstSwellSystemInMeters(heightForFirstSwellSystemInMeters: String) =
+        fun heightForFirstSwellSystemInMeters(heightForFirstSwellSystemInMeters: String) =
             apply { this.HeightForFirstSwellSystemInMeters = heightForFirstSwellSystemInMeters }
 
-        fun PeriodForFirstSwellSystemInSeconds(periodForFirstSwellSystemInSeconds: String) =
+        fun periodForFirstSwellSystemInSeconds(periodForFirstSwellSystemInSeconds: String) =
             apply { this.PeriodForFirstSwellSystemInSeconds = periodForFirstSwellSystemInSeconds }
 
-        fun DirectionForFirstSwellSystemInDegrees(directionForFirstSwellSystemInDegrees: String) =
+        fun directionForFirstSwellSystemInDegrees(directionForFirstSwellSystemInDegrees: String) =
             apply { this.DirectionForFirstSwellSystemInDegrees = directionForFirstSwellSystemInDegrees }
 
-        fun ConcentrationOfSeaIce(concentrationOfSeaIce: String) =
+        fun concentrationOfSeaIce(concentrationOfSeaIce: String) =
             apply { this.ConcentrationOfSeaIce = concentrationOfSeaIce }
 
-        fun SeaIceStageOfDevelopment(seaIceStageOfDevelopment: String) =
+        fun seaIceStageOfDevelopment(seaIceStageOfDevelopment: String) =
             apply { this.SeaIceStageOfDevelopment = seaIceStageOfDevelopment }
 
-        fun OceanIce(oceanIce: String) = apply { this.OceanIce = oceanIce }
+        fun oceanIce(oceanIce: String) = apply { this.OceanIce = oceanIce }
         fun DirectionToNearestIceEdge(directionToNearestIceEdge: String) =
             apply { this.DirectionToNearestIceEdge = directionToNearestIceEdge }
 
-        fun SeaIceConditionsAndDevelopmentTheLastThreeHours(
+        fun seaIceConditionsAndDevelopmentTheLastThreeHours(
             seaIceConditionsAndDevelopmentTheLastThreeHours: String
         ) = apply {
             this.SeaIceConditionsAndDevelopmentTheLastThreeHours =
                 seaIceConditionsAndDevelopmentTheLastThreeHours
         }
 
-        fun ReasonForIcing(reasonForIcing: String) = apply { this.ReasonForIcing = reasonForIcing }
-        fun IceThicknessInCm(iceThicknessInCm: String) =
+        fun reasonForIcing(reasonForIcing: String) = apply { this.ReasonForIcing = reasonForIcing }
+        fun iceThicknessInCm(iceThicknessInCm: Int) =
             apply { this.IceThicknessInCm = iceThicknessInCm }
 
-        fun ChangeInIce(changeInIce: String) = apply { this.ChangeInIce = changeInIce }
+        fun changeInIce(changeInIce: String) = apply { this.ChangeInIce = changeInIce }
 
         fun build(): ReportIcingRequestBody {
             return ReportIcingRequestBody(this)
         }
     }
 
-    fun GetRequestBodyForReportSubmission(): String {
+    fun getRequestBodyForReportSubmissionAsString(): String {
+        val stringBuilder = StringBuilder();
+
         val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
         val zoneId = ZoneId.systemDefault()
         val reportingTimeEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond() // TODO: Get from user
@@ -187,33 +185,9 @@ class ReportIcingRequestBody internal constructor(
         val messageTag =
             OrapUtils.getOrapMessageTag(messageReceivedTime, Username)
 
-        val hiddenMessage =
-            "012345678      ${Username},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n\n"
-        val hiddenKlMessage =
-            "kldata/nationalnr=${Username}/type=317/test/received_time=\"${
-                OrapUtils.getFormattedTimeStamp(
-                    messageReceivedTime,
-                    OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT
-                )
-            }\"\n" +
-                    "IX,WW,VV,HL,NN,NH,CL,CM,CH,W1,W2,HW,PW,DW1,PW1,HW1,DW2,PW2,HW2,DD,FF,CI,SI,BI,DI,ZI,XIS,ES,ERS,MLAT,MLON,TA,UU,UH,PR,PO,PP,AA,MDIR,MSPEED\n" +
-                    "${
-                        OrapUtils.getFormattedTimeStamp(
-                            Synop,
-                            OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
-                        )
-                    },3,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,-6,,,,,,,\n" +
-                    "Orap_smsformat_input ${reportingTimeEpoch} ${Username},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n" +
-                    "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${Username}/orap_${
-                        OrapUtils.getFormattedTimeStamp(
-                            messageReceivedTime,
-                            OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP
-                        )
-                    }.txt;"
-        val hiddenKlStatus =
-            "${observationEpoch * 10} || 012345678      ${Username},17,,,,,,,,,,,${HeightOfWindWavesInMeters},${PeriodForWindWavesInSeconds},,,,,,,,,,,,,,,${IceThicknessInCm},,${Latitude},${Longitude},1,,,,,,\n"
-
-        val stringBuilder = StringBuilder();
+        val hiddenMessage = OrapUtils.getFormattedHiddenMessage(Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
+        val hiddenKlMessage = OrapUtils.getFormattedHiddenKlMessage(Username, messageReceivedTime, Synop, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature, reportingTimeEpoch)
+        val hiddenKlStatus = OrapUtils.getFormattedHiddenKlStatus(observationEpoch, Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
 
         stringBuilder.append(
             OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
@@ -235,7 +209,7 @@ class ReportIcingRequestBody internal constructor(
         return stringBuilder.toString();
     }
 
-    fun GetRequestBodyForReportCheck(): String {
+    fun getRequestBodyForReportCheckAsString(): String {
         val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
         val ObservationTimeStamp = LocalDateTime.now() // TODO: Get as GMT+0
         val zoneId = ZoneId.systemDefault()

@@ -17,14 +17,13 @@
  */
 package no.sintef.fiskinfo.api.orap
 
-import no.sintef.fiskinfo.model.orap.CheckReportRequestBody
 import no.sintef.fiskinfo.model.orap.GetReportsRequestBody
-import no.sintef.fiskinfo.model.orap.ReportIcingRequestBody
 import okhttp3.Response
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 /**
  * Interface to API service from Orap
@@ -32,16 +31,16 @@ import retrofit2.http.POST
 interface OrapService {
     companion object {
         const val prefix = "cgi-bin/"
-        const val ObsRaport = prefix + "ObsRaport.cgi/"
+        const val ObsReport = prefix + "ObsRaport.cgi/"
     }
 
-    @POST( ObsRaport)
-    fun checkReport(@Body body : CheckReportRequestBody): Call<Response>
+    @POST( ObsReport)
+    fun checkReport(@Body body : String, @Query("user") user: String, @Query("password") password: String): Call<Response>
 
-    @POST( ObsRaport)
-    fun submitReport(@Body body : ReportIcingRequestBody): Call<Response>
+    @POST( ObsReport)
+    fun submitReport(@Body body : String, @Query("user") user: String, @Query("password") password: String): Call<Response>
 
-    @GET( ObsRaport)
+    @GET( ObsReport)
     fun getReports(@Body body : GetReportsRequestBody): Call<Response>
 
 }
