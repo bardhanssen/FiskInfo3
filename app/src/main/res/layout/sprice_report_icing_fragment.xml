@@ -55,25 +55,28 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+
+
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:hint="@string/icing_report_time"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
+                        android:layout_marginStart="16dp"
+                        android:hint="@string/sprice_icing_reporting_observation_hour"
                         app:startIconContentDescription="@string/proto_close_drawer"
                         app:startIconDrawable="@drawable/ic_time">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <AutoCompleteTextView
                             android:id="@+id/icingReportTimeField"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{UtilsKt.formatTime(reporticingviewmodel.reportingTime)}" />
-
+                            android:text="@{reporticingviewmodel.maxMiddleWindTimeName}" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

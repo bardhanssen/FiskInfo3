@@ -140,6 +140,8 @@
     <string name="wind_type_code_moderate_wind">Moderat vind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Kraftig vind (over 7 m/s)</string>
 
+    <string name="sprice_icing_reporting_observation_hour">Observasjonstid</string>
+
     <string name="max_middle_wind_when">Når maks middelvind</string>
     <string name="icing_icing_type">Istype</string>
     <string name="icing_wind_type">vindtype</string>

@@ -16,6 +16,7 @@ import java.util.*
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     val reportingTime = MutableLiveData<Date>()
     val observationTime = MutableLiveData<Date>()
+    val tmpTimeSelect = MutableLiveData<IcingReportHourEnum>()
     val location = MutableLiveData<Location>()
     var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
@@ -49,7 +50,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         reportingTime.value = Date()
         val defaultLoc = Location("")
         // TODO: Default locations
-        defaultLoc.latitude = 0.0  //your coords of course
+        defaultLoc.latitude = 0.0
         defaultLoc.longitude = 0.0
         location.value = defaultLoc
         reportChecked.value = false

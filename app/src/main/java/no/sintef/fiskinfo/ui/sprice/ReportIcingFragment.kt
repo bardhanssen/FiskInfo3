@@ -23,7 +23,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.databinding.FragmentReportIcingBinding
+import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
+import no.sintef.fiskinfo.model.orap.IcingReportHourEnum
 import no.sintef.fiskinfo.model.orap.MaxMiddleWindTimeEnum
 import no.sintef.fiskinfo.model.orap.ReportIcingRequestBody
 import no.sintef.fiskinfo.repository.OrapRepository
@@ -43,8 +44,10 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mLocationViewModel: LocationViewModel
 
     private lateinit var mMaxMiddleWindAdapter: maxMiddleWindTimeArrayAdapter
+    private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
     private lateinit var mEditTextFilledExposedDropdown: AutoCompleteTextView
-    private var _mBinding: FragmentReportIcingBinding? = null
+    private lateinit var mReportingHourDropdown: AutoCompleteTextView
+    private var _mBinding: SpriceReportIcingFragmentBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val mBinding get() = _mBinding!!
@@ -64,24 +67,13 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         setHasOptionsMenu(true)
         _mBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_report_icing,
+            R.layout.sprice_report_icing_fragment,
             container,
             false
         )
 
-        mMaxMiddleWindAdapter = maxMiddleWindTimeArrayAdapter(
-            requireContext(),
-            R.layout.exposed_dropdown_menu_item,
-            MaxMiddleWindTimeEnum.values()
-        )
-        mEditTextFilledExposedDropdown = mBinding.icingDetailsTypeField
-
-        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id ->
-            mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(
-                position
-            ) as MaxMiddleWindTimeEnum
-        }
-        mEditTextFilledExposedDropdown.setAdapter(mMaxMiddleWindAdapter)
+        initMaxMiddleWindDropDown()
+        initReportingHourDropDown()
 
         mBinding.icingReportDateField.setOnClickListener {
             val builder: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
@@ -95,11 +87,39 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             picker.show(parentFragmentManager, picker.toString())
         }
 
-        mBinding.icingReportTimeField.setOnClickListener {
-            TimePickerFragment().show(parentFragmentManager, "timePicker")
-        }
-
         return mBinding.root
+    }
+
+    private fun initMaxMiddleWindDropDown() {
+        mMaxMiddleWindAdapter = maxMiddleWindTimeArrayAdapter(
+            requireContext(),
+            R.layout.exposed_dropdown_menu_item,
+            MaxMiddleWindTimeEnum.values()
+        )
+        mEditTextFilledExposedDropdown = mBinding.icingDetailsTypeField
+
+        mEditTextFilledExposedDropdown.setOnItemClickListener { parent, view, position, id ->
+            mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(
+                position
+            ) as MaxMiddleWindTimeEnum
+        }
+        mEditTextFilledExposedDropdown.setAdapter(mMaxMiddleWindAdapter)
+    }
+
+    private fun initReportingHourDropDown() {
+        mReportingHourAdapter = DropDownMenuArrayAdapter(
+            requireContext(),
+            R.layout.exposed_dropdown_menu_item,
+            IcingReportHourEnum.values()
+        )
+        mReportingHourDropdown = mBinding.icingReportTimeField
+
+        mReportingHourDropdown.setOnItemClickListener { parent, view, position, id ->
+            mViewModel.tmpTimeSelect.value = parent.getItemAtPosition(
+                position
+            ) as IcingReportHourEnum
+        }
+        mReportingHourDropdown.setAdapter(mReportingHourAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -178,7 +178,7 @@
     <string name="wind_type_code_moderate_wind">Light wind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Heavy wind (over 7 m/s)</string>
 
-    <string name="max_middle_wind_time_not_selected" translatable="false"/>
+    <string name="sprice_icing_reporting_hour_not_selected" translatable="false"/>
     <string name="max_middle_wind_time_0">0- during observation</string>
     <string name="max_middle_wind_time_1">1- 0 to 1 hour from obs</string>
     <string name="max_middle_wind_time_2">2- 1 to 2 hours from obs</string>
@@ -190,6 +190,34 @@
     <string name="max_middle_wind_time_8">8- Wind seems unchanged</string>
     <string name="max_middle_wind_time_9">9- Wind seems to increase</string>
     <string name="max_middle_wind_time_x">X- Impossible to say</string>
+
+    <string name="max_middle_wind_time_not_selected" translatable="false"/>
+    <string name="sprice_icing_reporting_hour_00" translatable="false">00:00</string>
+    <string name="sprice_icing_reporting_hour_01" translatable="false">01:00</string>
+    <string name="sprice_icing_reporting_hour_02" translatable="false">02:00</string>
+    <string name="sprice_icing_reporting_hour_03" translatable="false">03:00</string>
+    <string name="sprice_icing_reporting_hour_04" translatable="false">04:00</string>
+    <string name="sprice_icing_reporting_hour_05" translatable="false">05:00</string>
+    <string name="sprice_icing_reporting_hour_06" translatable="false">06:00</string>
+    <string name="sprice_icing_reporting_hour_07" translatable="false">07:00</string>
+    <string name="sprice_icing_reporting_hour_08" translatable="false">08:00</string>
+    <string name="sprice_icing_reporting_hour_09" translatable="false">09:00</string>
+    <string name="sprice_icing_reporting_hour_10" translatable="false">10:00</string>
+    <string name="sprice_icing_reporting_hour_11" translatable="false">11:00</string>
+    <string name="sprice_icing_reporting_hour_12" translatable="false">12:00</string>
+    <string name="sprice_icing_reporting_hour_13" translatable="false">13:00</string>
+    <string name="sprice_icing_reporting_hour_14" translatable="false">14:00</string>
+    <string name="sprice_icing_reporting_hour_15" translatable="false">15:00</string>
+    <string name="sprice_icing_reporting_hour_16" translatable="false">16:00</string>
+    <string name="sprice_icing_reporting_hour_17" translatable="false">17:00</string>
+    <string name="sprice_icing_reporting_hour_18" translatable="false">18:00</string>
+    <string name="sprice_icing_reporting_hour_19" translatable="false">19:00</string>
+    <string name="sprice_icing_reporting_hour_20" translatable="false">20:00</string>
+    <string name="sprice_icing_reporting_hour_21" translatable="false">21:00</string>
+    <string name="sprice_icing_reporting_hour_22" translatable="false">22:00</string>
+    <string name="sprice_icing_reporting_hour_23" translatable="false">23:00</string>
+
+    <string name="sprice_icing_reporting_observation_hour">Observation time</string>
 
     <string name="max_middle_wind_when">When Max middle wind</string>
     <string name="icing_icing_type">Icing type</string>

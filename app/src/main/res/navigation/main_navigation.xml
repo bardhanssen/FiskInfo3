@@ -74,7 +74,7 @@
         android:id="@+id/fragment_sprice"
         android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
         android:label="@string/fragment_title_sprice"
-        tools:layout="@layout/fragment_sprice" >
+        tools:layout="@layout/sprice_fragment" >
         <action
             android:id="@+id/action_fragment_sprice_to_icing_map_fragment"
             app:destination="@id/fragment_icing_map" />
@@ -91,7 +91,7 @@
         android:id="@+id/fragment_report_icing"
         android:name="no.sintef.fiskinfo.ui.sprice.ReportIcingFragment"
         android:label="@string/fragment_title_report_icing"
-        tools:layout="@layout/fragment_report_icing" />
+        tools:layout="@layout/sprice_report_icing_fragment" />
     <fragment
         android:id="@+id/fragment_user_profile"
         android:name="no.sintef.fiskinfo.ui.profile.UserProfileFragment"

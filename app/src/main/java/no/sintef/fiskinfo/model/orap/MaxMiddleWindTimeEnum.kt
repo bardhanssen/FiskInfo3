@@ -3,6 +3,7 @@ package no.sintef.fiskinfo.model.orap
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
     @SerializedName("NOT_SELECTED")
