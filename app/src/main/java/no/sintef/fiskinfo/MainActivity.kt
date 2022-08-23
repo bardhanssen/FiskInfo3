@@ -32,6 +32,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import no.sintef.fiskinfo.databinding.MainActivityBinding
 import java.util.*
 
 
@@ -41,12 +42,13 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var controller : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
-
+    private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setContentView(R.layout.activity_main)
-        setContentView(R.layout.main_activity)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
