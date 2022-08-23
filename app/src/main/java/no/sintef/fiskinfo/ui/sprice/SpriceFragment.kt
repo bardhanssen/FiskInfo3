@@ -5,7 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import no.sintef.fiskinfo.R
+import com.google.firebase.analytics.FirebaseAnalytics
+import no.sintef.fiskinfo.databinding.SpriceFragmentBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +23,12 @@ class SpriceFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private var _mBinding: SpriceFragmentBinding? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val mBinding get() = _mBinding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -33,9 +40,16 @@ class SpriceFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.sprice_fragment, container, false)
+    ): View {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+        _mBinding = SpriceFragmentBinding.inflate(inflater, container, false)
+
+        return mBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _mBinding = null
     }
 
     companion object {

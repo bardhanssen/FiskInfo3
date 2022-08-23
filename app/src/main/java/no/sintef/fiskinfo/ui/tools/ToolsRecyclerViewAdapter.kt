@@ -94,6 +94,7 @@ class ToolsRecyclerViewAdapter(private val mListener: OnToolInteractionListener?
             ToolTypeCode.DANPURSEINE -> holder.iconView.setBackgroundResource(R.drawable.ic_purseseine)
             ToolTypeCode.LONGLINE -> holder.iconView.setBackgroundResource(R.drawable.ic_hook)
             ToolTypeCode.NETS -> holder.iconView.setBackgroundResource(R.drawable.ic_net)
+            else -> { holder.iconView.setBackgroundResource(R.drawable.ic_help) }
         }
 
         holder.detail1View.text = tool.toolTypeCode?.getLocalizedName(context)

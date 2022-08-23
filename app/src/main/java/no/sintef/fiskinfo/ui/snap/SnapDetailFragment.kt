@@ -38,11 +38,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding
+import no.sintef.fiskinfo.databinding.SnapEditorFragmentBinding
 
 class SnapDetailFragment : Fragment() {
 
     private lateinit var mViewModel: SnapViewModel
-    private var _mBinding: no.sintef.fiskinfo.databinding.SnapDetailFragmentBinding? = null
+    private var _mBinding: SnapDetailFragmentBinding? = null
 
     private val mBinding get() = _mBinding!! // Only valid between onCreateView and onDestroyView.
 
@@ -50,15 +52,9 @@ class SnapDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _mBinding = DataBindingUtil.inflate(inflater, R.layout.snap_detail_fragment, container, false)
-        return mBinding.getRoot()
-    }
+    ): View {
+        _mBinding = SnapDetailFragmentBinding.inflate(inflater, container, false)
 
-    // Changed from ViewDataBinding to SnapDetailFragmentBinding above
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(requireActivity()).get(SnapViewModel::class.java)
         configureWebView()
         mViewModel.getSelectedSnap().observe(viewLifecycleOwner, Observer { snap ->
@@ -68,11 +64,13 @@ class SnapDetailFragment : Fragment() {
             mBinding.setHandlers(this@SnapDetailFragment)
             loadContent(snap?.snapMetadata?.snapId.toString())
         })
+
+        return mBinding.root
     }
 
     private lateinit var webView: WebView
 
-    fun configureWebView() {
+    private fun configureWebView() {
         if (getView() == null) return
         webView = requireView().findViewById(R.id.snapdetail_web_view)
         with (webView.settings) {

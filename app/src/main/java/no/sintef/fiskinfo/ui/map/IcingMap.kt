@@ -27,14 +27,12 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.JsonReader
 import android.util.JsonToken
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TableLayout
@@ -42,12 +40,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import net.openid.appauth.AuthorizationService
 import no.sintef.fiskinfo.MainActivity
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.databinding.MapFragmentBinding
 import no.sintef.fiskinfo.util.AuthStateManager
 import no.sintef.fiskinfo.utilities.ui.ToolLegendRow
 import no.sintef.fiskinfo.utilities.ui.UtilityDialogs
@@ -65,6 +65,10 @@ class IcingMap : Fragment() {
     companion object {
         fun newInstance() = MapFragment()
     }
+    private var _binding: MapFragmentBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var dialogInterface : UtilityDialogs
     private lateinit var viewModel: MapViewModel
@@ -75,10 +79,18 @@ class IcingMap : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
-        return inflater.inflate(R.layout.map_fragment, container, false)
+    ): View {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+        _binding = MapFragmentBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
@@ -122,7 +134,7 @@ class IcingMap : Fragment() {
         searchAutoComplete.setAdapter(searchAutoCompleteAdapter)
 
         // Listen to search view item on click event.
-        searchAutoComplete.setOnItemClickListener(OnItemClickListener { adapterView, view, itemIndex, id ->
+        searchAutoComplete.setOnItemClickListener { adapterView, view, itemIndex, id ->
             val selected = adapterView.getItemAtPosition(itemIndex)
             if (selected != null && selected is VesselWrapper) {
                 val vesselWrapper = adapterView.getItemAtPosition(itemIndex) as VesselWrapper
@@ -132,7 +144,7 @@ class IcingMap : Fragment() {
                 webView.loadUrl("javascript:showVesselAndBottomsheet('" + vesselWrapper.callSignal + "');")
                 //browser.loadUrl("javascript:locateVessel('" + vesselWrapper.toString() + "');");
             }
-        })
+        }
 
         // Below event is triggered when submit search query.
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -169,7 +181,7 @@ class IcingMap : Fragment() {
         super.onActivityCreated(savedInstanceState)
         dialogInterface = UtilityDialogs()
 
-        viewModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
         fragmentIsActive = true
 
         configureWebView()
@@ -183,12 +195,12 @@ class IcingMap : Fragment() {
         }
     }
 
-    var settingsStored = false;
+    var settingsStored = false
 
     override fun onPause() {
         settingsStored = false
         webView.loadUrl("javascript:requestVisibleLayerNames()")
-        var counter = 0;
+        var counter = 0
         while ((settingsStored == false) && (counter < 10)) {
             Thread.sleep(100)
             counter++
@@ -236,7 +248,7 @@ class IcingMap : Fragment() {
             }
         })
 
-        webView.settings.allowUniversalAccessFromFileURLs = true;
+        webView.settings.allowUniversalAccessFromFileURLs = true
         webView.loadUrl("file:///android_asset/sintium_app/Icingindex.html")
     }
 
@@ -312,13 +324,13 @@ class IcingMap : Fragment() {
         fun setVisibleLayerNames(layers: String) {
             try {
                 val layersJSONArray = JSONArray(layers)
-                var selectedLayers = HashSet<String>()
+                val selectedLayers = HashSet<String>()
                 for (i in 0 until layersJSONArray.length()) {
                     selectedLayers.add(layersJSONArray.get(i).toString())
                 }
 
-                val prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                prefs.edit().putStringSet(getString(R.string.pref_map_selected_layers), selectedLayers).apply();
+                val prefs = PreferenceManager.getDefaultSharedPreferences(binding.root.context)
+                prefs.edit().putStringSet(getString(R.string.pref_map_selected_layers), selectedLayers).apply()
                 settingsStored = true
 
             } catch (e: JSONException) {
@@ -367,7 +379,7 @@ class IcingMap : Fragment() {
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             Log.d("URL TEST", url)
-            if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+            if (url.startsWith("http://") || url.startsWith("https://")) {
                 view.context.startActivity(
                     Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 )
@@ -379,8 +391,6 @@ class IcingMap : Fragment() {
 
         //        @RequiresApi(api = Build.VERSION_CODES.N)
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest?): Boolean {
-            val a = ""
-
             if (request != null && (request.url.toString().startsWith("http://") || request.url.toString().startsWith(
                     "https://"
                 ))) {
@@ -406,9 +416,9 @@ class IcingMap : Fragment() {
 
     fun refreshMapLayersIfReady() {
         if (pageLoaded && !waitingForAIS && !waitingForTools) {
-            activity?.runOnUiThread(Runnable {
+            activity?.runOnUiThread {
                 if (context != null) {
-                    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                    val prefs = PreferenceManager.getDefaultSharedPreferences(binding.root.context)
                     val selectedLayers =
                         prefs.getStringSet(getString(R.string.pref_map_selected_layers), null)
                     // Default to showing all layers if selected layers not found
@@ -417,7 +427,7 @@ class IcingMap : Fragment() {
                     webView.loadUrl("javascript:toggleLayers($json);")
                     //loadProgressSpinner.setVisibility(View.GONE)
                 }
-            })
+            }
         }
     }
 

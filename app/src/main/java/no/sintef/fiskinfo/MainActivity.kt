@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         val host = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         controller = host!!.navController
 
+
         drawerLayout = findViewById(R.id.drawer_layout)
 
         val topLevelDests = HashSet<Int>()
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         topLevelDests.add(R.id.fragment_overview)
         topLevelDests.add(R.id.fragment_tools)
 
-        appBarConfiguration = AppBarConfiguration.Builder(controller.getGraph())
+        appBarConfiguration = AppBarConfiguration.Builder(controller.graph)
             .setDrawerLayout(drawerLayout)
             .build()
 

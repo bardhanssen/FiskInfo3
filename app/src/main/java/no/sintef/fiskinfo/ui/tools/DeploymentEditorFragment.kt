@@ -26,7 +26,6 @@ import android.view.*
 import android.widget.AutoCompleteTextView
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -72,17 +71,9 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
-
         setHasOptionsMenu(true)
-        _mBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.tool_deployment_editor_fragment,
-            container,
-            false
-        )
+        _mBinding = ToolDeploymentEditorFragmentBinding.inflate(inflater, container, false)
 
         mToolCodeAdapter = ToolTypeCodeArrayAdapter(
             requireContext(),
@@ -97,9 +88,11 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
             mViewModel.toolTypeCode.value = parent.getItemAtPosition(
                 position
             ) as ToolTypeCode
-            mEditTextToolCountLayout.hint = getToolCountType(parent.getItemAtPosition(
-                position
-            ) as ToolTypeCode, requireContext())
+            mEditTextToolCountLayout.hint = getToolCountType(
+                parent.getItemAtPosition(
+                    position
+                ) as ToolTypeCode, requireContext()
+            )
         }
         mEditTextFilledExposedDropdown.setAdapter(mToolCodeAdapter)
 
