@@ -178,7 +178,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                         param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
                     }
 
-                    val text = getString(R.string.tool_deployment_sent)
+                    val text = getString(R.string.icing_report_sent)
                     val toast = Toast.makeText(this.requireActivity(), text, Toast.LENGTH_SHORT)
                     toast.show()
 //                    mViewModel.clear()
@@ -192,7 +192,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
                     Snackbar.make(
                         requireView(),
-                        getString(R.string.tool_deployment_error) + it.errorMsg,
+                        getString(R.string.icing_report_submit_error) + it.errorMsg,
                         Snackbar.LENGTH_LONG
                     )
                         .show()
@@ -205,6 +205,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
             val orapUsername = prefs.getString(getString(R.string.pref_sprice_username_key), "") ?: ""
             val orapPassword = prefs.getString(getString(R.string.pref_sprice_password_key), "") ?: ""
+
+            checkReportedValues();
 
             var report =
                 ReportIcingRequestBody.Builder()
@@ -221,7 +223,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
             Log.d("TAG", report.getRequestBodyForReportSubmissionAsString())
 
-            val result = OrapRepository.getInstance(requireContext()).checkIcingReportValues(mViewModel.getIcingReportBody())
+            val result = OrapRepository.getInstance(requireContext()).checkIcingReportValues(report)
 
             result.observe(this) {
                 if (it.success) {
@@ -257,6 +259,18 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             return true
         }
         return false
+    }
+
+    private fun checkReportedValues(): Boolean {
+        var invalid = false
+        if (mViewModel.maxMiddleWindTime.value != null) {
+            mBinding.icingDetailsTypeField.error = getString(R.string.icing_missing_value)
+            invalid = true
+        }
+
+        // TODO: Check other values
+
+        return invalid
     }
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {

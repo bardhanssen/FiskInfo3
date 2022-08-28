@@ -175,7 +175,7 @@ class ReportIcingRequestBody internal constructor(
     }
 
     fun getRequestBodyForReportSubmissionAsString(): String {
-        val stringBuilder = StringBuilder();
+        val stringBuilder = StringBuilder()
 
         val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
         val zoneId = ZoneId.systemDefault()

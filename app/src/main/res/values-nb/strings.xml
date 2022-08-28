@@ -153,6 +153,7 @@
     <string name="icing_report_check_error">Feil i isingrapport</string>
     <string name="icing_report_submit_error">Feil i isingrapport</string>
     <string name="icing_report_sent">Isingrapport sendt</string>
+    <string name="icing_missing_value">Påkrevd verdi</string>
 
     <string name="fragment_title_icing">Ising</string>
     <string name="fragment_title_report_icing">Rapporter ising</string>

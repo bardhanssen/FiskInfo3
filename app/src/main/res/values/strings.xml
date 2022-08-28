@@ -230,6 +230,7 @@
     <string name="icing_report_check_error">Icing report error</string>
     <string name="icing_report_submit_error">Icing report error</string>
     <string name="icing_report_sent">Icing report sent</string>
+    <string name="icing_missing_value">Required value</string>
 
     <string name="fragment_title_icing">Icing</string>
     <string name="fragment_title_report_icing">Report icing</string>
