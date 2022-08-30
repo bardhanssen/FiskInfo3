@@ -8,22 +8,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.orap.*
+import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     val reportingTime = MutableLiveData<Date>()
     val observationTime = MutableLiveData<Date>()
-    val tmpTimeSelect = MutableLiveData<IcingReportHourEnum>()
+    val synopTimeSelect = MutableLiveData<IcingReportHourEnum>()
     val location = MutableLiveData<Location>()
     var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
     val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
-    val airTemperature: MutableStateFlow<Float> = MutableStateFlow(0F)
-    val seaTemperature: MutableStateFlow<Float> = MutableStateFlow(0F)
+    private val _airTemperature = MutableStateFlow(0F)
+    private val _seaTemperature = MutableStateFlow(0F)
     val vesselIcingThickness: MutableStateFlow<Int> = MutableStateFlow(0)
+
+    val airTemperature: StateFlow<Float> = _airTemperature
+    val seaTemperature: StateFlow<Float> = _seaTemperature
+
 
     internal fun getIcingReportBody(): ReportIcingRequestBody {
         val context: Context = getApplication()
@@ -39,8 +44,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
             .callSign(callSign)
             .latitude(location.value?.latitude.toString())
             .longitude(location.value?.longitude.toString())
-            .airTemperature(airTemperature.value.toString())
-            .seaTemperature(seaTemperature.value.toString())
+            .airTemperature(_airTemperature.value.toString())
+            .seaTemperature(_seaTemperature.value.toString())
             .maxMiddleWindTime(maxMiddleWindTime.value!!)
             .iceThicknessInCm(vesselIcingThickness.value)
             .build()
@@ -55,12 +60,14 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         location.value = defaultLoc
         reportChecked.value = false
         reportValid.value = false
+        _airTemperature.value = 0F
+        _seaTemperature.value = 0F
     }
 
     fun setReportingDate(date: Date) {
         // TODO: pick out only date part (not time)
         val c = Calendar.getInstance()
-        c.time = reportingTime.value
+        c.time = reportingTime.value!!
 
         val newDateC = Calendar.getInstance()
         newDateC.time = date
@@ -72,7 +79,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
     fun setReportingTime(hourOfDay: Int, minutes: Int) {
         val c = Calendar.getInstance()
-        c.time = reportingTime.value
+        c.time = reportingTime.value!!
         c.set(Calendar.HOUR_OF_DAY, hourOfDay)
         c.set(Calendar.MINUTE, minutes)
         reportingTime.value = c.time

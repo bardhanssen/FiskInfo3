@@ -178,7 +178,6 @@
     <string name="wind_type_code_moderate_wind">Light wind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Heavy wind (over 7 m/s)</string>
 
-    <string name="sprice_icing_reporting_hour_not_selected" translatable="false"/>
     <string name="max_middle_wind_time_0">0- during observation</string>
     <string name="max_middle_wind_time_1">1- 0 to 1 hour from obs</string>
     <string name="max_middle_wind_time_2">2- 1 to 2 hours from obs</string>

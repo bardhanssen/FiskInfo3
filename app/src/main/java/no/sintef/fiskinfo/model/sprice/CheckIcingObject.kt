@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 import java.time.LocalDateTime
 

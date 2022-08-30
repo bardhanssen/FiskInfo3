@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 class GetReportsRequestBody internal constructor(
     val Username: String,

@@ -1,14 +1,10 @@
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
-    @SerializedName("NOT_SELECTED")
-    NOT_SELECTED("NOT_SELECTED", R.string.max_middle_wind_time_not_selected),
-
     @SerializedName("DURING_OBSERVATION")
     DURING_OBSERVATION("DURING_OBSERVATION", R.string.max_middle_wind_time_0),
 
@@ -50,7 +46,6 @@ enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
         var retval = ""
 
         when (this) {
-            NOT_SELECTED -> retval = MAX_MIDDLE_WIND_TIME_NOT_SELECTED_FORM_VALUE
             DURING_OBSERVATION -> retval = MAX_MIDDLE_WIND_TIME_0_FORM_VALUE
             AFTER_1_HOUR -> retval = MAX_MIDDLE_WIND_TIME_1_FORM_VALUE
             AFTER_2_HOUR -> retval = MAX_MIDDLE_WIND_TIME_2_FORM_VALUE
@@ -68,17 +63,16 @@ enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
     }
 
     companion object {
-        const val MAX_MIDDLE_WIND_TIME_NOT_SELECTED_FORM_VALUE = ""
-        const val MAX_MIDDLE_WIND_TIME_0_FORM_VALUE = " 0- i observasjonstida"
-        const val MAX_MIDDLE_WIND_TIME_1_FORM_VALUE = " 1- 0 til 1 time fra obs "
-        const val MAX_MIDDLE_WIND_TIME_2_FORM_VALUE = " 2- 1 til 2 time fra obs  "
-        const val MAX_MIDDLE_WIND_TIME_3_FORM_VALUE = " 3- 2 til 3 time fra obs "
-        const val MAX_MIDDLE_WIND_TIME_4_FORM_VALUE = " 4- 3 til 6 time fra obs "
-        const val MAX_MIDDLE_WIND_TIME_5_FORM_VALUE = " 5- 6 til 9 time fra obs "
-        const val MAX_MIDDLE_WIND_TIME_6_FORM_VALUE = " 6- 9 til 12 time fra obs "
-        const val MAX_MIDDLE_WIND_TIME_7_FORM_VALUE = " 7- Vinden synes å avta "
-        const val MAX_MIDDLE_WIND_TIME_8_FORM_VALUE = " 8- Vinden synes uendret "
-        const val MAX_MIDDLE_WIND_TIME_9_FORM_VALUE = " 9- Vinden synes å øke "
-        const val MAX_MIDDLE_WIND_TIME_X_FORM_VALUE = " X- Umulig å angi"
+        const val MAX_MIDDLE_WIND_TIME_0_FORM_VALUE = " i observasjonstida"
+        const val MAX_MIDDLE_WIND_TIME_1_FORM_VALUE = " 0-1 time fra obs "
+        const val MAX_MIDDLE_WIND_TIME_2_FORM_VALUE = " 1-2 time fra obs  "
+        const val MAX_MIDDLE_WIND_TIME_3_FORM_VALUE = " 2-3 time fra obs "
+        const val MAX_MIDDLE_WIND_TIME_4_FORM_VALUE = " 3-6 time fra obs "
+        const val MAX_MIDDLE_WIND_TIME_5_FORM_VALUE = " 6-9 time fra obs "
+        const val MAX_MIDDLE_WIND_TIME_6_FORM_VALUE = " 9-12 time fra obs "
+        const val MAX_MIDDLE_WIND_TIME_7_FORM_VALUE = " Vinden synes å avta "
+        const val MAX_MIDDLE_WIND_TIME_8_FORM_VALUE = " Vinden synes uendret "
+        const val MAX_MIDDLE_WIND_TIME_9_FORM_VALUE = " Vinden synes å øke "
+        const val MAX_MIDDLE_WIND_TIME_X_FORM_VALUE = " Umulig å angi"
     }
 }

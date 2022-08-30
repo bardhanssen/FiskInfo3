@@ -12,7 +12,7 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.api.orap.OrapService
 import no.sintef.fiskinfo.model.fishingfacility.*
-import no.sintef.fiskinfo.model.orap.*
+import no.sintef.fiskinfo.model.sprice.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

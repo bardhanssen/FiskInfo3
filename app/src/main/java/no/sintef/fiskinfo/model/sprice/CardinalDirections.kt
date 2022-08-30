@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 import com.google.gson.annotations.SerializedName
 

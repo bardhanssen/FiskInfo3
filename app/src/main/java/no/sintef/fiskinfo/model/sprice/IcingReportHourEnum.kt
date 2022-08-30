@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 import android.content.Context
 import com.google.gson.annotations.SerializedName
@@ -6,9 +6,6 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 enum class IcingReportHourEnum(val code : String, val stringResource : Int) : IDropDownMenu {
-    @SerializedName("NOT_SELECTED")
-    NOT_SELECTED("NOT_SELECTED", R.string.sprice_icing_reporting_hour_not_selected),
-
     @SerializedName("00:00")
     HOUR_00("01:00", R.string.sprice_icing_reporting_hour_00),
     @SerializedName("01:00")
@@ -66,7 +63,6 @@ enum class IcingReportHourEnum(val code : String, val stringResource : Int) : ID
         var retval = ""
 
         when (this) {
-            NOT_SELECTED -> retval = ICING_REPORTING_HOUR_NOT_SELECTED_FORM_VALUE
             HOUR_00 -> retval = ICING_REPORTING_HOUR_0000
             HOUR_01 -> retval = ICING_REPORTING_HOUR_0100
             HOUR_02 -> retval = ICING_REPORTING_HOUR_0200

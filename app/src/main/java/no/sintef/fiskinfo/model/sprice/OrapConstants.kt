@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 object OrapConstants {
     const val BOUNDARY_ID_LENGTH = 16

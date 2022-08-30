@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
-import no.sintef.fiskinfo.model.orap.IcingTypeCode
-import no.sintef.fiskinfo.model.orap.MaxMiddleWindTimeEnum
+import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
 
 class maxMiddleWindTimeArrayAdapter (context: Context, resource: Int, objects: Array<MaxMiddleWindTimeEnum>) :
     ArrayAdapter<MaxMiddleWindTimeEnum>(context, resource, objects) {

@@ -125,13 +125,13 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProvider(requireActivity()).get(DeploymentViewModel::class.java)
+        mViewModel = ViewModelProvider(requireActivity())[DeploymentViewModel::class.java]
         mViewModel.initContent()
 
         mEditTextToolCountLayout.hint = getToolCountType(mViewModel.toolTypeCode.value!!, requireContext())
 
         mLocationViewModel =
-            ViewModelProvider(requireActivity()).get(LocationDmsViewModel::class.java)
+            ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(

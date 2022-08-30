@@ -5,9 +5,9 @@ import android.content.Context
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.model.orap.IcingReport
-import no.sintef.fiskinfo.model.orap.IcingTypeCode
-import no.sintef.fiskinfo.model.orap.WindTypeCode
+import no.sintef.fiskinfo.model.sprice.IcingReport
+import no.sintef.fiskinfo.model.sprice.IcingTypeCode
+import no.sintef.fiskinfo.model.sprice.WindTypeCode
 import no.sintef.fiskinfo.util.locationsToGeoJsonGeometry
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*

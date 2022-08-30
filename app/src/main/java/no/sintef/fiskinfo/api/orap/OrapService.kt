@@ -17,7 +17,7 @@
  */
 package no.sintef.fiskinfo.api.orap
 
-import no.sintef.fiskinfo.model.orap.GetReportsRequestBody
+import no.sintef.fiskinfo.model.sprice.GetReportsRequestBody
 import okhttp3.Response
 import retrofit2.Call
 import retrofit2.http.Body

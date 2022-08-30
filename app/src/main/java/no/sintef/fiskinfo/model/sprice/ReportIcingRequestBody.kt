@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
-import no.sintef.fiskinfo.util.OrapUtils
+import no.sintef.fiskinfo.util.SpriceUtils
 import java.lang.StringBuilder
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -88,7 +88,7 @@ class ReportIcingRequestBody internal constructor(
     )
 
     data class Builder(
-        var WebKitFormBoundaryId: String = OrapUtils.getBoundaryIdString(),
+        var WebKitFormBoundaryId: String = SpriceUtils.getBoundaryIdString(),
         var ObservationTime: LocalDateTime = LocalDateTime.now(),
         var Synop: LocalDateTime = LocalDateTime.now(),
         var Username: String = "",
@@ -98,7 +98,7 @@ class ReportIcingRequestBody internal constructor(
         var Longitude: String = "",
         var AirTemperature: String = "",
         var SeaTemperature: String = "",
-        var MaxMiddleWindTime: MaxMiddleWindTimeEnum = MaxMiddleWindTimeEnum.NOT_SELECTED,
+        var MaxMiddleWindTime: MaxMiddleWindTimeEnum = MaxMiddleWindTimeEnum.DURING_OBSERVATION,
         var MaxMiddleWindInKnots: String = "",
         var StrongestWindGustInKnots: String = "",
         var HeightOfWindWavesInMeters: String = "",
@@ -183,27 +183,27 @@ class ReportIcingRequestBody internal constructor(
         val observationEpoch = Synop.atZone(zoneId).toEpochSecond() // TODO: Get from user
 
         val messageTag =
-            OrapUtils.getOrapMessageTag(messageReceivedTime, Username)
+            SpriceUtils.getOrapMessageTag(messageReceivedTime, Username)
 
-        val hiddenMessage = OrapUtils.getFormattedHiddenMessage(Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
-        val hiddenKlMessage = OrapUtils.getFormattedHiddenKlMessage(Username, messageReceivedTime, Synop, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature, reportingTimeEpoch)
-        val hiddenKlStatus = OrapUtils.getFormattedHiddenKlStatus(observationEpoch, Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
+        val hiddenMessage = SpriceUtils.getFormattedHiddenMessage(Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
+        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessage(Username, messageReceivedTime, Synop, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature, reportingTimeEpoch)
+        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatus(observationEpoch, Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
 
         stringBuilder.append(
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TAG, messageTag),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP),
-            OrapUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TAG, messageTag),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP),
+            SpriceUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
         )
 
         return stringBuilder.toString();
@@ -217,57 +217,57 @@ class ReportIcingRequestBody internal constructor(
         val observationEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond() // TODO: Get from user
 
         val messageTag =
-            OrapUtils.getOrapMessageTag(messageReceivedTime, Username)
-        val synopTimeStamp = OrapUtils.getFormattedTimeStamp(ObservationTimeStamp, OrapConstants.SYNOP_DAY1_TIMESTAMP)
+            SpriceUtils.getOrapMessageTag(messageReceivedTime, Username)
+        val synopTimeStamp = SpriceUtils.getFormattedTimeStamp(ObservationTimeStamp, OrapConstants.SYNOP_DAY1_TIMESTAMP)
 
         val stringBuilder = StringBuilder()
 
         stringBuilder.append(
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
-            OrapUtils.getValueAsWebKitForm(
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
+            SpriceUtils.getValueAsWebKitForm(
                 WebKitFormBoundaryId,
                 OrapConstants.FormDataNames.MESSAGE_TYPE,
                 OrapConstants.FormValues.REPORT_MESSAGE_TYPE
             ),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.OBS_STATIC, observationEpoch),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP_DAY1, synopTimeStamp),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP1, ObservationTimeStamp.hour),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.CAL1, VesselCallSign),
-            OrapUtils.getValueAsWebKitForm(
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.OBS_STATIC, observationEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP_DAY1, synopTimeStamp),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP1, ObservationTimeStamp.hour),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.CAL1, VesselCallSign),
+            SpriceUtils.getValueAsWebKitForm(
                 WebKitFormBoundaryId,
                 OrapConstants.FormDataNames.SIGN_LALA1,
                 if ('-' == Latitude.first()) CardinalDirections.S.toString() else CardinalDirections.N.toString()
             ),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LALA1, Latitude),
-            OrapUtils.getValueAsWebKitForm(
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LALA1, Latitude),
+            SpriceUtils.getValueAsWebKitForm(
                 WebKitFormBoundaryId,
                 OrapConstants.FormDataNames.SIGN_LOLO1,
                 if ('-' == Longitude.first()) CardinalDirections.W.toString() else CardinalDirections.E.toString()
             ),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LOLO1, Longitude),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SIGN_TT, if ('-' == AirTemperature.first()) "-" else "+"),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TT1, AirTemperature),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SIGN_TW, if ('-' == SeaTemperature.first()) "-" else "+"),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TW1, SeaTemperature),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TZ1, MaxMiddleWindTime.getFormValue()),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.FX1, MaxMiddelWindInKnots),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.FG1, StrongestWindGustInKnots),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HW1, HeightOfWindWavesInMeters),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PW1, PeriodForWindWavesInSeconds),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HW11, HeightForFirstSwellSystemInMeters),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PW11, PeriodForFirstSwellSystemInSeconds),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.DW11, DirectionForFirstSwellSystemInDegrees),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.CI1, ConcentrationOfSeaIce),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SI1, SeaIceStageOfDevelopment),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.BI1, OceanIce),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.DI1, DirectionToNearestIceEdge),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ZI1, SeaIceConditionsAndDevelopmentTheLastThreeHours),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.IS1, ReasonForIcing),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ESES1, IceThicknessInCm),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.RS1, ChangeInIce),
-            OrapUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.RS1, OrapConstants.FormValues.ACTION_CHECK_MESSAGE),
-            OrapUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LOLO1, Longitude),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SIGN_TT, if ('-' == AirTemperature.first()) "-" else "+"),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TT1, AirTemperature),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SIGN_TW, if ('-' == SeaTemperature.first()) "-" else "+"),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TW1, SeaTemperature),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TZ1, MaxMiddleWindTime.getFormValue()),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.FX1, MaxMiddelWindInKnots),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.FG1, StrongestWindGustInKnots),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HW1, HeightOfWindWavesInMeters),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PW1, PeriodForWindWavesInSeconds),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HW11, HeightForFirstSwellSystemInMeters),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PW11, PeriodForFirstSwellSystemInSeconds),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.DW11, DirectionForFirstSwellSystemInDegrees),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.CI1, ConcentrationOfSeaIce),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SI1, SeaIceStageOfDevelopment),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.BI1, OceanIce),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.DI1, DirectionToNearestIceEdge),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ZI1, SeaIceConditionsAndDevelopmentTheLastThreeHours),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.IS1, ReasonForIcing),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ESES1, IceThicknessInCm),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.RS1, ChangeInIce),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.RS1, OrapConstants.FormValues.ACTION_CHECK_MESSAGE),
+            SpriceUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
         )
 
         return stringBuilder.toString();

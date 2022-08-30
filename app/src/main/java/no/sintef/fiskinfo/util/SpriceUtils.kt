@@ -1,13 +1,13 @@
 package no.sintef.fiskinfo.util
 
-import no.sintef.fiskinfo.model.orap.OrapConstants
+import no.sintef.fiskinfo.model.sprice.OrapConstants
 import java.lang.StringBuilder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class OrapUtils {
+class SpriceUtils {
     companion object {
         /**
          * Generate an Orap Message tag from the given [datetime] and [username].

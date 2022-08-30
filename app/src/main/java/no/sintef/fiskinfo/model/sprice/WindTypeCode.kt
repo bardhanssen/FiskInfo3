@@ -1,5 +1,5 @@
 
-package no.sintef.fiskinfo.model.orap
+package no.sintef.fiskinfo.model.sprice
 
 import android.content.Context
 import com.google.gson.annotations.SerializedName
