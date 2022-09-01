@@ -74,6 +74,7 @@
     <string name="cardinal_direction_symbol_south">S</string>
     <string name="cardinal_direction_symbol_west">W</string>
     <string name="cardinal_direction_symbol_east">E</string>
+    <string name="get_current_position_button_description">Hent gps posisjon</string>
 
     <string name="tool_deployment_sent">Redskapsrapport sendt!</string>
     <string name="tool_deployment_error">Feil ved redskapsrapportering: </string>
