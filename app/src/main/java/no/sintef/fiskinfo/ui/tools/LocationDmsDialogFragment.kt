@@ -20,6 +20,7 @@ package no.sintef.fiskinfo.ui.tools
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
+import no.sintef.fiskinfo.util.DMSLocation
 import no.sintef.fiskinfo.util.GpsLocationTracker
 import no.sintef.fiskinfo.utilities.ui.IntRangeValidator
 
@@ -39,6 +41,11 @@ class LocationDmsDialogFragment : DialogFragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _mBinding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,20 +111,32 @@ class LocationDmsDialogFragment : DialogFragment() {
 
         binding.setToCurrentPositionIcon.setOnClickListener { setLocationToCurrentPosition() }
 
-        viewModel = ViewModelProvider(requireActivity()).get(LocationDmsViewModel::class.java)
-
-        viewModel.dmsLocation.observe(this) { dmsLoc ->
-            if (dmsLoc != null) {
-                binding.viewmodel = dmsLoc
-            }
-        }
-
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _mBinding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
+        viewModel.dmsLocation.observe(viewLifecycleOwner) { dmsLoc ->
+            if (dmsLoc != null) {
+//                binding.viewmodel.dmsFlow.value = dmsLoc
+//                binding.longitudeDegreesEditText.setText(dmsLoc.longitudeDegrees.toString())
+//                binding.longitudeDegreesEditText.setText(dmsLoc.longitudeMinutes.toString())
+//                binding.longitudeSecondsEditText.setText(dmsLoc.longitudeSeconds.toString())
+//                binding.longitudeCardinalDirectionSwitch.isChecked = !dmsLoc.longitudeWest
+
+                Log.e("TAG", "Updated location: ${dmsLoc.latitudeDegrees}, ${dmsLoc.latitudeMinutes}, ${dmsLoc.latitudeSeconds}")
+                Log.e("TAG", "Updated location: ${dmsLoc.longitudeDegrees}, ${dmsLoc.longitudeMinutes}, ${dmsLoc.longitudeSeconds}")
+            }
+        }
+
+        binding.latitudeDegreesInput.editText?.setText("23")
     }
 
     interface LocationDmsDialogListener {
@@ -130,9 +149,6 @@ class LocationDmsDialogFragment : DialogFragment() {
 
         val builder = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.tool_edit_location))
-//            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-//                dismiss();
-//            }
             .setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
                 dismiss()
             }
@@ -156,6 +172,16 @@ class LocationDmsDialogFragment : DialogFragment() {
             val loc = tracker.location
             if (loc != null) {
                 viewModel.setNewLocation(loc)
+                val dmsLocation = DMSLocation.fromLocation(loc)
+                binding.latitudeDegreesEditText.setText(dmsLocation.longitudeDegrees.toString())
+                binding.latitudeMinutesEditText.setText(dmsLocation.longitudeDegrees.toString())
+                binding.latitudeSecondsEditText.setText(dmsLocation.longitudeDegrees.toString())
+                binding.latitudeCardinalDirectionSwitch.isChecked = !dmsLocation.longitudeWest
+
+                binding.longitudeDegreesEditText.setText(dmsLocation.longitudeDegrees.toString())
+                binding.longitudeMinutesEditText.setText(dmsLocation.longitudeDegrees.toString())
+                binding.latitudeSecondsEditText.setText(dmsLocation.longitudeDegrees.toString())
+                binding.longitudeCardinalDirectionSwitch.isChecked = dmsLocation.latitudeSouth
             }
 
         } else {

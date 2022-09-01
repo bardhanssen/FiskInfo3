@@ -6,20 +6,19 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.AutoCompleteTextView
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
-import com.google.android.material.datepicker.MaterialDatePicker
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -28,7 +27,10 @@ import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
 import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
 import no.sintef.fiskinfo.repository.OrapRepository
-import no.sintef.fiskinfo.ui.tools.*
+import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment
+import no.sintef.fiskinfo.ui.tools.LocationDmsViewModel
+import no.sintef.fiskinfo.ui.tools.LocationRecyclerViewAdapter
+import no.sintef.fiskinfo.ui.tools.LocationViewModel
 import java.util.*
 
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
@@ -64,10 +66,11 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         initMaxMiddleWindDropDown()
         initReportingHourDropDown()
         setHasOptionsMenu(true)
+//        initMenu() // TODO: Change setHasOptionsMenu to this
 
         mBinding.icingReportDateField.setOnClickListener {
             val builder: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
-            builder.setSelection(mViewModel.reportingTime.value!!.time)
+            builder.setSelection(mViewModel.reportingTime.value.time)
             val picker: MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener {
                 val cal = Calendar.getInstance()
@@ -81,29 +84,18 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
-        mViewModel.initContent()
-
-//        mBinding.reportIcingAirTemperatureInput.hint = getString(R.string.icing_report_air_temperature_hint)
-
-        mLocationViewModel =
-            ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
-
-        // Refresh the full UI when there is a change, as this UI is small
-        mViewModel.reportingTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
-        mViewModel.location.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
-        // TODO: Bind viewmodel and views so values are updated accordingly.
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sprice_report_icing_menu, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
+
+//        return true
+
         if (item.itemId == R.id.send_icing_report_action) {
             val result = OrapRepository.getInstance(requireContext()).SendIcingReport(mViewModel.getIcingReportBody())
 
@@ -139,11 +131,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             return true
         }
         else if(item.itemId == R.id.check_icing_report_action) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-            val orapUsername = prefs.getString(getString(R.string.pref_sprice_username_key), "") ?: ""
-            val orapPassword = prefs.getString(getString(R.string.pref_sprice_password_key), "") ?: ""
-
-            checkReportedValues();
+            checkReportedValues()
 
 //                    .observationTime(LocalDateTime.now())
 //                    .synop(LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0))
@@ -205,9 +193,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         icingDetailsDropdown = mBinding.icingDetailsTypeField
 
         icingDetailsDropdown.setOnItemClickListener { parent, _, position, _ ->
-            mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(
-                position
-            ) as MaxMiddleWindTimeEnum
+            mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(position) as MaxMiddleWindTimeEnum
         }
         icingDetailsDropdown.setAdapter(mMaxMiddleWindAdapter)
     }
@@ -221,45 +207,30 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mSynopHourDropdown = mBinding.icingReportTimeField
 
         mSynopHourDropdown.setOnItemClickListener { parent, _, position, _ ->
-            mViewModel.synopTimeSelect.value = parent.getItemAtPosition(
-                position
-            ) as IcingReportHourEnum
+            mViewModel.synopTimeSelect.value = (parent.getItemAtPosition(position) as IcingReportHourEnum).code
         }
+
         mSynopHourDropdown.setAdapter(mReportingHourAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
+        mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
+//        mLocationViewModel = ViewModelProvider(this)[LocationDmsViewModel::class.java]
+
+//        mViewModel.init()
 //        initMenu()
 
-//        mViewModel = ViewModelProviders.of(requireActivity()).get(ReportIcingViewModel::class.java)
-        mViewModel = ViewModelProvider(this)[ReportIcingViewModel::class.java]
-
-        // TODO: Use the ViewModel
-        mViewModel.initContent()
-
-//        mLocationViewModel = ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
-        mLocationViewModel = ViewModelProvider(this)[LocationDmsViewModel::class.java]
-
-
         // Refresh the full UI when there is a change, as this UI is small
-        mViewModel.maxMiddleWindTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
+//        mViewModel.maxMiddleWindTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
 //        mViewModel.reportingTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
-
-        mViewModel.reportingTime.value = null
-        mViewModel.observationTime.value = null
-        mViewModel.location.value = null
-        mViewModel.maxMiddleWindTime.value = null
-//        mViewModel.airTemperature.value = 5F
-//        mViewModel.seaTemperature.value = 2F
-        mViewModel.vesselIcingThickness.value = 5
-
-//        mViewModel.location.observe(viewLifecycleOwner, Observer { locAdapter.locations = it })
+        mViewModel.location.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
+        mViewModel.init()
     }
 
     private fun initMenu() {
-
         // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
 

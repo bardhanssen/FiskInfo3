@@ -130,8 +130,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
 
         mEditTextToolCountLayout.hint = getToolCountType(mViewModel.toolTypeCode.value!!, requireContext())
 
-        mLocationViewModel =
-            ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
+        mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
 
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(
@@ -245,7 +244,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
         private lateinit var mViewModel: DeploymentViewModel
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             mViewModel =
-                ViewModelProvider(requireActivity()).get(DeploymentViewModel::class.java)
+                ViewModelProvider(requireActivity())[DeploymentViewModel::class.java]
             // Use the current time as the default values for the picker
             val c = Calendar.getInstance()
             c.time = mViewModel.setupTime.value!!

@@ -141,6 +141,7 @@
     <string name="wind_type_code_heavy_wind">Kraftig vind (over 7 m/s)</string>
 
     <string name="sprice_icing_reporting_observation_hour">Observasjonstid</string>
+    <string name="sprice_icing_reporting_synop">Synop</string>
 
     <string name="max_middle_wind_when">Når maks middelvind</string>
     <string name="icing_icing_type">Istype</string>
@@ -149,6 +150,7 @@
     <string name="icing_report_time">Tidspunkt</string>
     <string name="icing_report_air_temperature_hint">Temperatur</string>
     <string name="icing_report_sea_temperature_hint">Sjøtemperatur</string>
+    <string name="icing_report_vessel_icing_thickness_hint">Istykkelse</string>
 
     <string name="icing_report_check_error">Feil i isingrapport</string>
     <string name="icing_report_submit_error">Feil i isingrapport</string>
@@ -271,33 +273,15 @@
     <string name="report_icing_menu_option_send">Rapporter</string>
     <string name="report_icing_menu_option_check">Kontroller</string>
 
-    <string name="max_middle_wind_time_0">0- i observasjonstida</string>
-    <string name="max_middle_wind_time_1">1- 0 til 1 time fra obs</string>
-    <string name="max_middle_wind_time_2">2- 1 til 2 time fra obs</string>
-    <string name="max_middle_wind_time_3">3- 2 til 3 time fra obs</string>
-    <string name="max_middle_wind_time_4">4- 3 til 6 time fra obs</string>
-    <string name="max_middle_wind_time_5">5- 6 til 9 time fra obs</string>
-    <string name="max_middle_wind_time_6">6- 9 til 12 time fra obs</string>
-    <string name="max_middle_wind_time_7">7- Vinden synes å avta</string>
-    <string name="max_middle_wind_time_8">8- Vinden synes uendret</string>
-    <string name="max_middle_wind_time_9">9- Vinden synes å øke</string>
-    <string name="max_middle_wind_time_x">X- Umulig å angi</string>
-
-    <!--
-    <string name="error_invalid_email">Ugyldig epostadresse</string>
-    <string name="error_invalid_password">Passordet er for kort</string>
-    <string name="error_incorrect_password">Feil passord</string>
-    <string name="error_account_creation_failed">Oppretting av ny bruker feilet</string>
-    <string name="error_password_reset_failed">Gjenoppretting av passordet feilet</string>
-    <string name="title_activity_my_page">MyPageActivity</string>
-    <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="log_out">Logg ut</string>
-    <string name="confirm_log_out">Er du sikker på at du vil logge ut?</string>
-    <string name="title_activity_file_dialog">FileDialog</string>
-    <string name="register_user_account_hyperlink">&lt;a href="https://www.barentswatch.no/LandingPage/"&gt;Registrer bruker.&lt;/a&gt;</string>
-    <string name="forgot_account_password_hyperlink">&lt;a href="https://www.barentswatch.no/s/Logg-inn/?ReturnUrl=/MinSide/"&gt;Glemt passord.&lt;/a&gt;</string>
-    -->
-
-
+    <string name="max_middle_wind_time_0">0: i observasjonstida</string>
+    <string name="max_middle_wind_time_1">1: 0–1 time fra obs</string>
+    <string name="max_middle_wind_time_2">2: 1–2 timer fra obs</string>
+    <string name="max_middle_wind_time_3">3: 2–3 timer fra obs</string>
+    <string name="max_middle_wind_time_4">4: 3–6 timer fra obs</string>
+    <string name="max_middle_wind_time_5">5: 6–9 timer fra obs</string>
+    <string name="max_middle_wind_time_6">6: 9–12 timer fra obs</string>
+    <string name="max_middle_wind_time_7">7: Vinden synes å avta</string>
+    <string name="max_middle_wind_time_8">8: Vinden synes uendret</string>
+    <string name="max_middle_wind_time_9">9: Vinden synes å øke</string>
+    <string name="max_middle_wind_time_x">X: Umulig å angi</string>
 </resources>

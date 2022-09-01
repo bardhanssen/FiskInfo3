@@ -24,7 +24,7 @@ import kotlin.math.floor
 
 data class DMSLocation(var latitudeSouth : Boolean = false,
                        var latitudeDegrees : Int = 0,
-                       var latitudeMinutes : Int = 0,
+                       var latitudeMinutes : String = "0",
                        var latitudeSeconds : Double = 0.0,
 
                        var longitudeWest : Boolean = false,
@@ -41,8 +41,8 @@ data class DMSLocation(var latitudeSouth : Boolean = false,
                 latitudeDegrees = floor(absCoord).toInt()
                 absCoord -= latitudeDegrees
                 absCoord *= 60.0
-                latitudeMinutes = floor(absCoord).toInt()
-                absCoord -= latitudeMinutes;
+                latitudeMinutes = floor(absCoord).toInt().toString()
+                absCoord -= Integer.parseInt(latitudeMinutes);
                 latitudeSeconds = absCoord*60.0;
 
                 longitudeWest = location.longitude < 0
@@ -61,7 +61,7 @@ data class DMSLocation(var latitudeSouth : Boolean = false,
     fun toLocation(): Location {
         var loc = Location("")
 
-        loc.latitude = latitudeDegrees + (latitudeMinutes/60.0) + (latitudeSeconds / 3600.0)
+        loc.latitude = latitudeDegrees + (Integer.parseInt(latitudeMinutes)/60.0) + (latitudeSeconds / 3600.0)
         if (latitudeSouth) loc.latitude = -loc.latitude
 
         loc.longitude = longitudeDegrees + (longitudeMinutes/60.0) + (longitudeSeconds / 3600.0)

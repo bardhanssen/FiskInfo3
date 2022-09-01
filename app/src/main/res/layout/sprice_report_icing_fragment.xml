@@ -63,7 +63,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
                         android:layout_marginStart="16dp"
-                        android:hint="@string/sprice_icing_reporting_observation_hour"
                         app:startIconContentDescription="@string/proto_close_drawer"
                         app:startIconDrawable="@drawable/ic_time">
 
@@ -72,10 +71,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:focusable="false"
-                            android:maxLength="5"
+                            android:hint="@string/sprice_icing_reporting_synop"
+                            android:maxLength="7"
                             android:focusableInTouchMode="false"
-                            android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{reporticingviewmodel.maxMiddleWindTimeName}" />
+                            android:text="@{reporticingviewmodel.synopTimeSelect.toString()}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -100,10 +99,10 @@
                             android:focusable="true"
                             android:hint="@string/icing_report_air_temperature_hint"
                             android:maxLines="1"
-                            android:inputType="@{InputType.TYPE_NUMBER_FLAG_DECIMAL}"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:text="@={reporticingviewmodel.airTemperature}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
-
 
                     <View
                         android:layout_width="1dp"
@@ -125,7 +124,8 @@
                             android:focusable="true"
                             android:hint="@string/icing_report_sea_temperature_hint"
                             android:maxLines="1"
-                            android:inputType="@{InputType.TYPE_NUMBER_FLAG_DECIMAL}"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:text="@={reporticingviewmodel.seaTemperature}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,11 +140,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/activity_horizontal_margin_small"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/reportIcingVesselIcingThicknessInput"
+                        android:layout_width="140dp"
+                        android:maxLines="1"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/reportIcingVesselIcingThicknessEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:hint="@string/icing_report_vessel_icing_thickness_hint"
+                            android:maxLines="1"
+                            android:inputType="number"
+                            android:text="@={reporticingviewmodel.vesselIcingThickness}"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"
+                        android:layout_weight="0.1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_weight="1"

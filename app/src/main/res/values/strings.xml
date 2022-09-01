@@ -178,17 +178,17 @@
     <string name="wind_type_code_moderate_wind">Light wind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Heavy wind (over 7 m/s)</string>
 
-    <string name="max_middle_wind_time_0">0- during observation</string>
-    <string name="max_middle_wind_time_1">1- 0 to 1 hour from obs</string>
-    <string name="max_middle_wind_time_2">2- 1 to 2 hours from obs</string>
-    <string name="max_middle_wind_time_3">3- 2 to 3 hours from obs</string>
-    <string name="max_middle_wind_time_4">4- 3 to 6 hours from obs</string>
-    <string name="max_middle_wind_time_5">5- 6 to 9 hours from obs</string>
-    <string name="max_middle_wind_time_6">6- 9 to 12 hours from obs</string>
-    <string name="max_middle_wind_time_7">7- Wind seems to dissipate</string>
-    <string name="max_middle_wind_time_8">8- Wind seems unchanged</string>
-    <string name="max_middle_wind_time_9">9- Wind seems to increase</string>
-    <string name="max_middle_wind_time_x">X- Impossible to say</string>
+    <string name="max_middle_wind_time_0">0: during observation</string>
+    <string name="max_middle_wind_time_1">1: 0–1 hour from obs</string>
+    <string name="max_middle_wind_time_2">2: 1–2 hours from obs</string>
+    <string name="max_middle_wind_time_3">3: 2–3 hours from obs</string>
+    <string name="max_middle_wind_time_4">4: 3–6 hours from obs</string>
+    <string name="max_middle_wind_time_5">5: 6–9 hours from obs</string>
+    <string name="max_middle_wind_time_6">6: 9–12 hours from obs</string>
+    <string name="max_middle_wind_time_7">7: Wind seems to dissipate</string>
+    <string name="max_middle_wind_time_8">8: Wind seems unchanged</string>
+    <string name="max_middle_wind_time_9">9: Wind seems to increase</string>
+    <string name="max_middle_wind_time_x">X: Impossible to say</string>
 
     <string name="max_middle_wind_time_not_selected" translatable="false"/>
     <string name="sprice_icing_reporting_hour_00" translatable="false">00:00</string>
@@ -217,6 +217,7 @@
     <string name="sprice_icing_reporting_hour_23" translatable="false">23:00</string>
 
     <string name="sprice_icing_reporting_observation_hour">Observation time</string>
+    <string name="sprice_icing_reporting_synop">Synop</string>
 
     <string name="max_middle_wind_when">When Max middle wind</string>
     <string name="icing_icing_type">Icing type</string>
@@ -225,6 +226,7 @@
     <string name="icing_report_time">Time</string>
     <string name="icing_report_air_temperature_hint">Temperature</string>
     <string name="icing_report_sea_temperature_hint">Sea temperature</string>
+    <string name="icing_report_vessel_icing_thickness_hint">Ice thickness</string>
 
     <string name="icing_report_check_error">Icing report error</string>
     <string name="icing_report_submit_error">Icing report error</string>
@@ -350,22 +352,4 @@
     <string name="prefs_sprice_password">SPRICE password</string>
     <string name="report_icing_menu_option_send">Report</string>
     <string name="report_icing_menu_option_check">Check</string>
-
-    <!--
-    <string name="error_invalid_email">Ugyldig epostadresse</string>
-    <string name="error_invalid_password">Passordet er for kort</string>
-    <string name="error_incorrect_password">Feil passord</string>
-    <string name="error_account_creation_failed">Oppretting av ny bruker feilet</string>
-    <string name="error_password_reset_failed">Gjenoppretting av passordet feilet</string>
-    <string name="title_activity_my_page">MyPageActivity</string>
-    <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="log_out">Logg ut</string>
-    <string name="confirm_log_out">Er du sikker på at du vil logge ut?</string>
-    <string name="title_activity_file_dialog">FileDialog</string>
-    <string name="register_user_account_hyperlink">&lt;a href="https://www.barentswatch.no/LandingPage/"&gt;Registrer bruker.&lt;/a&gt;</string>
-    <string name="forgot_account_password_hyperlink">&lt;a href="https://www.barentswatch.no/s/Logg-inn/?ReturnUrl=/MinSide/"&gt;Glemt passord.&lt;/a&gt;</string>
-    -->
-
-
 </resources>

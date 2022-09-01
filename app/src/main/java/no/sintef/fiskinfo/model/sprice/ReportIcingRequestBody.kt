@@ -18,6 +18,7 @@
 package no.sintef.fiskinfo.model.sprice
 
 import no.sintef.fiskinfo.util.SpriceUtils
+import java.lang.Exception
 import java.lang.StringBuilder
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -112,7 +113,7 @@ class ReportIcingRequestBody internal constructor(
         var DirectionToNearestIceEdge: String = "",
         var SeaIceConditionsAndDevelopmentTheLastThreeHours: String = "",
         var ReasonForIcing: String = "",
-        var IceThicknessInCm: Int = -1,
+        var IceThicknessInCm: Int = 0,
         var ChangeInIce: String = ""
     ) {
         fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
@@ -164,8 +165,14 @@ class ReportIcingRequestBody internal constructor(
         }
 
         fun reasonForIcing(reasonForIcing: String) = apply { this.ReasonForIcing = reasonForIcing }
-        fun iceThicknessInCm(iceThicknessInCm: Int) =
-            apply { this.IceThicknessInCm = iceThicknessInCm }
+        fun iceThicknessInCm(iceThicknessInCm: String) =
+            apply {
+                try {
+                    this.IceThicknessInCm = iceThicknessInCm.toInt()
+                } catch (e: NumberFormatException) {
+                    e.printStackTrace()
+                }
+            }
 
         fun changeInIce(changeInIce: String) = apply { this.ChangeInIce = changeInIce }
 

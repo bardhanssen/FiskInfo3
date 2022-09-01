@@ -8,7 +8,7 @@
         <import type="no.sintef.fiskinfo.util.DoubleConverter"/>
         <variable
             name="viewmodel"
-            type="no.sintef.fiskinfo.util.DMSLocation" />
+            type="no.sintef.fiskinfo.ui.tools.LocationDmsViewModel" />
     </data>
 
     <RelativeLayout
@@ -39,24 +39,35 @@
                     android:paddingTop="5dp"
                     >
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/latitude_degrees_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:maxLines="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/latitude_degrees_edit_text"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
-                        android:layout_weight="0.9"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                         android:gravity="end"
-                        android:inputType="number"
+                        android:focusable="true"
+                        android:selectAllOnFocus="true"
+                        android:hint="@string/symbol_geographical_degrees"
+                        android:maxLines="1"
                         android:maxLength="2"
                         android:nextFocusDown="@+id/latitude_minutes_edit_text"
                         android:nextFocusLeft="@+id/latitude_minutes_edit_text"
                         android:nextFocusRight="@+id/latitude_minutes_edit_text"
                         android:nextFocusUp="@+id/latitude_minutes_edit_text"
-                        android:selectAllOnFocus="true"
-                        android:text="@{`` + viewmodel.latitudeDegrees}"
+                        android:inputType="number"
+                        android:text="@={`` + viewmodel.dmsFlow.latitudeDegrees}"
                         />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                         android:layout_width="0.0dp"
@@ -67,24 +78,35 @@
                         android:labelFor="@+id/latitude_degrees_edit_text"
                         />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/latitude_minutes_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:maxLines="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/latitude_minutes_edit_text"
-                        android:layout_width="0.0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
-                        android:layout_weight="0.9"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                         android:gravity="end"
-                        android:inputType="number"
+                        android:focusable="true"
+                        android:selectAllOnFocus="true"
+                        android:hint="@string/symbol_geographical_minutes"
+                        android:maxLines="1"
                         android:maxLength="2"
                         android:nextFocusDown="@+id/latitude_seconds_edit_text"
                         android:nextFocusLeft="@+id/latitude_seconds_edit_text"
                         android:nextFocusRight="@+id/latitude_seconds_edit_text"
                         android:nextFocusUp="@+id/latitude_seconds_edit_text"
-                        android:selectAllOnFocus="true"
-                        android:text="@{`` + viewmodel.latitudeMinutes}"
+                        android:inputType="number"
+                        android:text="@{`` + viewmodel.dmsFlow.latitudeMinutes}"
                         />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                         android:layout_width="0.0dp"
@@ -95,24 +117,35 @@
                         android:labelFor="@+id/latitude_minutes_edit_text"
                         />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/latitude_seconds_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:maxLines="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/latitude_seconds_edit_text"
-                        android:layout_width="0.0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
-                        android:layout_weight="1.2"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                         android:gravity="end"
-                        android:inputType="numberDecimal"
+                        android:focusable="true"
+                        android:selectAllOnFocus="true"
+                        android:hint="@string/symbol_geographical_seconds"
+                        android:maxLines="1"
                         android:maxLength="5"
                         android:nextFocusDown="@+id/longitude_degrees_edit_text"
                         android:nextFocusLeft="@+id/longitude_degrees_edit_text"
                         android:nextFocusRight="@+id/longitude_degrees_edit_text"
                         android:nextFocusUp="@+id/longitude_degrees_edit_text"
-                        android:selectAllOnFocus="true"
-                        android:text="@{`` + viewmodel.latitudeSeconds}"
+                        android:inputType="numberDecimal"
+                        android:text="@{`` + viewmodel.dmsFlow.latitudeSeconds}"
                         />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                         android:layout_width="0.0dp"
@@ -127,7 +160,7 @@
                         android:id="@+id/latitude_cardinal_direction_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="@={viewmodel.latitudeSouth}"
+                        android:checked="@={viewmodel.dmsFlow.latitudeSouth}"
                         android:paddingStart="8dp"
                         android:paddingEnd="0dp"
                         android:textOff="@string/cardinal_direction_symbol_north"
@@ -165,7 +198,7 @@
                         android:nextFocusRight="@+id/longitude_minutes_edit_text"
                         android:nextFocusUp="@+id/longitude_minutes_edit_text"
                         android:selectAllOnFocus="true"
-                        android:text="@{`` + viewmodel.longitudeDegrees}"
+                        android:text="@{`` + viewmodel.dmsFlow.longitudeDegrees}"
                         />
 
                 <TextView
@@ -193,7 +226,7 @@
                         android:nextFocusRight="@+id/longitude_seconds_edit_text"
                         android:nextFocusUp="@+id/longitude_seconds_edit_text"
                         android:selectAllOnFocus="true"
-                        android:text="@{`` + viewmodel.longitudeMinutes}"
+                        android:text="@{`` + viewmodel.dmsFlow.longitudeMinutes}"
                         />
 
                 <TextView
@@ -217,7 +250,7 @@
                         android:inputType="numberDecimal"
                         android:maxLength="5"
                         android:selectAllOnFocus="true"
-                        android:text="@{`` + viewmodel.longitudeSeconds}"
+                        android:text="@{`` + viewmodel.dmsFlow.longitudeSeconds}"
                         />
 
                 <TextView
@@ -233,7 +266,7 @@
                         android:id="@+id/longitude_cardinal_direction_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="@={!viewmodel.longitudeWest}"
+                        android:checked="@={!viewmodel.dmsFlow.longitudeWest}"
                         android:paddingStart="8dp"
                         android:paddingEnd="0dp"
                         android:textOff="@string/cardinal_direction_symbol_west"
@@ -245,14 +278,14 @@
         </LinearLayout>
 
         <ImageView
-                android:id="@+id/set_to_current_position_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                android:src="@drawable/ic_baseline_my_location_24"/>
+            android:id="@+id/set_to_current_position_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_baseline_my_location_24" />
                 />
     </RelativeLayout>
 

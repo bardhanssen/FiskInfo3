@@ -18,31 +18,39 @@
  */
 package no.sintef.fiskinfo.ui.tools
 
+import android.app.Application
 import android.location.Location
 import android.location.Location.*
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.util.DMSLocation
 import kotlin.math.abs
 import kotlin.math.floor
 
 
-class LocationDmsViewModel : LocationViewModel() {
+class LocationDmsViewModel(application: Application) : LocationViewModel(application) {
     var format = FORMAT_SECONDS
     var dmsLocation = MutableLiveData<DMSLocation>()
 
+    private var _dmsFlow = MutableStateFlow(DMSLocation())
+    var dmsFlow: MutableStateFlow<DMSLocation> = _dmsFlow
+
     override fun setNewLocation(location : Location) {
-        if (location != null)
+        viewModelScope.launch {
             dmsLocation.value = DMSLocation.fromLocation(location)
+            _dmsFlow.value = DMSLocation.fromLocation(location)
+            _dmsFlow.value.latitudeSeconds = 1.0// = DMSLocation.fromLocation(location)
+        }
+
+        Log.e("TAG", "Updated location: ${_dmsFlow.value.latitudeDegrees}, ${_dmsFlow.value.latitudeMinutes}, ${_dmsFlow.value.latitudeSeconds}")
+        Log.e("TAG", "Updated location: ${_dmsFlow.value.longitudeDegrees}, ${_dmsFlow.value.longitudeMinutes}, ${_dmsFlow.value.longitudeSeconds}")
     }
 
-    fun validateLocation():Boolean {
-        return (dmsLocation != null)
-    }
-
-    override fun getLocation():Location? {
-        if (!validateLocation())
-            return null
-
-        return dmsLocation.value!!.toLocation()
+    override fun getLocation():Location {
+        return dmsFlow.value.toLocation()
     }
 }
