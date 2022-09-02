@@ -109,6 +109,8 @@
     <string name="cardinal_direction_symbol_west">W</string>
     <string name="cardinal_direction_symbol_east">E</string>
     <string name="get_current_position_button_description">Get gps position</string>
+    <string name="add_position_button_description">Add additional position</string>
+    <string name="remove_position_button_description">Remove last position</string>
 
     <string name="tool_deployment_sent">Tool deployment sent!</string>
     <string name="tool_deployment_error">\"Tool deployment error: \"</string>
@@ -120,7 +122,7 @@
     <string name="tool_report_retrieval_message_confirm">Are you sure you want to report this tool as retrieved?</string>
     <string name="util_gps_settings_disabled">Gps Disabled</string>
     <string name="util_gps_enable_question">gps is not enabled . do you want to enable ?</string>
-    <string name="util_value_must_be_in_range">\"Value must be in range \"</string>
+    <string name="util_value_must_be_in_range">Value must be in range </string>
     <string name="util_range_to_separator">\" to \"</string>
     <string name="echogram_snap_title_or_other_main_aspect" translatable="false">Snap title or other main aspect</string>
     <string name="echogram_date_and_time_or_other_first_detail" translatable="false">Date and time or other first detail</string>

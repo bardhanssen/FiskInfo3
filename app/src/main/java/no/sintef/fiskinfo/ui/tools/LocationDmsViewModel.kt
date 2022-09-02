@@ -21,55 +21,62 @@ package no.sintef.fiskinfo.ui.tools
 import android.app.Application
 import android.location.Location
 import android.location.Location.*
-import android.text.Editable
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.util.DMSLocation
-import java.lang.NumberFormatException
 
 
-class LocationDmsViewModel(application: Application) : LocationViewModel(application) {
+class LocationDmsViewModel(application: Application): LocationViewModel(application) {
     var format = FORMAT_SECONDS
-//    var dmsLocation = MutableLiveData<DMSLocation>()
+    var latitudeSouth : Boolean = false
+    var longitudeWest: Boolean = false
 
-    private var _dmsFlow = MutableStateFlow(DMSLocation())
-    var dmsFlow: MutableStateFlow<DMSLocation> = _dmsFlow
+    private var _latitudeDegrees = MutableStateFlow("1")
+    private var _latitudeMinutes = MutableStateFlow("2")
+    private var _latitudeSeconds = MutableStateFlow("0")
 
-    override fun setNewLocation(location : Location) {
+    private var _longitudeDegrees = MutableStateFlow("3")
+    private var _longitudeMinutes = MutableStateFlow("4")
+    private var _longitudeSeconds = MutableStateFlow("0")
+
+    var latitudeDegrees: MutableStateFlow<String> = _latitudeDegrees
+    var latitudeMinutes: MutableStateFlow<String> = _latitudeMinutes
+    var latitudeSeconds: MutableStateFlow<String> = _latitudeSeconds
+
+    var longitudeDegrees: MutableStateFlow<String> = _longitudeDegrees
+    var longitudeMinutes: MutableStateFlow<String> = _longitudeMinutes
+    var longitudeSeconds: MutableStateFlow<String> = _longitudeSeconds
+
+    override fun setNewLocation(location: Location) {
         viewModelScope.launch {
-//            dmsLocation.value = DMSLocation.fromLocation(location)
-            _dmsFlow.value = DMSLocation.fromLocation(location)
-            _dmsFlow.value.latitudeSeconds = 1.0// = DMSLocation.fromLocation(location)
-        }
+            val dmsLocation = DMSLocation.fromLocation(location)
 
-        Log.e("TAG", "Updated location: ${location.latitude}, ${location.longitude}")
-        Log.e("TAG", "Updated location: ${_dmsFlow.value.latitudeDegrees}, ${_dmsFlow.value.latitudeMinutes}, ${_dmsFlow.value.latitudeSeconds}")
-        Log.e("TAG", "Updated location: ${_dmsFlow.value.longitudeDegrees}, ${_dmsFlow.value.longitudeMinutes}, ${_dmsFlow.value.longitudeSeconds}")
-    }
+            _latitudeDegrees.value = dmsLocation.latitudeDegrees.toString()
+            _latitudeMinutes.value = dmsLocation.latitudeMinutes.toString()
+            _latitudeSeconds.value = dmsLocation.latitudeSeconds.toString()
 
-    fun setLatitudeDegrees(s: Editable) {
-        try {
-            _dmsFlow.value.latitudeDegrees = Integer.parseInt(s.toString())
-            Log.e("TAG", "Updated latitude degrees: ${_dmsFlow.value.latitudeDegrees}")
-        } catch (e: NumberFormatException) {
-            Log.e("TAG", "Latitude degrees parsing failed: $s")
+            _longitudeDegrees.value = dmsLocation.longitudeDegrees.toString()
+            _longitudeMinutes.value = dmsLocation.longitudeMinutes.toString()
+            _longitudeSeconds.value = dmsLocation.longitudeSeconds.toString()
+
+            Log.e("setNewLocation", "Updated view model location: ${location.latitude}, ${location.longitude}")
         }
     }
 
-    fun setLatitudeMinutes(minutes: Int) {
-        _dmsFlow.value.latitudeMinutes = minutes
-        Log.e("TAG", "Updated latitude minutes: ${_dmsFlow.value.latitudeMinutes}")
-    }
+    override fun getLocation(): Location {
+        val location = Location("")
+        Log.e("getLocation", "Updated view model location: lat(${latitudeDegrees.value}, ${latitudeMinutes.value}, ${latitudeSeconds.value}), lon(${longitudeDegrees.value}, ${longitudeMinutes.value}, ${longitudeSeconds.value})")
 
-    fun setLatitudeSeconds(seconds: Double) {
-        _dmsFlow.value.latitudeSeconds = seconds
-        Log.e("TAG", "Updated latitude seconds: ${_dmsFlow.value.latitudeSeconds}")
-    }
+        location.latitude = latitudeDegrees.value.toInt() + (latitudeMinutes.value.toInt() / 60.0) + (latitudeSeconds.value.toDouble() / 3600.0)
+        if (latitudeSouth) location.latitude = -location.latitude
 
-    override fun getLocation():Location {
-        return dmsFlow.value.toLocation()
+        location.longitude = longitudeDegrees.value.toInt() + (longitudeMinutes.value.toInt() / 60.0) + (longitudeSeconds.value.toDouble() / 3600.0)
+        if (longitudeWest) location.longitude = -location.longitude
+
+        Log.e("getLocation", "Loc: ${location.latitude}, ${location.longitude}")
+
+        return location
     }
 }

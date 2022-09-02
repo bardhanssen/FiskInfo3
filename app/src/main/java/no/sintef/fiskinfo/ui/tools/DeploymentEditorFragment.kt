@@ -22,6 +22,7 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
 import android.widget.TimePicker
@@ -29,6 +30,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,14 +43,14 @@ import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
-import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
 import no.sintef.fiskinfo.util.getToolCountType
 import java.util.*
 
 class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
-    Fragment(),
-    LocationDmsDialogListener {
+    Fragment(), FragmentResultListener {
     companion object {
+        const val EDIT_POSITION_FRAGMENT_RESULT_REQUEST_KEY = "GET_EDIT_POSITION_RESULTS"
+
         fun newInstance() = DeploymentEditorFragment()
     }
 
@@ -128,19 +130,19 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
         mViewModel = ViewModelProvider(requireActivity())[DeploymentViewModel::class.java]
         mViewModel.initContent()
 
-        mEditTextToolCountLayout.hint = getToolCountType(mViewModel.toolTypeCode.value!!, requireContext())
 
         mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
 
+        mEditTextToolCountLayout.hint = getToolCountType(mViewModel.toolTypeCode.value!!, requireContext())
         // Refresh the full UI when there is a change, as this UI is small
         mViewModel.toolTypeCodeName.observe(
             viewLifecycleOwner
         ) {
-            mBinding.deploymentviewmodel = mViewModel
+            mBinding.viewModel = mViewModel
         }
 
         mViewModel.setupTime.observe(viewLifecycleOwner) {
-            mBinding.deploymentviewmodel = mViewModel
+            mBinding.viewModel = mViewModel
         }
 
         mViewModel.locations.observe(viewLifecycleOwner) { locAdapter.locations = it }
@@ -216,27 +218,25 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
     }
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
-        mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
         val fm: FragmentManager = parentFragmentManager
-
         val locDialogFragment: LocationDmsDialogFragment =
             LocationDmsDialogFragment.newInstance(getString(R.string.tool_edit_location))
-        // SETS the target fragment for use later when sending results
-        locDialogFragment.setTargetFragment(this@DeploymentEditorFragment, 300)
+
+        fm.setFragmentResultListener(EDIT_POSITION_FRAGMENT_RESULT_REQUEST_KEY, viewLifecycleOwner, this)
         locDialogFragment.show(fm, "fragment_edit_location")
 
-//        val locDialogFragment: LocationDmsDialogFragment =
-//            LocationDmsDialogFragment.newInstance("Edit location")
-//        editNameDialogFragment.show(fm, "fragment_edit_location")
+        mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
 
-//        Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
+        Log.e("onEditLocationClicked", "Created dialog with posistion: ${mViewModel.locations.value!![itemClicked].latitude}, ${mViewModel.locations.value!![itemClicked].longitude}")
     }
 
-    override fun onDmsEditConfirmed() {
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
         val location = mLocationViewModel.getLocation()
         if (location != null) {
             mViewModel.locations.value!![mLocationViewModel.listPosition] = location
             mViewModel.locations.postValue(mViewModel.locations.value)
+
+            Log.e("onFragmentResult", "Updated location: ${location.latitude}, ${location.longitude}")
         }
     }
 
@@ -265,6 +265,4 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
             mViewModel.setSetupTime(hourOfDay, minute)
         }
     }
-
-
 }

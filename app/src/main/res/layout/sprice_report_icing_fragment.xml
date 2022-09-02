@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="no.sintef.fiskinfo.util.UtilsKt" />
-
         <import type="android.text.InputType" />
 
         <variable

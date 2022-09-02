@@ -34,8 +34,7 @@ import no.sintef.fiskinfo.ui.tools.LocationViewModel
 import java.util.*
 
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
-    Fragment(),
-    LocationDmsDialogFragment.LocationDmsDialogListener {
+    Fragment() {
 
     companion object {
         fun newInstance() = ReportIcingFragment()
@@ -339,14 +338,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    override fun onDmsEditConfirmed() {
-        val location = mLocationViewModel.getLocation()
-        if (location != null) {
-//            mViewModel.location.value!![mLocationViewModel.listPosition] = location!!
-            mViewModel.location.postValue(mViewModel.location.value)
-        }
     }
 
     private fun checkReportedValues(): Boolean {

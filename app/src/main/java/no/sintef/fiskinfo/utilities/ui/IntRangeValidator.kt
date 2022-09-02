@@ -38,8 +38,7 @@ class IntRangeValidator(
             val withinHigh = if (includeHigh) num <= high else num < high
 
             if (! (withinHigh && withinLow))
-                textView?.error = textView?.context?.getString(R.string.util_value_must_be_in_range) + low +
-                        textView?.context?.getString(R.string.util_range_to_separator) + high
+                textView?.error = "${textView?.context?.getString(R.string.util_value_must_be_in_range)} ${low}-${high}"
             else {
                 textView?.error = null
                 if (updateAction != null)
