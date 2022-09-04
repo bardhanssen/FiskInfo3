@@ -1,17 +1,12 @@
 package no.sintef.fiskinfo.ui.sprice
 
-import android.app.Dialog
-import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResultListener
@@ -31,10 +26,12 @@ import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment
 import no.sintef.fiskinfo.ui.tools.LocationDmsViewModel
 import no.sintef.fiskinfo.ui.tools.LocationRecyclerViewAdapter
 import no.sintef.fiskinfo.ui.tools.LocationViewModel
+import java.time.Instant
 import java.util.*
 
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
-    Fragment() {
+    Fragment(),
+    LocationDmsDialogFragment.LocationDmsDialogListener {
 
     companion object {
         fun newInstance() = ReportIcingFragment()
@@ -42,6 +39,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private lateinit var mViewModel: ReportIcingViewModel
     private lateinit var mLocationViewModel: LocationViewModel
+    private lateinit var locAdapter: LocationRecyclerViewAdapter
 
     private lateinit var mMaxMiddleWindAdapter: maxMiddleWindTimeArrayAdapter
     private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
@@ -70,14 +68,21 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mBinding.icingReportDateField.setOnClickListener {
             val builder: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
             builder.setSelection(mViewModel.reportingTime.value.time)
+            Log.e("setSelection", "Reporting time: ${mViewModel.reportingTime.value.time}")
+
             val picker: MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener {
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = it as Long
                 mViewModel.setReportingDate(cal.time)
+
+//                mViewModel.observationTime.value = cal.time
             }
             picker.show(parentFragmentManager, picker.toString())
         }
+
+        locAdapter = LocationRecyclerViewAdapter(this)
+        mBinding.toolPositionRecyclerView.adapter = locAdapter
 
         return mBinding.root
     }
@@ -91,9 +96,15 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        mViewModel.reportingTime.value = Date.from(Instant.now())
         Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
-
-//        return true
+        Log.e(
+            "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopTime.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value},\n" +
+                    "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
+                    "${mViewModel.maxMiddleWindTime.value?.getFormValue()},\n" +
+                    "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
+        )
+        return true
 
         if (item.itemId == R.id.send_icing_report_action) {
             val result = OrapRepository.getInstance(requireContext()).SendIcingReport(mViewModel.getIcingReportBody())
@@ -128,8 +139,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             }
 
             return true
-        }
-        else if(item.itemId == R.id.check_icing_report_action) {
+        } else if (item.itemId == R.id.check_icing_report_action) {
             checkReportedValues()
 
 //                    .observationTime(LocalDateTime.now())
@@ -205,8 +215,9 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         )
         mSynopHourDropdown = mBinding.icingReportTimeField
 
-        mSynopHourDropdown.setOnItemClickListener { parent, _, position, _ ->
-            mViewModel.synopTimeSelect.value = (parent.getItemAtPosition(position) as IcingReportHourEnum).code
+        mSynopHourDropdown.setOnItemClickListener { parent, _, time, _ ->
+            Log.e("setReportingTime", "Synop time updated, old: ${mViewModel.synopHourSelect.value}, new:${time}")
+            mViewModel.synopHourSelect.value = (parent.getItemAtPosition(time) as IcingReportHourEnum).code
         }
 
         mSynopHourDropdown.setAdapter(mReportingHourAdapter)
@@ -225,8 +236,9 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         // Refresh the full UI when there is a change, as this UI is small
 //        mViewModel.maxMiddleWindTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
 //        mViewModel.reportingTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
-        mViewModel.location.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
         mViewModel.init()
+        mViewModel.location.observe(viewLifecycleOwner) { mBinding.viewmodel = mViewModel }
+        mViewModel.locations.observe(viewLifecycleOwner) { locAdapter.locations = it }
     }
 
     private fun initMenu() {
@@ -353,59 +365,27 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
-//        mLocationViewModel.initWithLocation(mViewModel.location.value!![itemClicked], itemClicked)
-        val fm: FragmentManager = parentFragmentManager
+        mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
+        val fm: FragmentManager? = parentFragmentManager
 
         val locDialogFragment: LocationDmsDialogFragment =
             LocationDmsDialogFragment.newInstance(getString(R.string.tool_edit_location))
         // SETS the target fragment for use later when sending results
-//        locDialogFragment.setTargetFragment(this@ReportIcingFragment, 300)
-
-        locDialogFragment.setFragmentResultListener(getString(R.string.tool_edit_location)) { _, _ -> run {} }
-
-        locDialogFragment.show(fm, "fragment_edit_location")
-
-        Log.d("editLoc", "Clicked editLocation")
-
-//        val locDialogFragment: LocationDmsDialogFragment =
-//            LocationDmsDialogFragment.newInstance("Edit location")
-//        editNameDialogFragment.show(fm, "fragment_edit_location")
-
-//        Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
-    }
-
-    class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
-        private lateinit var mViewModel: ReportIcingViewModel
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            mViewModel =
-                ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
-
-
-            // Use the current time as the default values for the picker
-            val c = Calendar.getInstance()
-            c.time = mViewModel.reportingTime.value!!
-            val hour = c.get(Calendar.HOUR_OF_DAY)
-            val minute = c.get(Calendar.MINUTE)
-
-            // Create a new instance of TimePickerDialog and return it
-            return TimePickerDialog(
-                activity,
-                this,
-                hour,
-                minute,
-                DateFormat.is24HourFormat(activity)
-            )
-        }
-
-        override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-            mViewModel.setReportingTime(hourOfDay, minute)
-            // Do something with the time chosen by the user
-        }
+        locDialogFragment.setTargetFragment(this@ReportIcingFragment, 300)
+        locDialogFragment.show(fm!!, "fragment_edit_location")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _mBinding = null
+    }
+
+    override fun onDmsEditConfirmed() {
+        val location = mLocationViewModel.getLocation()
+        if (location != null) {
+            mViewModel.locations.value!![mLocationViewModel.listPosition] = location
+            mViewModel.locations.postValue(mViewModel.locations.value)
+        }
     }
 
 }

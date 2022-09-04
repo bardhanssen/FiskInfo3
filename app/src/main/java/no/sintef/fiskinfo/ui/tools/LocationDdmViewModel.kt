@@ -18,7 +18,6 @@
  */
 package no.sintef.fiskinfo.ui.tools
 
-import android.app.Application
 import android.location.Location
 import android.location.Location.*
 import androidx.lifecycle.MutableLiveData
@@ -27,7 +26,7 @@ import kotlin.math.abs
 import kotlin.math.floor
 
 
-class LocationDdmViewModel(application: Application) : LocationViewModel(application) {
+class LocationDdmViewModel : LocationViewModel() {
     var format = FORMAT_MINUTES
     var ddmLocation = MutableLiveData<DDMLocation>();
 

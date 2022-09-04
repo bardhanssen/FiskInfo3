@@ -29,13 +29,13 @@ import kotlin.math.absoluteValue
 import kotlin.math.floor
 
 
-abstract class LocationViewModel(application: Application) : ObservableAndroidViewModel(application) {
+abstract class LocationViewModel : ViewModel() {
     var listPosition = 0;
 
     open fun initWithLocation(location : Location, index : Int) {
         listPosition = index;
         setNewLocation(location)
-   }
+    }
 
     abstract fun setNewLocation(location : Location)
     abstract fun getLocation():Location?

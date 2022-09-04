@@ -3,6 +3,7 @@ package no.sintef.fiskinfo.ui.sprice
 import android.app.Application
 import android.content.Context
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -18,9 +19,12 @@ import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
-    val reportingTime: MutableStateFlow<Date> = _reportingTime
+    private val _observationTime = MutableStateFlow(Date.from(Instant.now()))
+    val synopTime = MutableLiveData<Date>()
 
-    val observationTime = MutableLiveData<Date>()
+    val reportingTime: MutableStateFlow<Date> = _reportingTime
+    val observationTime: MutableStateFlow<Date> = _observationTime
+
     val location = MutableLiveData<Location>()
     var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
@@ -31,20 +35,24 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     private val _seaTemperature = MutableStateFlow("")
 
     private val _synopTimeSelect = MutableStateFlow("00:00")
-    val synopTimeSelect: MutableStateFlow<String> = _synopTimeSelect
+    val synopHourSelect: MutableStateFlow<String> = _synopTimeSelect
 
     val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
     val airTemperature: MutableStateFlow<String> = _airTemperature
     val seaTemperature: MutableStateFlow<String> = _seaTemperature
+    val locations = MutableLiveData<MutableList<Location>>()
 
     fun init() {
         reportingTime.value = Date()
-        synopTimeSelect.value = "${Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}:00"
+        synopHourSelect.value = "${Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}:00"
+        synopTime.value = Date.from(Instant.now())
         maxMiddleWindTime.value = MaxMiddleWindTimeEnum.DURING_OBSERVATION
         val defaultLoc = Location("")
         // TODO: Default locations
         defaultLoc.latitude = 0.0
         defaultLoc.longitude = 0.0
+        locations.value = mutableListOf(defaultLoc)
+
         location.value = defaultLoc
         reportChecked.value = false
         reportValid.value = false
@@ -79,22 +87,16 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     fun setReportingDate(date: Date) {
         // TODO: pick out only date part (not time)
         val c = Calendar.getInstance()
-        c.time = reportingTime.value
+        c.time = synopTime.value
 
         val newDateC = Calendar.getInstance()
         newDateC.time = date
         c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
         c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
 
-        reportingTime.value = c.time
-    }
-
-    fun setReportingTime(hourOfDay: Int, minutes: Int) {
-        val c = Calendar.getInstance()
-        c.time = reportingTime.value
-        c.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        c.set(Calendar.MINUTE, minutes)
-        reportingTime.value = c.time
+        Log.e("setReportingTime", "Reporting time updated, old: ${_observationTime.value}, new:${c.time}")
+        _observationTime.value = c.time
+        synopTime.value = c.time
     }
 
     val maxMiddleWindTimeName: LiveData<String> = Transformations.map(maxMiddleWindTime) { code ->

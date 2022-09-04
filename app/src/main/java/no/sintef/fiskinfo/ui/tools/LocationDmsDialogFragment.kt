@@ -20,132 +20,135 @@ package no.sintef.fiskinfo.ui.tools
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.location_dms_editor_fragment.view.*
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
 import no.sintef.fiskinfo.util.GpsLocationTracker
+import no.sintef.fiskinfo.utilities.ui.IntRangeValidator
 
 
 class LocationDmsDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: LocationDmsViewModel
-    private var _mBinding: LocationDmsEditorFragmentBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _mBinding!!
+    private lateinit var mBinding: LocationDmsEditorFragmentBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _mBinding = LocationDmsEditorFragmentBinding.inflate(inflater, container, false)
 
-        binding.apply {
-            this.lifecycleOwner = this@LocationDmsDialogFragment
-            this.viewmodel = viewmodel
-        }
-
-        binding.setToCurrentPositionIcon.setOnClickListener { setLocationToCurrentPosition() }
-        viewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
-
-        Log.e("onCreateView", "view model location: ${viewModel.getLocation().latitude}, ${viewModel.getLocation().longitude}")
-
-        return binding.root
+    interface LocationDmsDialogListener {
+        fun onDmsEditConfirmed()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _mBinding = null
+    fun createView(
+        inflater: LayoutInflater, container: ViewGroup?
+    ): View? {
+        mBinding = DataBindingUtil.inflate<LocationDmsEditorFragmentBinding>(
+            inflater,
+            no.sintef.fiskinfo.R.layout.location_dms_editor_fragment,
+            container,
+            false
+        )
+
+        val root = mBinding.root
+
+        root.latitude_degrees_edit_text.addTextChangedListener(
+            IntRangeValidator(root.latitude_degrees_edit_text,
+                0,
+                true,
+                90,
+                true,
+                { viewModel.dmsLocation.value!!.latitudeDegrees = it.toInt() })
+        )
+
+        root.latitude_minutes_edit_text.addTextChangedListener(
+            IntRangeValidator(root.latitude_minutes_edit_text,
+                0,
+                true,
+                59,
+                true,
+                { viewModel.dmsLocation.value!!.latitudeMinutes = it.toInt() })
+        )
+
+        root.latitude_seconds_edit_text.addTextChangedListener(
+            IntRangeValidator(root.latitude_seconds_edit_text,
+                0,
+                true,
+                60,
+                false,
+                { viewModel.dmsLocation.value!!.latitudeSeconds = it.toDouble() })
+        )
+
+
+        root.longitude_degrees_edit_text.addTextChangedListener(
+            IntRangeValidator(root.longitude_degrees_edit_text,
+                0,
+                true,
+                180,
+                true,
+                { viewModel.dmsLocation.value!!.longitudeDegrees = it.toInt() })
+        )
+
+        root.longitude_minutes_edit_text.addTextChangedListener(
+            IntRangeValidator(root.longitude_minutes_edit_text,
+                0,
+                true,
+                59,
+                true,
+                { viewModel.dmsLocation.value!!.longitudeMinutes = it.toInt() })
+        )
+
+        root.longitude_seconds_edit_text.addTextChangedListener(
+            IntRangeValidator(root.longitude_seconds_edit_text,
+                0,
+                true,
+                60,
+                false,
+                { viewModel.dmsLocation.value!!.longitudeSeconds = it.toDouble() })
+        )
+
+        mBinding.setToCurrentPositionIcon.setOnClickListener { setLocationToCurrentPosition() }
+        return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        Log.e("onViewCreated", "view model location: ${viewModel.getLocation().latitude}, ${viewModel.getLocation().longitude}")
-
-//        _mBinding = LocationDmsEditorFragmentBinding.bind(view)
-
-        binding.apply {
-            this.lifecycleOwner = this@LocationDmsDialogFragment
-            this.viewmodel = viewmodel
-        }
-
-//        viewModel.dmsLocation.observe(viewLifecycleOwner) { dmsLoc ->
-//            if (dmsLoc != null) {
-////                binding.viewModel.dmsFlow.value = dmsLoc
-////                binding.longitudeDegreesEditText.setText(dmsLoc.longitudeDegrees.toString())
-////                binding.longitudeDegreesEditText.setText(dmsLoc.longitudeMinutes.toString())
-////                binding.longitudeSecondsEditText.setText(dmsLoc.longitudeSeconds.toString())
-////                binding.longitudeCardinalDirectionSwitch.isChecked = !dmsLoc.longitudeWest
-//
-//                Log.e("TAG", "Updated location: ${dmsLoc.latitudeDegrees}, ${dmsLoc.latitudeMinutes}, ${dmsLoc.latitudeSeconds}")
-//                Log.e("TAG", "Updated location: ${dmsLoc.longitudeDegrees}, ${dmsLoc.longitudeMinutes}, ${dmsLoc.longitudeSeconds}")
-//            }
-//        }
-
-//        binding.latitudeDegreesInput.editText?.setText("23")
-    }
-
-//    interface LocationDmsDialogListener {
-//        fun onDmsEditConfirmed()
-//    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        Log.e("onCreateDialog", "onCreateDialog start")
 
-        val view = onCreateView(requireActivity().layoutInflater, null, savedInstanceState)
+        val view = createView(requireActivity().layoutInflater, null)
 
         val builder = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.tool_edit_location))
-            .setNegativeButton(resources.getString(R.string.cancel)) { _, _ ->
+//            .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
+//                dismiss();
+//            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
                 dismiss()
             }
-            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-//                val listener: LocationDmsDialogListener? = targetFragment as LocationDmsDialogListener?
-//                listener?.onDmsEditConfirmed()
-
-                val fm: FragmentManager = parentFragmentManager
-                val args = Bundle()
-                fm.setFragmentResult(DeploymentEditorFragment.EDIT_POSITION_FRAGMENT_RESULT_REQUEST_KEY, args)
-
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                val listener: LocationDmsDialogListener? = targetFragment as LocationDmsDialogListener?
+                listener?.onDmsEditConfirmed()
                 dismiss()
+
             }
         builder.setView(view)
-        Log.e("onCreateDialog", "onCreateDialog finished")
 
         return builder.create()
     }
 
     fun setLocationToCurrentPosition() {
-        val tracker = GpsLocationTracker(requireContext())
+        viewModel.getLocation();
+
+        var tracker = GpsLocationTracker(requireContext())
         if (tracker.canGetLocation()) {
 
-            val loc = tracker.location
+            var loc = tracker.location
             if (loc != null) {
-//                val dmsLocation = DMSLocation.fromLocation(loc)
-//                viewModel.latitudeDegrees.value = loc.latitude.toInt().toString()
-//                binding.latitudeDegreesEditText.setText("2")
-//                binding.latitudeMinutesEditText.setText("4")
-//                binding.latitudeSecondsEditText.setText(dmsLocation.latitudeSeconds.toString())
-//                binding.latitudeCardinalDirectionSwitch.isChecked = !dmsLocation.latitudeSouth
-
-                viewModel.viewModelScope.launch {
-                    viewModel.setNewLocation(loc)
-                }
-
-//                Log.e("setLocationToCurr", "Updated location: ${dmsLocation.latitudeDegrees}, ${dmsLocation.latitudeMinutes}, ${dmsLocation.latitudeSeconds}")
-//                Log.e("setLocationToCurr", "Updated location: ${dmsLocation.longitudeDegrees}, ${dmsLocation.longitudeDegrees}, ${dmsLocation.longitudeDegrees}")
+                viewModel.setNewLocation(loc)
             }
 
         } else {
@@ -153,13 +156,25 @@ class LocationDmsDialogFragment : DialogFragment() {
         }
     }
 
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        viewModel = ViewModelProviders.of(requireActivity()).get(LocationDmsViewModel::class.java)
+
+        viewModel.dmsLocation.observe(this, Observer { dmsLoc ->
+            if (dmsLoc != null) {
+                mBinding?.viewmodel = dmsLoc
+            }
+        })
+        super.onActivityCreated(savedInstanceState)
+    }
+
     companion object {
         fun newInstance(title: String?): LocationDmsDialogFragment {
-            val fragment = LocationDmsDialogFragment()
+            val frag = LocationDmsDialogFragment()
             val args = Bundle()
             args.putString("title", title)
-            fragment.arguments = args
-            return fragment
+            frag.arguments = args
+            return frag
         }
     }
 

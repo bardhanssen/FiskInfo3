@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.tools.LocationDmsDialogFragment">
 
     <data>
-        <import type="no.sintef.fiskinfo.util.UtilsKt" />
-        <import type="no.sintef.fiskinfo.util.DoubleConverter" />
-
+        <import type="no.sintef.fiskinfo.util.DoubleConverter"/>
         <variable
             name="viewmodel"
-            type="no.sintef.fiskinfo.ui.tools.LocationDmsViewModel" />
+            type="no.sintef.fiskinfo.util.DMSLocation" />
     </data>
 
     <RelativeLayout
         android:id="@+id/dmsEditorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,35 +37,23 @@
                 android:paddingRight="4dp"
                 android:paddingBottom="1dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/latitude_degrees_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <EditText
+                    android:id="@+id/latitude_degrees_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
-                    android:maxLines="1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/latitude_degrees_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
-                        android:focusable="true"
-                        android:gravity="end"
-                        android:hint="@string/symbol_geographical_degrees"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:nextFocusLeft="@+id/latitude_minutes_edit_text"
-                        android:nextFocusRight="@+id/latitude_minutes_edit_text"
-                        android:nextFocusUp="@+id/latitude_minutes_edit_text"
-                        android:nextFocusDown="@+id/latitude_minutes_edit_text"
-                        android:selectAllOnFocus="true"
-                        android:text="@={viewmodel.latitudeDegrees}"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="end"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusLeft="@+id/latitude_minutes_edit_text"
+                    android:nextFocusRight="@+id/latitude_minutes_edit_text"
+                    android:nextFocusUp="@+id/latitude_minutes_edit_text"
+                    android:nextFocusDown="@+id/latitude_minutes_edit_text"
+                    android:selectAllOnFocus="true"
+                    android:text="@{`` + viewmodel.latitudeDegrees}" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -76,34 +63,23 @@
                     android:labelFor="@+id/latitude_degrees_edit_text"
                     android:text="@string/symbol_geographical_degrees" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/latitude_minutes_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/latitude_minutes_edit_text"
+                    android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
-                    android:maxLines="1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/latitude_minutes_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
-                        android:focusable="true"
-                        android:gravity="end"
-                        android:hint="@string/symbol_geographical_minutes"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:nextFocusLeft="@+id/latitude_seconds_edit_text"
-                        android:nextFocusRight="@+id/latitude_seconds_edit_text"
-                        android:nextFocusUp="@+id/latitude_seconds_edit_text"
-                        android:nextFocusDown="@+id/latitude_seconds_edit_text"
-                        android:selectAllOnFocus="true"
-                        android:text="@{viewmodel.latitudeMinutes}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="end"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusLeft="@+id/latitude_seconds_edit_text"
+                    android:nextFocusRight="@+id/latitude_seconds_edit_text"
+                    android:nextFocusUp="@+id/latitude_seconds_edit_text"
+                    android:nextFocusDown="@+id/latitude_seconds_edit_text"
+                    android:selectAllOnFocus="true"
+                    android:text="@{`` + viewmodel.latitudeMinutes}" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -113,34 +89,23 @@
                     android:labelFor="@+id/latitude_minutes_edit_text"
                     android:text="@string/symbol_geographical_minutes" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/latitude_seconds_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/latitude_seconds_edit_text"
+                    android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:maxLines="1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/latitude_seconds_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
-                        android:focusable="true"
-                        android:gravity="end"
-                        android:hint="@string/symbol_geographical_seconds"
-                        android:inputType="numberDecimal"
-                        android:maxLength="5"
-                        android:maxLines="1"
-                        android:nextFocusLeft="@+id/longitude_degrees_edit_text"
-                        android:nextFocusRight="@+id/longitude_degrees_edit_text"
-                        android:nextFocusUp="@+id/longitude_degrees_edit_text"
-                        android:nextFocusDown="@+id/longitude_degrees_edit_text"
-                        android:selectAllOnFocus="true"
-                        android:text="@{viewmodel.latitudeSeconds}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_weight="1.2"
+                    android:gravity="end"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
+                    android:nextFocusLeft="@+id/longitude_degrees_edit_text"
+                    android:nextFocusRight="@+id/longitude_degrees_edit_text"
+                    android:nextFocusUp="@+id/longitude_degrees_edit_text"
+                    android:nextFocusDown="@+id/longitude_degrees_edit_text"
+                    android:selectAllOnFocus="true"
+                    android:text="@{`` + viewmodel.latitudeSeconds}" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -179,11 +144,10 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
                     android:gravity="end"
-                    android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxLength="3"
                     android:nextFocusLeft="@+id/longitude_minutes_edit_text"
@@ -191,7 +155,7 @@
                     android:nextFocusUp="@+id/longitude_minutes_edit_text"
                     android:nextFocusDown="@+id/longitude_minutes_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{viewmodel.latitudeDegrees}" />
+                    android:text="@{`` + viewmodel.longitudeDegrees}" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -206,11 +170,10 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
                     android:gravity="end"
-                    android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxLength="2"
                     android:nextFocusLeft="@+id/longitude_seconds_edit_text"
@@ -218,7 +181,7 @@
                     android:nextFocusUp="@+id/longitude_seconds_edit_text"
                     android:nextFocusDown="@+id/longitude_seconds_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{viewmodel.longitudeMinutes}" />
+                    android:text="@{`` + viewmodel.longitudeMinutes}" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -233,15 +196,14 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="1.2"
                     android:gravity="end"
-                    android:importantForAutofill="no"
                     android:inputType="numberDecimal"
                     android:maxLength="5"
                     android:selectAllOnFocus="true"
-                    android:text="@{viewmodel.longitudeSeconds}" />
+                    android:text="@{`` + viewmodel.longitudeSeconds}" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -271,10 +233,10 @@
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/activity_horizontal_margin_small"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:contentDescription="@string/get_current_position_button_description"
-            android:src="@drawable/ic_baseline_my_location_24" />
+            android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+            android:src="@drawable/ic_baseline_my_location_24"/>
+        />
     </RelativeLayout>
 
 </layout>

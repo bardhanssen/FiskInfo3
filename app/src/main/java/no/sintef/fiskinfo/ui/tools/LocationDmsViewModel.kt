@@ -18,65 +18,31 @@
  */
 package no.sintef.fiskinfo.ui.tools
 
-import android.app.Application
 import android.location.Location
 import android.location.Location.*
-import android.util.Log
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
 import no.sintef.fiskinfo.util.DMSLocation
+import kotlin.math.abs
+import kotlin.math.floor
 
 
-class LocationDmsViewModel(application: Application): LocationViewModel(application) {
+class LocationDmsViewModel : LocationViewModel() {
     var format = FORMAT_SECONDS
-    var latitudeSouth : Boolean = false
-    var longitudeWest: Boolean = false
+    var dmsLocation = MutableLiveData<DMSLocation>()
 
-    private var _latitudeDegrees = MutableStateFlow("1")
-    private var _latitudeMinutes = MutableStateFlow("2")
-    private var _latitudeSeconds = MutableStateFlow("0")
-
-    private var _longitudeDegrees = MutableStateFlow("3")
-    private var _longitudeMinutes = MutableStateFlow("4")
-    private var _longitudeSeconds = MutableStateFlow("0")
-
-    var latitudeDegrees: MutableStateFlow<String> = _latitudeDegrees
-    var latitudeMinutes: MutableStateFlow<String> = _latitudeMinutes
-    var latitudeSeconds: MutableStateFlow<String> = _latitudeSeconds
-
-    var longitudeDegrees: MutableStateFlow<String> = _longitudeDegrees
-    var longitudeMinutes: MutableStateFlow<String> = _longitudeMinutes
-    var longitudeSeconds: MutableStateFlow<String> = _longitudeSeconds
-
-    override fun setNewLocation(location: Location) {
-        viewModelScope.launch {
-            val dmsLocation = DMSLocation.fromLocation(location)
-
-            _latitudeDegrees.value = dmsLocation.latitudeDegrees.toString()
-            _latitudeMinutes.value = dmsLocation.latitudeMinutes.toString()
-            _latitudeSeconds.value = dmsLocation.latitudeSeconds.toString()
-
-            _longitudeDegrees.value = dmsLocation.longitudeDegrees.toString()
-            _longitudeMinutes.value = dmsLocation.longitudeMinutes.toString()
-            _longitudeSeconds.value = dmsLocation.longitudeSeconds.toString()
-
-            Log.e("setNewLocation", "Updated view model location: ${location.latitude}, ${location.longitude}")
-        }
+    override fun setNewLocation(location : Location) {
+        if (location != null)
+            dmsLocation.value = DMSLocation.fromLocation(location)
     }
 
-    override fun getLocation(): Location {
-        val location = Location("")
-        Log.e("getLocation", "Updated view model location: lat(${latitudeDegrees.value}, ${latitudeMinutes.value}, ${latitudeSeconds.value}), lon(${longitudeDegrees.value}, ${longitudeMinutes.value}, ${longitudeSeconds.value})")
+    fun validateLocation():Boolean {
+        return (dmsLocation != null)
+    }
 
-        location.latitude = latitudeDegrees.value.toInt() + (latitudeMinutes.value.toInt() / 60.0) + (latitudeSeconds.value.toDouble() / 3600.0)
-        if (latitudeSouth) location.latitude = -location.latitude
+    override fun getLocation():Location? {
+        if (!validateLocation())
+            return null
 
-        location.longitude = longitudeDegrees.value.toInt() + (longitudeMinutes.value.toInt() / 60.0) + (longitudeSeconds.value.toDouble() / 3600.0)
-        if (longitudeWest) location.longitude = -location.longitude
-
-        Log.e("getLocation", "Loc: ${location.latitude}, ${location.longitude}")
-
-        return location
+        return dmsLocation.value!!.toLocation()
     }
 }

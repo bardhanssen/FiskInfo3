@@ -8,7 +8,7 @@
         <import type="android.text.InputType" />
 
         <variable
-            name="reporticingviewmodel"
+            name="viewmodel"
             type="no.sintef.fiskinfo.ui.sprice.ReportIcingViewModel" />
     </data>
 
@@ -49,7 +49,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{UtilsKt.formatDate(reporticingviewmodel.reportingTime)}" />
+                            android:text="@{UtilsKt.formatDate(viewmodel.synopTime)}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
                             android:hint="@string/sprice_icing_reporting_synop"
                             android:maxLength="7"
                             android:focusableInTouchMode="false"
-                            android:text="@{reporticingviewmodel.synopTimeSelect.toString()}" />
+                            android:text="@{viewmodel.synopHourSelect.toString()}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -95,10 +95,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="true"
+                            android:nextFocusDown="@+id/reportIcingSeaTemperatureInputEditText"
+                            android:nextFocusLeft="@+id/reportIcingSeaTemperatureInputEditText"
+                            android:nextFocusRight="@+id/reportIcingSeaTemperatureInputEditText"
                             android:hint="@string/icing_report_air_temperature_hint"
                             android:maxLines="1"
                             android:inputType="numberDecimal|numberSigned"
-                            android:text="@={reporticingviewmodel.airTemperature}"
+                            android:text="@={viewmodel.airTemperature}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,10 +123,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="true"
+                            android:nextFocusDown="@+id/reportIcingVesselIcingThicknessEditText"
+                            android:nextFocusLeft="@+id/reportIcingVesselIcingThicknessEditText"
+                            android:nextFocusRight="@+id/reportIcingVesselIcingThicknessEditText"
                             android:hint="@string/icing_report_sea_temperature_hint"
                             android:maxLines="1"
                             android:inputType="numberDecimal|numberSigned"
-                            android:text="@={reporticingviewmodel.seaTemperature}"
+                            android:text="@={viewmodel.seaTemperature}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,7 +162,7 @@
                             android:hint="@string/icing_report_vessel_icing_thickness_hint"
                             android:maxLines="1"
                             android:inputType="number"
-                            android:text="@={reporticingviewmodel.vesselIcingThickness}"
+                            android:text="@={viewmodel.vesselIcingThickness}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,7 +199,7 @@
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
                             android:hint="@string/max_middle_wind_when"
-                            android:text="@{reporticingviewmodel.maxMiddleWindTimeName}" />
+                            android:text="@{viewmodel.maxMiddleWindTimeName}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -217,26 +223,19 @@
                             android:text="@string/position"
                             android:textSize="18sp"
                             android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/toolPositionRecyclerView"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <include
-                            layout="@layout/location_ddm_editor_fragment"
-                            android:id="@+id/aaaaaaaaaa"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="@id/positions_label"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
-
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/icingReportPositionRecyclerView"
+                            android:id="@+id/toolPositionRecyclerView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:visibility="gone"
+                            app:layout_constraintTop_toBottomOf="@+id/positions_label"
                             tools:listitem="@layout/location_list_item" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

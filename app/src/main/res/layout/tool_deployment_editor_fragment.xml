@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="no.sintef.fiskinfo.util.UtilsKt" />
+
         <import type="android.text.InputType" />
 
         <variable
-            name="viewModel"
+            name="deploymentviewmodel"
             type="no.sintef.fiskinfo.ui.tools.DeploymentViewModel" />
     </data>
 
@@ -49,7 +51,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{UtilsKt.formatDate(viewModel.setupTime)}" />
+                            android:text="@{UtilsKt.formatDate(deploymentviewmodel.setupTime)}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,7 +59,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
                         android:hint="@string/tool_time"
                         app:startIconContentDescription="@string/proto_close_drawer"
                         app:startIconDrawable="@drawable/ic_time">
@@ -69,7 +71,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{UtilsKt.formatTime(viewModel.setupTime)}" />
+                            android:text="@{UtilsKt.formatTime(deploymentviewmodel.setupTime)}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -77,8 +79,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -96,10 +97,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
-                            android:hint="@string/tool_tool_type"
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{viewModel.toolTypeCodeName}" />
+                            android:text="@{deploymentviewmodel.toolTypeCodeName}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -118,7 +118,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
-                            android:text="@={viewModel.toolCount}" />
+                            android:text="@={deploymentviewmodel.toolCount}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -153,8 +153,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_baseline_add_location_24"
                             app:layout_constraintRight_toLeftOf="@id/remove_position_button"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:contentDescription="@string/add_position_button_description" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/remove_position_button"
@@ -162,8 +161,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_baseline_location_off_24"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:contentDescription="@string/remove_position_button_description" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -174,7 +172,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/remove_position_button"
-                            tools:listitem="@layout/location_list_item" />
+                            tools:listitem="@layout/location_list_item"></androidx.recyclerview.widget.RecyclerView>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
