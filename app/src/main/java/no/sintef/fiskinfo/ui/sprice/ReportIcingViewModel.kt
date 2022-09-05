@@ -19,13 +19,12 @@ import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
-    private val _observationTime = MutableStateFlow(Date.from(Instant.now()))
+//    private val _observationTime = MutableStateFlow(Date.from(Instant.now()))
     val synopTime = MutableLiveData<Date>()
 
     val reportingTime: MutableStateFlow<Date> = _reportingTime
-    val observationTime: MutableStateFlow<Date> = _observationTime
+//    val observationTime: MutableStateFlow<Date> = _observationTime
 
-    val location = MutableLiveData<Location>()
     var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
     val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
@@ -40,7 +39,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
     val airTemperature: MutableStateFlow<String> = _airTemperature
     val seaTemperature: MutableStateFlow<String> = _seaTemperature
-    val locations = MutableLiveData<MutableList<Location>>()
+    val location = MutableLiveData<Location>()
 
     fun init() {
         reportingTime.value = Date()
@@ -51,7 +50,6 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         // TODO: Default locations
         defaultLoc.latitude = 0.0
         defaultLoc.longitude = 0.0
-        locations.value = mutableListOf(defaultLoc)
 
         location.value = defaultLoc
         reportChecked.value = false
@@ -84,23 +82,23 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
             .build()
     }
 
-    fun setReportingDate(date: Date) {
+    fun setObservationDate(date: Date) {
         // TODO: pick out only date part (not time)
         val c = Calendar.getInstance()
-        c.time = synopTime.value
+        c.time = synopTime.value!!
 
         val newDateC = Calendar.getInstance()
         newDateC.time = date
         c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
         c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
 
-        Log.e("setReportingTime", "Reporting time updated, old: ${_observationTime.value}, new:${c.time}")
-        _observationTime.value = c.time
+        Log.e("setReportingTime", "Reporting time updated, old: ${synopTime.value}, new:${c.time}")
+//        _observationTime.value = c.time
         synopTime.value = c.time
     }
 
     fun getSynopHourAsInt(): Int {
-        var retval: Int = 0
+        var retval = 0
 
         try {
             retval = Integer.parseInt(synopHourSelect.value.substring(0, 2))

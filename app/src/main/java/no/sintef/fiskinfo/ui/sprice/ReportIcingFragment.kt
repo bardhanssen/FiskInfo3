@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.ui.sprice
 
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -7,9 +8,9 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -25,10 +26,11 @@ import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
 import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.tools.*
 import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
+import no.sintef.fiskinfo.util.DMSLocation
 import java.time.Instant
 import java.util.*
 
-class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
+class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener, FragmentResultListener,
     Fragment(),
     LocationDmsDialogListener {
 
@@ -57,13 +59,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         savedInstanceState: Bundle?
     ): View {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
-//        _mBinding = SpriceReportIcingFragmentBinding.inflate(inflater, container, false)
-        _mBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.sprice_report_icing_fragment,
-            container,
-            false
-        )
+        _mBinding = SpriceReportIcingFragmentBinding.inflate(inflater, container, false)
 
         initMaxMiddleWindDropDown()
         initReportingHourDropDown()
@@ -79,9 +75,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             picker.addOnPositiveButtonClickListener {
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = it as Long
-                mViewModel.setReportingDate(cal.time)
-
-//                mViewModel.observationTime.value = cal.time
+                mViewModel.setObservationDate(cal.time)
             }
             picker.show(parentFragmentManager, picker.toString())
         }
@@ -89,9 +83,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
         locAdapter = LocationRecyclerViewAdapter(this)
         mBinding.toolPositionRecyclerView.adapter = locAdapter
-
-//        locAdapter = LocationRecyclerViewAdapter(this)
-//        mBinding.toolPositionRecyclerView.adapter = locAdapter
 
         return mBinding.root
     }
@@ -233,43 +224,24 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     override fun onDmsEditConfirmed() {
         val location = mLocationViewModel.getLocation()
         if (location != null) {
-            mViewModel.locations.value!![mLocationViewModel.listPosition] = location
-            mViewModel.locations.postValue(mViewModel.locations.value)
             mViewModel.location.value = location
         }
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
-//        mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
-////        mLocationViewModel = ViewModelProvider(this)[LocationDmsViewModel::class.java]
-//
-////        mViewModel.init()
-////        initMenu()
-//
-//        // Refresh the full UI when there is a change, as this UI is small
-////        mViewModel.maxMiddleWindTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
-////        mViewModel.reportingTime.observe(viewLifecycleOwner) { mBinding.reporticingviewmodel = mViewModel }
-//        mViewModel.init()
-//        mViewModel.location.observe(viewLifecycleOwner) { mBinding.viewmodel = mViewModel }
-//        mViewModel.locations.observe(viewLifecycleOwner) { locAdapter.locations = it }
-//    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
         mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
         mViewModel.init()
 
-        // Refresh the full UI when there is a change, as this UI is small
         mViewModel.synopTime.observe(viewLifecycleOwner) {
             mBinding.viewmodel = mViewModel
         }
 
-        mViewModel.locations.observe(viewLifecycleOwner) { locAdapter.locations = it }
+        mViewModel.location.observe(viewLifecycleOwner) {
+            locAdapter.locations = listOf<Location>(it)
+        }
     }
 
     private fun initMenu() {
@@ -327,16 +299,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                     if (!checkReportedValues()) {
                         return false
                     }
-
-                    /*report =
-                            ReportIcingRequestBody.Builder()
-                            .observationTime(LocalDateTime.now())
-                            .synop(LocalDateTime.now().minusHours(2).withMinute(0).withSecond(0).withNano(0))
-                            .callSign("abc123")
-                            .latitude("68.12")
-                            .longitude("18.12")
-                            .iceThicknessInCm(5)
-                            .build()*/
 
                     val report = mViewModel.getIcingReportBody()
 
@@ -396,14 +358,20 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
-        mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
-        val fm: FragmentManager? = parentFragmentManager
-
+        mLocationViewModel.initWithLocation(mViewModel.location.value!!, itemClicked)
+        val fm: FragmentManager = parentFragmentManager
         val locDialogFragment: LocationDmsDialogFragment =
             LocationDmsDialogFragment.newInstance(getString(R.string.tool_edit_location))
-        // SETS the target fragment for use later when sending results
-        locDialogFragment.setTargetFragment(this@ReportIcingFragment, 300)
-        locDialogFragment.show(fm!!, "fragment_edit_location")
+
+        fm.setFragmentResultListener(DMSLocation.EDIT_DMS_POSITION_FRAGMENT_RESULT_REQUEST_KEY, viewLifecycleOwner, this)
+        locDialogFragment.show(fm, "fragment_edit_location")
+    }
+
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
+        val location = mLocationViewModel.getLocation()
+        if (location != null) {
+            mViewModel.location.value = location
+        }
     }
 
     override fun onDestroyView() {

@@ -30,6 +30,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -43,13 +44,12 @@ import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolDeploymentEditorFragmentBinding
 import no.sintef.fiskinfo.model.fishingfacility.ToolTypeCode
-import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
+import no.sintef.fiskinfo.util.DMSLocation
 import no.sintef.fiskinfo.util.getToolCountType
 import java.util.*
 
-class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener,
-    Fragment(),
-    LocationDmsDialogListener {
+class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener, FragmentResultListener,
+    Fragment() {
     companion object {
         fun newInstance() = DeploymentEditorFragment()
     }
@@ -224,26 +224,21 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
         mLocationViewModel.initWithLocation(mViewModel.locations.value!![itemClicked], itemClicked)
-        val fm: FragmentManager? = parentFragmentManager
+        val fm: FragmentManager = parentFragmentManager
 
         val locDialogFragment: LocationDmsDialogFragment =
             LocationDmsDialogFragment.newInstance(getString(R.string.tool_edit_location))
-        // SETS the target fragment for use later when sending results
-        locDialogFragment.setTargetFragment(this@DeploymentEditorFragment, 300)
-        locDialogFragment.show(fm!!, "fragment_edit_location")
 
-//        val locDialogFragment: LocationDmsDialogFragment =
-//            LocationDmsDialogFragment.newInstance("Edit location")
-//        editNameDialogFragment.show(fm, "fragment_edit_location")
-
-//        Navigation.findNavController(v).navigate(R.id.action_deployment_editor_fragment_to_location_editor_fragment)
+        fm.setFragmentResultListener(DMSLocation.EDIT_DMS_POSITION_FRAGMENT_RESULT_REQUEST_KEY, viewLifecycleOwner, this)
+        locDialogFragment.show(fm, "fragment_edit_location")
     }
 
-    override fun onDmsEditConfirmed() {
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
         val location = mLocationViewModel.getLocation()
         if (location != null) {
-            mViewModel.locations.value!![mLocationViewModel.listPosition] = location!!
+            mViewModel.locations.value!![mLocationViewModel.listPosition] = location
             mViewModel.locations.postValue(mViewModel.locations.value)
+
         }
     }
 
