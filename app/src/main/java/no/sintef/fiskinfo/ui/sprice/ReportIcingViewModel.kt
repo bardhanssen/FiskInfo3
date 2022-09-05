@@ -99,6 +99,18 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         synopTime.value = c.time
     }
 
+    fun getSynopHourAsInt(): Int {
+        var retval: Int = 0
+
+        try {
+            retval = Integer.parseInt(synopHourSelect.value.substring(0, 2))
+        } catch(e: NumberFormatException) {
+
+        }
+
+        return retval
+    }
+
     val maxMiddleWindTimeName: LiveData<String> = Transformations.map(maxMiddleWindTime) { code ->
         code.getLocalizedName(getApplication())
     }
