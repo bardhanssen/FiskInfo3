@@ -24,6 +24,9 @@ class OrapRepository(context: Context) {
     internal var icingReports = MutableLiveData<List<Any>>()
 
     fun getEarlierReports(info: GetReportsRequestBody): LiveData<SendResult> {
+        if (orapService == null)
+            initService()
+
         val result = MutableLiveData<SendResult>()
 
         orapService?.getReports(info)?.enqueue(object : Callback<okhttp3.Response> {
@@ -44,6 +47,9 @@ class OrapRepository(context: Context) {
     }
 
     fun sendIcingReport(info: ReportIcingRequestBody): LiveData<SendResult> {
+        if (orapService == null)
+            initService()
+
         val result = MutableLiveData<SendResult>()
         val contentType = getPostRequestContentTypeWithWebKitBoundaryId(info.WebKitFormBoundaryId)
         val referrer = getPostRequestReferrer(info.Username, info.Password)
@@ -81,7 +87,7 @@ class OrapRepository(context: Context) {
         }
 
         orapService =
-            createService(OrapService::class.java, orapServerUrl)
+            createService(OrapService::class.java, orapServerUrl, false)
     }
 
     data class SendResult(val success: Boolean, val responseCode: Int, val errorMsg: String)

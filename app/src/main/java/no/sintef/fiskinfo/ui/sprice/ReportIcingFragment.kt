@@ -168,11 +168,12 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //                )
 
                 if (menuItem.itemId == R.id.send_icing_report_action) {
-                    if(!checkReportedValues()) {
+                    if(!reportedIcingValuesAreValid()) {
                         return true
                     }
 
-                    val result = OrapRepository.getInstance(requireContext()).sendIcingReport(mViewModel.getIcingReportBody())
+                    val repository = OrapRepository.getInstance(requireContext())
+                    val result = repository.sendIcingReport(mViewModel.getIcingReportBody())
 
                     result.observe(viewLifecycleOwner) {
                         Log.e("ORAP", "Icing reported")
@@ -211,19 +212,19 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun checkReportedValues(): Boolean {
-        var invalid = false
+    private fun reportedIcingValuesAreValid(): Boolean {
+        var valid = true
 //        if (mViewModel.maxMiddleWindTime.value == null) {
 //            mBinding.icingDetailsTypeField.error = getString(R.string.icing_missing_value)
-//            invalid = true
+//            invalid = false
 //        } else {
 //            mBinding.icingDetailsTypeField.error = null
 //        }
 
         // TODO: Check other values
 
-        Log.e("checkReportedValues", "Values are ${if(invalid) "not" else ""} valid!")
-        return invalid
+        Log.e("checkReportedValues", "Values are ${if(!valid) "not" else ""} valid!")
+        return valid
     }
 
     override fun onEditLocationClicked(v: View, itemClicked: Int) {
@@ -237,9 +238,11 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     override fun onFragmentResult(requestKey: String, result: Bundle) {
-        val location = mLocationViewModel.getLocation()
-        if (location != null) {
-            mViewModel.location.value = location
+        if(DMSLocation.EDIT_DMS_POSITION_FRAGMENT_RESULT_REQUEST_KEY == requestKey) {
+            val location = mLocationViewModel.getLocation()
+            if (location != null) {
+                mViewModel.location.value = location
+            }
         }
     }
 

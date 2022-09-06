@@ -58,7 +58,7 @@ class SnapRepository(context: Context) {
 
     protected fun initService() {
         snapMessageService =
-            createService(SnapMessageService::class.java,snapFishServerUrl!! )
+            createService(SnapMessageService::class.java,snapFishServerUrl!!, true)
     }
 
 /*

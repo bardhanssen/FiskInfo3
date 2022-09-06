@@ -36,13 +36,17 @@ import java.util.*
 /**
  * Create a REST service without authentication
  */
-fun <S> createService(serviceClass : Class<S>, baseUrl : String) : S {
+fun <S> createService(serviceClass : Class<S>, baseUrl : String, addInterceptor: Boolean) : S {
     val client =  OkHttpClient.Builder()
-        .addInterceptor(JSONHeaderInterceptor("FiskInfo/2.0 (Android)"))
-        .build()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+
+    if(addInterceptor) {
+        client.addInterceptor(JSONHeaderInterceptor("FiskInfo/2.0 (Android)"))
+    }
+
     // TODO: Consider how to handle field name policy. At the moment this function is used
     // by snapfish, while the authorization service one is used by BW services
-    return createService(serviceClass, baseUrl, client, FieldNamingPolicy.UPPER_CAMEL_CASE)
+    return createService(serviceClass, baseUrl, client.build(), FieldNamingPolicy.UPPER_CAMEL_CASE)
 }
 
 /**

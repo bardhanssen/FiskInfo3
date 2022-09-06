@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -109,7 +110,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
             builder.setSelection(mViewModel.setupTime.value!!.time)
             val picker: MaterialDatePicker<*> = builder.build()
             picker.addOnPositiveButtonClickListener {
-                var cal = Calendar.getInstance()
+                val cal = Calendar.getInstance()
                 cal.timeInMillis = it as Long
                 mViewModel.setSetupDate(cal.time)
             }
@@ -169,8 +170,8 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
 
 
             if (mViewModel.canSendReport()) {
-                var result = mViewModel.sendReport();
-                result.observe(this, Observer {
+                val result = mViewModel.sendReport()
+                result.observe(this) {
                     if (it.success) {
                         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
                             param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send tool report, success")
@@ -197,7 +198,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
                         )
                             .show()
                     }
-                })
+                }
             } else {
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
                     param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send tool report, invalid profile")
@@ -246,10 +247,10 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
         private lateinit var mViewModel: DeploymentViewModel
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             mViewModel =
-                ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
+                ViewModelProvider(requireActivity())[DeploymentViewModel::class.java]
             // Use the current time as the default values for the picker
             val c = Calendar.getInstance()
-            c.time = mViewModel.setupTime.value
+            c.time = mViewModel.setupTime.value!!
             val hour = c.get(Calendar.HOUR_OF_DAY)
             val minute = c.get(Calendar.MINUTE)
 
@@ -264,10 +265,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
         }
 
         override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-            mViewModel.setSetupTime(hourOfDay, minute);
-            // Do something with the time chosen by the user
+            mViewModel.setSetupTime(hourOfDay, minute)
         }
     }
-
-
 }
