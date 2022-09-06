@@ -18,15 +18,14 @@
 package no.sintef.fiskinfo.model.sprice
 
 import no.sintef.fiskinfo.util.SpriceUtils
-import java.lang.Exception
 import java.lang.StringBuilder
-import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class ReportIcingRequestBody internal constructor(
     internal val WebKitFormBoundaryId: String,
-    internal val ObservationTime: LocalDateTime,
-    internal val Synop: LocalDateTime,
+    internal val ReportingTime: ZonedDateTime,
+    internal val Synop: ZonedDateTime,
 
     internal val Username: String,
     internal val Password: String,
@@ -61,7 +60,7 @@ class ReportIcingRequestBody internal constructor(
 ) {
     private constructor(builder: Builder) : this(
         builder.WebKitFormBoundaryId,
-        builder.ObservationTime,
+        builder.ReportingTime,
         builder.Synop,
         builder.Username,
         builder.Password,
@@ -90,8 +89,8 @@ class ReportIcingRequestBody internal constructor(
 
     data class Builder(
         var WebKitFormBoundaryId: String = SpriceUtils.getBoundaryIdString(),
-        var ObservationTime: LocalDateTime = LocalDateTime.now(),
-        var Synop: LocalDateTime = LocalDateTime.now(),
+        var ReportingTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
+        var Synop: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
         var Username: String = "",
         var Password: String = "",
         var VesselCallSign: String = "",
@@ -117,10 +116,8 @@ class ReportIcingRequestBody internal constructor(
         var ChangeInIce: String = ""
     ) {
         fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
-        fun observationTime(observationTime: LocalDateTime) =
-            apply { this.ObservationTime = observationTime }
-
-        fun synop(synop: LocalDateTime) = apply { this.Synop = synop }
+        fun reportingTime(reportingTime: ZonedDateTime) = apply { this.ReportingTime = reportingTime }
+        fun synop(synop: ZonedDateTime) = apply { this.Synop = synop }
         fun username(username: String) = apply { this.Username = username }
         fun password(password: String) = apply { this.Password = password }
         fun callSign(callSign: String) = apply { this.VesselCallSign = callSign }
@@ -182,18 +179,16 @@ class ReportIcingRequestBody internal constructor(
     }
 
     fun getRequestBodyForReportSubmissionAsString(): String {
+        val reportingZonedTime = ReportingTime
+        val reportingTimeEpoch = reportingZonedTime.toEpochSecond()
+        val observationEpoch = Synop.toEpochSecond()
         val stringBuilder = StringBuilder()
 
-        val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
-        val zoneId = ZoneId.systemDefault()
-        val reportingTimeEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond() // TODO: Get from user
-        val observationEpoch = Synop.atZone(zoneId).toEpochSecond() // TODO: Get from user
-
         val messageTag =
-            SpriceUtils.getOrapMessageTag(messageReceivedTime, Username)
+            SpriceUtils.getOrapMessageTag(reportingZonedTime, Username)
 
         val hiddenMessage = SpriceUtils.getFormattedHiddenMessage(Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
-        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessage(Username, messageReceivedTime, Synop, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature, reportingTimeEpoch)
+        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessage(Username, reportingZonedTime, Synop, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature, reportingTimeEpoch)
         val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatus(observationEpoch, Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
 
         stringBuilder.append(
@@ -217,15 +212,10 @@ class ReportIcingRequestBody internal constructor(
     }
 
     fun getRequestBodyForReportCheckAsString(): String {
-        val messageReceivedTime = LocalDateTime.now() // TODO: Get as GMT+0
-        val ObservationTimeStamp = LocalDateTime.now() // TODO: Get as GMT+0
-        val zoneId = ZoneId.systemDefault()
-        val reportingTimeEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond() // TODO: Get from user
-        val observationEpoch = messageReceivedTime.atZone(zoneId).toEpochSecond() // TODO: Get from user
+        val messageSentDateTime = ReportingTime // TODO: Get as GMT+0
+        val observationEpoch = messageSentDateTime.toEpochSecond() // TODO: Get from user
 
-        val messageTag =
-            SpriceUtils.getOrapMessageTag(messageReceivedTime, Username)
-        val synopTimeStamp = SpriceUtils.getFormattedTimeStamp(ObservationTimeStamp, OrapConstants.SYNOP_DAY1_TIMESTAMP)
+        val synopTimeStamp = SpriceUtils.getGMTFromDefaultLocaleFormattedTimeStamp(Synop, OrapConstants.SYNOP_DAY1_TIMESTAMP)
 
         val stringBuilder = StringBuilder()
 
@@ -239,7 +229,7 @@ class ReportIcingRequestBody internal constructor(
             ),
             SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.OBS_STATIC, observationEpoch),
             SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP_DAY1, synopTimeStamp),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP1, ObservationTimeStamp.hour),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.SYNOP1, Synop.hour),
             SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.CAL1, VesselCallSign),
             SpriceUtils.getValueAsWebKitForm(
                 WebKitFormBoundaryId,

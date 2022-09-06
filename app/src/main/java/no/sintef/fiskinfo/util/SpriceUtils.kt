@@ -2,7 +2,9 @@ package no.sintef.fiskinfo.util
 
 import no.sintef.fiskinfo.model.sprice.OrapConstants
 import java.lang.StringBuilder
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -14,7 +16,7 @@ class SpriceUtils {
          * The returned tag will be in the format 'YYYYMMDD_[username].debug'.
          *
          */
-        fun getOrapMessageTag(datetime: LocalDateTime, username: String): String {
+        fun getOrapMessageTag(datetime: ZonedDateTime, username: String): String {
             val formatter = DateTimeFormatter.ofPattern(OrapConstants.ACTION_TAG_DATE_FORMAT)
 
             return "${datetime.format(formatter)}_${username}.debug"
@@ -27,8 +29,9 @@ class SpriceUtils {
                 .joinToString("")
         }
 
-        fun getFormattedTimeStamp(datetime: LocalDateTime, format: String): String {
-            val formatter = DateTimeFormatter.ofPattern(format, Locale.getDefault());
+        fun getGMTFromDefaultLocaleFormattedTimeStamp(datetime: ZonedDateTime, format: String): String {
+//            datetime.toOffsetDateTime().atZoneSameInstant(ZoneOffset.UTC)
+            val formatter = DateTimeFormatter.ofPattern(format, Locale.getDefault()).withZone(ZoneOffset.UTC);
 
             return datetime.format(formatter)
 
@@ -38,23 +41,23 @@ class SpriceUtils {
             return "012345678      ${username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n\n"
         }
 
-        fun getFormattedHiddenKlMessage(username: String, messageReceivedTime: LocalDateTime, synop: LocalDateTime, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String, reportingTimeEpoch: Long): String {
+        fun getFormattedHiddenKlMessage(username: String, messageReceivedTime: ZonedDateTime, synop: ZonedDateTime, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String, reportingTimeEpoch: Long): String {
             return "kldata/nationalnr=${username}/type=317/test/received_time=\"${
-                getFormattedTimeStamp(
+                getGMTFromDefaultLocaleFormattedTimeStamp(
                     messageReceivedTime,
                     OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT
                 )
             }\"\n" +
                     "IX,WW,VV,HL,NN,NH,CL,CM,CH,W1,W2,HW,PW,DW1,PW1,HW1,DW2,PW2,HW2,DD,FF,CI,SI,BI,DI,ZI,XIS,ES,ERS,MLAT,MLON,TA,UU,UH,PR,PO,PP,AA,MDIR,MSPEED\n" +
                     "${
-                        getFormattedTimeStamp(
+                        getGMTFromDefaultLocaleFormattedTimeStamp(
                             synop,
                             OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
                         )
                     },3,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},-6,,,,,,,\n" +
                     "Orap_smsformat_input ${reportingTimeEpoch} ${username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n" +
                     "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${username}/orap_${
-                        getFormattedTimeStamp(
+                        getGMTFromDefaultLocaleFormattedTimeStamp(
                             messageReceivedTime,
                             OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP
                         )

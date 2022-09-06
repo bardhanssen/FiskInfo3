@@ -15,12 +15,15 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
 //    private val _observationTime = MutableStateFlow(Date.from(Instant.now()))
-    val synopTime = MutableLiveData<Date>()
+    val synopDate = MutableLiveData<Date>()
 
     val reportingTime: MutableStateFlow<Date> = _reportingTime
 //    val observationTime: MutableStateFlow<Date> = _observationTime
@@ -42,9 +45,16 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     val location = MutableLiveData<Location>()
 
     fun init() {
-        reportingTime.value = Date()
+        reportingTime.value = Date.from(Instant.now())
         synopHourSelect.value = "${Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}:00"
-        synopTime.value = Date.from(Instant.now())
+
+        val calendar = Calendar.getInstance()
+        calendar.time = Date.from(Instant.now())
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        synopDate.value = calendar.time
+
         maxMiddleWindTime.value = MaxMiddleWindTimeEnum.DURING_OBSERVATION
         val defaultLoc = Location("")
         // TODO: Default locations
@@ -73,6 +83,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
             .username(orapUsername)
             .password(orapPassword)
             .callSign(callSign)
+            .reportingTime(ZonedDateTime.ofInstant(_reportingTime.value.toInstant(), ZoneId.systemDefault()))
+            .synop(ZonedDateTime.ofInstant(synopDate.value!!.toInstant(), ZoneId.systemDefault()))
             .latitude(location.value?.latitude.toString())
             .longitude(location.value?.longitude.toString())
             .airTemperature(_airTemperature.value)
@@ -83,18 +95,18 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     }
 
     fun setObservationDate(date: Date) {
-        // TODO: pick out only date part (not time)
-        val c = Calendar.getInstance()
-        c.time = synopTime.value!!
+        val synopCalendar = Calendar.getInstance()
+        synopCalendar.time = synopDate.value!!
 
-        val newDateC = Calendar.getInstance()
-        newDateC.time = date
-        c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
-        c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
+        val newDateCalendar = Calendar.getInstance()
+        newDateCalendar.time = date
+        synopCalendar.set(Calendar.YEAR, newDateCalendar.get(Calendar.YEAR))
+        synopCalendar.set(Calendar.MONTH, newDateCalendar.get(Calendar.MONTH))
+        synopCalendar.set(Calendar.DAY_OF_YEAR, newDateCalendar.get(Calendar.DAY_OF_YEAR))
 
-        Log.e("setReportingTime", "Reporting time updated, old: ${synopTime.value}, new:${c.time}")
+        Log.e("setReportingTime", "Observation time updated, old: ${synopDate.value}, new:${synopCalendar.time}")
 //        _observationTime.value = c.time
-        synopTime.value = c.time
+        synopDate.value = synopCalendar.time
     }
 
     fun getSynopHourAsInt(): Int {

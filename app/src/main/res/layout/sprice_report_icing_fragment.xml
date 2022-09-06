@@ -49,7 +49,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:inputType="@{InputType.TYPE_NULL}"
-                            android:text="@{UtilsKt.formatDate(viewmodel.synopTime)}" />
+                            android:text="@{UtilsKt.formatDate(viewmodel.synopDate)}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
