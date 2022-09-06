@@ -119,7 +119,7 @@ class LocationDmsDialogFragment : DialogFragment() {
 
         viewModel.dmsLocation.observe(this) { dmsLoc ->
             if (dmsLoc != null) {
-                mBinding.viewmodel = dmsLoc
+                mBinding.viewModel = dmsLoc
             }
         }
 

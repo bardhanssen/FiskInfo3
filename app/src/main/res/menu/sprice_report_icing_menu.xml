@@ -6,13 +6,8 @@
 
     </group>
     <item
-        android:id="@+id/check_icing_report_action"
-        android:title="@string/report_icing_menu_option_check"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/send_icing_report_action"
         android:title="@string/report_icing_menu_option_send"
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="ifRoom" />
 </menu>

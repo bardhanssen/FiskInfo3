@@ -7,7 +7,7 @@
     <data>
         <import type="no.sintef.fiskinfo.util.DoubleConverter"/>
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="no.sintef.fiskinfo.util.DMSLocation" />
     </data>
 
@@ -42,8 +42,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
                     android:gravity="end"
                     android:inputType="number"
@@ -53,7 +53,8 @@
                     android:nextFocusUp="@+id/latitude_minutes_edit_text"
                     android:nextFocusDown="@+id/latitude_minutes_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.latitudeDegrees}" />
+                    android:text="@{`` + viewModel.latitudeDegrees}"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -68,8 +69,8 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
                     android:gravity="end"
                     android:inputType="number"
@@ -79,7 +80,8 @@
                     android:nextFocusUp="@+id/latitude_seconds_edit_text"
                     android:nextFocusDown="@+id/latitude_seconds_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.latitudeMinutes}" />
+                    android:text="@{`` + viewModel.latitudeMinutes}"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -94,8 +96,8 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="1.2"
                     android:gravity="end"
                     android:inputType="numberDecimal"
@@ -105,7 +107,8 @@
                     android:nextFocusUp="@+id/longitude_degrees_edit_text"
                     android:nextFocusDown="@+id/longitude_degrees_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.latitudeSeconds}" />
+                    android:text="@{`` + viewModel.latitudeSeconds}"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -119,7 +122,7 @@
                     android:id="@+id/latitude_cardinal_direction_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="@={viewmodel.latitudeSouth}"
+                    android:checked="@={viewModel.latitudeSouth}"
                     android:paddingStart="8dp"
                     android:paddingEnd="0dp"
                     android:textOff="@string/cardinal_direction_symbol_north"
@@ -144,8 +147,8 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
                     android:gravity="end"
                     android:inputType="number"
@@ -155,7 +158,8 @@
                     android:nextFocusUp="@+id/longitude_minutes_edit_text"
                     android:nextFocusDown="@+id/longitude_minutes_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.longitudeDegrees}" />
+                    android:text="@{`` + viewModel.longitudeDegrees}"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -170,8 +174,8 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="0.9"
                     android:gravity="end"
                     android:inputType="number"
@@ -181,7 +185,8 @@
                     android:nextFocusUp="@+id/longitude_seconds_edit_text"
                     android:nextFocusDown="@+id/longitude_seconds_edit_text"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.longitudeMinutes}" />
+                    android:text="@{`` + viewModel.longitudeMinutes}"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -196,14 +201,15 @@
                     android:layout_width="0.0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin_very_small"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin_very_small"
                     android:layout_weight="1.2"
                     android:gravity="end"
                     android:inputType="numberDecimal"
                     android:maxLength="5"
                     android:selectAllOnFocus="true"
-                    android:text="@{`` + viewmodel.longitudeSeconds}" />
+                    android:text="@{`` + viewModel.longitudeSeconds}"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:layout_width="0.0dp"
@@ -217,7 +223,7 @@
                     android:id="@+id/longitude_cardinal_direction_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="@={!viewmodel.longitudeWest}"
+                    android:checked="@={!viewModel.longitudeWest}"
                     android:paddingStart="8dp"
                     android:paddingEnd="0dp"
                     android:textOff="@string/cardinal_direction_symbol_west"
@@ -235,8 +241,8 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-            android:src="@drawable/ic_baseline_my_location_24"/>
-        />
+            android:src="@drawable/ic_baseline_my_location_24"
+            android:contentDescription="@string/get_current_position_button_description" />
     </RelativeLayout>
 
 </layout>

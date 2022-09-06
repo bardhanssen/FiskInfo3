@@ -1,5 +1,8 @@
 package no.sintef.fiskinfo.util
 
+import no.sintef.fiskinfo.BuildConfig
+import no.sintef.fiskinfo.api.orap.OrapService.Companion.ObsReport
+import no.sintef.fiskinfo.api.orap.OrapService.Companion.prefix
 import no.sintef.fiskinfo.model.sprice.OrapConstants
 import java.lang.StringBuilder
 import java.time.ZoneId
@@ -27,6 +30,14 @@ class SpriceUtils {
             return (1..length)
                 .map { allowedChars.random() }
                 .joinToString("")
+        }
+
+        fun getPostRequestContentTypeWithWebKitBoundaryId(boundaryId: String): String {
+            return ": multipart/form-data; boundary=----WebKitFormBoundary${boundaryId}"
+        }
+
+        fun getPostRequestReferrer(username: String, password: String): String {
+            return "${BuildConfig.SPRICE_ORAP_SERVER_URL}${prefix}${ObsReport}?user=${username}&password=${password}"
         }
 
         fun getGMTFromDefaultLocaleFormattedTimeStamp(datetime: ZonedDateTime, format: String): String {

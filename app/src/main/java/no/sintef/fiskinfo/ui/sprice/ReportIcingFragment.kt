@@ -27,7 +27,6 @@ import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.tools.*
 import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
 import no.sintef.fiskinfo.util.DMSLocation
-import java.time.Instant
 import java.util.*
 
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener, FragmentResultListener,
@@ -130,7 +129,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initMenu() // TODO: Change setHasOptionsMenu to this
+        initMenu()
 
         mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
         mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
@@ -155,38 +154,28 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         // the menu should be visible
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // Add menu items here
                 menuInflater.inflate(R.menu.sprice_report_icing_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Handle the menu selection
-                Log.i("Menu Sel", "Selected menu option:")
-
-                // TODO: Might not need to set reporting time here, init time might be good enough
-                val calendar = Calendar.getInstance()
-                calendar.time = mViewModel.synopDate.value!!
-                calendar.set(Calendar.HOUR_OF_DAY, mViewModel.getSynopHourAsInt())
-                calendar.set(Calendar.MINUTE, 0)
-                calendar.set(Calendar.SECOND, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-
-//                mViewModel.synopDate.value = calendar.time
-//                mViewModel.reportingTime.value = Date.from(Instant.now())
-
-                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
-                Log.e(
-                    "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
-                            "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
-                            "${mViewModel.maxMiddleWindTime.value?.getFormValue()},\n" +
-                            "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
-                )
-                return true
+                // TODO: Remove when submission of report is working
+//                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
+//                Log.e(
+//                    "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
+//                            "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
+//                            "${mViewModel.maxMiddleWindTime.value?.getFormValue()},\n" +
+//                            "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
+//                )
 
                 if (menuItem.itemId == R.id.send_icing_report_action) {
-                    val result = OrapRepository.getInstance(requireContext()).SendIcingReport(mViewModel.getIcingReportBody())
+                    if(!checkReportedValues()) {
+                        return true
+                    }
+
+                    val result = OrapRepository.getInstance(requireContext()).sendIcingReport(mViewModel.getIcingReportBody())
 
                     result.observe(viewLifecycleOwner) {
+                        Log.e("ORAP", "Icing reported")
                         if (it.success) {
                             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
                                 param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, success")
@@ -197,7 +186,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                             val text = getString(R.string.icing_report_sent)
                             val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
                             toast.show()
-//                    mViewModel.clear()
                             Navigation.findNavController(requireView()).navigateUp()
                         } else {
                             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
@@ -216,48 +204,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                     }
 
                     return true
-                } else if (menuItem.itemId == R.id.check_icing_report_action) {
-                    checkReportedValues()
-
-                    val report = mViewModel.getIcingReportBody()
-
-                    Log.i("TAG", report.getRequestBodyForReportSubmissionAsString())
-
-                    val result = OrapRepository.getInstance(requireContext()).checkIcingReportValues(report)
-
-                    result.observe(viewLifecycleOwner) {
-                        if (it.success) {
-                            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                                param(FirebaseAnalytics.Param.CONTENT_TYPE, "Check icing report, success")
-                                param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
-                                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
-                            }
-
-                            val text = getString(R.string.icing_report_sent)
-                            val toast = Toast.makeText(requireActivity(), text, Toast.LENGTH_SHORT)
-                            toast.show()
-
-                            mViewModel.reportChecked.value = true
-//                    mViewModel.clear()
-
-                            // TODO: Switch menu from check to send
-                        } else {
-                            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                                param(FirebaseAnalytics.Param.CONTENT_TYPE, "Check icing report, error")
-                                param(FirebaseAnalytics.Param.SCREEN_NAME, "Report icing")
-                                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
-                            }
-
-                            Snackbar.make(
-                                requireView(),
-                                getString(R.string.icing_report_check_error) + it.errorMsg,
-                                Snackbar.LENGTH_LONG
-                            )
-                                .show()
-                        }
-                    }
-                    return true
                 }
+
                 return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -265,13 +213,16 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private fun checkReportedValues(): Boolean {
         var invalid = false
-        if (mViewModel.maxMiddleWindTime.value != null) {
-            mBinding.icingDetailsTypeField.error = getString(R.string.icing_missing_value)
-            invalid = true
-        }
+//        if (mViewModel.maxMiddleWindTime.value == null) {
+//            mBinding.icingDetailsTypeField.error = getString(R.string.icing_missing_value)
+//            invalid = true
+//        } else {
+//            mBinding.icingDetailsTypeField.error = null
+//        }
 
         // TODO: Check other values
 
+        Log.e("checkReportedValues", "Values are ${if(invalid) "not" else ""} valid!")
         return invalid
     }
 
