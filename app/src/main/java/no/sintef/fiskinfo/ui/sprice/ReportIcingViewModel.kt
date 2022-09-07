@@ -15,18 +15,14 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
-//    private val _observationTime = MutableStateFlow(Date.from(Instant.now()))
     val synopDate = MutableLiveData<Date>()
-
     val reportingTime: MutableStateFlow<Date> = _reportingTime
-//    val observationTime: MutableStateFlow<Date> = _observationTime
 
     var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
@@ -74,12 +70,11 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     internal fun getIcingReportBody(): ReportIcingRequestBody {
         val context: Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-
         val orapUsername = prefs.getString(context.getString(R.string.pref_sprice_username_key), "") ?: ""
         val orapPassword = prefs.getString(context.getString(R.string.pref_sprice_password_key), "") ?: ""
         val callSign = prefs.getString(context.getString(R.string.pref_sprice_call_sign_key), "") ?: ""
 
-        return ReportIcingRequestBody.Builder() // TODO: Populate values
+        return ReportIcingRequestBody.Builder()
             .username(orapUsername)
             .password(orapPassword)
             .callSign(callSign)

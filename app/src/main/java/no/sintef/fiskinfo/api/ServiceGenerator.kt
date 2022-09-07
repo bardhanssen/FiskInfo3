@@ -36,12 +36,15 @@ import java.util.*
 /**
  * Create a REST service without authentication
  */
-fun <S> createService(serviceClass : Class<S>, baseUrl : String, addInterceptor: Boolean) : S {
+fun <S> createService(serviceClass : Class<S>, baseUrl : String, additionalInterceptors: List<Interceptor> = listOf()) : S {
     val client =  OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(JSONHeaderInterceptor("FiskInfo/2.0 (Android)"))
 
-    if(addInterceptor) {
-        client.addInterceptor(JSONHeaderInterceptor("FiskInfo/2.0 (Android)"))
+    if(additionalInterceptors.isNotEmpty()) {
+       additionalInterceptors.forEach {
+           client.addInterceptor(it)
+       }
     }
 
     // TODO: Consider how to handle field name policy. At the moment this function is used
@@ -65,7 +68,7 @@ fun <S> createService(serviceClass: Class<S>, baseUrl : String, authToken : Stri
  */
 fun <S> createService(serviceClass: Class<S>, baseUrl : String, authService: AuthorizationService, authState: AuthState) : S {
     val in2 = HttpLoggingInterceptor()
-    in2.setLevel(HttpLoggingInterceptor.Level.BODY)
+    in2.level = HttpLoggingInterceptor.Level.BODY
 
     if(authState.accessToken == null) {
 
@@ -111,7 +114,7 @@ class DateTypeDeserializer : JsonDeserializer<Date> {
     ): Date {
         for (format in DATE_FORMATS) {
             try {
-                return SimpleDateFormat(format).parse(jsonElement.asString) //SimpleDateFormat(format, Locale.US).parse(jsonElement.asString)
+                return SimpleDateFormat(format).parse(jsonElement.asString)!! //SimpleDateFormat(format, Locale.US).parse(jsonElement.asString)
             } catch (e: ParseException) {
             }
         }

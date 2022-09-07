@@ -32,11 +32,11 @@ class SpriceUtils {
                 .joinToString("")
         }
 
-        fun getPostRequestContentTypeWithWebKitBoundaryId(boundaryId: String): String {
+        fun getPostRequestContentTypeValueWithWebKitBoundaryIdAsString(boundaryId: String): String {
             return ": multipart/form-data; boundary=----WebKitFormBoundary${boundaryId}"
         }
 
-        fun getPostRequestReferrer(username: String, password: String): String {
+        fun getPostRequestReferrerAsString(username: String, password: String): String {
             return "${BuildConfig.SPRICE_ORAP_SERVER_URL}${prefix}${ObsReport}?user=${username}&password=${password}"
         }
 

@@ -10,13 +10,14 @@ import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.api.orap.OrapService
 import no.sintef.fiskinfo.model.sprice.*
-import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeWithWebKitBoundaryId
-import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestReferrer
+import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeValueWithWebKitBoundaryIdAsString
+import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestReferrerAsString
+import okhttp3.Interceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrapRepository(context: Context) {
+class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
     private var orapService: OrapService? = null
     private var orapServerUrl: String = BuildConfig.SPRICE_ORAP_SERVER_URL
     private var mFirebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
@@ -51,13 +52,12 @@ class OrapRepository(context: Context) {
             initService()
 
         val result = MutableLiveData<SendResult>()
-        val contentType = getPostRequestContentTypeWithWebKitBoundaryId(info.WebKitFormBoundaryId)
-        val referrer = getPostRequestReferrer(info.Username, info.Password)
 
-        orapService?.submitReport(info.getRequestBodyForReportSubmissionAsString(), contentType, referrer, info.Username, info.Password)
+        orapService?.sendIcingReport(info.getRequestBodyForReportSubmissionAsString(), info.Username, info.Password)
             ?.enqueue(object : Callback<Void?> {
                 override fun onFailure(call: Call<Void?>, t: Throwable) {
                     Log.e("ORAP", "Icing report failed!")
+                    Log.e("ORAP", t.message.toString())
                     result.value = SendResult(false, 0, t.stackTrace.toString())
                 }
 
@@ -86,8 +86,24 @@ class OrapRepository(context: Context) {
             param(FirebaseAnalytics.Param.VALUE, "Init Sprice service")
         }
 
+        val contentType = getPostRequestContentTypeValueWithWebKitBoundaryIdAsString(webKitFormBoundaryId)
+        val referrer = getPostRequestReferrerAsString(username, password)
+        val interceptors = listOf<Interceptor>(OrapInterceptor(contentType, referrer))
+
         orapService =
-            createService(OrapService::class.java, orapServerUrl, false)
+            createService(OrapService::class.java, orapServerUrl, interceptors)
+    }
+
+    private class OrapInterceptor(var contentType: String, val referrer: String) : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response = chain.run {
+            proceed(
+                request()
+                    .newBuilder()
+                    .addHeader("Content-Type", contentType)
+                    .addHeader("Referrer", referrer)
+                    .build())
+        }
+
     }
 
     data class SendResult(val success: Boolean, val responseCode: Int, val errorMsg: String)
@@ -95,9 +111,9 @@ class OrapRepository(context: Context) {
     companion object {
         var instance: OrapRepository? = null
 
-        fun getInstance(context: Context): OrapRepository {
+        fun getInstance(context: Context, username: String, password: String, webKitFormBoundaryId: String): OrapRepository {
             if (instance == null)
-                instance = OrapRepository(context)
+                instance = OrapRepository(context, username, password, webKitFormBoundaryId)
             return instance!!
         }
     }

@@ -159,21 +159,22 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // TODO: Remove when submission of report is working
-//                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
-//                Log.e(
-//                    "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
-//                            "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
-//                            "${mViewModel.maxMiddleWindTime.value?.getFormValue()},\n" +
-//                            "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
-//                )
+                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
+                Log.e(
+                    "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
+                            "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
+                            "${mViewModel.maxMiddleWindTime.value?.getFormValue()},\n" +
+                            "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
+                )
 
                 if (menuItem.itemId == R.id.send_icing_report_action) {
                     if(!reportedIcingValuesAreValid()) {
                         return true
                     }
 
-                    val repository = OrapRepository.getInstance(requireContext())
-                    val result = repository.sendIcingReport(mViewModel.getIcingReportBody())
+                    val requestBody = mViewModel.getIcingReportBody()
+                    val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
+                    val result = repository.sendIcingReport(requestBody)
 
                     result.observe(viewLifecycleOwner) {
                         Log.e("ORAP", "Icing reported")

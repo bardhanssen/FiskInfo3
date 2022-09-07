@@ -49,7 +49,8 @@ interface OrapService {
         "upgrade-insecure-requests: 1",
         "referrerPolicy: strict-origin-when-cross-origin"
     )
-    fun submitReport(@Body body : String, @Header("content-type") contentType: String, @Header("referrer") referrer: String, @Query("user") user: String, @Query("password") password: String): Call<Void?>
+    fun sendIcingReport(@Body body : String, @Query("user") user: String, @Query("password") password: String): Call<Void?>
+//    fun submitReport(@Body body : String, @Header("Content-Type") contentType: String, @Header("referrer") referrer: String, @Query("user") user: String, @Query("password") password: String): Call<Void?>
 
     @GET( ObsReport)
     fun getReports(@Body body : GetReportsRequestBody): Call<Response>
