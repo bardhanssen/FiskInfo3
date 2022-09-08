@@ -2,9 +2,11 @@ package no.sintef.fiskinfo.ui.sprice
 
 import android.location.Location
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
+import android.widget.GridView
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -24,6 +26,8 @@ import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
 import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
 import no.sintef.fiskinfo.repository.OrapRepository
+import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewAdapter
+import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewModel
 import no.sintef.fiskinfo.ui.tools.*
 import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment.LocationDmsDialogListener
 import no.sintef.fiskinfo.util.DMSLocation
@@ -40,6 +44,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mViewModel: ReportIcingViewModel
     private lateinit var mLocationViewModel: LocationViewModel
     private lateinit var locAdapter: LocationRecyclerViewAdapter
+    private lateinit var gridView: GridView
+    private lateinit var vesselIcingGridViewAdapter: TextInputLayoutGridViewAdapter
 
     private lateinit var mMaxMiddleWindAdapter: maxMiddleWindTimeArrayAdapter
     private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
@@ -62,7 +68,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
         initMaxMiddleWindDropDown()
         initReportingHourDropDown()
-//        setHasOptionsMenu(true)
 
         mBinding.icingReportDateField.setOnClickListener {
             val builder: MaterialDatePicker.Builder<Long> = MaterialDatePicker.Builder.datePicker()
@@ -78,9 +83,28 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             picker.show(parentFragmentManager, picker.toString())
         }
 
-        mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
         locAdapter = LocationRecyclerViewAdapter(this)
-        mBinding.toolPositionRecyclerView.adapter = locAdapter
+        mBinding.icingObservationPositionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.icingObservationPositionRecyclerView.adapter = locAdapter
+
+
+        gridView = mBinding.reportIcingVesselIcingGridView
+        val courseModelArrayList: ArrayList<TextInputLayoutGridViewModel> = ArrayList<TextInputLayoutGridViewModel>()
+
+        courseModelArrayList.add(TextInputLayoutGridViewModel(fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
+            hint = getString(R.string.icing_report_vessel_icing_thickness_hint),
+            suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix)))
+        courseModelArrayList.add(TextInputLayoutGridViewModel(fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+            hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+            inputType = InputType.TYPE_CLASS_TEXT))
+        courseModelArrayList.add(TextInputLayoutGridViewModel(fieldName = getString(R.string.icing_report_vessel_change_in_icing),
+            hint = getString(R.string.icing_report_vessel_change_in_icing),
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+            inputType = InputType.TYPE_CLASS_TEXT))
+
+        vesselIcingGridViewAdapter = TextInputLayoutGridViewAdapter(requireContext(), courseModelArrayList)
+        gridView.adapter = vesselIcingGridViewAdapter
 
         return mBinding.root
     }

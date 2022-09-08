@@ -227,9 +227,19 @@
     <string name="icing_wind_type">Wind type</string>
     <string name="icing_report_date">Date</string>
     <string name="icing_report_time">Time</string>
-    <string name="icing_report_air_temperature_hint">Temperature</string>
-    <string name="icing_report_sea_temperature_hint">Sea temperature</string>
+    <string name="icing_report_air_temperature_hint">Air temperature ℃</string>
+    <string name="icing_report_sea_temperature_hint">Sea temperature ℃</string>
+    <string name="icing_report_temperature_unit_suffix" translatable="false">℃</string>
     <string name="icing_report_vessel_icing_thickness_hint">Ice thickness</string>
+    <string name="icing_report_vessel_icing_thickness_suffix">cm</string>
+    <string name="icing_report_vessel_reason_for_icing_hint">Reason for icing</string>
+    <string name="icing_report_vessel_change_in_icing">Change in icing</string>
+
+    <string name="report_icing_category_header_vessel_icing">Ice on the vessel\'s hull</string>
+    <string name="report_icing_category_header_temperature">Temperature</string>
+    <string name="report_icing_category_header_observation_time">Observation time</string>
+    <string name="report_icing_category_header_wind_observations">Wind observations</string>
+    <string name="report_icing_category_header_position">Position</string>
 
     <string name="icing_report_check_error">Icing report error</string>
     <string name="icing_report_submit_error">Icing report error</string>

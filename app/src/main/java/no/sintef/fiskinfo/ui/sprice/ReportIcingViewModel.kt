@@ -21,24 +21,26 @@ import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
-    val synopDate = MutableLiveData<Date>()
-    val reportingTime: MutableStateFlow<Date> = _reportingTime
-
-    var reportChecked = MutableLiveData<Boolean>()
-    var reportValid = MutableLiveData<Boolean>()
-    val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
-
-    private val _vesselIcingThickness = MutableStateFlow("")
+    private val _synopTimeSelect = MutableStateFlow("00:00")
     private val _airTemperature = MutableStateFlow("")
     private val _seaTemperature = MutableStateFlow("")
+    private val _reasonForVesselIcing = MutableStateFlow("")
+    private val _vesselIcingThickness = MutableStateFlow("")
+    private val _vesselIcingChangeInIcing = MutableStateFlow("")
 
-    private val _synopTimeSelect = MutableStateFlow("00:00")
+    val synopDate = MutableLiveData<Date>()
+    val location = MutableLiveData<Location>()
+    val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
+
+    val reportingTime: MutableStateFlow<Date> = _reportingTime
     val synopHourSelect: MutableStateFlow<String> = _synopTimeSelect
 
-    val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
     val airTemperature: MutableStateFlow<String> = _airTemperature
     val seaTemperature: MutableStateFlow<String> = _seaTemperature
-    val location = MutableLiveData<Location>()
+
+    val reasonForVesselIcing: MutableStateFlow<String> = _reasonForVesselIcing
+    val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
+    val vesselIcingChangeInIcing: MutableStateFlow<String> = _vesselIcingChangeInIcing
 
     fun init() {
         reportingTime.value = Date.from(Instant.now())
@@ -53,13 +55,10 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
         maxMiddleWindTime.value = MaxMiddleWindTimeEnum.DURING_OBSERVATION
         val defaultLoc = Location("")
-        // TODO: Default locations
         defaultLoc.latitude = 0.0
         defaultLoc.longitude = 0.0
 
         location.value = defaultLoc
-        reportChecked.value = false
-        reportValid.value = false
 
         viewModelScope.launch {
             _airTemperature.value = ""
@@ -86,6 +85,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
             .seaTemperature(_seaTemperature.value)
             .maxMiddleWindTime(maxMiddleWindTime.value!!)
             .iceThicknessInCm(vesselIcingThickness.value)
+            .reasonForIcing(reasonForVesselIcing.value)
+            .changeInIce(vesselIcingChangeInIcing.value)
             .build()
     }
 

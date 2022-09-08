@@ -151,9 +151,18 @@
     <string name="icing_wind_type">vindtype</string>
     <string name="icing_report_date">Dato</string>
     <string name="icing_report_time">Tidspunkt</string>
-    <string name="icing_report_air_temperature_hint">Temperatur</string>
-    <string name="icing_report_sea_temperature_hint">Sjøtemperatur</string>
+    <string name="icing_report_air_temperature_hint">Temperatur ℃</string>
+    <string name="icing_report_sea_temperature_hint">Sjøtemperatur ℃</string>
     <string name="icing_report_vessel_icing_thickness_hint">Istykkelse</string>
+    <string name="icing_report_vessel_icing_thickness_suffix">cm</string>
+    <string name="icing_report_vessel_reason_for_icing_hint">Årsak til ising</string>
+    <string name="icing_report_vessel_change_in_icing">Endring i ising</string>
+
+    <string name="report_icing_category_header_vessel_icing">Is på fartøyets skrog</string>
+    <string name="report_icing_category_header_temperature">Temperatur</string>
+    <string name="report_icing_category_header_observation_time">Observasjonstidspunkt</string>
+    <string name="report_icing_category_header_wind_observations">Vindobservasjoner</string>
+    <string name="report_icing_category_header_position">Posisjon</string>
 
     <string name="icing_report_check_error">Feil i isingrapport</string>
     <string name="icing_report_submit_error">Feil i isingrapport</string>

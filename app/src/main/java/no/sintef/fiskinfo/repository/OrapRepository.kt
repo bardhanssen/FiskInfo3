@@ -91,7 +91,7 @@ class OrapRepository(context: Context, private var username: String, private var
         val interceptors = listOf<Interceptor>(OrapInterceptor(contentType, referrer))
 
         orapService =
-            createService(OrapService::class.java, orapServerUrl, interceptors)
+            createService(OrapService::class.java, orapServerUrl, false, interceptors)
     }
 
     private class OrapInterceptor(var contentType: String, val referrer: String) : Interceptor {

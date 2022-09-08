@@ -40,9 +40,8 @@ class SpriceUtils {
             return "${BuildConfig.SPRICE_ORAP_SERVER_URL}${prefix}${ObsReport}?user=${username}&password=${password}"
         }
 
-        fun getGMTFromDefaultLocaleFormattedTimeStamp(datetime: ZonedDateTime, format: String): String {
-//            datetime.toOffsetDateTime().atZoneSameInstant(ZoneOffset.UTC)
-            val formatter = DateTimeFormatter.ofPattern(format, Locale.getDefault()).withZone(ZoneOffset.UTC);
+        private fun getGMTFromDefaultLocaleFormattedTimeStamp(datetime: ZonedDateTime, format: String): String {
+            val formatter = DateTimeFormatter.ofPattern(format, Locale.getDefault()).withZone(ZoneOffset.UTC)
 
             return datetime.format(formatter)
 

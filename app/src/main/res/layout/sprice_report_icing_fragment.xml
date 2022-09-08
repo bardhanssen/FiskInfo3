@@ -28,6 +28,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_icing_category_header_observation_time"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,6 +84,13 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_icing_category_header_temperature"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,6 +114,7 @@
                             android:nextFocusRight="@+id/reportIcingSeaTemperatureInputEditText"
                             android:hint="@string/icing_report_air_temperature_hint"
                             android:maxLines="1"
+                            android:textAlignment="viewEnd"
                             android:inputType="numberDecimal|numberSigned"
                             android:text="@={viewmodel.airTemperature}"
                             />
@@ -129,6 +144,7 @@
                             android:hint="@string/icing_report_sea_temperature_hint"
                             android:maxLines="1"
                             android:inputType="numberDecimal|numberSigned"
+                            android:textAlignment="viewEnd"
                             android:text="@={viewmodel.seaTemperature}"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -141,6 +157,25 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_icing_category_header_vessel_icing"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    />
+
+                <GridView
+                    android:id="@+id/reportIcingVesselIcingGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
+                    android:numColumns="2"
+                    android:verticalSpacing="@dimen/activity_vertical_margin_small"
+
+                    >
+
+                </GridView>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -152,6 +187,7 @@
                         android:id="@+id/reportIcingVesselIcingThicknessInput"
                         android:layout_width="140dp"
                         android:maxLines="1"
+                        android:textAlignment="viewEnd"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -161,8 +197,37 @@
                             android:focusable="true"
                             android:hint="@string/icing_report_vessel_icing_thickness_hint"
                             android:maxLines="1"
+                            android:selectAllOnFocus="true"
                             android:inputType="number"
                             android:text="@={viewmodel.vesselIcingThickness}"
+                            android:textAlignment="viewEnd"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"
+                        android:layout_weight="0.1" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/reportIcingReasonForVesselIcingInput"
+                        android:layout_width="140dp"
+                        android:maxLines="1"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/reportIcingReasonForVesselIcingEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:hint="@string/icing_report_vessel_reason_for_icing_hint"
+                            android:maxLines="1"
+                            android:selectAllOnFocus="true"
+                            android:inputType="number"
+                            android:text="@={viewmodel.reasonForVesselIcing}"
+                            android:textAlignment="viewEnd"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,6 +238,13 @@
                         android:layout_weight="0.1" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_icing_category_header_wind_observations"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -204,6 +276,13 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_icing_category_header_position"
+                    style="?android:attr/listSeparatorTextViewStyle"
+                    />
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -215,27 +294,14 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/positions_label"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:text="@string/position"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/toolPositionRecyclerView"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/toolPositionRecyclerView"
+                            android:id="@+id/icingObservationPositionRecyclerView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/positions_label"
+                            app:layout_constraintTop_toTopOf="@+id/relativeLayout"
                             tools:listitem="@layout/location_list_item" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
