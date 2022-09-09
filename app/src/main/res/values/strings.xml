@@ -192,6 +192,53 @@
     <string name="max_middle_wind_time_8">8: Wind seems unchanged</string>
     <string name="max_middle_wind_time_9">9: Wind seems to increase</string>
     <string name="max_middle_wind_time_x">X: Impossible to say</string>
+    
+    <string name="change_in_vessel_icing_0">Ice that does not build up</string>
+    <string name="change_in_vessel_icing_1">Ice that builds up slowly</string>
+    <string name="change_in_vessel_icing_2">Ice that builds up quickly</string>
+    <string name="change_in_vessel_icing_3">Ice that melts or breaks up slowly</string>
+    <string name="change_in_vessel_icing_4">Ice that melts or breaks up quickly</string>
+
+    <string name="concentration_of_sea_ice_0">No sea ice in sight</string>
+    <string name="concentration_of_sea_ice_1">Ship in open lead further than 1 NM</string>
+    <string name="concentration_of_sea_ice_2">Open pack ice, with water in between</string>
+    <string name="concentration_of_sea_ice_3">4 to 6 10 parts open pack of ice</string>
+    <string name="concentration_of_sea_ice_4">7 and 8 10 parts closed pack ice</string>
+    <string name="concentration_of_sea_ice_5">9/10 cover of dense pack ice</string>
+    <string name="concentration_of_sea_ice_6">Areas of pack ice with lighter pack ice in between</string>
+    <string name="concentration_of_sea_ice_7">Areas of pack ice with dense pack ice</string>
+    <string name="concentration_of_sea_ice_8">Fast ice with open water</string>
+    <string name="concentration_of_sea_ice_9">Fast ice with dense pack ice</string>
+    <string name="concentration_of_sea_ice_10">Not possible to report</string>
+
+    <string name="direction_to_nearest_sea_ice_edge_0">Just fresh ice</string>
+    <string name="direction_to_nearest_sea_ice_edge_1">Thin ice below 10 cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_2">Young ice</string>
+    <string name="direction_to_nearest_sea_ice_edge_3">New/young ice with some first-year ice</string>
+    <string name="direction_to_nearest_sea_ice_edge_4">Thin first-year ice with some new ice</string>
+    <string name="direction_to_nearest_sea_ice_edge_5">First year\'s ice 30–70 cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_6">First year\'s ice 70–120 cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_7">Catch first year\'s ice > 120cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_8">Medium and thick first-year ice with some old ice > 200cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_9">Mostly old ice</string>
+    <string name="direction_to_nearest_sea_ice_edge_x">Unable to report</string>
+
+    <string name="reason_for_icing_on_vessel_or_platform_1">Icing from sea spray</string>
+    <string name="reason_for_icing_on_vessel_or_platform_2">Icing from fog</string>
+    <string name="reason_for_icing_on_vessel_or_platform_3">Icing from sea spray and fog</string>
+    <string name="reason_for_icing_on_vessel_or_platform_4">Icing from rain</string>
+    <string name="reason_for_icing_on_vessel_or_platform_5">Icing from sea spray and rain</string>
+
+    <string name="sea_ice_conditions_and_development_0">Ships in open water</string>
+    <string name="sea_ice_conditions_and_development_1">Ships in easily penetrable ice; Conditions are improving</string>
+    <string name="sea_ice_conditions_and_development_2">Ships in easily penetrable ice; Conditions are stable</string>
+    <string name="sea_ice_conditions_and_development_3">Ships in easily penetrable ice; Conditions are getting worse</string>
+    <string name="sea_ice_conditions_and_development_4">Ships in difficult permeable ice; Conditions are improving</string>
+    <string name="sea_ice_conditions_and_development_6">Ice forms and condenses. Difficult conditions that worsen</string>
+    <string name="sea_ice_conditions_and_development_7">Ice under light pressure. Difficult conditions that worsen</string>
+    <string name="sea_ice_conditions_and_development_8">Ice under tight pressure. Difficult conditions that worsen</string>
+    <string name="sea_ice_conditions_and_development_9">Ship stuck in ice</string>
+    <string name="sea_ice_conditions_and_development_x">Unable to report</string>
 
     <string name="max_middle_wind_time_not_selected" translatable="false"/>
     <string name="sprice_icing_reporting_hour_00" translatable="false">00:00</string>

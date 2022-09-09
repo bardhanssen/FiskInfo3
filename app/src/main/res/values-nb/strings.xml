@@ -296,4 +296,51 @@
     <string name="max_middle_wind_time_8">8: Vinden synes uendret</string>
     <string name="max_middle_wind_time_9">9: Vinden synes å øke</string>
     <string name="max_middle_wind_time_x">X: Umulig å angi</string>
+
+    <string name="change_in_vessel_icing_0">Is som ikke bygger seg opp </string>
+    <string name="change_in_vessel_icing_1">Is som bygger seg sakte opp </string>
+    <string name="change_in_vessel_icing_2">Is som bygger seg raskt opp </string>
+    <string name="change_in_vessel_icing_3">Is som smelter eller brekker opp sakte </string>
+    <string name="change_in_vessel_icing_4">Is som smelter eller brekker opp raskt</string>
+
+    <string name="concentration_of_sea_ice_0">Ingen sjøis i sikte </string>
+    <string name="concentration_of_sea_ice_1">Skip i åpen lede videre enn 1 NM  </string>
+    <string name="concentration_of_sea_ice_2">Åpen pakkis, med vann mellom   </string>
+    <string name="concentration_of_sea_ice_3">4 til 6 10 deler åpen pakk is </string>
+    <string name="concentration_of_sea_ice_4">7 og 8 10 deler lukket pakkis   </string>
+    <string name="concentration_of_sea_ice_5">9/10 dekke av tett pakkis </string>
+    <string name="concentration_of_sea_ice_6">Områder med pakkis med lettere pakkis mellom </string>
+    <string name="concentration_of_sea_ice_7">Områder med pakkis med tett pakkis </string>
+    <string name="concentration_of_sea_ice_8">Rask is med åpent vann </string>
+    <string name="concentration_of_sea_ice_9">Rask is med tett pakkis </string>
+    <string name="concentration_of_sea_ice_10">Ikke mulig å raportere</string>
+
+    <string name="direction_to_nearest_sea_ice_edge_0">Bare ny is</string>
+    <string name="direction_to_nearest_sea_ice_edge_1">Tynn is under 10 cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_2">Ung is</string>
+    <string name="direction_to_nearest_sea_ice_edge_3">Ny/ung is med noe første års is</string>
+    <string name="direction_to_nearest_sea_ice_edge_4">Tynn første års is med noe ny is</string>
+    <string name="direction_to_nearest_sea_ice_edge_5">Første års is 30–70 cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_6">Første års is 70–120 cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_7">Fykk første års is > 120cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_8">Medium og tykk første års is med noe gammel is > 200cm</string>
+    <string name="direction_to_nearest_sea_ice_edge_9">Mest gammel is</string>
+    <string name="direction_to_nearest_sea_ice_edge_x">Ikke mulig å raportere</string>
+
+    <string name="reason_for_icing_on_vessel_or_platform_1">Ising fra sjøsprøyt</string>
+    <string name="reason_for_icing_on_vessel_or_platform_2">Ising fra tåke</string>
+    <string name="reason_for_icing_on_vessel_or_platform_3">Ising fra sjøspryt og tåke</string>
+    <string name="reason_for_icing_on_vessel_or_platform_4">Ising fra regn</string>
+    <string name="reason_for_icing_on_vessel_or_platform_5">Ising fra sjøsprøyt og regn</string>
+
+    <string name="sea_ice_conditions_and_development_0">Skip i åpent vann</string>
+    <string name="sea_ice_conditions_and_development_1">Skip i lett gjennomtrengbar is; Forholdene er under bedring</string>
+    <string name="sea_ice_conditions_and_development_2">Skip i lett gjennomtrengbar is; Forholdene er stabile</string>
+    <string name="sea_ice_conditions_and_development_3">Skip i lett gjennomtrengbar is; Forholdene blir verre</string>
+    <string name="sea_ice_conditions_and_development_4">Skip i vanskleig gjennomtrengbar is; Forholdene er under bedring</string>
+    <string name="sea_ice_conditions_and_development_6">Is dannes og fortettes. Vanskelige forhold som forverres</string>
+    <string name="sea_ice_conditions_and_development_7">Is under lett trykk. Vanskelige forhold som forverres</string>
+    <string name="sea_ice_conditions_and_development_8">Is under tett trykk. Vanskelige forhold som forverres</string>
+    <string name="sea_ice_conditions_and_development_9">Skip fast i is</string>
+    <string name="sea_ice_conditions_and_development_x">Ikke mulig å raportere</string>
 </resources>
