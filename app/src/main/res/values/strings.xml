@@ -181,6 +181,8 @@
     <string name="wind_type_code_moderate_wind">Light wind (3 – 7 m/s)</string>
     <string name="wind_type_code_heavy_wind">Heavy wind (over 7 m/s)</string>
 
+    <string name="enum_not_selected">Not selected</string>
+
     <string name="max_middle_wind_time_0">0: during observation</string>
     <string name="max_middle_wind_time_1">1: 0–1 hour from obs</string>
     <string name="max_middle_wind_time_2">2: 1–2 hours from obs</string>
@@ -281,12 +283,14 @@
     <string name="icing_report_vessel_icing_thickness_suffix">cm</string>
     <string name="icing_report_vessel_reason_for_icing_hint">Reason for icing</string>
     <string name="icing_report_vessel_change_in_icing">Change in icing</string>
+    <string name="icing_report_sea_ice_conditions_and_development_hint">Sea ice conditions and development</string>
 
     <string name="report_icing_category_header_vessel_icing">Ice on the vessel\'s hull</string>
     <string name="report_icing_category_header_temperature">Temperature</string>
     <string name="report_icing_category_header_observation_time">Observation time</string>
     <string name="report_icing_category_header_wind_observations">Wind observations</string>
     <string name="report_icing_category_header_position">Position</string>
+    <string name="report_icing_category_header_sea_icing">Sea Ice</string>
 
     <string name="icing_report_check_error">Icing report error</string>
     <string name="icing_report_submit_error">Icing report error</string>

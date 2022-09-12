@@ -22,15 +22,17 @@ import java.util.*
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
     private val _synopTimeSelect = MutableStateFlow("00:00")
+
+    private val _seaIcingConditionsAndDevelopment = MutableStateFlow(SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED)
+
     private val _airTemperature = MutableStateFlow("")
     private val _seaTemperature = MutableStateFlow("")
+
     private val _reasonForVesselIcing = MutableStateFlow("")
     private val _vesselIcingThickness = MutableStateFlow("")
     private val _vesselIcingChangeInIcing = MutableStateFlow("")
 
     val synopDate = MutableLiveData<Date>()
-    val location = MutableLiveData<Location>()
-    val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
 
     val reportingTime: MutableStateFlow<Date> = _reportingTime
     val synopHourSelect: MutableStateFlow<String> = _synopTimeSelect
@@ -38,9 +40,14 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     val airTemperature: MutableStateFlow<String> = _airTemperature
     val seaTemperature: MutableStateFlow<String> = _seaTemperature
 
+    val seaIcingConditionsAndDevelopment: MutableStateFlow<SeaIceConditionsAndDevelopmentEnum> = _seaIcingConditionsAndDevelopment
+
     val reasonForVesselIcing: MutableStateFlow<String> = _reasonForVesselIcing
     val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
     val vesselIcingChangeInIcing: MutableStateFlow<String> = _vesselIcingChangeInIcing
+
+    val location = MutableLiveData<Location>()
+    val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
 
     fun init() {
         reportingTime.value = Date.from(Instant.now())
@@ -53,6 +60,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         calendar.set(Calendar.MILLISECOND, 0)
         synopDate.value = calendar.time
 
+        seaIcingConditionsAndDevelopment.value = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED
         maxMiddleWindTime.value = MaxMiddleWindTimeEnum.DURING_OBSERVATION
         val defaultLoc = Location("")
         defaultLoc.latitude = 0.0

@@ -157,12 +157,14 @@
     <string name="icing_report_vessel_icing_thickness_suffix">cm</string>
     <string name="icing_report_vessel_reason_for_icing_hint">Årsak til ising</string>
     <string name="icing_report_vessel_change_in_icing">Endring i ising</string>
+    <string name="icing_report_sea_ice_conditions_and_development_hint">Sjøisforhold og utvikling de neste tre timer</string>
 
     <string name="report_icing_category_header_vessel_icing">Is på fartøyets skrog</string>
     <string name="report_icing_category_header_temperature">Temperatur</string>
     <string name="report_icing_category_header_observation_time">Observasjonstidspunkt</string>
     <string name="report_icing_category_header_wind_observations">Vindobservasjoner</string>
     <string name="report_icing_category_header_position">Posisjon</string>
+    <string name="report_icing_category_header_sea_icing">Is på havet</string>
 
     <string name="icing_report_check_error">Feil i isingrapport</string>
     <string name="icing_report_submit_error">Feil i isingrapport</string>
@@ -284,6 +286,8 @@
     <string name="prefs_sprice_password">SPRICE passord</string>
     <string name="report_icing_menu_option_send">Rapporter</string>
     <string name="report_icing_menu_option_check">Kontroller</string>
+
+    <string name="enum_not_selected">Ikke valgt</string>
 
     <string name="max_middle_wind_time_0">0: i observasjonstida</string>
     <string name="max_middle_wind_time_1">1: 0–1 time fra obs</string>

@@ -87,9 +87,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/report_icing_category_header_temperature"
+                    android:text="@string/report_icing_category_header_sea_icing"
                     style="?android:attr/listSeparatorTextViewStyle"
                     />
+
+                <GridView
+                    android:id="@+id/reportIcingSeaIcingGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
+                    android:numColumns="2"
+                    android:verticalSpacing="@dimen/activity_vertical_margin_small"
+                    >
+                </GridView>
 
                 <LinearLayout
                     android:layout_width="match_parent"

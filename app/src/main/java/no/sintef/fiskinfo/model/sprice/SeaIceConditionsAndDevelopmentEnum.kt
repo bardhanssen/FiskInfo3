@@ -6,6 +6,8 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 enum class SeaIceConditionsAndDevelopmentEnum(val code : String, val stringResource : Int) : IDropDownMenu {
+    @SerializedName("NOT_SELECTED")
+    NOT_SELECTED("NOT_SELECTED", R.string.enum_not_selected),
     @SerializedName("SHIP_IN_OPEN_WATERS")
     SHIP_IN_OPEN_WATERS("SHIP_IN_OPEN_WATERS", R.string.sea_ice_conditions_and_development_0),
     @SerializedName("SHIP_IN_EASILY_PENETRATED_ICE_CONDITIONS_ARE_IMPROVING")
@@ -44,12 +46,14 @@ enum class SeaIceConditionsAndDevelopmentEnum(val code : String, val stringResou
             ICE_UNDER_TIGHT_PRESSURE_DIFFICULT_CONDITIONS_THAT_ARE_WORSENING -> SEA_ICE_CONDITIONS_AND_DEVELOPMENT_8
             SHIP_STUCK_IN_ICE -> SEA_ICE_CONDITIONS_AND_DEVELOPMENT_9
             NOT_POSSIBLE_TO_REPORT -> SEA_ICE_CONDITIONS_AND_DEVELOPMENT_x
+            NOT_SELECTED -> SEA_ICE_CONDITIONS_AND_DEVELOPMENT_NOT_SELECTED
         }
 
         return retval
     }
 
     companion object {
+        const val SEA_ICE_CONDITIONS_AND_DEVELOPMENT_NOT_SELECTED = "Ikke valgt"
         const val SEA_ICE_CONDITIONS_AND_DEVELOPMENT_0 = "0-Skip i åpent vann "
         const val SEA_ICE_CONDITIONS_AND_DEVELOPMENT_1 = "1-Skip i lett gjennomtrengbar is; Forholdene er under bedring "
         const val SEA_ICE_CONDITIONS_AND_DEVELOPMENT_2 = "2-Skip i lett gjennomtrengbar is; Forholdene er stabile "

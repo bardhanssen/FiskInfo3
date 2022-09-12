@@ -19,7 +19,7 @@ class DropDownMenuArrayAdapter<T : IDropDownMenu>  (context: Context, resource: 
         override fun convertResultToString(resultValue: Any?): CharSequence {
             resultValue?.let {
                 val code = it as T
-                return code.getLocalizedName(context!!)
+                return code.getLocalizedName(context)
             }
             return ""
         }

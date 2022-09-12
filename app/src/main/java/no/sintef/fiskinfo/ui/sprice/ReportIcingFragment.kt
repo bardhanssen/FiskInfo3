@@ -25,6 +25,7 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
 import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
+import no.sintef.fiskinfo.model.sprice.SeaIceConditionsAndDevelopmentEnum
 import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewAdapter
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewModel
@@ -43,14 +44,23 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private lateinit var mViewModel: ReportIcingViewModel
     private lateinit var mLocationViewModel: LocationViewModel
-    private lateinit var locAdapter: LocationRecyclerViewAdapter
-    private lateinit var gridView: GridView
-    private lateinit var vesselIcingGridViewAdapter: TextInputLayoutGridViewAdapter
+
+    private lateinit var vesselIcingGridView: GridView
+    private lateinit var seaIcingGridView: GridView
+    private lateinit var vesselIcingGridViewAdapter: TextInputLayoutGridViewAdapter<IDropDownMenu>
 
     private lateinit var mMaxMiddleWindAdapter: maxMiddleWindTimeArrayAdapter
     private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
-    private lateinit var icingDetailsDropdown: AutoCompleteTextView
     private lateinit var mSynopHourDropdown: AutoCompleteTextView
+
+    private lateinit var mSeaIcingGridViewAdapter: TextInputLayoutGridViewAdapter<IDropDownMenu>
+//    private lateinit var mSeaIceConditionsAdapter: DropDownMenuArrayAdapter<SeaIceConditionsAndDevelopmentEnum>
+//    private lateinit var mSeaIceConditionsDropdown: AutoCompleteTextView
+
+    private lateinit var icingDetailsDropdown: AutoCompleteTextView
+
+    private lateinit var locAdapter: LocationRecyclerViewAdapter
+
     private var _mBinding: SpriceReportIcingFragmentBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -83,28 +93,50 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             picker.show(parentFragmentManager, picker.toString())
         }
 
-        locAdapter = LocationRecyclerViewAdapter(this)
-        mBinding.icingObservationPositionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        mBinding.icingObservationPositionRecyclerView.adapter = locAdapter
+        seaIcingGridView = mBinding.reportIcingSeaIcingGridView
+        val seaIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<SeaIceConditionsAndDevelopmentEnum>> = ArrayList()
+        val seaIceConditionsInputViewModel = TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+            hint = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+            inputType = InputType.TYPE_NULL,
+            onClickListener = { parent, _, position, _ ->
+                mViewModel.seaIcingConditionsAndDevelopment.value = parent.getItemAtPosition(position) as SeaIceConditionsAndDevelopmentEnum
+            },
+            dropDownAdapter = DropDownMenuArrayAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                SeaIceConditionsAndDevelopmentEnum.values()
+            )
+        )
 
+        seaIcingInputsArrayList.add(seaIceConditionsInputViewModel)
+        seaIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), seaIcingInputsArrayList)
 
-        gridView = mBinding.reportIcingVesselIcingGridView
-        val courseModelArrayList: ArrayList<TextInputLayoutGridViewModel> = ArrayList<TextInputLayoutGridViewModel>()
+        val vesselIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
+        vesselIcingGridView = mBinding.reportIcingVesselIcingGridView
 
-        courseModelArrayList.add(TextInputLayoutGridViewModel(fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
+        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
             hint = getString(R.string.icing_report_vessel_icing_thickness_hint),
             suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix)))
-        courseModelArrayList.add(TextInputLayoutGridViewModel(fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
             hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
             textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
             inputType = InputType.TYPE_CLASS_TEXT))
-        courseModelArrayList.add(TextInputLayoutGridViewModel(fieldName = getString(R.string.icing_report_vessel_change_in_icing),
+        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_vessel_change_in_icing),
             hint = getString(R.string.icing_report_vessel_change_in_icing),
             textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
             inputType = InputType.TYPE_CLASS_TEXT))
 
-        vesselIcingGridViewAdapter = TextInputLayoutGridViewAdapter(requireContext(), courseModelArrayList)
-        gridView.adapter = vesselIcingGridViewAdapter
+        vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
+
+
+        locAdapter = LocationRecyclerViewAdapter(this)
+        mBinding.icingObservationPositionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.icingObservationPositionRecyclerView.adapter = locAdapter
 
         return mBinding.root
     }
