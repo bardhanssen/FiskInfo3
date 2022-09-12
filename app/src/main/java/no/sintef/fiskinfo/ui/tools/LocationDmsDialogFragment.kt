@@ -23,24 +23,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.location_dms_editor_fragment.view.*
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LocationDmsEditorFragmentBinding
 import no.sintef.fiskinfo.util.DMSLocation.Companion.EDIT_DMS_POSITION_FRAGMENT_RESULT_REQUEST_KEY
 import no.sintef.fiskinfo.util.GpsLocationTracker
 import no.sintef.fiskinfo.utilities.ui.IntRangeValidator
 
-
 class LocationDmsDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: LocationDmsViewModel
-    private lateinit var mBinding: LocationDmsEditorFragmentBinding
-
+    private var _mBinding: LocationDmsEditorFragmentBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val mBinding get() = _mBinding!!
 
     interface LocationDmsDialogListener {
         fun onDmsEditConfirmed()
@@ -49,17 +47,10 @@ class LocationDmsDialogFragment : DialogFragment() {
     fun createView(
         inflater: LayoutInflater, container: ViewGroup?
     ): View {
-        mBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.location_dms_editor_fragment,
-            container,
-            false
-        )
+        _mBinding = LocationDmsEditorFragmentBinding.inflate(inflater, container, false)
 
-        val root = mBinding.root
-
-        root.latitude_degrees_edit_text.addTextChangedListener(
-            IntRangeValidator(root.latitude_degrees_edit_text,
+        mBinding.latitudeDegreesEditText.addTextChangedListener(
+            IntRangeValidator(mBinding.latitudeDegreesEditText,
                 0,
                 true,
                 90,
@@ -67,8 +58,8 @@ class LocationDmsDialogFragment : DialogFragment() {
             ) { viewModel.dmsLocation.value!!.latitudeDegrees = it.toInt() }
         )
 
-        root.latitude_minutes_edit_text.addTextChangedListener(
-            IntRangeValidator(root.latitude_minutes_edit_text,
+        mBinding.latitudeMinutesEditText.addTextChangedListener(
+            IntRangeValidator(mBinding.latitudeMinutesEditText,
                 0,
                 true,
                 59,
@@ -76,8 +67,8 @@ class LocationDmsDialogFragment : DialogFragment() {
             ) { viewModel.dmsLocation.value!!.latitudeMinutes = it.toInt() }
         )
 
-        root.latitude_seconds_edit_text.addTextChangedListener(
-            IntRangeValidator(root.latitude_seconds_edit_text,
+        mBinding.latitudeSecondsEditText.addTextChangedListener(
+            IntRangeValidator(mBinding.latitudeSecondsEditText,
                 0,
                 true,
                 60,
@@ -86,8 +77,8 @@ class LocationDmsDialogFragment : DialogFragment() {
         )
 
 
-        root.longitude_degrees_edit_text.addTextChangedListener(
-            IntRangeValidator(root.longitude_degrees_edit_text,
+        mBinding.longitudeDegreesEditText.addTextChangedListener(
+            IntRangeValidator(mBinding.longitudeDegreesEditText,
                 0,
                 true,
                 180,
@@ -95,8 +86,8 @@ class LocationDmsDialogFragment : DialogFragment() {
             ) { viewModel.dmsLocation.value!!.longitudeDegrees = it.toInt() }
         )
 
-        root.longitude_minutes_edit_text.addTextChangedListener(
-            IntRangeValidator(root.longitude_minutes_edit_text,
+        mBinding.longitudeMinutesEditText.addTextChangedListener(
+            IntRangeValidator(mBinding.longitudeMinutesEditText,
                 0,
                 true,
                 59,
@@ -104,8 +95,8 @@ class LocationDmsDialogFragment : DialogFragment() {
             ) { viewModel.dmsLocation.value!!.longitudeMinutes = it.toInt() }
         )
 
-        root.longitude_seconds_edit_text.addTextChangedListener(
-            IntRangeValidator(root.longitude_seconds_edit_text,
+        mBinding.longitudeSecondsEditText.addTextChangedListener(
+            IntRangeValidator(mBinding.longitudeSecondsEditText,
                 0,
                 true,
                 60,
@@ -123,7 +114,7 @@ class LocationDmsDialogFragment : DialogFragment() {
             }
         }
 
-        return root
+        return mBinding.root
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
