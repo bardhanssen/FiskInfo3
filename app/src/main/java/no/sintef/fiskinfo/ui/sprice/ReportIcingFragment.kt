@@ -6,6 +6,7 @@ import android.text.InputType
 import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
+import android.widget.GridLayout
 import android.widget.GridView
 import android.widget.Toast
 import androidx.core.view.MenuHost
@@ -44,7 +45,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mLocationViewModel: LocationViewModel
 
     private lateinit var seaIcingGridView: GridView
-    private lateinit var vesselIcingGridView: GridView
+    private lateinit var vesselIcingGridView: GridLayout
     private lateinit var windObservationsGridView: GridView
 
     private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
@@ -159,7 +160,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 ChangeInIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
             )))
 
-        vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
+        vesselIcingInputsArrayList.forEach { vesselIcingGridView.addView(TextInputLayoutGridViewAdapter.getViewFromModel(requireContext(), it, vesselIcingGridView)) }
+//        vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
     }
 
     private fun initSeaIcingGridView() {
@@ -173,6 +175,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             onClickListener = { parent, _, position, _ ->
                 mViewModel.seaIcingConditionsAndDevelopment.value = parent.getItemAtPosition(position) as SeaIceConditionsAndDevelopmentEnum
             },
+            maxLines = 2,
             dropDownAdapter = DropDownMenuArrayAdapter(
                 requireContext(),
                 R.layout.exposed_dropdown_menu_item,

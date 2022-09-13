@@ -109,16 +109,17 @@
                     style="?android:attr/listSeparatorTextViewStyle"
                     />
 
-                <GridView
+                <GridLayout
                     android:id="@+id/reportIcingVesselIcingGridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
-                    android:numColumns="2"
+                    android:columnCount="2"
+                    android:rowCount="2"
                     android:verticalSpacing="@dimen/activity_vertical_margin_small"
                     android:layout_marginTop="@dimen/activity_vertical_margin_small"
                     >
-                </GridView>
+                </GridLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
