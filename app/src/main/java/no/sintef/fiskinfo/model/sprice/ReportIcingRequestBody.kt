@@ -54,9 +54,9 @@ class ReportIcingRequestBody internal constructor(
     internal val DirectionToNearestIceEdge: String,
     internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: String,
 
-    internal val ReasonForIcing: String,
+    internal val ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum,
     internal val IceThicknessInCm: Int,
-    internal val ChangeInIce: String
+    internal val ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum
 ) {
     private constructor(builder: Builder) : this(
         builder.WebKitFormBoundaryId,
@@ -111,9 +111,9 @@ class ReportIcingRequestBody internal constructor(
         var OceanIce: String = "",
         var DirectionToNearestIceEdge: String = "",
         var SeaIceConditionsAndDevelopmentTheLastThreeHours: String = "",
-        var ReasonForIcing: String = "",
+        var ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED,
         var IceThicknessInCm: Int = 0,
-        var ChangeInIce: String = ""
+        var ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
     ) {
         fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
         fun reportingTime(reportingTime: ZonedDateTime) = apply { this.ReportingTime = reportingTime }
@@ -151,7 +151,7 @@ class ReportIcingRequestBody internal constructor(
             apply { this.SeaIceStageOfDevelopment = seaIceStageOfDevelopment }
 
         fun oceanIce(oceanIce: String) = apply { this.OceanIce = oceanIce }
-        fun DirectionToNearestIceEdge(directionToNearestIceEdge: String) =
+        fun directionToNearestIceEdge(directionToNearestIceEdge: String) =
             apply { this.DirectionToNearestIceEdge = directionToNearestIceEdge }
 
         fun seaIceConditionsAndDevelopmentTheLastThreeHours(
@@ -161,7 +161,7 @@ class ReportIcingRequestBody internal constructor(
                 seaIceConditionsAndDevelopmentTheLastThreeHours
         }
 
-        fun reasonForIcing(reasonForIcing: String) = apply { this.ReasonForIcing = reasonForIcing }
+        fun reasonForIcing(reasonForIcing: ReasonForIcingOnVesselOrPlatformEnum) = apply { this.ReasonForIcing = reasonForIcing }
         fun iceThicknessInCm(iceThicknessInCm: String) =
             apply {
                 try {
@@ -171,7 +171,7 @@ class ReportIcingRequestBody internal constructor(
                 }
             }
 
-        fun changeInIce(changeInIce: String) = apply { this.ChangeInIce = changeInIce }
+        fun changeInIce(changeInIce: ChangeInIcingOnVesselOrPlatformEnum) = apply { this.ChangeInIce = changeInIce }
 
         fun build(): ReportIcingRequestBody {
             return ReportIcingRequestBody(this)
@@ -208,6 +208,6 @@ class ReportIcingRequestBody internal constructor(
             SpriceUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
         )
 
-        return stringBuilder.toString();
+        return stringBuilder.toString()
     }
 }

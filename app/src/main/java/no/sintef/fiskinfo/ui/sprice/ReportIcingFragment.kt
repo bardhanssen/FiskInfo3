@@ -23,9 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
-import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
-import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
-import no.sintef.fiskinfo.model.sprice.SeaIceConditionsAndDevelopmentEnum
+import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewAdapter
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewModel
@@ -45,19 +43,12 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mViewModel: ReportIcingViewModel
     private lateinit var mLocationViewModel: LocationViewModel
 
-    private lateinit var vesselIcingGridView: GridView
     private lateinit var seaIcingGridView: GridView
-    private lateinit var vesselIcingGridViewAdapter: TextInputLayoutGridViewAdapter<IDropDownMenu>
+    private lateinit var vesselIcingGridView: GridView
+    private lateinit var windObservationsGridView: GridView
 
-    private lateinit var mMaxMiddleWindAdapter: maxMiddleWindTimeArrayAdapter
     private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
     private lateinit var mSynopHourDropdown: AutoCompleteTextView
-
-    private lateinit var mSeaIcingGridViewAdapter: TextInputLayoutGridViewAdapter<IDropDownMenu>
-//    private lateinit var mSeaIceConditionsAdapter: DropDownMenuArrayAdapter<SeaIceConditionsAndDevelopmentEnum>
-//    private lateinit var mSeaIceConditionsDropdown: AutoCompleteTextView
-
-    private lateinit var icingDetailsDropdown: AutoCompleteTextView
 
     private lateinit var locAdapter: LocationRecyclerViewAdapter
 
@@ -76,7 +67,26 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
         _mBinding = SpriceReportIcingFragmentBinding.inflate(inflater, container, false)
 
-        initMaxMiddleWindDropDown()
+        initInputAndGridViews()
+
+        return mBinding.root
+    }
+
+    private fun initInputAndGridViews() {
+        initTimeInputs()
+        initSeaIcingGridView()
+        initVesselIcingGridView()
+        initWindObservationsGridView()
+        initPositionInput()
+    }
+
+    private fun initPositionInput() {
+        locAdapter = LocationRecyclerViewAdapter(this)
+        mBinding.icingObservationPositionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.icingObservationPositionRecyclerView.adapter = locAdapter
+    }
+
+    private fun initTimeInputs() {
         initReportingHourDropDown()
 
         mBinding.icingReportDateField.setOnClickListener {
@@ -92,27 +102,30 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             }
             picker.show(parentFragmentManager, picker.toString())
         }
+    }
 
-        seaIcingGridView = mBinding.reportIcingSeaIcingGridView
-        val seaIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<SeaIceConditionsAndDevelopmentEnum>> = ArrayList()
-        val seaIceConditionsInputViewModel = TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
-            hint = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+    private fun initWindObservationsGridView() {
+        windObservationsGridView = mBinding.reportIcingWindObservationsGridView
+        val windObservationsInputsArrayList: ArrayList<TextInputLayoutGridViewModel<MaxMiddleWindTimeEnum>> = ArrayList()
+
+        windObservationsInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.max_middle_wind_when_hint),
+            hint = getString(R.string.max_middle_wind_when_hint),
             textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
             inputType = InputType.TYPE_NULL,
             onClickListener = { parent, _, position, _ ->
-                mViewModel.seaIcingConditionsAndDevelopment.value = parent.getItemAtPosition(position) as SeaIceConditionsAndDevelopmentEnum
+                mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(position) as MaxMiddleWindTimeEnum
             },
             dropDownAdapter = DropDownMenuArrayAdapter(
                 requireContext(),
                 R.layout.exposed_dropdown_menu_item,
-                SeaIceConditionsAndDevelopmentEnum.values()
-            )
+                MaxMiddleWindTimeEnum.values().drop(1).toTypedArray()
+            ))
         )
+        windObservationsGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), windObservationsInputsArrayList)
+    }
 
-        seaIcingInputsArrayList.add(seaIceConditionsInputViewModel)
-        seaIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), seaIcingInputsArrayList)
-
+    private fun initVesselIcingGridView() {
         val vesselIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
         vesselIcingGridView = mBinding.reportIcingVesselIcingGridView
 
@@ -124,35 +137,49 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
             hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
             textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            inputType = InputType.TYPE_CLASS_TEXT))
+            onClickListener = { parent, _, position, _ ->
+                mViewModel.reasonForVesselIcing.value = parent.getItemAtPosition(position) as ReasonForIcingOnVesselOrPlatformEnum
+            },
+            dropDownAdapter = DropDownMenuArrayAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                ReasonForIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
+            )))
         vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_change_in_icing),
             hint = getString(R.string.icing_report_vessel_change_in_icing),
             textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            inputType = InputType.TYPE_CLASS_TEXT))
+            inputType = InputType.TYPE_CLASS_TEXT,
+            onClickListener = { parent, _, position, _ ->
+                mViewModel.vesselIcingChangeInIcing.value = parent.getItemAtPosition(position) as ChangeInIcingOnVesselOrPlatformEnum
+            },
+            dropDownAdapter = DropDownMenuArrayAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                ChangeInIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
+            )))
 
         vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
-
-
-        locAdapter = LocationRecyclerViewAdapter(this)
-        mBinding.icingObservationPositionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        mBinding.icingObservationPositionRecyclerView.adapter = locAdapter
-
-        return mBinding.root
     }
 
-    private fun initMaxMiddleWindDropDown() {
-        mMaxMiddleWindAdapter = maxMiddleWindTimeArrayAdapter(
-            requireContext(),
-            R.layout.exposed_dropdown_menu_item,
-            MaxMiddleWindTimeEnum.values()
-        )
-        icingDetailsDropdown = mBinding.icingDetailsTypeField
+    private fun initSeaIcingGridView() {
+        seaIcingGridView = mBinding.reportIcingSeaIcingGridView
+        val seaIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<SeaIceConditionsAndDevelopmentEnum>> = ArrayList()
 
-        icingDetailsDropdown.setOnItemClickListener { parent, _, position, _ ->
-            mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(position) as MaxMiddleWindTimeEnum
-        }
-        icingDetailsDropdown.setAdapter(mMaxMiddleWindAdapter)
+        seaIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+            hint = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+            onClickListener = { parent, _, position, _ ->
+                mViewModel.seaIcingConditionsAndDevelopment.value = parent.getItemAtPosition(position) as SeaIceConditionsAndDevelopmentEnum
+            },
+            dropDownAdapter = DropDownMenuArrayAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                SeaIceConditionsAndDevelopmentEnum.values().drop(1).toTypedArray()
+            ))
+        )
+        seaIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), seaIcingInputsArrayList)
     }
 
     private fun initReportingHourDropDown() {
@@ -219,7 +246,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 Log.e(
                     "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
                             "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
-                            "${mViewModel.maxMiddleWindTime.value?.getFormValue()},\n" +
+                            "${mViewModel.maxMiddleWindTime.value.getFormValue()},\n" +
                             "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
                 )
 
@@ -271,12 +298,18 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private fun reportedIcingValuesAreValid(): Boolean {
         var valid = true
-//        if (mViewModel.maxMiddleWindTime.value == null) {
-//            mBinding.icingDetailsTypeField.error = getString(R.string.icing_missing_value)
-//            invalid = false
-//        } else {
-//            mBinding.icingDetailsTypeField.error = null
-//        }
+        if (mViewModel.maxMiddleWindTime.value == MaxMiddleWindTimeEnum.NOT_SELECTED) {
+            // TODO: Add error icon
+            valid = false
+        } else {
+            // TODO: remove error icon
+        }
+        if(mViewModel.seaIcingConditionsAndDevelopment.value == SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED) {
+            seaIcingGridView.findViewWithTag<View>("") // TODO: Add error icon
+            valid = false
+        } else {
+            seaIcingGridView.findViewWithTag<View>("") // TODO: remove error icon
+        }
 
         // TODO: Check other values
 

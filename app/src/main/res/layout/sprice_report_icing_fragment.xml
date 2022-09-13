@@ -96,76 +96,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
-                    android:numColumns="2"
+                    android:numColumns="1"
                     android:verticalSpacing="@dimen/activity_vertical_margin_small"
+                    android:layout_marginTop="@dimen/activity_vertical_margin_small"
                     >
                 </GridView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/activity_horizontal_margin_small"
-                    >
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:id="@+id/reportIcingAirTemperatureInput"
-                        android:layout_width="140dp"
-                        android:maxLines="1"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/reportIcingAirTemperatureInputEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:nextFocusDown="@+id/reportIcingSeaTemperatureInputEditText"
-                            android:nextFocusLeft="@+id/reportIcingSeaTemperatureInputEditText"
-                            android:nextFocusRight="@+id/reportIcingSeaTemperatureInputEditText"
-                            android:hint="@string/icing_report_air_temperature_hint"
-                            android:maxLines="1"
-                            android:textAlignment="viewEnd"
-                            android:inputType="numberDecimal|numberSigned"
-                            android:text="@={viewmodel.airTemperature}"
-                            />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="1dp"
-                        android:visibility="invisible"
-                        android:layout_weight="0.1" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:id="@+id/reportIcingSeaTemperatureInput"
-                        android:layout_width="140dp"
-                        android:maxLines="1"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/reportIcingSeaTemperatureInputEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:nextFocusDown="@+id/reportIcingVesselIcingThicknessEditText"
-                            android:nextFocusLeft="@+id/reportIcingVesselIcingThicknessEditText"
-                            android:nextFocusRight="@+id/reportIcingVesselIcingThicknessEditText"
-                            android:hint="@string/icing_report_sea_temperature_hint"
-                            android:maxLines="1"
-                            android:inputType="numberDecimal|numberSigned"
-                            android:textAlignment="viewEnd"
-                            android:text="@={viewmodel.seaTemperature}"
-                            />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="1dp"
-                        android:visibility="invisible"
-                        android:layout_weight="0.1" />
-
-                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,73 +116,9 @@
                     android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
                     android:numColumns="2"
                     android:verticalSpacing="@dimen/activity_vertical_margin_small"
-
+                    android:layout_marginTop="@dimen/activity_vertical_margin_small"
                     >
-
                 </GridView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/activity_horizontal_margin_small"
-                    >
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:id="@+id/reportIcingVesselIcingThicknessInput"
-                        android:layout_width="140dp"
-                        android:maxLines="1"
-                        android:textAlignment="viewEnd"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/reportIcingVesselIcingThicknessEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:hint="@string/icing_report_vessel_icing_thickness_hint"
-                            android:maxLines="1"
-                            android:selectAllOnFocus="true"
-                            android:inputType="number"
-                            android:text="@={viewmodel.vesselIcingThickness}"
-                            android:textAlignment="viewEnd"
-                            />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="1dp"
-                        android:visibility="invisible"
-                        android:layout_weight="0.1" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:id="@+id/reportIcingReasonForVesselIcingInput"
-                        android:layout_width="140dp"
-                        android:maxLines="1"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/reportIcingReasonForVesselIcingEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:hint="@string/icing_report_vessel_reason_for_icing_hint"
-                            android:maxLines="1"
-                            android:selectAllOnFocus="true"
-                            android:inputType="number"
-                            android:text="@={viewmodel.reasonForVesselIcing}"
-                            android:textAlignment="viewEnd"
-                            />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:visibility="invisible"
-                        android:layout_weight="0.1" />
-
-                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -256,35 +127,16 @@
                     style="?android:attr/listSeparatorTextViewStyle"
                     />
 
-                <LinearLayout
+                <GridView
+                    android:id="@+id/reportIcingWindObservationsGridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
-                        android:hint="@string/max_middle_wind_when"
-                        app:startIconContentDescription="@string/proto_close_drawer"
-                        app:startIconDrawable="@drawable/ic_icing_24">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/icingDetailsTypeField"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="@{InputType.TYPE_NULL}"
-                            android:hint="@string/max_middle_wind_when"
-                            android:text="@{viewmodel.maxMiddleWindTimeName}" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
+                    android:numColumns="1"
+                    android:verticalSpacing="@dimen/activity_vertical_margin_small"
+                    android:layout_marginTop="@dimen/activity_vertical_margin_small"
+                    >
+                </GridView>
 
                 <TextView
                     android:layout_width="wrap_content"

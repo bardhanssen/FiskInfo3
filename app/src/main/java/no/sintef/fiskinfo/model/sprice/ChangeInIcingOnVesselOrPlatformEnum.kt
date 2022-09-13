@@ -6,6 +6,8 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 enum class ChangeInIcingOnVesselOrPlatformEnum(val code : String, val stringResource : Int) : IDropDownMenu {
+    @SerializedName("NOT_SELECTED")
+    NOT_SELECTED("NOT_SELECTED", R.string.enum_not_selected),
     @SerializedName("ICE_THAT_DOESNT_BUILD_UP")
     ICE_THAT_DOESNT_BUILD_UP("ICE_THAT_DOESNT_BUILD_UP", R.string.max_middle_wind_time_0),
     @SerializedName("ICE_THAT_DOESNT_BUILD_UP")
@@ -28,12 +30,14 @@ enum class ChangeInIcingOnVesselOrPlatformEnum(val code : String, val stringReso
             ICE_THAT_BUILDS_UP_FAST -> CHANGE_IN_VESSEL_ICING_FORM_VALUE_2
             ICE_THAT_MELTS_OR_BREAKS_UP_SLOWLY -> CHANGE_IN_VESSEL_ICING_FORM_VALUE_3
             ICE_THAT_MELTS_OR_BREAKS_UP_FAST -> CHANGE_IN_VESSEL_ICING_FORM_VALUE_4
+            NOT_SELECTED -> CHANGE_IN_VESSEL_ICING_FORM_VALUE_NOT_SELECTED
         }
 
         return retval
     }
 
     companion object {
+        const val CHANGE_IN_VESSEL_ICING_FORM_VALUE_NOT_SELECTED = "Ikke valgt"
         const val CHANGE_IN_VESSEL_ICING_FORM_VALUE_0 = "0- Is som ikke bygger seg opp "
         const val CHANGE_IN_VESSEL_ICING_FORM_VALUE_1 = "1- Is som bygger seg sakte opp "
         const val CHANGE_IN_VESSEL_ICING_FORM_VALUE_2 = "2- Is som bygger seg raskt opp "

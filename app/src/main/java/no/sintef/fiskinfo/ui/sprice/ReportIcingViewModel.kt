@@ -28,9 +28,11 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     private val _airTemperature = MutableStateFlow("")
     private val _seaTemperature = MutableStateFlow("")
 
-    private val _reasonForVesselIcing = MutableStateFlow("")
+    private val _reasonForVesselIcing = MutableStateFlow(ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED)
     private val _vesselIcingThickness = MutableStateFlow("")
-    private val _vesselIcingChangeInIcing = MutableStateFlow("")
+    private val _vesselIcingChangeInIcing = MutableStateFlow(ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED)
+
+    private val _maxMiddleWindTime = MutableStateFlow(MaxMiddleWindTimeEnum.NOT_SELECTED)
 
     val synopDate = MutableLiveData<Date>()
 
@@ -42,12 +44,13 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
     val seaIcingConditionsAndDevelopment: MutableStateFlow<SeaIceConditionsAndDevelopmentEnum> = _seaIcingConditionsAndDevelopment
 
-    val reasonForVesselIcing: MutableStateFlow<String> = _reasonForVesselIcing
+    val reasonForVesselIcing: MutableStateFlow<ReasonForIcingOnVesselOrPlatformEnum> = _reasonForVesselIcing
     val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
-    val vesselIcingChangeInIcing: MutableStateFlow<String> = _vesselIcingChangeInIcing
+    val vesselIcingChangeInIcing: MutableStateFlow<ChangeInIcingOnVesselOrPlatformEnum> = _vesselIcingChangeInIcing
+
+    val maxMiddleWindTime: MutableStateFlow<MaxMiddleWindTimeEnum> = _maxMiddleWindTime
 
     val location = MutableLiveData<Location>()
-    val maxMiddleWindTime = MutableLiveData<MaxMiddleWindTimeEnum>()
 
     fun init() {
         reportingTime.value = Date.from(Instant.now())
@@ -61,7 +64,9 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         synopDate.value = calendar.time
 
         seaIcingConditionsAndDevelopment.value = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED
-        maxMiddleWindTime.value = MaxMiddleWindTimeEnum.DURING_OBSERVATION
+        reasonForVesselIcing.value = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED
+        vesselIcingChangeInIcing.value = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
+        maxMiddleWindTime.value = MaxMiddleWindTimeEnum.NOT_SELECTED
         val defaultLoc = Location("")
         defaultLoc.latitude = 0.0
         defaultLoc.longitude = 0.0
@@ -123,9 +128,5 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         }
 
         return retval
-    }
-
-    val maxMiddleWindTimeName: LiveData<String> = Transformations.map(maxMiddleWindTime) { code ->
-        code.getLocalizedName(getApplication())
     }
 }

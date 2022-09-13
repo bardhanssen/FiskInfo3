@@ -271,7 +271,7 @@
     <string name="sprice_icing_reporting_observation_hour">Observation time</string>
     <string name="sprice_icing_reporting_synop">Synop</string>
 
-    <string name="max_middle_wind_when">When Max middle wind</string>
+    <string name="max_middle_wind_when_hint">When Max middle wind</string>
     <string name="icing_icing_type">Icing type</string>
     <string name="icing_wind_type">Wind type</string>
     <string name="icing_report_date">Date</string>

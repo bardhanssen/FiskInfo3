@@ -146,7 +146,7 @@
     <string name="sprice_icing_reporting_observation_hour">Observasjonstid</string>
     <string name="sprice_icing_reporting_synop">Synop</string>
 
-    <string name="max_middle_wind_when">Når maks middelvind</string>
+    <string name="max_middle_wind_when_hint">Når maks middelvind</string>
     <string name="icing_icing_type">Istype</string>
     <string name="icing_wind_type">vindtype</string>
     <string name="icing_report_date">Dato</string>

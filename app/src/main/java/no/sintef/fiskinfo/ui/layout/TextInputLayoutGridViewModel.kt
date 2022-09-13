@@ -29,9 +29,9 @@ class TextInputLayoutGridViewModel<T : IDropDownMenu>() {
         suffixText: String? = null,
         selectAllOnFocus: Boolean = true,
         maxLines: Int = 1,
-        inputType: Int = InputType.TYPE_CLASS_NUMBER,
         onClickListener: AdapterView.OnItemClickListener? = null,
-        dropDownAdapter: DropDownMenuArrayAdapter<T>? = null
+        dropDownAdapter: DropDownMenuArrayAdapter<T>? = null,
+        inputType: Int = if(onClickListener == null) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL
     )
             : this(fieldName, hint) {
         this.fieldName = fieldName

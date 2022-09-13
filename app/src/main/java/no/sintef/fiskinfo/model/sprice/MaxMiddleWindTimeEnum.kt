@@ -3,8 +3,12 @@ package no.sintef.fiskinfo.model.sprice
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
-enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
+enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) : IDropDownMenu {
+    @SerializedName("NOT_SELECTED")
+    NOT_SELECTED("NOT_SELECTED", R.string.enum_not_selected),
+
     @SerializedName("DURING_OBSERVATION")
     DURING_OBSERVATION("DURING_OBSERVATION", R.string.max_middle_wind_time_0),
 
@@ -38,11 +42,11 @@ enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
     @SerializedName("IMPOSSIBLE_TO_SAY")
     IMPOSSIBLE_TO_SAY("IMPOSSIBLE_TO_SAY", R.string.max_middle_wind_time_x);
 
-    fun getLocalizedName(context : Context):String {
+    override fun getLocalizedName(context : Context):String {
         return context.resources.getString(stringResource)
     }
 
-    fun getFormValue(): String {
+    override fun getFormValue(): String {
         var retval = ""
 
         when (this) {
@@ -57,12 +61,14 @@ enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) {
             AFTER_8_HOUR -> retval = MAX_MIDDLE_WIND_TIME_8_FORM_VALUE
             AFTER_9_HOUR -> retval = MAX_MIDDLE_WIND_TIME_9_FORM_VALUE
             IMPOSSIBLE_TO_SAY -> retval = MAX_MIDDLE_WIND_TIME_X_FORM_VALUE
+            NOT_SELECTED -> MAX_MIDDLE_WIND_TIME_NOT_SELECTED
         }
 
         return retval
     }
 
     companion object {
+        const val MAX_MIDDLE_WIND_TIME_NOT_SELECTED = "Ikke valgt"
         const val MAX_MIDDLE_WIND_TIME_0_FORM_VALUE = " i observasjonstida"
         const val MAX_MIDDLE_WIND_TIME_1_FORM_VALUE = " 0-1 time fra obs "
         const val MAX_MIDDLE_WIND_TIME_2_FORM_VALUE = " 1-2 time fra obs  "
