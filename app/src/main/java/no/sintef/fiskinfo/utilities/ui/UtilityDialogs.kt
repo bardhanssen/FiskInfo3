@@ -17,15 +17,9 @@
  */
 package no.sintef.fiskinfo.utilities.ui
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.view.View
-import android.view.Window
 import android.view.WindowManager
-import android.widget.TextView
-//import fiskinfoo.no.sintef.fiskinfoo.Baseclasses.HyperlinkAlertDialog
-//import fiskinfoo.no.sintef.fiskinfoo.R
 
 class UtilityDialogs : DialogInterface {
     override fun getDialog(
@@ -35,7 +29,7 @@ class UtilityDialogs : DialogInterface {
     ): Dialog? {
         if (context == null)
             return null
-        val dialog = Dialog(context!!)
+        val dialog = Dialog(context)
         dialog.setContentView(layoutId)
         dialog.setTitle(titleId)
         dialog.setCanceledOnTouchOutside(false)
@@ -50,7 +44,7 @@ class UtilityDialogs : DialogInterface {
     ): Dialog? {
         if (context == null)
             return null
-        val dialog = Dialog(context!!)
+        val dialog = Dialog(context)
         dialog.setContentView(layoutId)
         dialog.setTitle(title)
         dialog.setCanceledOnTouchOutside(false)

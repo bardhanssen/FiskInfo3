@@ -21,7 +21,7 @@ import java.util.*
 
 class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
-    private val _synopTimeSelect = MutableStateFlow("00:00")
+    private val _synopTimeSelect = MutableStateFlow("")
 
     private val _seaIcingConditionsAndDevelopment = MutableStateFlow(SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED)
 

@@ -150,7 +150,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     }
 
     override fun onViewToolClicked(v: View, tool: ToolViewModel?) {
-        mViewModel.selectTool(tool, mIsConfirmed)
+        mViewModel.selectTool(tool)
         Navigation.findNavController(v).navigate(R.id.action_tools_fragment_to_tool_details_fragment)
     }
 

@@ -20,6 +20,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
@@ -45,7 +46,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mLocationViewModel: LocationViewModel
 
     private lateinit var seaIcingGridView: GridView
-    private lateinit var vesselIcingGridView: GridLayout
+    private lateinit var vesselIcingGridView: GridView
+    private lateinit var vesselIcingGridLayout: GridLayout
     private lateinit var windObservationsGridView: GridView
 
     private lateinit var mReportingHourAdapter: DropDownMenuArrayAdapter<IcingReportHourEnum>
@@ -129,6 +131,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private fun initVesselIcingGridView() {
         val vesselIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
         vesselIcingGridView = mBinding.reportIcingVesselIcingGridView
+        vesselIcingGridLayout = mBinding.reportIcingVesselIcingGridLayout
 
         vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
@@ -160,8 +163,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 ChangeInIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
             )))
 
-        vesselIcingInputsArrayList.forEach { vesselIcingGridView.addView(TextInputLayoutGridViewAdapter.getViewFromModel(requireContext(), it, vesselIcingGridView)) }
-//        vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
+//        vesselIcingInputsArrayList.forEach { vesselIcingGridLayout.addView(TextInputLayoutGridViewAdapter.getViewFromModel(requireContext(), it, vesselIcingGridView)) }
+        vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
     }
 
     private fun initSeaIcingGridView() {
@@ -189,7 +192,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mReportingHourAdapter = DropDownMenuArrayAdapter(
             requireContext(),
             R.layout.exposed_dropdown_menu_item,
-            IcingReportHourEnum.values()
+            IcingReportHourEnum.values().drop(1).toTypedArray()
         )
         mSynopHourDropdown = mBinding.icingReportTimeField
 
@@ -301,18 +304,39 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private fun reportedIcingValuesAreValid(): Boolean {
         var valid = true
-        if (mViewModel.maxMiddleWindTime.value == MaxMiddleWindTimeEnum.NOT_SELECTED) {
-            // TODO: Add error icon
-            valid = false
-        } else {
-            // TODO: remove error icon
-        }
+
         if(mViewModel.seaIcingConditionsAndDevelopment.value == SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED) {
-            seaIcingGridView.findViewWithTag<View>("") // TODO: Add error icon
+            seaIcingGridView.findViewWithTag<TextInputLayout>(R.string.icing_report_sea_ice_conditions_and_development_hint).error = getString(R.string.drop_down_menu_error_not_selected)
             valid = false
         } else {
-            seaIcingGridView.findViewWithTag<View>("") // TODO: remove error icon
+            seaIcingGridView.findViewWithTag<TextInputLayout>(R.string.icing_report_sea_ice_conditions_and_development_hint).error = null
         }
+        if(mViewModel.reasonForVesselIcing.value == ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
+            vesselIcingGridView.findViewWithTag<TextInputLayout>(R.string.icing_report_vessel_reason_for_icing_hint).error = getString(R.string.drop_down_menu_error_not_selected)
+            valid = false
+        } else {
+            vesselIcingGridView.findViewWithTag<TextInputLayout>(R.string.icing_report_vessel_reason_for_icing_hint).error = null
+        }
+        if(mViewModel.vesselIcingChangeInIcing.value == ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
+            vesselIcingGridView.findViewWithTag<TextInputLayout>(R.string.icing_report_vessel_change_in_icing).error = getString(R.string.drop_down_menu_error_not_selected)
+            valid = false
+        } else {
+            vesselIcingGridView.findViewWithTag<TextInputLayout>(R.string.icing_report_vessel_change_in_icing).error = null
+        }
+        if (mViewModel.maxMiddleWindTime.value == MaxMiddleWindTimeEnum.NOT_SELECTED) {
+            windObservationsGridView.findViewWithTag<TextInputLayout>(R.string.max_middle_wind_when_hint).error = getString(R.string.drop_down_menu_error_not_selected)
+            valid = false
+        } else {
+            windObservationsGridView.findViewWithTag<TextInputLayout>(R.string.max_middle_wind_when_hint).error = null
+        }
+
+        if (mViewModel.synopHourSelect.value == "") {
+            windObservationsGridView.findViewWithTag<TextInputLayout>(R.string.max_middle_wind_when_hint).error = getString(R.string.drop_down_menu_error_not_selected)
+            valid = false
+        } else {
+            windObservationsGridView.findViewWithTag<TextInputLayout>(R.string.max_middle_wind_when_hint).error = null
+        }
+
 
         // TODO: Check other values
 

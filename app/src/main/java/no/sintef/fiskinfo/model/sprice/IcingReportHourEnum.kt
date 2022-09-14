@@ -6,6 +6,8 @@ import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 enum class IcingReportHourEnum(val code : String, val stringResource : Int) : IDropDownMenu {
+    @SerializedName("NOT_SELECTED")
+    NOT_SELECTED("NOT_SELECTED", R.string.enum_not_selected),
     @SerializedName("00:00")
     HOUR_00("01:00", R.string.sprice_icing_reporting_hour_00),
     @SerializedName("01:00")
@@ -87,13 +89,14 @@ enum class IcingReportHourEnum(val code : String, val stringResource : Int) : ID
             HOUR_21 -> retval = ICING_REPORTING_HOUR_2100
             HOUR_22 -> retval = ICING_REPORTING_HOUR_2200
             HOUR_23 -> retval = ICING_REPORTING_HOUR_2300
+            NOT_SELECTED -> ICING_REPORTING_HOUR_NOT_SELECTED
         }
 
         return retval
     }
 
     companion object {
-        const val ICING_REPORTING_HOUR_NOT_SELECTED_FORM_VALUE = ""
+        const val ICING_REPORTING_HOUR_NOT_SELECTED = ""
         const val ICING_REPORTING_HOUR_0000 = "00:00"
         const val ICING_REPORTING_HOUR_0100 = "01:00"
         const val ICING_REPORTING_HOUR_0200 = "02:00"

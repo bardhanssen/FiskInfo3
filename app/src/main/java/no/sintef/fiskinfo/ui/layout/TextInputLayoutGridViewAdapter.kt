@@ -57,6 +57,7 @@ class TextInputLayoutGridViewAdapter<T : IDropDownMenu>(context: Context, textIn
             textInputLayout.hint = model.hint
             textInputLayout.textAlignment = model.textAlignment
             textInputLayout.suffixText = model.suffixText
+            textInputLayout.tag = model.fieldName
 
             input.textAlignment = model.textAlignment
             (input as EditText).setSelectAllOnFocus(model.selectAllOnFocus)

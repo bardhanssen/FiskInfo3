@@ -69,6 +69,7 @@
                         android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
                         android:layout_marginStart="16dp"
                         app:startIconContentDescription="@string/proto_close_drawer"
+                        app:errorEnabled="true"
                         app:startIconDrawable="@drawable/ic_time">
 
                         <AutoCompleteTextView
@@ -109,8 +110,19 @@
                     style="?android:attr/listSeparatorTextViewStyle"
                     />
 
-                <GridLayout
+                <GridView
                     android:id="@+id/reportIcingVesselIcingGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
+                    android:numColumns="2"
+                    android:verticalSpacing="@dimen/activity_vertical_margin_small"
+                    android:layout_marginTop="@dimen/activity_vertical_margin_small"
+                    >
+                </GridView>
+
+                <GridLayout
+                    android:id="@+id/reportIcingVesselIcingGridLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
