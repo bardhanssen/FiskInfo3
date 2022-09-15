@@ -14,10 +14,12 @@
 
 
     <androidx.core.widget.NestedScrollView
+        tools:context=".ui.map.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        tools:context=".ui.map.MapFragment">
+        android:fillViewport="true"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -121,17 +123,15 @@
                     >
                 </GridView>
 
-                <GridLayout
-                    android:id="@+id/reportIcingVesselIcingGridLayout"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reportIcingVesselIcingRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
-                    android:columnCount="2"
-                    android:rowCount="2"
                     android:verticalSpacing="@dimen/activity_vertical_margin_small"
                     android:layout_marginTop="@dimen/activity_vertical_margin_small"
                     >
-                </GridLayout>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:layout_width="wrap_content"

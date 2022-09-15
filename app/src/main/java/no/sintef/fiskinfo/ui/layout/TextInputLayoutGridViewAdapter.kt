@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
@@ -24,18 +25,21 @@ class TextInputLayoutGridViewAdapter<T : IDropDownMenu>(context: Context, textIn
                 LayoutInflater.from(context).inflate(R.layout.grid_view_drop_down_menu_item, parent, false)
         }
 
-        val textInputLayout = listItemView!!.findViewById<TextInputLayout>(R.id.grid_view_item_text_input_layout)
-        val input = if(model?.onclickListener == null) listItemView.findViewById<View>(R.id.layout_grid_view_model_edit_text)
-            else listItemView.findViewById<AutoCompleteTextView>(R.id.layout_grid_view_drop_down_item)
+        val input = if(model?.onclickListener == null) listItemView!!.findViewById<TextInputEditText>(R.id.layout_grid_view_model_edit_text)
+            else listItemView!!.findViewById<AutoCompleteTextView>(R.id.layout_grid_view_drop_down_item)
 
-        textInputLayout.hint = model!!.hint
-        textInputLayout.textAlignment = model.textAlignment
-        textInputLayout.suffixText = model.suffixText
+        listItemView.tag = model!!.fieldName
 
-        input.textAlignment = model.textAlignment
-        (input as EditText).setSelectAllOnFocus(model.selectAllOnFocus)
-        input.maxLines = model.maxLines
-        input.inputType = model.inputType
+        (listItemView as TextInputLayout).hint = model.hint
+        listItemView.textAlignment = model.textAlignment
+        listItemView.suffixText = model.suffixText
+
+        if(input != null) {
+            input.textAlignment = model.textAlignment
+            (input as EditText).setSelectAllOnFocus(model.selectAllOnFocus)
+            input.maxLines = model.maxLines
+            input.inputType = model.inputType
+        }
 
         if(model.onclickListener != null) {
             (input as MaterialAutoCompleteTextView).onItemClickListener = model.onclickListener
@@ -50,14 +54,15 @@ class TextInputLayoutGridViewAdapter<T : IDropDownMenu>(context: Context, textIn
             val view = if(model.onclickListener == null) LayoutInflater.from(context).inflate(R.layout.grid_view_edit_text_item, parent, false) else
                 LayoutInflater.from(context).inflate(R.layout.grid_view_drop_down_menu_item, parent, false)
 
-            val textInputLayout = view!!.findViewById<TextInputLayout>(R.id.grid_view_item_text_input_layout)
             val input = if(model.onclickListener == null) view.findViewById<View>(R.id.layout_grid_view_model_edit_text)
             else view.findViewById<AutoCompleteTextView>(R.id.layout_grid_view_drop_down_item)
 
-            textInputLayout.hint = model.hint
-            textInputLayout.textAlignment = model.textAlignment
-            textInputLayout.suffixText = model.suffixText
-            textInputLayout.tag = model.fieldName
+            view.tag = model.fieldName
+
+            (view as TextInputLayout).hint = model.hint
+            view.textAlignment = model.textAlignment
+            view.suffixText = model.suffixText
+            view.tag = model.fieldName
 
             input.textAlignment = model.textAlignment
             (input as EditText).setSelectAllOnFocus(model.selectAllOnFocus)
