@@ -67,6 +67,27 @@ enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) : 
         return retval
     }
 
+    override fun getFormIndex(): String {
+        var retval = ""
+
+        when (this) {
+            DURING_OBSERVATION -> retval = MAX_MIDDLE_WIND_TIME_0_FORM_VALUE_INDEX
+            AFTER_1_HOUR -> retval = MAX_MIDDLE_WIND_TIME_1_FORM_VALUE_INDEX
+            AFTER_2_HOUR -> retval = MAX_MIDDLE_WIND_TIME_2_FORM_VALUE_INDEX
+            AFTER_3_HOUR -> retval = MAX_MIDDLE_WIND_TIME_3_FORM_VALUE_INDEX
+            AFTER_4_HOUR -> retval = MAX_MIDDLE_WIND_TIME_4_FORM_VALUE_INDEX
+            AFTER_5_HOUR -> retval = MAX_MIDDLE_WIND_TIME_5_FORM_VALUE_INDEX
+            AFTER_6_HOUR -> retval = MAX_MIDDLE_WIND_TIME_6_FORM_VALUE_INDEX
+            AFTER_7_HOUR -> retval = MAX_MIDDLE_WIND_TIME_7_FORM_VALUE_INDEX
+            AFTER_8_HOUR -> retval = MAX_MIDDLE_WIND_TIME_8_FORM_VALUE_INDEX
+            AFTER_9_HOUR -> retval = MAX_MIDDLE_WIND_TIME_9_FORM_VALUE_INDEX
+            IMPOSSIBLE_TO_SAY -> retval = MAX_MIDDLE_WIND_TIME_X_FORM_VALUE_INDEX
+            NOT_SELECTED -> MAX_MIDDLE_WIND_TIME_NOT_SELECTED_INDEX
+        }
+
+        return retval
+    }
+
     companion object {
         const val MAX_MIDDLE_WIND_TIME_NOT_SELECTED = "Ikke valgt"
         const val MAX_MIDDLE_WIND_TIME_0_FORM_VALUE = " i observasjonstida"
@@ -80,5 +101,18 @@ enum class MaxMiddleWindTimeEnum(val code : String, val stringResource : Int) : 
         const val MAX_MIDDLE_WIND_TIME_8_FORM_VALUE = " Vinden synes uendret "
         const val MAX_MIDDLE_WIND_TIME_9_FORM_VALUE = " Vinden synes å øke "
         const val MAX_MIDDLE_WIND_TIME_X_FORM_VALUE = " Umulig å angi"
+
+        const val MAX_MIDDLE_WIND_TIME_NOT_SELECTED_INDEX = ""
+        const val MAX_MIDDLE_WIND_TIME_0_FORM_VALUE_INDEX = "0"
+        const val MAX_MIDDLE_WIND_TIME_1_FORM_VALUE_INDEX = "1"
+        const val MAX_MIDDLE_WIND_TIME_2_FORM_VALUE_INDEX = "2"
+        const val MAX_MIDDLE_WIND_TIME_3_FORM_VALUE_INDEX = "3"
+        const val MAX_MIDDLE_WIND_TIME_4_FORM_VALUE_INDEX = "4"
+        const val MAX_MIDDLE_WIND_TIME_5_FORM_VALUE_INDEX = "5"
+        const val MAX_MIDDLE_WIND_TIME_6_FORM_VALUE_INDEX = "6"
+        const val MAX_MIDDLE_WIND_TIME_7_FORM_VALUE_INDEX = "7"
+        const val MAX_MIDDLE_WIND_TIME_8_FORM_VALUE_INDEX = "8"
+        const val MAX_MIDDLE_WIND_TIME_9_FORM_VALUE_INDEX = "9"
+        const val MAX_MIDDLE_WIND_TIME_X_FORM_VALUE_INDEX = "/"
     }
 }

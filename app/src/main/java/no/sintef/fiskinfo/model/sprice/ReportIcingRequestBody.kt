@@ -52,7 +52,7 @@ class ReportIcingRequestBody internal constructor(
     internal val SeaIceStageOfDevelopment: String,
     internal val OceanIce: String,
     internal val DirectionToNearestIceEdge: String,
-    internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: String,
+    internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum,
 
     internal val ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum,
     internal val IceThicknessInCm: Int,
@@ -110,7 +110,7 @@ class ReportIcingRequestBody internal constructor(
         var SeaIceStageOfDevelopment: String = "",
         var OceanIce: String = "",
         var DirectionToNearestIceEdge: String = "",
-        var SeaIceConditionsAndDevelopmentTheLastThreeHours: String = "",
+        var SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED,
         var ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED,
         var IceThicknessInCm: Int = 0,
         var ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
@@ -155,7 +155,7 @@ class ReportIcingRequestBody internal constructor(
             apply { this.DirectionToNearestIceEdge = directionToNearestIceEdge }
 
         fun seaIceConditionsAndDevelopmentTheLastThreeHours(
-            seaIceConditionsAndDevelopmentTheLastThreeHours: String
+            seaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum
         ) = apply {
             this.SeaIceConditionsAndDevelopmentTheLastThreeHours =
                 seaIceConditionsAndDevelopmentTheLastThreeHours
@@ -176,6 +176,39 @@ class ReportIcingRequestBody internal constructor(
         fun build(): ReportIcingRequestBody {
             return ReportIcingRequestBody(this)
         }
+    }
+
+    fun getRequestBodyForSpriceEndpointReportSubmissionAsString(): String {
+        val reportingZonedTime = ReportingTime
+        val reportingTimeEpoch = reportingZonedTime.toEpochSecond()
+        val observationEpoch = Synop.toEpochSecond()
+        val stringBuilder = StringBuilder()
+
+        val messageTag =
+            SpriceUtils.getOrapMessageTag(reportingZonedTime, Username)
+
+        val hiddenMessage = SpriceUtils.getFormattedHiddenMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
+        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), reportingZonedTime, Synop, reportingTimeEpoch)
+        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
+
+        stringBuilder.append(
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TAG, messageTag),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP),
+            SpriceUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
+        )
+
+        return stringBuilder.toString()
     }
 
     fun getRequestBodyForReportSubmissionAsString(): String {

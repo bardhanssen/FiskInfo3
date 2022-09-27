@@ -37,6 +37,19 @@ enum class ReasonForIcingOnVesselOrPlatformEnum(val code : String, val stringRes
         return retval
     }
 
+    override fun getFormIndex(): String {
+        val retval: String = when (this) {
+            ICING_FROM_SEA_SPRAY -> REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_1_INDEX
+            ICING_FROM_FOG -> REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_2_INDEX
+            ICING_FROM_SEA_SPRAY_AND_FOG -> REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_3_INDEX
+            ICING_FROM_RAIN -> REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_4_INDEX
+            ONLY_NEW_ICE -> REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_5_INDEX
+            NOT_SELECTED -> REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_NOT_SELECTED_INDEX
+        }
+
+        return retval
+    }
+
     companion object {
         const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_NOT_SELECTED = "Ikke valgt"
         const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_1 = "1- Ising fra sjøsprøyt "
@@ -44,5 +57,12 @@ enum class ReasonForIcingOnVesselOrPlatformEnum(val code : String, val stringRes
         const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_3 = "3- Ising fra sjøspryt og tåke "
         const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_4 = "4- Ising fra regn "
         const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_5 = "5- Ising fra sjøsprøyt og regn"
+
+        const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_NOT_SELECTED_INDEX = ""
+        const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_1_INDEX = "1"
+        const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_2_INDEX = "2"
+        const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_3_INDEX = "3"
+        const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_4_INDEX = "4"
+        const val REASON_FOR_ICING_ON_VESSEL_OR_PLATFORM_5_INDEX = "5"
     }
 }

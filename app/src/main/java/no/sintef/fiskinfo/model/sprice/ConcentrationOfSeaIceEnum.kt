@@ -51,6 +51,26 @@ enum class ConcentrationOfSeaIceEnum(val code : String, val stringResource : Int
         return retval
     }
 
+    override fun getFormIndex(): String {
+        var retval = ""
+
+        when (this) {
+            NO_SEA_ICE_IN_SIGHT -> CONCENTRATION_OF_SEA_ICE_0_INDEX
+            SHIP_IN_OPEN_LEAD_FURTHER_THAN_1_NM -> CONCENTRATION_OF_SEA_ICE_1_INDEX
+            OPEN_PACK_ICE_WITH_WATER_IN_BETWEEN -> CONCENTRATION_OF_SEA_ICE_2_INDEX
+            FOUR_TO_SIX_OF_TEN_PARTS_OPEN_PACK_ICE -> CONCENTRATION_OF_SEA_ICE_3_INDEX
+            SEVEN_TO_EIGHT_OF_10_PARTS_CLOSED_PACK_ICE -> CONCENTRATION_OF_SEA_ICE_4_INDEX
+            NINE_TO_TEN_PARTS_COVER_OF_CLOSE_PACK_ICE -> CONCENTRATION_OF_SEA_ICE_5_INDEX
+            AREAS_OF_PACK_ICE_WITH_LIGHTER_PACK_ICE_IN_BETWEEN -> CONCENTRATION_OF_SEA_ICE_6_INDEX
+            AREAS_OF_PACK_ICE_WITH_DENSE_PACK_ICE -> CONCENTRATION_OF_SEA_ICE_7_INDEX
+            FAST_ICE_WITH_OPEN_WATER -> CONCENTRATION_OF_SEA_ICE_8_INDEX
+            FAST_ICE_WITH_CLOSE_PACK_ICE -> CONCENTRATION_OF_SEA_ICE_9_INDEX
+            NOT_POSSIBLE_TO_REPORT -> CONCENTRATION_OF_SEA_ICE_10_INDEX
+        }
+
+        return retval
+    }
+
     companion object {
         const val CONCENTRATION_OF_SEA_ICE_0 = "No sea ice in sight"
         const val CONCENTRATION_OF_SEA_ICE_1 = "Ship in open lead further than 1 NM"
@@ -63,5 +83,17 @@ enum class ConcentrationOfSeaIceEnum(val code : String, val stringResource : Int
         const val CONCENTRATION_OF_SEA_ICE_8 = "Fast ice with open water"
         const val CONCENTRATION_OF_SEA_ICE_9 = "Fast ice with dense pack ice"
         const val CONCENTRATION_OF_SEA_ICE_10 = "Not possible to report"
+
+        const val CONCENTRATION_OF_SEA_ICE_0_INDEX = "0"
+        const val CONCENTRATION_OF_SEA_ICE_1_INDEX = "1"
+        const val CONCENTRATION_OF_SEA_ICE_2_INDEX = "2"
+        const val CONCENTRATION_OF_SEA_ICE_3_INDEX = "3"
+        const val CONCENTRATION_OF_SEA_ICE_4_INDEX = "4"
+        const val CONCENTRATION_OF_SEA_ICE_5_INDEX = "5"
+        const val CONCENTRATION_OF_SEA_ICE_6_INDEX = "6"
+        const val CONCENTRATION_OF_SEA_ICE_7_INDEX = "7"
+        const val CONCENTRATION_OF_SEA_ICE_8_INDEX = "8"
+        const val CONCENTRATION_OF_SEA_ICE_9_INDEX = "9"
+        const val CONCENTRATION_OF_SEA_ICE_10_INDEX = "/"
     }
 }

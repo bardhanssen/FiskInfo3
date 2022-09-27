@@ -5,7 +5,6 @@ import no.sintef.fiskinfo.api.orap.OrapService.Companion.ObsReport
 import no.sintef.fiskinfo.api.orap.OrapService.Companion.prefix
 import no.sintef.fiskinfo.model.sprice.OrapConstants
 import java.lang.StringBuilder
-import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -74,8 +73,8 @@ class SpriceUtils {
                     }.txt;"
         }
 
-        fun getFormattedHiddenKlStatus(observationEpoch: Long, Username: String, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String): String {
-            return "${observationEpoch * 10} || 012345678      ${Username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n"
+        fun getFormattedHiddenKlStatus(observationEpoch: Long, username: String, heightOfWindWavesInMeters: String, periodForWindWavesInSeconds: String, iceThicknessInCm: Int, latitude: String, longitude: String, airTemperature: String): String {
+            return "${observationEpoch * 10} || 012345678      ${username},17,,,,,,,,,,,${heightOfWindWavesInMeters},${periodForWindWavesInSeconds},,,,,,,,,,,,,,,${iceThicknessInCm},,${latitude},${longitude},${airTemperature},,,,,,\n"
         }
 
         fun getValueAsWebKitForm(boundaryId: String, actionName: String, value: String): String {
@@ -100,6 +99,40 @@ class SpriceUtils {
 
         fun getWebFormKitEndTag(boundaryId: String): String {
             return "------WebKitFormBoundary${boundaryId}--"
+        }
+
+        /**
+         * For SPRICE endpoint
+         */
+        fun getFormattedHiddenMessageForSpriceEndpoint(username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String): String {
+            return "012345678      ${username},17,${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n\n"
+        }
+
+        fun getFormattedHiddenKlMessageForSpriceEndpoint(username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String, messageReceivedTime: ZonedDateTime, synop: ZonedDateTime, reportingTimeEpoch: Long): String {
+            return "kldata/nationalnr=${username}/type=317/test/received_time=\"${
+                getGMTFromDefaultLocaleFormattedTimeStamp(
+                    messageReceivedTime,
+                    OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT
+                )
+            }\"\n" +
+                    "CAL,MLAT,MLON,IZ,ZI,ES,RS\n" +
+                    "${
+                        getGMTFromDefaultLocaleFormattedTimeStamp(
+                            synop,
+                            OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
+                        )
+                    },${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n" +
+                    "Orap_smsformat_input ${reportingTimeEpoch} ${username},17,${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n" +
+                    "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${username}/orap_${
+                        getGMTFromDefaultLocaleFormattedTimeStamp(
+                            messageReceivedTime,
+                            OrapConstants.HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP
+                        )
+                    }.txt;"
+        }
+
+        fun getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch: Long, username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String): String {
+            return "${observationEpoch * 10} || 012345678      ${username},17,${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n"
         }
     }
 

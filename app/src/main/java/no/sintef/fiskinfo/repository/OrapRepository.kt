@@ -53,7 +53,7 @@ class OrapRepository(context: Context, private var username: String, private var
 
         val result = MutableLiveData<SendResult>()
 
-        orapService?.sendIcingReport(info.getRequestBodyForReportSubmissionAsString(), info.Username, info.Password)
+        orapService?.sendIcingReport(info.getRequestBodyForSpriceEndpointReportSubmissionAsString(), info.Username, info.Password)
             ?.enqueue(object : Callback<Void?> {
                 override fun onFailure(call: Call<Void?>, t: Throwable) {
                     Log.e("ORAP", "Icing report failed!")
@@ -88,22 +88,26 @@ class OrapRepository(context: Context, private var username: String, private var
 
         val contentType = getPostRequestContentTypeValueWithWebKitBoundaryIdAsString(webKitFormBoundaryId)
         val referrer = getPostRequestReferrerAsString(username, password)
-        val interceptors = listOf<Interceptor>(OrapInterceptor(contentType, referrer))
+        val headers = listOf(Pair("Content-Type", contentType),
+            Pair("Referer", referrer)
+//            Pair("Content-Length", )
+        )
+
+        val interceptors = listOf<Interceptor>(OrapInterceptor(headers))
 
         orapService =
             createService(OrapService::class.java, orapServerUrl, false, interceptors)
     }
 
-    private class OrapInterceptor(var contentType: String, val referrer: String) : Interceptor {
+    private class OrapInterceptor(var headers: List<Pair<String, String>>) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): okhttp3.Response = chain.run {
-            proceed(
-                request()
-                    .newBuilder()
-                    .addHeader("Content-Type", contentType)
-                    .addHeader("Referrer", referrer)
-                    .build())
-        }
+            val builder = request()
+                .newBuilder()
 
+            headers.forEach { header -> builder.addHeader(header.first, header.second) }
+
+            proceed(builder.build())
+        }
     }
 
     data class SendResult(val success: Boolean, val responseCode: Int, val errorMsg: String)

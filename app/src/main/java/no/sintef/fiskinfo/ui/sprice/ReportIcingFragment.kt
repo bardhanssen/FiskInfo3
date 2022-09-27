@@ -254,7 +254,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // TODO: Remove when submission of report is working
-                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForReportSubmissionAsString())
+                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForSpriceEndpointReportSubmissionAsString())
                 Log.e(
                     "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
                             "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
