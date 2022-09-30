@@ -88,7 +88,8 @@ class OrapRepository(context: Context, private var username: String, private var
 
         val contentType = getPostRequestContentTypeValueWithWebKitBoundaryIdAsString(webKitFormBoundaryId)
         val referrer = getPostRequestReferrerAsString(username, password)
-        val headers = listOf(Pair("Content-Type", contentType),
+        val headers = listOf(
+            Pair("Content-Type", contentType),
             Pair("Referer", referrer)
 //            Pair("Content-Length", )
         )
