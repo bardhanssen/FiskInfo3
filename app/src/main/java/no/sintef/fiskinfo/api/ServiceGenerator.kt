@@ -118,7 +118,7 @@ class DateTypeDeserializer : JsonDeserializer<Date> {
             }
         }
         throw JsonParseException(
-            "Unparseable date: \"" + jsonElement.asString
+            "Unparsable date: \"" + jsonElement.asString
                     + "\". Supported formats: \n" + Arrays.toString(DATE_FORMATS)
         )
     }
@@ -136,7 +136,7 @@ class DateTypeDeserializer : JsonDeserializer<Date> {
 private class JSONHeaderInterceptor(private val userAgent : String = ""):
     Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+    override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         request = request.newBuilder()
             .header("User-Agent", userAgent)
@@ -177,7 +177,7 @@ private class OIDCAuthenticator(private val authService: AuthorizationService, p
 private class OAuthInterceptor(private val tokenType: String, private val accessToken: String, private val userAgent : String = ""):
     Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+    override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         request = request.newBuilder()
             .header("Authorization", "$tokenType $accessToken")

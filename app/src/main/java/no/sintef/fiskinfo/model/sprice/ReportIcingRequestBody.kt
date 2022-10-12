@@ -18,7 +18,9 @@
 package no.sintef.fiskinfo.model.sprice
 
 import no.sintef.fiskinfo.util.SpriceUtils
-import java.lang.StringBuilder
+import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeBoundaryValueAsString
+import okhttp3.MediaType
+import okhttp3.MultipartBody
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -212,6 +214,40 @@ class ReportIcingRequestBody internal constructor(
         )
 
         return stringBuilder.toString()
+    }
+
+    fun getRequestBodyForSpriceEndpointReportSubmissionAsRequestBody(boundary: String): MultipartBody {
+        val reportingZonedTime = ReportingTime
+        val reportingTimeEpoch = reportingZonedTime.toEpochSecond()
+        val observationEpoch = Synop.toEpochSecond()
+
+        val messageTag =
+            SpriceUtils.getOrapMessageTag(reportingZonedTime, Username)
+
+        val hiddenMessage = SpriceUtils.getFormattedHiddenMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
+        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), reportingZonedTime, Synop, reportingTimeEpoch)
+        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
+
+        val requestBody =  MultipartBody.Builder(getPostRequestContentTypeBoundaryValueAsString(boundary))
+            .setType(MediaType.parse("multipart/form-data")!!)
+            .addFormDataPart(OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT)
+            .addFormDataPart(OrapConstants.FormDataNames.TAG, messageTag)
+            .addFormDataPart(OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch.toString())
+            .addFormDataPart(OrapConstants.FormDataNames.USER, Username)
+            .addFormDataPart(OrapConstants.FormDataNames.PASSWORD, Password)
+            .addFormDataPart(OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE)
+            .addFormDataPart(OrapConstants.FormDataNames.LAT, "")
+            .addFormDataPart(OrapConstants.FormDataNames.LON, "")
+            .addFormDataPart(OrapConstants.FormDataNames.CAL, "")
+            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch.toString())
+            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage)
+            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage)
+            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus)
+            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE)
+            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE)
+            .addFormDataPart(OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP.toString())
+
+        return requestBody.build()
     }
 
     fun getRequestBodyForReportSubmissionAsString(): String {

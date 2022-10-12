@@ -32,7 +32,11 @@ class SpriceUtils {
         }
 
         fun getPostRequestContentTypeValueWithWebKitBoundaryIdAsString(boundaryId: String): String {
-            return ": multipart/form-data; boundary=----WebKitFormBoundary${boundaryId}"
+            return "multipart/form-data; boundary=----WebKitFormBoundary${boundaryId}"
+        }
+
+        fun getPostRequestContentTypeBoundaryValueAsString(boundaryId: String): String {
+            return "----WebKitFormBoundary${boundaryId}"
         }
 
         fun getPostRequestReferrerAsString(username: String, password: String): String {

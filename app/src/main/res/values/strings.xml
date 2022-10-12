@@ -414,8 +414,9 @@
 
     <string name="prefs_category_sprice">SPRICE settings</string>
     <string name="prefs_sprice_enable_sprice">Activate SPRICE</string>
-    <string name="prefs_sprice_username">SPRICE username</string>
-    <string name="prefs_sprice_password">SPRICE password</string>
+    <string name="prefs_sprice_username">Orap username</string>
+    <string name="prefs_sprice_password">Orap password</string>
+    <string name="prefs_sprice_vessel_call_sign">vessel call sign</string>
     <string name="report_icing_menu_option_send">Report</string>
     <string name="report_icing_menu_option_check">Check</string>
 </resources>

@@ -53,6 +53,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private lateinit var seaIcingGridView: GridView
     private lateinit var vesselIcingGridView: GridView
+    private lateinit var vesselIcingGridViewSecondRow: GridView
+
     private lateinit var vesselIcingRecyclerView: RecyclerView
     private lateinit var windObservationsGridView: GridView
 
@@ -84,7 +86,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         initTimeInputs()
         initSeaIcingGridView()
         initVesselIcingGridView()
-        initWindObservationsGridView()
+//        initWindObservationsGridView()
         initPositionInput()
     }
 
@@ -135,8 +137,10 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private fun initVesselIcingGridView() {
         val vesselIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
+        val vesselIcingInputsArrayListSecond: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
         vesselIcingGridView = mBinding.reportIcingVesselIcingGridView
-        vesselIcingRecyclerView = mBinding.reportIcingVesselIcingRecyclerView
+        vesselIcingGridViewSecondRow = mBinding.reportIcingVesselIcingGridViewSecondRow
+//        vesselIcingRecyclerView = mBinding.reportIcingVesselIcingRecyclerView
 
         vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
@@ -154,11 +158,10 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 R.layout.exposed_dropdown_menu_item,
                 ReasonForIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
             )))
-        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+        vesselIcingInputsArrayListSecond.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_change_in_icing),
             hint = getString(R.string.icing_report_vessel_change_in_icing),
             textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            inputType = InputType.TYPE_CLASS_TEXT,
             onClickListener = { parent, _, position, _ ->
                 mViewModel.vesselIcingChangeInIcing.value = parent.getItemAtPosition(position) as ChangeInIcingOnVesselOrPlatformEnum
             },
@@ -171,6 +174,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //        vesselIcingInputsArrayList.forEach { vesselIcingGridLayout.addView(TextInputLayoutGridViewAdapter.getViewFromModel(requireContext(), it, vesselIcingGridView)) }
 
         vesselIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayList)
+        vesselIcingGridViewSecondRow.adapter = TextInputLayoutGridViewAdapter(requireContext(), vesselIcingInputsArrayListSecond)
     }
 
     private fun initSeaIcingGridView() {
@@ -311,12 +315,13 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private fun reportedIcingValuesAreValid(): Boolean {
         var valid = true
 
-        if (mViewModel.synopHourSelect.value == "") {
-            (mSynopHourDropdown.parent as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
-            valid = false
-        } else {
-            (mSynopHourDropdown.parent as TextInputLayout).error = null
-        }
+//        if (mViewModel.synopHourSelect.value == "") {
+//            (mSynopHourDropdown.parent as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+//            valid = false
+//        } else {
+//            (mSynopHourDropdown.parent as TextInputLayout).error = null
+//        }
+
 
         if(mViewModel.seaIcingConditionsAndDevelopment.value == SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED) {
             ((seaIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_sea_ice_conditions_and_development_hint)) as ViewGroup).getChildAt(0)
@@ -346,11 +351,11 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         }
 
         if(mViewModel.vesselIcingChangeInIcing.value == ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
-            ((vesselIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
+            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
                     as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
             valid = false
         } else {
-            ((vesselIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
+            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
                     as TextInputLayout).error = null
         }
 

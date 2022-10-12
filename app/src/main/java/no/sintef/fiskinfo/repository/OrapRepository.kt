@@ -13,6 +13,8 @@ import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeValueWithWebKitBoundaryIdAsString
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestReferrerAsString
 import okhttp3.Interceptor
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,12 +50,12 @@ class OrapRepository(context: Context, private var username: String, private var
     }
 
     fun sendIcingReport(info: ReportIcingRequestBody): LiveData<SendResult> {
-        if (orapService == null)
-            initService()
+        initService()
 
         val result = MutableLiveData<SendResult>()
+        val requestBody = info.getRequestBodyForSpriceEndpointReportSubmissionAsRequestBody(webKitFormBoundaryId)
 
-        orapService?.sendIcingReport(info.getRequestBodyForSpriceEndpointReportSubmissionAsString(), info.Username, info.Password)
+        orapService?.sendIcingReport(requestBody, info.Username, info.Password)
             ?.enqueue(object : Callback<Void?> {
                 override fun onFailure(call: Call<Void?>, t: Throwable) {
                     Log.e("ORAP", "Icing report failed!")
@@ -86,12 +88,9 @@ class OrapRepository(context: Context, private var username: String, private var
             param(FirebaseAnalytics.Param.VALUE, "Init Sprice service")
         }
 
-        val contentType = getPostRequestContentTypeValueWithWebKitBoundaryIdAsString(webKitFormBoundaryId)
         val referrer = getPostRequestReferrerAsString(username, password)
         val headers = listOf(
-            Pair("Content-Type", contentType),
             Pair("Referer", referrer)
-//            Pair("Content-Length", )
         )
 
         val interceptors = listOf<Interceptor>(OrapInterceptor(headers))

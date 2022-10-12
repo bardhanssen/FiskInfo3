@@ -18,6 +18,7 @@
 package no.sintef.fiskinfo.api.orap
 
 import no.sintef.fiskinfo.model.sprice.GetReportsRequestBody
+import okhttp3.RequestBody
 import okhttp3.Response
 import retrofit2.Call
 import retrofit2.http.*
@@ -49,8 +50,7 @@ interface OrapService {
         "upgrade-insecure-requests: 1",
         "referrerPolicy: strict-origin-when-cross-origin"
     )
-    fun sendIcingReport(@Body body : String, @Query("user") user: String, @Query("password") password: String): Call<Void?>
-//    fun submitReport(@Body body : String, @Header("Content-Type") contentType: String, @Header("referrer") referrer: String, @Query("user") user: String, @Query("password") password: String): Call<Void?>
+    fun sendIcingReport(@Body body : RequestBody, @Query("user") user: String, @Query("password") password: String): Call<Void?>
 
     @GET( ObsReport)
     fun getReports(@Body body : GetReportsRequestBody): Call<Response>

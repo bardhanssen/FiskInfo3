@@ -95,6 +95,40 @@ enum class IcingReportHourEnum(val code : String, val stringResource : Int) : ID
         return retval
     }
 
+    override fun getFormIndex(): String {
+        var retval = ""
+
+        when (this) {
+            HOUR_00 -> retval = ICING_REPORTING_HOUR_0000_INDEX
+            HOUR_01 -> retval = ICING_REPORTING_HOUR_0100_INDEX
+            HOUR_02 -> retval = ICING_REPORTING_HOUR_0200_INDEX
+            HOUR_03 -> retval = ICING_REPORTING_HOUR_0300_INDEX
+            HOUR_04 -> retval = ICING_REPORTING_HOUR_0400_INDEX
+            HOUR_05 -> retval = ICING_REPORTING_HOUR_0500_INDEX
+            HOUR_06 -> retval = ICING_REPORTING_HOUR_0600_INDEX
+            HOUR_07 -> retval = ICING_REPORTING_HOUR_0700_INDEX
+            HOUR_08 -> retval = ICING_REPORTING_HOUR_0800_INDEX
+            HOUR_09 -> retval = ICING_REPORTING_HOUR_0900_INDEX
+            HOUR_10 -> retval = ICING_REPORTING_HOUR_1000_INDEX
+            HOUR_11 -> retval = ICING_REPORTING_HOUR_1100_INDEX
+            HOUR_12 -> retval = ICING_REPORTING_HOUR_1200_INDEX
+            HOUR_13 -> retval = ICING_REPORTING_HOUR_1300_INDEX
+            HOUR_14 -> retval = ICING_REPORTING_HOUR_1400_INDEX
+            HOUR_15 -> retval = ICING_REPORTING_HOUR_1500_INDEX
+            HOUR_16 -> retval = ICING_REPORTING_HOUR_1600_INDEX
+            HOUR_17 -> retval = ICING_REPORTING_HOUR_1700_INDEX
+            HOUR_18 -> retval = ICING_REPORTING_HOUR_1800_INDEX
+            HOUR_19 -> retval = ICING_REPORTING_HOUR_1900_INDEX
+            HOUR_20 -> retval = ICING_REPORTING_HOUR_2000_INDEX
+            HOUR_21 -> retval = ICING_REPORTING_HOUR_2100_INDEX
+            HOUR_22 -> retval = ICING_REPORTING_HOUR_2200_INDEX
+            HOUR_23 -> retval = ICING_REPORTING_HOUR_2300_INDEX
+            NOT_SELECTED -> ICING_REPORTING_HOUR_NOT_SELECTED_INDEX
+        }
+
+        return retval
+    }
+
     companion object {
         const val ICING_REPORTING_HOUR_NOT_SELECTED = ""
         const val ICING_REPORTING_HOUR_0000 = "00:00"
@@ -121,5 +155,31 @@ enum class IcingReportHourEnum(val code : String, val stringResource : Int) : ID
         const val ICING_REPORTING_HOUR_2100 = "21:00"
         const val ICING_REPORTING_HOUR_2200 = "22:00"
         const val ICING_REPORTING_HOUR_2300 = "23:00"
+
+        const val ICING_REPORTING_HOUR_NOT_SELECTED_INDEX = "_"
+        const val ICING_REPORTING_HOUR_0000_INDEX = "0"
+        const val ICING_REPORTING_HOUR_0100_INDEX = "1"
+        const val ICING_REPORTING_HOUR_0200_INDEX = "2"
+        const val ICING_REPORTING_HOUR_0300_INDEX = "3"
+        const val ICING_REPORTING_HOUR_0400_INDEX = "4"
+        const val ICING_REPORTING_HOUR_0500_INDEX = "5"
+        const val ICING_REPORTING_HOUR_0600_INDEX = "6"
+        const val ICING_REPORTING_HOUR_0700_INDEX = "7"
+        const val ICING_REPORTING_HOUR_0800_INDEX = "8"
+        const val ICING_REPORTING_HOUR_0900_INDEX = "9"
+        const val ICING_REPORTING_HOUR_1000_INDEX = "10"
+        const val ICING_REPORTING_HOUR_1100_INDEX = "11"
+        const val ICING_REPORTING_HOUR_1200_INDEX = "12"
+        const val ICING_REPORTING_HOUR_1300_INDEX = "13"
+        const val ICING_REPORTING_HOUR_1400_INDEX = "14"
+        const val ICING_REPORTING_HOUR_1500_INDEX = "15"
+        const val ICING_REPORTING_HOUR_1600_INDEX = "16"
+        const val ICING_REPORTING_HOUR_1700_INDEX = "17"
+        const val ICING_REPORTING_HOUR_1800_INDEX = "18"
+        const val ICING_REPORTING_HOUR_1900_INDEX = "19"
+        const val ICING_REPORTING_HOUR_2000_INDEX = "20"
+        const val ICING_REPORTING_HOUR_2100_INDEX = "21"
+        const val ICING_REPORTING_HOUR_2200_INDEX = "22"
+        const val ICING_REPORTING_HOUR_2300_INDEX = "23"
     }
 }

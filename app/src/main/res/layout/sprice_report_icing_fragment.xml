@@ -123,22 +123,33 @@
                     >
                 </GridView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/reportIcingVesselIcingRecyclerView"
+                <GridView
+                    android:id="@+id/reportIcingVesselIcingGridViewSecondRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
+                    android:numColumns="2"
                     android:verticalSpacing="@dimen/activity_vertical_margin_small"
                     android:layout_marginTop="@dimen/activity_vertical_margin_small"
                     >
-                </androidx.recyclerview.widget.RecyclerView>
+                </GridView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_icing_category_header_wind_observations"
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    />
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/reportIcingVesselIcingRecyclerView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:horizontalSpacing="@dimen/activity_horizontal_margin_small"-->
+<!--                    android:verticalSpacing="@dimen/activity_vertical_margin_small"-->
+<!--                    android:layout_marginTop="@dimen/activity_vertical_margin_small"-->
+<!--                    >-->
+<!--                </androidx.recyclerview.widget.RecyclerView>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/report_icing_category_header_wind_observations"-->
+<!--                    style="?android:attr/listSeparatorTextViewStyle"-->
+<!--                    />-->
 
                 <GridView
                     android:id="@+id/reportIcingWindObservationsGridView"

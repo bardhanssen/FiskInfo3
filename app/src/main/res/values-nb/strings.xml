@@ -284,8 +284,9 @@
 
     <string name="prefs_category_sprice">SPRICE innstillinger</string>
     <string name="prefs_sprice_enable_sprice">Aktiver SPRICE</string>
-    <string name="prefs_sprice_username">SPRICE brukernavn</string>
-    <string name="prefs_sprice_password">SPRICE passord</string>
+    <string name="prefs_sprice_username">Orap brukernavn</string>
+    <string name="prefs_sprice_password">Orap passord</string>
+    <string name="prefs_sprice_vessel_call_sign">Fartøyets kallesignal</string>
     <string name="report_icing_menu_option_send">Rapporter</string>
     <string name="report_icing_menu_option_check">Kontroller</string>
 
