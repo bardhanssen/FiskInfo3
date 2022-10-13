@@ -51,7 +51,6 @@ class ReportIcingRequestBody internal constructor(
     internal val DirectionForFirstSwellSystemInDegrees: String,
 
     internal val ConcentrationOfSeaIce: String,
-    internal val SeaIceStageOfDevelopment: String,
     internal val OceanIce: String,
     internal val DirectionToNearestIceEdge: String,
     internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum,
@@ -80,7 +79,6 @@ class ReportIcingRequestBody internal constructor(
         builder.PeriodForFirstSwellSystemInSeconds,
         builder.DirectionForFirstSwellSystemInDegrees,
         builder.ConcentrationOfSeaIce,
-        builder.SeaIceStageOfDevelopment,
         builder.OceanIce,
         builder.DirectionToNearestIceEdge,
         builder.SeaIceConditionsAndDevelopmentTheLastThreeHours,
@@ -109,7 +107,6 @@ class ReportIcingRequestBody internal constructor(
         var PeriodForFirstSwellSystemInSeconds: String = "",
         var DirectionForFirstSwellSystemInDegrees: String = "",
         var ConcentrationOfSeaIce: String = "",
-        var SeaIceStageOfDevelopment: String = "",
         var OceanIce: String = "",
         var DirectionToNearestIceEdge: String = "",
         var SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED,
@@ -148,9 +145,6 @@ class ReportIcingRequestBody internal constructor(
 
         fun concentrationOfSeaIce(concentrationOfSeaIce: String) =
             apply { this.ConcentrationOfSeaIce = concentrationOfSeaIce }
-
-        fun seaIceStageOfDevelopment(seaIceStageOfDevelopment: String) =
-            apply { this.SeaIceStageOfDevelopment = seaIceStageOfDevelopment }
 
         fun oceanIce(oceanIce: String) = apply { this.OceanIce = oceanIce }
         fun directionToNearestIceEdge(directionToNearestIceEdge: String) =

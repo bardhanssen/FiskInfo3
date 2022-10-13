@@ -2,7 +2,9 @@ package no.sintef.fiskinfo.ui.sprice
 
 import android.location.Location
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
@@ -21,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.R
@@ -145,7 +147,18 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
             hint = getString(R.string.icing_report_vessel_icing_thickness_hint),
-            suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix)))
+            suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix),
+            textChangedListener = object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    mViewModel.vesselIcingThickness.value = s.toString()
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            }))
         vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
             hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
@@ -268,7 +281,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
                 if (menuItem.itemId == R.id.send_icing_report_action) {
                     if(!reportedIcingValuesAreValid()) {
-                        return true
+                        return false
                     }
 
                     val requestBody = mViewModel.getIcingReportBody()
@@ -324,49 +337,62 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
 
         if(mViewModel.seaIcingConditionsAndDevelopment.value == SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED) {
-            ((seaIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_sea_ice_conditions_and_development_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+//            ((seaIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0)
+//                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_sea_ice_conditions_and_development_hint)), Toast.LENGTH_LONG).show()
             valid = false
+            Log.e("checkReportedValues", "seaIcingConditionsAndDevelopment is invalid: ${mViewModel.seaIcingConditionsAndDevelopment.value}")
         } else {
-            ((seaIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_sea_ice_conditions_and_development_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = null
-        }
-
-        if(mViewModel.reasonForVesselIcing.value == ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
-            ((vesselIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_reason_for_icing_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
-            valid = false
-        } else {
-            ((vesselIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_reason_for_icing_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = null
+//            ((seaIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0)
+//                    as TextInputLayout).error = null
         }
 
         if(mViewModel.vesselIcingThickness.value.isEmpty()) {
-            ((vesselIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_icing_thickness_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = getString(R.string.icing_missing_value)
+            ((((vesselIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
+                .getChildAt(0) ) as TextInputEditText).error = getString(R.string.icing_missing_value)
             valid = false
+            Log.e("checkReportedValues", "vesselIcingThickness is invalid: '${mViewModel.vesselIcingThickness.value}'")
         } else {
-            ((vesselIcingGridView.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_reason_for_icing_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = null
+            ((((vesselIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
+                .getChildAt(0) ) as TextInputEditText).error = null
+        }
+
+        if(mViewModel.reasonForVesselIcing.value == ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
+//            ((vesselIcingGridView.getChildAt(1) as ViewGroup).getChildAt(0)
+//                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_vessel_reason_for_icing_hint)), Toast.LENGTH_LONG).show()
+            valid = false
+            Log.e("checkReportedValues", "reasonForVesselIcing is invalid: ${mViewModel.reasonForVesselIcing.value}")
+        } else {
+//            ((vesselIcingGridView.getChildAt(1) as ViewGroup).getChildAt(0)
+//                    as TextInputLayout).error = null
         }
 
         if(mViewModel.vesselIcingChangeInIcing.value == ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
-            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+//            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
+//                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_vessel_change_in_icing)), Toast.LENGTH_LONG).show()
             valid = false
+            Log.e("checkReportedValues", "vesselIcingChangeInIcing is invalid: ${mViewModel.vesselIcingChangeInIcing.value}")
         } else {
-            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = null
+//            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
+//                    as TextInputLayout).error = null
         }
 
-        if (mViewModel.maxMiddleWindTime.value == MaxMiddleWindTimeEnum.NOT_SELECTED) {
-            ((windObservationsGridView.findViewWithTag<TextInputLayout>(getString(R.string.max_middle_wind_when_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
-            valid = false
-        } else {
-            ((windObservationsGridView.findViewWithTag<TextInputLayout>(getString(R.string.max_middle_wind_when_hint)) as ViewGroup).getChildAt(0)
-                    as TextInputLayout).error = null
+        if(mViewModel.location.value!!.latitude == 0.0 || mViewModel.location.value!!.longitude == 0.0) {
+            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.position)), Toast.LENGTH_LONG).show()
         }
+
+//        if (mViewModel.maxMiddleWindTime.value == MaxMiddleWindTimeEnum.NOT_SELECTED) {
+////            ((windObservationsGridView.findViewWithTag<TextInputLayout>(getString(R.string.max_middle_wind_when_hint)) as ViewGroup).getChildAt(0)
+////                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+//            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.max_middle_wind_when_hint)), Toast.LENGTH_LONG).show()
+//
+//            valid = false
+//        } else {
+////            ((windObservationsGridView.findViewWithTag<TextInputLayout>(getString(R.string.max_middle_wind_when_hint)) as ViewGroup).getChildAt(0)
+////                    as TextInputLayout).error = null
+//        }
 
 
         // TODO: Check other values

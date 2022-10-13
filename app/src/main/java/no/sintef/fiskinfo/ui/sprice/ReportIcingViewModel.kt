@@ -4,9 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.location.Location
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,7 +94,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
             .longitude(location.value?.longitude.toString())
             .airTemperature(_airTemperature.value)
             .seaTemperature(_seaTemperature.value)
-            .maxMiddleWindTime(maxMiddleWindTime.value!!)
+            .seaIceConditionsAndDevelopmentTheLastThreeHours(seaIcingConditionsAndDevelopment.value)
             .iceThicknessInCm(vesselIcingThickness.value)
             .reasonForIcing(reasonForVesselIcing.value)
             .changeInIce(vesselIcingChangeInIcing.value)
@@ -114,7 +112,6 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         synopCalendar.set(Calendar.DAY_OF_YEAR, newDateCalendar.get(Calendar.DAY_OF_YEAR))
 
         Log.e("setReportingTime", "Observation time updated, old: ${synopDate.value}, new:${synopCalendar.time}")
-//        _observationTime.value = c.time
         synopDate.value = synopCalendar.time
     }
 

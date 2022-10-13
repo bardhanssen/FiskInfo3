@@ -145,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/position"
+                    android:text="@string/positions"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

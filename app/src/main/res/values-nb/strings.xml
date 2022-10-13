@@ -59,7 +59,8 @@
     <string name="tool_type_code_unknown">Ukjent redskap</string>
 
     <!-- Position / location -->
-    <string name="position">Posisjoner</string>
+    <string name="positions">Posisjoner</string>
+    <string name="position">Posisjon</string>
     <string name="latitude">Breddegrad</string>
     <string name="longitude">Lengdegrad</string>
     <!--<string name="coordinates_help_text">Koordinater skrives inn som grader, minutt, sekund. Du kan legge til og fjerne posisjoner med knappene til høyre.</string>-->
@@ -174,7 +175,8 @@
     <string name="fragment_title_icing">Ising</string>
     <string name="fragment_title_report_icing">Rapporter ising</string>
 
-    <string name="drop_down_menu_error_not_selected">No value chosen</string>
+    <string name="drop_down_menu_error_not_selected">Ingen verdi valgt</string>
+    <string name="drop_down_menu_error_not_selected_for_template_string">Ingen verdi valgt for %1$s</string>
 
     // Overview fragment resources
     <string name="overview_card_map_title">Kart</string>

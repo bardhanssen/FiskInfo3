@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.databinding.adapters.TextViewBindingAdapter
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -36,7 +37,7 @@ class TextInputLayoutGridViewAdapter<T : IDropDownMenu>(context: Context, textIn
 
         if(input != null) {
             input.textAlignment = model.textAlignment
-            (input as EditText).setSelectAllOnFocus(model.selectAllOnFocus)
+            input.setSelectAllOnFocus(model.selectAllOnFocus)
             input.maxLines = model.maxLines
             input.inputType = model.inputType
         }
@@ -44,6 +45,9 @@ class TextInputLayoutGridViewAdapter<T : IDropDownMenu>(context: Context, textIn
         if(model.onclickListener != null) {
             (input as MaterialAutoCompleteTextView).onItemClickListener = model.onclickListener
             input.setAdapter(model.dropDownAdapter)
+        }
+        if(model.textChangedListener != null){
+            input.addTextChangedListener(model.textChangedListener)
         }
 
         return listItemView

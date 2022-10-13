@@ -1,6 +1,7 @@
 package no.sintef.fiskinfo.ui.layout
 
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.View.TEXT_ALIGNMENT_VIEW_END
 import android.widget.AdapterView
 import no.sintef.fiskinfo.ui.sprice.DropDownMenuArrayAdapter
@@ -16,6 +17,7 @@ class TextInputLayoutGridViewModel<T : IDropDownMenu>() {
     var inputType: Int = InputType.TYPE_CLASS_NUMBER
     var onclickListener: AdapterView.OnItemClickListener? = null
     var dropDownAdapter: DropDownMenuArrayAdapter<T>? = null
+    var textChangedListener: TextWatcher? = null
 
     constructor(fieldName: String, hint: String) : this() {
         this.fieldName = fieldName
@@ -31,7 +33,8 @@ class TextInputLayoutGridViewModel<T : IDropDownMenu>() {
         maxLines: Int = 1,
         onClickListener: AdapterView.OnItemClickListener? = null,
         dropDownAdapter: DropDownMenuArrayAdapter<T>? = null,
-        inputType: Int = if(onClickListener == null) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL
+        inputType: Int = if(onClickListener == null) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL,
+        textChangedListener: TextWatcher? = null
     )
             : this(fieldName, hint) {
         this.fieldName = fieldName
@@ -43,5 +46,6 @@ class TextInputLayoutGridViewModel<T : IDropDownMenu>() {
         this.inputType = inputType
         this.onclickListener = onClickListener
         this.dropDownAdapter = dropDownAdapter
+        this.textChangedListener = textChangedListener
     }
 }
