@@ -202,6 +202,11 @@
     <string name="change_in_vessel_icing_3">Ice that melts or breaks up slowly</string>
     <string name="change_in_vessel_icing_4">Ice that melts or breaks up quickly</string>
 
+    <string name="degree_of_icing_0">No icing</string>
+    <string name="degree_of_icing_1">light icing</string>
+    <string name="degree_of_icing_2">Moderate icing</string>
+    <string name="degree_of_icing_3">Heavy icing</string>
+
     <string name="concentration_of_sea_ice_0">No sea ice in sight</string>
     <string name="concentration_of_sea_ice_1">Ship in open lead further than 1 NM</string>
     <string name="concentration_of_sea_ice_2">Open pack ice, with water in between</string>
@@ -226,11 +231,13 @@
     <string name="direction_to_nearest_sea_ice_edge_9">Mostly old ice</string>
     <string name="direction_to_nearest_sea_ice_edge_x">Unable to report</string>
 
-    <string name="reason_for_icing_on_vessel_or_platform_1">Icing from sea spray</string>
-    <string name="reason_for_icing_on_vessel_or_platform_2">Icing from fog</string>
-    <string name="reason_for_icing_on_vessel_or_platform_3">Icing from sea spray and fog</string>
-    <string name="reason_for_icing_on_vessel_or_platform_4">Icing from rain</string>
-    <string name="reason_for_icing_on_vessel_or_platform_5">Icing from sea spray and rain</string>
+    <string name="reason_for_icing_on_vessel_or_platform_1">Only sea spray</string>
+    <string name="reason_for_icing_on_vessel_or_platform_2">Only snow/sleet</string>
+    <string name="reason_for_icing_on_vessel_or_platform_3">Sea spray and snow/sleet in combination</string>
+    <string name="reason_for_icing_on_vessel_or_platform_4">Just fog</string>
+    <string name="reason_for_icing_on_vessel_or_platform_5">Fog and sea spray in combination</string>
+    <string name="reason_for_icing_on_vessel_or_platform_6">Freezing rain</string>
+    <string name="reason_for_icing_on_vessel_or_platform_7">Subcooled rain and sea spray in combination</string>
 
     <string name="sea_ice_conditions_and_development_0">Ships in open water</string>
     <string name="sea_ice_conditions_and_development_1">Ships in easily penetrable ice; Conditions are improving</string>

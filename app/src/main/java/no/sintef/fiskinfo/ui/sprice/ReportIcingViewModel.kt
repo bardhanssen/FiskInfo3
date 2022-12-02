@@ -28,7 +28,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
     private val _reasonForVesselIcing = MutableStateFlow(ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED)
     private val _vesselIcingThickness = MutableStateFlow("")
-    private val _vesselIcingChangeInIcing = MutableStateFlow(ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED)
+//    private val _vesselIcingChangeInIcing = MutableStateFlow(ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED)
+    private val _currentVesselIcingIcingDegree = MutableStateFlow(DegreeOfIcingEnum.NOT_SELECTED)
 
     private val _maxMiddleWindTime = MutableStateFlow(MaxMiddleWindTimeEnum.NOT_SELECTED)
 
@@ -44,7 +45,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
     val reasonForVesselIcing: MutableStateFlow<ReasonForIcingOnVesselOrPlatformEnum> = _reasonForVesselIcing
     val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
-    val vesselIcingChangeInIcing: MutableStateFlow<ChangeInIcingOnVesselOrPlatformEnum> = _vesselIcingChangeInIcing
+//    val vesselIcingChangeInIcing: MutableStateFlow<ChangeInIcingOnVesselOrPlatformEnum> = _vesselIcingChangeInIcing
+    val currentVesselIcingIcingDegree: MutableStateFlow<DegreeOfIcingEnum> = _currentVesselIcingIcingDegree
 
     val maxMiddleWindTime: MutableStateFlow<MaxMiddleWindTimeEnum> = _maxMiddleWindTime
 
@@ -63,7 +65,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
         seaIcingConditionsAndDevelopment.value = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED
         reasonForVesselIcing.value = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED
-        vesselIcingChangeInIcing.value = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
+//        vesselIcingChangeInIcing.value = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
+        currentVesselIcingIcingDegree.value = DegreeOfIcingEnum.NOT_SELECTED
         maxMiddleWindTime.value = MaxMiddleWindTimeEnum.NOT_SELECTED
         val defaultLoc = Location("")
         defaultLoc.latitude = 0.0
@@ -97,7 +100,8 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
             .seaIceConditionsAndDevelopmentTheLastThreeHours(seaIcingConditionsAndDevelopment.value)
             .iceThicknessInCm(vesselIcingThickness.value)
             .reasonForIcing(reasonForVesselIcing.value)
-            .changeInIce(vesselIcingChangeInIcing.value)
+//            .changeInIce(vesselIcingChangeInIcing.value)
+            .currentIcingDegree(currentVesselIcingIcingDegree.value)
             .build()
     }
 

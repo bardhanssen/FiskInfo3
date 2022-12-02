@@ -312,6 +312,11 @@
     <string name="change_in_vessel_icing_3">Is som smelter eller brekker opp sakte </string>
     <string name="change_in_vessel_icing_4">Is som smelter eller brekker opp raskt</string>
 
+    <string name="degree_of_icing_0">Ingen ising</string>
+    <string name="degree_of_icing_1">Lett ising</string>
+    <string name="degree_of_icing_2">Moderat ising</string>
+    <string name="degree_of_icing_3">Sterk ising</string>
+
     <string name="concentration_of_sea_ice_0">Ingen sjøis i sikte </string>
     <string name="concentration_of_sea_ice_1">Skip i åpen lede videre enn 1 NM  </string>
     <string name="concentration_of_sea_ice_2">Åpen pakkis, med vann mellom   </string>
@@ -336,11 +341,13 @@
     <string name="direction_to_nearest_sea_ice_edge_9">Mest gammel is</string>
     <string name="direction_to_nearest_sea_ice_edge_x">Ikke mulig å raportere</string>
 
-    <string name="reason_for_icing_on_vessel_or_platform_1">Ising fra sjøsprøyt</string>
-    <string name="reason_for_icing_on_vessel_or_platform_2">Ising fra tåke</string>
-    <string name="reason_for_icing_on_vessel_or_platform_3">Ising fra sjøspryt og tåke</string>
-    <string name="reason_for_icing_on_vessel_or_platform_4">Ising fra regn</string>
-    <string name="reason_for_icing_on_vessel_or_platform_5">Ising fra sjøsprøyt og regn</string>
+    <string name="reason_for_icing_on_vessel_or_platform_1">Bare sjøsprøyt</string>
+    <string name="reason_for_icing_on_vessel_or_platform_2">Bare snø/sludd</string>
+    <string name="reason_for_icing_on_vessel_or_platform_3">Sjøsprøyt og snø/sludd i kombinasjon</string>
+    <string name="reason_for_icing_on_vessel_or_platform_4">Bare tåke</string>
+    <string name="reason_for_icing_on_vessel_or_platform_5">Tåke og sjøsprøyt i kombinasjon</string>
+    <string name="reason_for_icing_on_vessel_or_platform_6">Underkjølt regn</string>
+    <string name="reason_for_icing_on_vessel_or_platform_7">Underkjølt regn og sjøsprøyt i kombinasjon</string>
 
     <string name="sea_ice_conditions_and_development_0">Skip i åpent vann</string>
     <string name="sea_ice_conditions_and_development_1">Skip i lett gjennomtrengbar is; Forholdene er under bedring</string>

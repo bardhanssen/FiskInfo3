@@ -112,6 +112,7 @@ class ReportIcingRequestBody internal constructor(
         var SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED,
         var ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED,
         var IceThicknessInCm: Int = 0,
+        var currentIcingDegree: DegreeOfIcingEnum = DegreeOfIcingEnum.NOT_SELECTED,
         var ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
     ) {
         fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
@@ -158,6 +159,7 @@ class ReportIcingRequestBody internal constructor(
         }
 
         fun reasonForIcing(reasonForIcing: ReasonForIcingOnVesselOrPlatformEnum) = apply { this.ReasonForIcing = reasonForIcing }
+        fun currentIcingDegree(currentIcingDegree: DegreeOfIcingEnum) = apply { this.currentIcingDegree = currentIcingDegree}
         fun iceThicknessInCm(iceThicknessInCm: String) =
             apply {
                 try {
