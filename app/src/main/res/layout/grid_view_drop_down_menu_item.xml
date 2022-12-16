@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="25dp"
-    android:maxLines="1"
+    android:maxLines="5"
+    android:ellipsize="none"
+    android:scrollHorizontally="false"
     app:errorEnabled="true"
     >
 
@@ -15,7 +17,11 @@
         android:id="@+id/layout_grid_view_drop_down_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="3"
+        android:maxLines="5"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"
         android:focusable="true"
+
+        android:text="some very long text that should cause this to wrap the text instead of cutting it off when it reaches the end of the view."
         />
 </com.google.android.material.textfield.TextInputLayout>

@@ -55,6 +55,7 @@ class ReportIcingRequestBody internal constructor(
     internal val DirectionToNearestIceEdge: String,
     internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum,
 
+    internal val CurrentIcingDegree: DegreeOfIcingEnum,
     internal val ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum,
     internal val IceThicknessInCm: Int,
     internal val ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum
@@ -82,6 +83,7 @@ class ReportIcingRequestBody internal constructor(
         builder.OceanIce,
         builder.DirectionToNearestIceEdge,
         builder.SeaIceConditionsAndDevelopmentTheLastThreeHours,
+        builder.CurrentIcingDegree,
         builder.ReasonForIcing,
         builder.IceThicknessInCm,
         builder.ChangeInIce
@@ -112,7 +114,7 @@ class ReportIcingRequestBody internal constructor(
         var SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum = SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED,
         var ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED,
         var IceThicknessInCm: Int = 0,
-        var currentIcingDegree: DegreeOfIcingEnum = DegreeOfIcingEnum.NOT_SELECTED,
+        var CurrentIcingDegree: DegreeOfIcingEnum = DegreeOfIcingEnum.NOT_SELECTED,
         var ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
     ) {
         fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
@@ -159,7 +161,7 @@ class ReportIcingRequestBody internal constructor(
         }
 
         fun reasonForIcing(reasonForIcing: ReasonForIcingOnVesselOrPlatformEnum) = apply { this.ReasonForIcing = reasonForIcing }
-        fun currentIcingDegree(currentIcingDegree: DegreeOfIcingEnum) = apply { this.currentIcingDegree = currentIcingDegree}
+        fun currentIcingDegree(currentIcingDegree: DegreeOfIcingEnum) = apply { this.CurrentIcingDegree = currentIcingDegree}
         fun iceThicknessInCm(iceThicknessInCm: String) =
             apply {
                 try {
@@ -185,9 +187,9 @@ class ReportIcingRequestBody internal constructor(
         val messageTag =
             SpriceUtils.getOrapMessageTag(reportingZonedTime, Username)
 
-        val hiddenMessage = SpriceUtils.getFormattedHiddenMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
-        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), reportingZonedTime, Synop, reportingTimeEpoch)
-        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
+        val hiddenMessage = SpriceUtils.getFormattedHiddenMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), CurrentIcingDegree.getFormIndex())
+        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), CurrentIcingDegree.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), reportingZonedTime, Synop, reportingTimeEpoch)
+        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), CurrentIcingDegree.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
 
         stringBuilder.append(
             SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
@@ -220,9 +222,9 @@ class ReportIcingRequestBody internal constructor(
         val messageTag =
             SpriceUtils.getOrapMessageTag(reportingZonedTime, Username)
 
-        val hiddenMessage = SpriceUtils.getFormattedHiddenMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
-        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), reportingZonedTime, Synop, reportingTimeEpoch)
-        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
+        val hiddenMessage = SpriceUtils.getFormattedHiddenMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), CurrentIcingDegree.getFormIndex())
+        val hiddenKlMessage = SpriceUtils.getFormattedHiddenKlMessageForSpriceEndpoint(Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), CurrentIcingDegree.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex(), reportingZonedTime, Synop, reportingTimeEpoch)
+        val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), CurrentIcingDegree.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
 
         val requestBody =  MultipartBody.Builder(getPostRequestContentTypeBoundaryValueAsString(boundary))
             .setType(MediaType.parse("multipart/form-data")!!)

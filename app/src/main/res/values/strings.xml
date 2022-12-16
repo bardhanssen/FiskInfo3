@@ -292,6 +292,7 @@
     <string name="icing_report_vessel_reason_for_icing_hint">Reason for icing</string>
     <string name="icing_report_vessel_change_in_icing">Change in icing</string>
     <string name="icing_report_sea_ice_conditions_and_development_hint">Sea ice conditions and development</string>
+    <string name="icing_report_vessel_degree_of_icing">Degree of icing</string>
 
     <string name="report_icing_category_header_vessel_icing">Ice on the vessel\'s hull</string>
     <string name="report_icing_category_header_temperature">Temperature</string>

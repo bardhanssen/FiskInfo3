@@ -10,9 +10,9 @@ import android.widget.TextView
 class DropDownMenuArrayAdapter<T : IDropDownMenu>  (context: Context, resource: Int, objects: Array<T>) :
     ArrayAdapter<T>(context, resource, objects) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val theView : TextView = super.getView(position, convertView, parent) as TextView
-        theView.text = getItem(position)?.getLocalizedName(context)
-        return theView
+        val view : TextView = super.getView(position, convertView, parent) as TextView
+        view.text = getItem(position)?.getLocalizedName(context)
+        return view
     }
 
     private val allValuesFilter = object: Filter() {

@@ -159,6 +159,8 @@
     <string name="icing_report_vessel_reason_for_icing_hint">Årsak til ising</string>
     <string name="icing_report_vessel_change_in_icing">Endring i ising</string>
     <string name="icing_report_sea_ice_conditions_and_development_hint">Sjøisforhold og utvikling de neste tre timer</string>
+    <string name="icing_report_vessel_degree_of_icing">Isingsgrad i øyeblikket</string>
+
 
     <string name="report_icing_category_header_vessel_icing">Is på fartøyets skrog</string>
     <string name="report_icing_category_header_temperature">Temperatur</string>
@@ -352,8 +354,8 @@
     <string name="sea_ice_conditions_and_development_0">Skip i åpent vann</string>
     <string name="sea_ice_conditions_and_development_1">Skip i lett gjennomtrengbar is; Forholdene er under bedring</string>
     <string name="sea_ice_conditions_and_development_2">Skip i lett gjennomtrengbar is; Forholdene er stabile</string>
-    <string name="sea_ice_conditions_and_development_3">Skip i lett gjennomtrengbar is; Forholdene blir verre</string>
-    <string name="sea_ice_conditions_and_development_4">Skip i vanskleig gjennomtrengbar is; Forholdene er under bedring</string>
+    <string name="sea_ice_conditions_and_development_3">Skip i lett gjennomtrengbar is;\n Forholdene blir verre</string>
+    <string name="sea_ice_conditions_and_development_4">Skip i vanskelig gjennomtrengbar is; Forholdene er under bedring</string>
     <string name="sea_ice_conditions_and_development_6">Is dannes og fortettes. Vanskelige forhold som forverres</string>
     <string name="sea_ice_conditions_and_development_7">Is under lett trykk. Vanskelige forhold som forverres</string>
     <string name="sea_ice_conditions_and_development_8">Is under tett trykk. Vanskelige forhold som forverres</string>

@@ -145,6 +145,30 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //        vesselIcingRecyclerView = mBinding.reportIcingVesselIcingRecyclerView
 
         vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_vessel_degree_of_icing),
+            hint = getString(R.string.icing_report_vessel_degree_of_icing),
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+            onClickListener = { parent, _, position, _ ->
+                mViewModel.currentVesselIcingIcingDegree.value = parent.getItemAtPosition(position) as DegreeOfIcingEnum
+            },
+            dropDownAdapter = DropDownMenuArrayAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                DegreeOfIcingEnum.values().drop(1).toTypedArray()
+            )))
+        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
+            fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+            hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+            onClickListener = { parent, _, position, _ ->
+                mViewModel.reasonForVesselIcing.value = parent.getItemAtPosition(position) as ReasonForIcingOnVesselOrPlatformEnum
+            },
+            dropDownAdapter = DropDownMenuArrayAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                ReasonForIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
+            )))
+        vesselIcingInputsArrayListSecond.add(TextInputLayoutGridViewModel(
             fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
             hint = getString(R.string.icing_report_vessel_icing_thickness_hint),
             suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix),
@@ -159,30 +183,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             }))
-        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
-            hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
-            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            onClickListener = { parent, _, position, _ ->
-                mViewModel.reasonForVesselIcing.value = parent.getItemAtPosition(position) as ReasonForIcingOnVesselOrPlatformEnum
-            },
-            dropDownAdapter = DropDownMenuArrayAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                ReasonForIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
-            )))
-        vesselIcingInputsArrayListSecond.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_vessel_change_in_icing),
-            hint = getString(R.string.icing_report_vessel_change_in_icing),
-            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            onClickListener = { parent, _, position, _ ->
-                mViewModel.vesselIcingChangeInIcing.value = parent.getItemAtPosition(position) as ChangeInIcingOnVesselOrPlatformEnum
-            },
-            dropDownAdapter = DropDownMenuArrayAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                ChangeInIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
-            )))
 
 //        vesselIcingInputsArrayList.forEach { vesselIcingGridLayout.addView(TextInputLayoutGridViewAdapter.getViewFromModel(requireContext(), it, vesselIcingGridView)) }
 
@@ -368,12 +368,21 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //                    as TextInputLayout).error = null
         }
 
-        if(mViewModel.vesselIcingChangeInIcing.value == ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
-//            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
-//                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+//        if(mViewModel.vesselIcingChangeInIcing.value == ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
+////            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
+////                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
+//            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_vessel_change_in_icing)), Toast.LENGTH_LONG).show()
+//            valid = false
+//            Log.e("checkReportedValues", "vesselIcingChangeInIcing is invalid: ${mViewModel.vesselIcingChangeInIcing.value}")
+//        } else {
+////            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
+////                    as TextInputLayout).error = null
+//        }
+
+        if(mViewModel.currentVesselIcingIcingDegree.value == DegreeOfIcingEnum.NOT_SELECTED) {
             Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_vessel_change_in_icing)), Toast.LENGTH_LONG).show()
             valid = false
-            Log.e("checkReportedValues", "vesselIcingChangeInIcing is invalid: ${mViewModel.vesselIcingChangeInIcing.value}")
+            Log.e("checkReportedValues", "currentVesselIcingIcingDegree is invalid: ${mViewModel.currentVesselIcingIcingDegree.value}")
         } else {
 //            ((vesselIcingGridViewSecondRow.findViewWithTag<TextInputLayout>(getString(R.string.icing_report_vessel_change_in_icing)) as ViewGroup).getChildAt(0)
 //                    as TextInputLayout).error = null

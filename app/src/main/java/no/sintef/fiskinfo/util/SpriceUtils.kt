@@ -108,11 +108,11 @@ class SpriceUtils {
         /**
          * For SPRICE endpoint
          */
-        fun getFormattedHiddenMessageForSpriceEndpoint(username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String): String {
-            return "012345678      ${username},17,${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n\n"
+        fun getFormattedHiddenMessageForSpriceEndpoint(username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String, currentDegreeOfIcing: String): String {
+            return "012345678      ${username},17,${vesselCallSign},${latitude},${longitude},${seaIceConditions},${currentDegreeOfIcing},${reasonForIcingOnVessel},${iceThicknessInCm}\n\n"
         }
 
-        fun getFormattedHiddenKlMessageForSpriceEndpoint(username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String, messageReceivedTime: ZonedDateTime, synop: ZonedDateTime, reportingTimeEpoch: Long): String {
+        fun getFormattedHiddenKlMessageForSpriceEndpoint(username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, currentDegreeOfIcing: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String, messageReceivedTime: ZonedDateTime, synop: ZonedDateTime, reportingTimeEpoch: Long): String {
             return "kldata/nationalnr=${username}/type=317/test/received_time=\"${
                 getGMTFromDefaultLocaleFormattedTimeStamp(
                     messageReceivedTime,
@@ -125,8 +125,8 @@ class SpriceUtils {
                             synop,
                             OrapConstants.HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP
                         )
-                    },${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n" +
-                    "Orap_smsformat_input ${reportingTimeEpoch} ${username},17,${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n" +
+                    },${vesselCallSign},${latitude},${longitude},${seaIceConditions},${currentDegreeOfIcing},${reasonForIcingOnVessel},${iceThicknessInCm}\n" +
+                    "Orap_smsformat_input ${reportingTimeEpoch} ${username},17,${vesselCallSign},${latitude},${longitude},${seaIceConditions},${currentDegreeOfIcing},${reasonForIcingOnVessel},${iceThicknessInCm}\n" +
                     "Local_kvalobs_data /var/www/orap//orap_data//xenial-test//317/1/${username}/orap_${
                         getGMTFromDefaultLocaleFormattedTimeStamp(
                             messageReceivedTime,
@@ -135,8 +135,8 @@ class SpriceUtils {
                     }.txt;"
         }
 
-        fun getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch: Long, username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String): String {
-            return "${observationEpoch * 10} || 012345678      ${username},17,${vesselCallSign},${latitude},${longitude},${reasonForIcingOnVessel},${seaIceConditions},${iceThicknessInCm},${changeInIcingOnVessel}\n"
+        fun getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch: Long, username: String, vesselCallSign: String, latitude: String, longitude: String, reasonForIcingOnVessel: String, currentDegreeOfIcing: String, seaIceConditions: String, iceThicknessInCm: Int, changeInIcingOnVessel: String): String {
+            return "${observationEpoch * 10} || 012345678      ${username},17,${vesselCallSign},${latitude},${longitude},${seaIceConditions},${currentDegreeOfIcing},${reasonForIcingOnVessel},${iceThicknessInCm}\n"
         }
     }
 
