@@ -60,6 +60,7 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
 
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
+            buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
 
             signingConfig signingConfigs.signing_config
         }
@@ -79,6 +80,7 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", prod_fiskinfo_bwclient_scope)
 
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
+            buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
 
             signingConfig signingConfigs.signing_config
         }
@@ -96,6 +98,8 @@ android {
             buildConfigField("String", "FISKINFO_BW_CLIENT_SCOPE", pilot_fiskinfo_bwclient_scope)
 
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
+            buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
+
         }
     }
 }
@@ -113,6 +117,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.jcraft:jsch:0.1.55'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

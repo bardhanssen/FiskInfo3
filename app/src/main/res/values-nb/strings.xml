@@ -11,6 +11,9 @@
     <string name="update">Oppdater</string>
     <string name="no_internet_access">Ingen internett-tilgang</string>
 
+    <string name="util_storage_settings_disabled">Lagringstilgang</string>
+    <string name="util_storage_enable_question">Til Havs må ha tilgang på enhetens lagring for å laste opp bilder. Vil du godkjenne denne tillatelsen?</string>
+
     <string name="user_profile_title">Fartøy og profil</string>
     <string name="preferences_title">Innstillinger</string>
     <string name="tools_title">Redskap</string>

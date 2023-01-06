@@ -49,6 +49,8 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
         configureEditTextInputType(getString(R.string.pref_sprice_username_key), InputType.TYPE_CLASS_TEXT)
         configureEditTextInputType(getString(R.string.pref_sprice_password_key), InputType.TYPE_TEXT_VARIATION_PASSWORD)
         configureEditTextInputType(getString(R.string.pref_sprice_call_sign_key), InputType.TYPE_CLASS_TEXT)
+        configureEditTextInputType(getString(R.string.pref_sprice_sftp_username_key), InputType.TYPE_CLASS_TEXT)
+        configureEditTextInputType(getString(R.string.pref_sprice_sftp_password_key), InputType.TYPE_CLASS_TEXT)
 
         val consentPreference : Preference? = findPreference("consent")
         consentPreference?.setOnPreferenceClickListener {

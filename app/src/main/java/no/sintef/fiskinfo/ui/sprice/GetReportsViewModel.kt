@@ -7,21 +7,20 @@ import androidx.lifecycle.MutableLiveData
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.sprice.IcingReport
 import no.sintef.fiskinfo.model.sprice.IcingTypeCode
-import no.sintef.fiskinfo.model.sprice.WindTypeCode
 import no.sintef.fiskinfo.util.locationsToGeoJsonGeometry
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
 
+@Suppress("unused")
 class GetReportsViewModel(application: Application) : ObservableAndroidViewModel(application) {
     val reportingTime = MutableLiveData<Date>()
     val locations = MutableLiveData<MutableList<Location>>()
     val icingTypeCode = MutableLiveData<IcingTypeCode>()
-    val windTypeCode = MutableLiveData<WindTypeCode>()
-    var reportChecked = MutableLiveData<Boolean>()
+    private var reportChecked = MutableLiveData<Boolean>()
     var reportValid = MutableLiveData<Boolean>()
 
     var orapUsername: String? = null
-    var orapPassword: String? = null
+    private var orapPassword: String? = null
     var initialized = false
 
     private fun createIcingReport(): IcingReport {
@@ -37,7 +36,7 @@ class GetReportsViewModel(application: Application) : ObservableAndroidViewModel
     fun initContent() {
         if (!initialized) {
             val context: Context = getApplication()
-            val prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
+            androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
 
 
             reportingTime.value = Date()
@@ -51,7 +50,7 @@ class GetReportsViewModel(application: Application) : ObservableAndroidViewModel
         }
     }
 
-    fun getOrapInfoFromPreferences() {
+    private fun getOrapInfoFromPreferences() {
         val context: Context = getApplication()
         val prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -60,18 +59,16 @@ class GetReportsViewModel(application: Application) : ObservableAndroidViewModel
     }
 
     fun setReportingDate(date: Date) {
-        if (date != null) {
-            // TODO: pick out only date part (not time)
-            val c = Calendar.getInstance()
-            c.time = reportingTime.value
+        // TODO: pick out only date part (not time)
+        val c = Calendar.getInstance()
+        c.time = reportingTime.value!!
 
-            val newDateC = Calendar.getInstance()
-            newDateC.time = date
-            c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
-            c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
+        val newDateC = Calendar.getInstance()
+        newDateC.time = date
+        c.set(Calendar.YEAR, newDateC.get(Calendar.YEAR))
+        c.set(Calendar.DAY_OF_YEAR, newDateC.get(Calendar.DAY_OF_YEAR))
 
-            reportingTime.value = c.time
-        }
+        reportingTime.value = c.time
     }
 
     fun clear() {

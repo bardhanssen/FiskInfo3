@@ -1,5 +1,10 @@
 package no.sintef.fiskinfo.ui.sprice
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +15,8 @@ import android.view.*
 import android.widget.AutoCompleteTextView
 import android.widget.GridView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -18,14 +25,18 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ajhuntsman.ksftp.SftpClient
+import com.ajhuntsman.ksftp.SftpConnectionParametersBuilder
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.*
@@ -39,6 +50,7 @@ import no.sintef.fiskinfo.ui.tools.LocationRecyclerViewAdapter
 import no.sintef.fiskinfo.ui.tools.LocationViewModel
 import no.sintef.fiskinfo.util.DMSLocation
 import java.util.*
+
 
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener, FragmentResultListener,
     Fragment(),
@@ -90,6 +102,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         initVesselIcingGridView()
 //        initWindObservationsGridView()
         initPositionInput()
+        initImageSelector()
     }
 
     private fun initPositionInput() {
@@ -229,6 +242,66 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         }
 
         mSynopHourDropdown.setAdapter(mReportingHourAdapter)
+    }
+
+    private fun initImageSelector() {
+        mBinding.icingObservationAddImagesField.setOnClickListener {
+
+// TODO: Add intent to get images and forward them to sftp client.
+
+            if (ActivityCompat.checkSelfPermission(it.context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
+                showSettingsAlert()
+            } else {
+                val prefs = PreferenceManager.getDefaultSharedPreferences(it.context)
+                val orapUsername = prefs.getString(it.context.getString(R.string.pref_sprice_sftp_username_key), "") ?: ""
+                val orapPassword = prefs.getString(it.context.getString(R.string.pref_sprice_sftp_password_key), "") ?: ""
+
+                val a = SftpConnectionParametersBuilder.Factory.newInstance().createConnectionParameters()
+                    .withHost(BuildConfig.SPRICE_ORAP_SFTP_URL)
+                    .withPort(22)
+                    .withUsername(orapUsername)
+                    .withPassword(orapPassword.toByteArray())
+                    .create()
+
+
+                SftpClient.Factory
+                    .create(a)
+                    .upload("filepath", "filepath", 30)
+
+            }
+        }
+    }
+
+    private fun SelectImagesToUploadIntentCallback() {
+
+    }
+
+    /**
+     * function to prompt user to enable storage access
+     */
+    fun showSettingsAlert() {
+        val mAlertDialog = AlertDialog.Builder(
+            ContextThemeWrapper(
+                requireContext(),
+                R.style.AppTheme
+            )
+        )
+        mAlertDialog.setTitle(getString(R.string.util_storage_settings_disabled))
+        mAlertDialog.setMessage(getString(R.string.util_storage_enable_question))
+        mAlertDialog.setPositiveButton(
+            getString(R.string.yes)
+        ) { _, _ ->
+            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
+            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE),1)
+            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
+        }
+        mAlertDialog.setNegativeButton(
+            getString(R.string.no)
+        ) { dialog, _ -> dialog.cancel() }
+        val mcreateDialog = mAlertDialog.create()
+        mcreateDialog.show()
     }
 
     override fun onDmsEditConfirmed() {
