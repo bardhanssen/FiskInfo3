@@ -183,8 +183,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/icingObservationAddImagesLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -200,10 +198,19 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:inputType="@{InputType.TYPE_NULL}"
-                        android:text="@{UtilsKt.formatDate(viewmodel.synopDate)}" />
-
+                        android:text="@string/report_icing_select_images_title" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <GridView
+                    android:id="@+id/image_grid_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin_small"
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin_small"
+                    android:verticalSpacing="@dimen/activity_vertical_margin_small"
+                    android:numColumns="4"
+                    android:visibility="visible"
+                    />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

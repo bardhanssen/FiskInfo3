@@ -317,6 +317,9 @@
     <string name="orap_icing_action_check_message" translatable="false">Kontroller melding</string>
     <string name="orap_icing_action_send_message_to_met" translatable="false">Send melding til met.no</string>
 
+    <string name="report_icing_select_images_title">Add images</string>
+
+
     <string name="drop_down_menu_error_not_selected">No value chosen</string>
     <string name="drop_down_menu_error_not_selected_for_template_string">No value chosen for %1$s</string>
 
@@ -432,6 +435,8 @@
     <string name="prefs_sprice_username">Orap username</string>
     <string name="prefs_sprice_password">Orap password</string>
     <string name="prefs_sprice_vessel_call_sign">vessel call sign</string>
+    <string name="prefs_sprice_sftp_username">SFTP username</string>
+    <string name="prefs_sprice_sftp_password">SFTP password</string>
     <string name="report_icing_menu_option_send">Report</string>
     <string name="report_icing_menu_option_check">Check</string>
 </resources>

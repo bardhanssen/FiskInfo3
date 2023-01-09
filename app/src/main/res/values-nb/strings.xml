@@ -180,6 +180,8 @@
     <string name="fragment_title_icing">Ising</string>
     <string name="fragment_title_report_icing">Rapporter ising</string>
 
+    <string name="report_icing_select_images_title">Legg til bilder</string>
+
     <string name="drop_down_menu_error_not_selected">Ingen verdi valgt</string>
     <string name="drop_down_menu_error_not_selected_for_template_string">Ingen verdi valgt for %1$s</string>
 
@@ -294,6 +296,8 @@
     <string name="prefs_sprice_username">Orap brukernavn</string>
     <string name="prefs_sprice_password">Orap passord</string>
     <string name="prefs_sprice_vessel_call_sign">Fartøyets kallesignal</string>
+    <string name="prefs_sprice_sftp_username">SFTP brukernavn</string>
+    <string name="prefs_sprice_sftp_password">SFTP passord</string>
     <string name="report_icing_menu_option_send">Rapporter</string>
     <string name="report_icing_menu_option_check">Kontroller</string>
 

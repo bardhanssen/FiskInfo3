@@ -3,15 +3,15 @@ package no.sintef.fiskinfo.ui.sprice
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.webkit.MimeTypeMap
 import android.widget.AutoCompleteTextView
 import android.widget.GridView
 import android.widget.Toast
@@ -29,17 +29,22 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ajhuntsman.ksftp.FilePair
 import com.ajhuntsman.ksftp.SftpClient
 import com.ajhuntsman.ksftp.SftpConnectionParametersBuilder
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
-import no.sintef.fiskinfo.model.sprice.*
+import no.sintef.fiskinfo.model.sprice.DegreeOfIcingEnum
+import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
+import no.sintef.fiskinfo.model.sprice.ReasonForIcingOnVesselOrPlatformEnum
+import no.sintef.fiskinfo.model.sprice.SeaIceConditionsAndDevelopmentEnum
 import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewAdapter
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewModel
@@ -49,6 +54,8 @@ import no.sintef.fiskinfo.ui.tools.LocationDmsViewModel
 import no.sintef.fiskinfo.ui.tools.LocationRecyclerViewAdapter
 import no.sintef.fiskinfo.ui.tools.LocationViewModel
 import no.sintef.fiskinfo.util.DMSLocation
+import java.io.File
+import java.io.InputStream
 import java.util.*
 
 
@@ -68,6 +75,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var seaIcingGridView: GridView
     private lateinit var vesselIcingGridView: GridView
     private lateinit var vesselIcingGridViewSecondRow: GridView
+    private lateinit var imagesGridView: GridView
 
     private lateinit var vesselIcingRecyclerView: RecyclerView
     private lateinit var windObservationsGridView: GridView
@@ -76,6 +84,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mSynopHourDropdown: AutoCompleteTextView
 
     private lateinit var locAdapter: LocationRecyclerViewAdapter
+    private lateinit var selectImageIntent:  androidx.activity.result.ActivityResultLauncher<String>
 
     private var _mBinding: SpriceReportIcingFragmentBinding? = null
 
@@ -129,27 +138,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         }
     }
 
-    private fun initWindObservationsGridView() {
-        windObservationsGridView = mBinding.reportIcingWindObservationsGridView
-        val windObservationsInputsArrayList: ArrayList<TextInputLayoutGridViewModel<MaxMiddleWindTimeEnum>> = ArrayList()
-
-        windObservationsInputsArrayList.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.max_middle_wind_when_hint),
-            hint = getString(R.string.max_middle_wind_when_hint),
-            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            inputType = InputType.TYPE_NULL,
-            onClickListener = { parent, _, position, _ ->
-                mViewModel.maxMiddleWindTime.value = parent.getItemAtPosition(position) as MaxMiddleWindTimeEnum
-            },
-            dropDownAdapter = DropDownMenuArrayAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                MaxMiddleWindTimeEnum.values().drop(1).toTypedArray()
-            ))
-        )
-        windObservationsGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), windObservationsInputsArrayList)
-    }
-
     private fun initVesselIcingGridView() {
         val vesselIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
         val vesselIcingInputsArrayListSecond: ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>> = ArrayList<TextInputLayoutGridViewModel<IDropDownMenu>>()
@@ -157,45 +145,53 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         vesselIcingGridViewSecondRow = mBinding.reportIcingVesselIcingGridViewSecondRow
 //        vesselIcingRecyclerView = mBinding.reportIcingVesselIcingRecyclerView
 
-        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_vessel_degree_of_icing),
-            hint = getString(R.string.icing_report_vessel_degree_of_icing),
-            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            onClickListener = { parent, _, position, _ ->
-                mViewModel.currentVesselIcingIcingDegree.value = parent.getItemAtPosition(position) as DegreeOfIcingEnum
-            },
-            dropDownAdapter = DropDownMenuArrayAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                DegreeOfIcingEnum.values().drop(1).toTypedArray()
-            )))
-        vesselIcingInputsArrayList.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
-            hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
-            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            onClickListener = { parent, _, position, _ ->
-                mViewModel.reasonForVesselIcing.value = parent.getItemAtPosition(position) as ReasonForIcingOnVesselOrPlatformEnum
-            },
-            dropDownAdapter = DropDownMenuArrayAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                ReasonForIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
-            )))
-        vesselIcingInputsArrayListSecond.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
-            hint = getString(R.string.icing_report_vessel_icing_thickness_hint),
-            suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix),
-            textChangedListener = object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    mViewModel.vesselIcingThickness.value = s.toString()
-                }
+        vesselIcingInputsArrayList.add(
+            TextInputLayoutGridViewModel(
+                fieldName = getString(R.string.icing_report_vessel_degree_of_icing),
+                hint = getString(R.string.icing_report_vessel_degree_of_icing),
+                textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+                onClickListener = { parent, _, position, _ ->
+                    mViewModel.currentVesselIcingIcingDegree.value = parent.getItemAtPosition(position) as DegreeOfIcingEnum
+                },
+                dropDownAdapter = DropDownMenuArrayAdapter(
+                    requireContext(),
+                    R.layout.exposed_dropdown_menu_item,
+                    DegreeOfIcingEnum.values().drop(1).toTypedArray()
+                )
+            )
+        )
+        vesselIcingInputsArrayList.add(
+            TextInputLayoutGridViewModel(
+                fieldName = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+                hint = getString(R.string.icing_report_vessel_reason_for_icing_hint),
+                textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+                onClickListener = { parent, _, position, _ ->
+                    mViewModel.reasonForVesselIcing.value = parent.getItemAtPosition(position) as ReasonForIcingOnVesselOrPlatformEnum
+                },
+                dropDownAdapter = DropDownMenuArrayAdapter(
+                    requireContext(),
+                    R.layout.exposed_dropdown_menu_item,
+                    ReasonForIcingOnVesselOrPlatformEnum.values().drop(1).toTypedArray()
+                )
+            )
+        )
+        vesselIcingInputsArrayListSecond.add(
+            TextInputLayoutGridViewModel(
+                fieldName = getString(R.string.icing_report_vessel_icing_thickness_hint),
+                hint = getString(R.string.icing_report_vessel_icing_thickness_hint),
+                suffixText = getString(R.string.icing_report_vessel_icing_thickness_suffix),
+                textChangedListener = object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        mViewModel.vesselIcingThickness.value = s.toString()
+                    }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-            }))
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    }
+                })
+        )
 
 //        vesselIcingInputsArrayList.forEach { vesselIcingGridLayout.addView(TextInputLayoutGridViewAdapter.getViewFromModel(requireContext(), it, vesselIcingGridView)) }
 
@@ -207,19 +203,21 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         seaIcingGridView = mBinding.reportIcingSeaIcingGridView
         val seaIcingInputsArrayList: ArrayList<TextInputLayoutGridViewModel<SeaIceConditionsAndDevelopmentEnum>> = ArrayList()
 
-        seaIcingInputsArrayList.add(TextInputLayoutGridViewModel(
-            fieldName = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
-            hint = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
-            textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
-            onClickListener = { parent, _, position, _ ->
-                mViewModel.seaIcingConditionsAndDevelopment.value = parent.getItemAtPosition(position) as SeaIceConditionsAndDevelopmentEnum
-            },
-            maxLines = 2,
-            dropDownAdapter = DropDownMenuArrayAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                SeaIceConditionsAndDevelopmentEnum.values().drop(1).toTypedArray()
-            ))
+        seaIcingInputsArrayList.add(
+            TextInputLayoutGridViewModel(
+                fieldName = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+                hint = getString(R.string.icing_report_sea_ice_conditions_and_development_hint),
+                textAlignment = View.TEXT_ALIGNMENT_VIEW_START,
+                onClickListener = { parent, _, position, _ ->
+                    mViewModel.seaIcingConditionsAndDevelopment.value = parent.getItemAtPosition(position) as SeaIceConditionsAndDevelopmentEnum
+                },
+                maxLines = 2,
+                dropDownAdapter = DropDownMenuArrayAdapter(
+                    requireContext(),
+                    R.layout.exposed_dropdown_menu_item,
+                    SeaIceConditionsAndDevelopmentEnum.values().drop(1).toTypedArray()
+                )
+            )
         )
         seaIcingGridView.adapter = TextInputLayoutGridViewAdapter(requireContext(), seaIcingInputsArrayList)
     }
@@ -245,43 +243,92 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     private fun initImageSelector() {
-        mBinding.icingObservationAddImagesField.setOnClickListener {
+        imagesGridView = mBinding.imageGridView
 
-// TODO: Add intent to get images and forward them to sftp client.
+        selectImageIntent = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uriList ->
+            val arrayListImage = ArrayList<Int>()
+            val imageNamesList = ArrayList<String>()
+            val filesList = ArrayList<File>()
 
-            if (ActivityCompat.checkSelfPermission(it.context,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
-                showSettingsAlert()
-            } else {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(it.context)
-                val orapUsername = prefs.getString(it.context.getString(R.string.pref_sprice_sftp_username_key), "") ?: ""
-                val orapPassword = prefs.getString(it.context.getString(R.string.pref_sprice_sftp_password_key), "") ?: ""
+            for(imageUri in uriList) {
+                arrayListImage.add(R.drawable.ic_image)
+                imageNamesList.add(imageUri.lastPathSegment!!)
 
-                val a = SftpConnectionParametersBuilder.Factory.newInstance().createConnectionParameters()
-                    .withHost(BuildConfig.SPRICE_ORAP_SFTP_URL)
-                    .withPort(22)
-                    .withUsername(orapUsername)
-                    .withPassword(orapPassword.toByteArray())
-                    .create()
+                val mime: MimeTypeMap = MimeTypeMap.getSingleton()
+                val extension = mime.getExtensionFromMimeType(requireContext().contentResolver.getType(imageUri));
+                val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri)
+                val tempFile = File.createTempFile(imageUri.lastPathSegment!!, ".${extension}")
 
+                inputStream.use { input ->
+                    tempFile.outputStream().use { output ->
+                        input!!.copyTo(output)
+                    }
+                }
 
-                SftpClient.Factory
-                    .create(a)
-                    .upload("filepath", "filepath", 30)
-
+                filesList.add(tempFile)
+                inputStream!!.close()
             }
+
+            mViewModel.attachedImages.value = filesList
+            imagesGridView.adapter = GridViewImageAdapter(requireContext(), ArrayList(uriList), imageNamesList)
+        }
+
+        mBinding.icingObservationAddImagesField.setOnClickListener {
+            selectImagesToUploadIntentCallback()
         }
     }
 
-    private fun SelectImagesToUploadIntentCallback() {
+    private fun selectImagesToUploadIntentCallback() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestReadStoragePermission()
+        } else {
+            selectImageIntent.launch("image/*")
+        }
+    }
 
+    private fun uploadImagesOverSftp(files: List<File>, webKitFormBoundaryId: String) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val orapUsername = prefs.getString(requireContext().getString(R.string.pref_sprice_sftp_username_key), "") ?: ""
+        val orapPassword = prefs.getString(requireContext().getString(R.string.pref_sprice_sftp_password_key), "") ?: ""
+        val filePairs = ArrayList<FilePair>()
+
+        val connectionParameters = SftpConnectionParametersBuilder.newInstance().createConnectionParameters()
+            .withHost(BuildConfig.SPRICE_ORAP_SFTP_URL)
+            .withPort(BuildConfig.SPRICE_ORAP_SFTP_PORT_NUMBER)
+            .withUsername(orapUsername)
+            .withPassword(orapPassword.toByteArray())
+            .create()
+
+        for(file in files) {
+            if (file.exists()) {
+                val filePath: String = file.absolutePath
+                var fileName = file.name
+                val filenameLength = fileName.lastIndexOf('.', fileName.length)
+                fileName = "${fileName.substring(0, filenameLength)}_${webKitFormBoundaryId}${fileName.substring(fileName.lastIndexOf('.', fileName.length))}".replace("[/<>:\"|?*]".toRegex(), "")
+
+                val remoteFileName = "/dev/${fileName}"
+
+                filePairs.add(FilePair(filePath, remoteFileName))
+            } else {
+                Log.d("SPRICE SFTP", "Path does not exist: ${file.path}")
+            }
+        }
+
+        SftpClient
+            .create(connectionParameters)
+            .upload(filePairs, 60)
+
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
     }
 
     /**
      * function to prompt user to enable storage access
      */
-    fun showSettingsAlert() {
+    private fun requestReadStoragePermission() {
         val mAlertDialog = AlertDialog.Builder(
             ContextThemeWrapper(
                 requireContext(),
@@ -293,15 +340,14 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mAlertDialog.setPositiveButton(
             getString(R.string.yes)
         ) { _, _ ->
-            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
-            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE),1)
-            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
+            ActivityCompat.requestPermissions(requireActivity() as Activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
         }
         mAlertDialog.setNegativeButton(
             getString(R.string.no)
         ) { dialog, _ -> dialog.cancel() }
-        val mcreateDialog = mAlertDialog.create()
-        mcreateDialog.show()
+
+        val dialog = mAlertDialog.create()
+        dialog.show()
     }
 
     override fun onDmsEditConfirmed() {
@@ -343,17 +389,17 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // TODO: Remove when submission of report is working
-                Log.w("Request", mViewModel.getIcingReportBody().getRequestBodyForSpriceEndpointReportSubmissionAsString())
-                Log.e(
-                    "onOptionsItemSelected", "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
+                Log.d("Request", mViewModel.getIcingReportBody().getRequestBodyForSpriceEndpointReportSubmissionAsString())
+                Log.d(
+                    "onOptionsItemSelected",
+                    "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
                             "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
                             "${mViewModel.maxMiddleWindTime.value.getFormValue()},\n" +
                             "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
                 )
 
                 if (menuItem.itemId == R.id.send_icing_report_action) {
-                    if(!reportedIcingValuesAreValid()) {
+                    if (!reportedIcingValuesAreValid()) {
                         return false
                     }
 
@@ -390,6 +436,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                         }
                     }
 
+                    uploadImagesOverSftp(mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId)
+
                     return true
                 }
 
@@ -409,10 +457,17 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //        }
 
 
-        if(mViewModel.seaIcingConditionsAndDevelopment.value == SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED) {
+        if (mViewModel.seaIcingConditionsAndDevelopment.value == SeaIceConditionsAndDevelopmentEnum.NOT_SELECTED) {
 //            ((seaIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0)
 //                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
-            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_sea_ice_conditions_and_development_hint)), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                String.format(
+                    getString(R.string.drop_down_menu_error_not_selected_for_template_string),
+                    getString(R.string.icing_report_sea_ice_conditions_and_development_hint)
+                ),
+                Toast.LENGTH_LONG
+            ).show()
             valid = false
             Log.e("checkReportedValues", "seaIcingConditionsAndDevelopment is invalid: ${mViewModel.seaIcingConditionsAndDevelopment.value}")
         } else {
@@ -420,20 +475,27 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //                    as TextInputLayout).error = null
         }
 
-        if(mViewModel.vesselIcingThickness.value.isEmpty()) {
+        if (mViewModel.vesselIcingThickness.value.isEmpty()) {
             ((((vesselIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
-                .getChildAt(0) ) as TextInputEditText).error = getString(R.string.icing_missing_value)
+                .getChildAt(0)) as TextInputEditText).error = getString(R.string.icing_missing_value)
             valid = false
             Log.e("checkReportedValues", "vesselIcingThickness is invalid: '${mViewModel.vesselIcingThickness.value}'")
         } else {
             ((((vesselIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
-                .getChildAt(0) ) as TextInputEditText).error = null
+                .getChildAt(0)) as MaterialAutoCompleteTextView).error = null
         }
 
-        if(mViewModel.reasonForVesselIcing.value == ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
+        if (mViewModel.reasonForVesselIcing.value == ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED) {
 //            ((vesselIcingGridView.getChildAt(1) as ViewGroup).getChildAt(0)
 //                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
-            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_vessel_reason_for_icing_hint)), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                String.format(
+                    getString(R.string.drop_down_menu_error_not_selected_for_template_string),
+                    getString(R.string.icing_report_vessel_reason_for_icing_hint)
+                ),
+                Toast.LENGTH_LONG
+            ).show()
             valid = false
             Log.e("checkReportedValues", "reasonForVesselIcing is invalid: ${mViewModel.reasonForVesselIcing.value}")
         } else {
@@ -452,8 +514,15 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 ////                    as TextInputLayout).error = null
 //        }
 
-        if(mViewModel.currentVesselIcingIcingDegree.value == DegreeOfIcingEnum.NOT_SELECTED) {
-            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.icing_report_vessel_change_in_icing)), Toast.LENGTH_LONG).show()
+        if (mViewModel.currentVesselIcingIcingDegree.value == DegreeOfIcingEnum.NOT_SELECTED) {
+            Toast.makeText(
+                requireContext(),
+                String.format(
+                    getString(R.string.drop_down_menu_error_not_selected_for_template_string),
+                    getString(R.string.icing_report_vessel_change_in_icing)
+                ),
+                Toast.LENGTH_LONG
+            ).show()
             valid = false
             Log.e("checkReportedValues", "currentVesselIcingIcingDegree is invalid: ${mViewModel.currentVesselIcingIcingDegree.value}")
         } else {
@@ -461,25 +530,17 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //                    as TextInputLayout).error = null
         }
 
-        if(mViewModel.location.value!!.latitude == 0.0 || mViewModel.location.value!!.longitude == 0.0) {
-            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.position)), Toast.LENGTH_LONG).show()
+        if (mViewModel.location.value!!.latitude == 0.0 || mViewModel.location.value!!.longitude == 0.0) {
+            Toast.makeText(
+                requireContext(),
+                String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.position)),
+                Toast.LENGTH_LONG
+            ).show()
         }
-
-//        if (mViewModel.maxMiddleWindTime.value == MaxMiddleWindTimeEnum.NOT_SELECTED) {
-////            ((windObservationsGridView.findViewWithTag<TextInputLayout>(getString(R.string.max_middle_wind_when_hint)) as ViewGroup).getChildAt(0)
-////                    as TextInputLayout).error = getString(R.string.drop_down_menu_error_not_selected)
-//            Toast.makeText(requireContext(), String.format(getString(R.string.drop_down_menu_error_not_selected_for_template_string), getString(R.string.max_middle_wind_when_hint)), Toast.LENGTH_LONG).show()
-//
-//            valid = false
-//        } else {
-////            ((windObservationsGridView.findViewWithTag<TextInputLayout>(getString(R.string.max_middle_wind_when_hint)) as ViewGroup).getChildAt(0)
-////                    as TextInputLayout).error = null
-//        }
-
 
         // TODO: Check other values
 
-        Log.e("checkReportedValues", "Values are ${if(!valid) "not" else ""} valid!")
+        Log.e("checkReportedValues", "Values are ${if (!valid) "not" else ""} valid!")
         return valid
     }
 
@@ -494,7 +555,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     override fun onFragmentResult(requestKey: String, result: Bundle) {
-        if(DMSLocation.EDIT_DMS_POSITION_FRAGMENT_RESULT_REQUEST_KEY == requestKey) {
+        if (DMSLocation.EDIT_DMS_POSITION_FRAGMENT_RESULT_REQUEST_KEY == requestKey) {
             val location = mLocationViewModel.getLocation()
             if (location != null) {
                 mViewModel.location.value = location

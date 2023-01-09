@@ -8,5 +8,4 @@
         android:maxLines="5"
         android:scrollHorizontally="false"
         android:textAppearance="?attr/textAppearanceSubtitle1"
-        android:text="some very long text that should cause this to wrap the text instead of cutting it off when it reaches the end of the view."
 />

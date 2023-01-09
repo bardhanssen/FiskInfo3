@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
+import java.io.File
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -32,6 +33,7 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
     private val _currentVesselIcingIcingDegree = MutableStateFlow(DegreeOfIcingEnum.NOT_SELECTED)
 
     private val _maxMiddleWindTime = MutableStateFlow(MaxMiddleWindTimeEnum.NOT_SELECTED)
+    private val _attachedImages = MutableStateFlow<List<File>>(listOf())
 
     val synopDate = MutableLiveData<Date>()
 
@@ -52,9 +54,12 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
     val location = MutableLiveData<Location>()
 
+    val attachedImages = _attachedImages
+
     fun init() {
         reportingTime.value = Date.from(Instant.now())
         synopHourSelect.value = "${Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}:00"
+        attachedImages.value = ArrayList()
 
         val calendar = Calendar.getInstance()
         calendar.time = Date.from(Instant.now())

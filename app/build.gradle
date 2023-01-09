@@ -61,6 +61,7 @@ android {
 
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
             buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
+            buildConfigField("int", "SPRICE_ORAP_SFTP_PORT_NUMBER", prod_sprice_sftp_port_number)
 
             signingConfig signingConfigs.signing_config
         }
@@ -81,6 +82,7 @@ android {
 
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
             buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
+            buildConfigField("int", "SPRICE_ORAP_SFTP_PORT_NUMBER", prod_sprice_sftp_port_number)
 
             signingConfig signingConfigs.signing_config
         }
@@ -99,6 +101,7 @@ android {
 
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
             buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
+            buildConfigField("int", "SPRICE_ORAP_SFTP_PORT_NUMBER", prod_sprice_sftp_port_number)
 
         }
     }
