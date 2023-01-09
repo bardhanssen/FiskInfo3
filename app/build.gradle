@@ -20,8 +20,8 @@ android {
         applicationId "fiskinfoo.no.sintef.fiskinfoo"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 48
-        versionName "3.0.1.4"
+        versionCode 49
+        versionName "3.0.1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 appAuthRedirectScheme: "no.sintef.fiskinfo.android"
@@ -62,6 +62,8 @@ android {
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
             buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
             buildConfigField("int", "SPRICE_ORAP_SFTP_PORT_NUMBER", prod_sprice_sftp_port_number)
+            buildConfigField("String", "SPRICE_ORAP_SFTP_USER_NAME", prod_sprice_sftp_user_name)
+            buildConfigField("String", "SPRICE_ORAP_SFTP_PASSWORD", prod_sprice_sftp_password)
 
             signingConfig signingConfigs.signing_config
         }
@@ -83,6 +85,8 @@ android {
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
             buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
             buildConfigField("int", "SPRICE_ORAP_SFTP_PORT_NUMBER", prod_sprice_sftp_port_number)
+            buildConfigField("String", "SPRICE_ORAP_SFTP_USER_NAME", prod_sprice_sftp_user_name)
+            buildConfigField("String", "SPRICE_ORAP_SFTP_PASSWORD", prod_sprice_sftp_password)
 
             signingConfig signingConfigs.signing_config
         }
@@ -102,6 +106,8 @@ android {
             buildConfigField("String", "SPRICE_ORAP_SERVER_URL", "\"https://orap.met.no/\"")
             buildConfigField("String", "SPRICE_ORAP_SFTP_URL", "\"fog.met.no\"")
             buildConfigField("int", "SPRICE_ORAP_SFTP_PORT_NUMBER", prod_sprice_sftp_port_number)
+            buildConfigField("String", "SPRICE_ORAP_SFTP_USER_NAME", prod_sprice_sftp_user_name)
+            buildConfigField("String", "SPRICE_ORAP_SFTP_PASSWORD", prod_sprice_sftp_password)
 
         }
     }

@@ -138,23 +138,6 @@
             app:useSimpleSummaryProvider="true"
             android:title="@string/prefs_sprice_vessel_call_sign"
             />
-
-        <EditTextPreference
-            android:key="@string/pref_sprice_sftp_username_key"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/prefs_sprice_sftp_username"
-            />
-
-        <EditTextPreference
-            android:key="@string/pref_sprice_sftp_password_key"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            app:useSimpleSummaryProvider="true"
-            android:inputType="textPassword"
-            android:title="@string/prefs_sprice_sftp_password"
-            />
     </PreferenceCategory>
 
     <PreferenceCategory

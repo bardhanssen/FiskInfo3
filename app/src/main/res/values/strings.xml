@@ -52,8 +52,6 @@
     <string name="pref_sprice_username_key" translatable="false">pref_sprice_username_key</string>
     <string name="pref_sprice_password_key" translatable="false">pref_sprice_password_key</string>
     <string name="pref_sprice_call_sign_key" translatable="false">pref_sprice_call_sign_key</string>
-    <string name="pref_sprice_sftp_username_key" translatable="false">pref_sprice_sftp_username_key</string>
-    <string name="pref_sprice_sftp_password_key" translatable="false">pref_sprice_sftp_password_key</string>
 
 
     <!-- Map fragment string -->
@@ -435,8 +433,6 @@
     <string name="prefs_sprice_username">Orap username</string>
     <string name="prefs_sprice_password">Orap password</string>
     <string name="prefs_sprice_vessel_call_sign">vessel call sign</string>
-    <string name="prefs_sprice_sftp_username">SFTP username</string>
-    <string name="prefs_sprice_sftp_password">SFTP password</string>
     <string name="report_icing_menu_option_send">Report</string>
     <string name="report_icing_menu_option_check">Check</string>
 </resources>

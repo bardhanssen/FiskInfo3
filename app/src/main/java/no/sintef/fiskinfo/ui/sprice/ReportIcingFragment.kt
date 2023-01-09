@@ -292,8 +292,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
     private fun uploadImagesOverSftp(files: List<File>, webKitFormBoundaryId: String) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val orapUsername = prefs.getString(requireContext().getString(R.string.pref_sprice_sftp_username_key), "") ?: ""
-        val orapPassword = prefs.getString(requireContext().getString(R.string.pref_sprice_sftp_password_key), "") ?: ""
+        val orapUsername = BuildConfig.SPRICE_ORAP_SFTP_USER_NAME
+        val orapPassword = BuildConfig.SPRICE_ORAP_SFTP_PASSWORD
         val filePairs = ArrayList<FilePair>()
 
         val connectionParameters = SftpConnectionParametersBuilder.newInstance().createConnectionParameters()
@@ -321,8 +321,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         SftpClient
             .create(connectionParameters)
             .upload(filePairs, 60)
-
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
     }
 
     /**
