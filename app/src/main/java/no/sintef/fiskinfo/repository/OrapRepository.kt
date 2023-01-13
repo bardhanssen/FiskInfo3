@@ -4,20 +4,26 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import com.ajhuntsman.ksftp.FilePair
+import com.ajhuntsman.ksftp.SftpClient
+import com.ajhuntsman.ksftp.SftpConnectionParametersBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.api.orap.OrapService
 import no.sintef.fiskinfo.model.sprice.*
-import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeValueWithWebKitBoundaryIdAsString
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestReferrerAsString
+import no.sintef.fiskinfo.worker.SftpUploadFilesWorker
 import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.util.ArrayList
 
 class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
     private var orapService: OrapService? = null
@@ -68,12 +74,9 @@ class OrapRepository(context: Context, private var username: String, private var
                     if (response.code() == 200) {
                         Log.e("ORAP", "Icing reported OK!")
                         result.value = SendResult(true, response.code(), "")
-                    }
-                    else {
+                    } else {
                         // TODO: Replace by more readable error messages
-                        var errorMsg = "Response code " + response.code()
-                        if (response.body() != null)
-                            errorMsg += " " + response.body()
+                        val errorMsg = "Response code " + response.code()
                         result.value = SendResult(false, response.code(), errorMsg)
                         Log.e("ORAP", "Icing report response failed!")
                     }
@@ -81,6 +84,15 @@ class OrapRepository(context: Context, private var username: String, private var
             })
 
         return result
+    }
+
+    fun scheduleUploadImagesOverSftp(context: Context, files: List<File>, webKitFormBoundaryId: String) {
+        WorkManager.getInstance(context)
+            .beginUniqueWork(
+                SpriceConstants.WORK_NAME_UPLOAD_SFTP_IMAGES,
+                ExistingWorkPolicy.APPEND,
+                OneTimeWorkRequest.from(SftpUploadFilesWorker::class.java),
+            ).enqueue()
     }
 
     fun initService() {

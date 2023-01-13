@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -25,20 +24,15 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ajhuntsman.ksftp.FilePair
-import com.ajhuntsman.ksftp.SftpClient
-import com.ajhuntsman.ksftp.SftpConnectionParametersBuilder
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
-import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.DegreeOfIcingEnum
@@ -290,39 +284,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         }
     }
 
-    private fun uploadImagesOverSftp(files: List<File>, webKitFormBoundaryId: String) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val orapUsername = BuildConfig.SPRICE_ORAP_SFTP_USER_NAME
-        val orapPassword = BuildConfig.SPRICE_ORAP_SFTP_PASSWORD
-        val filePairs = ArrayList<FilePair>()
-
-        val connectionParameters = SftpConnectionParametersBuilder.newInstance().createConnectionParameters()
-            .withHost(BuildConfig.SPRICE_ORAP_SFTP_URL)
-            .withPort(BuildConfig.SPRICE_ORAP_SFTP_PORT_NUMBER)
-            .withUsername(orapUsername)
-            .withPassword(orapPassword.toByteArray())
-            .create()
-
-        for(file in files) {
-            if (file.exists()) {
-                val filePath: String = file.absolutePath
-                var fileName = file.name
-                val filenameLength = fileName.lastIndexOf('.', fileName.length)
-                fileName = "${fileName.substring(0, filenameLength)}_${webKitFormBoundaryId}${fileName.substring(fileName.lastIndexOf('.', fileName.length))}".replace("[/<>:\"|?*]".toRegex(), "")
-
-                val remoteFileName = "/dev/${fileName}"
-
-                filePairs.add(FilePair(filePath, remoteFileName))
-            } else {
-                Log.d("SPRICE SFTP", "Path does not exist: ${file.path}")
-            }
-        }
-
-        SftpClient
-            .create(connectionParameters)
-            .upload(filePairs, 60)
-    }
-
     /**
      * function to prompt user to enable storage access
      */
@@ -387,61 +348,65 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                Log.d("Request", mViewModel.getIcingReportBody().getRequestBodyForSpriceEndpointReportSubmissionAsString())
-                Log.d(
-                    "onOptionsItemSelected",
-                    "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
-                            "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
-                            "${mViewModel.maxMiddleWindTime.value.getFormValue()},\n" +
-                            "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
-                )
-
                 if (menuItem.itemId == R.id.send_icing_report_action) {
-                    if (!reportedIcingValuesAreValid()) {
-                        return false
-                    }
-
-                    val requestBody = mViewModel.getIcingReportBody()
-                    val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
-                    val result = repository.sendIcingReport(requestBody)
-
-                    result.observe(viewLifecycleOwner) {
-                        Log.e("ORAP", "Icing reported")
-                        if (it.success) {
-                            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                                param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, success")
-                                param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
-                                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
-                            }
-
-                            val text = getString(R.string.icing_report_sent)
-                            val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
-                            toast.show()
-                            Navigation.findNavController(requireView()).navigateUp()
-                        } else {
-                            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                                param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, error")
-                                param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
-                                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
-                            }
-
-                            Snackbar.make(
-                                requireView(),
-                                getString(R.string.icing_report_submit_error) + it.errorMsg,
-                                Snackbar.LENGTH_LONG
-                            )
-                                .show()
-                        }
-                    }
-
-                    uploadImagesOverSftp(mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId)
-
-                    return true
+                    return validateAndSendIcingReport()
                 }
 
                 return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    fun validateAndSendIcingReport(): Boolean {
+        Log.d("Request", mViewModel.getIcingReportBody().getRequestBodyForSpriceEndpointReportSubmissionAsString())
+        Log.d(
+            "onOptionsItemSelected",
+            "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
+                    "air temp: ${mViewModel.airTemperature.value}, sea temp: ${mViewModel.seaTemperature.value}, icing thickness: ${mViewModel.vesselIcingThickness.value},\n" +
+                    "${mViewModel.maxMiddleWindTime.value.getFormValue()},\n" +
+                    "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
+        )
+
+        if (!reportedIcingValuesAreValid()) {
+            return false
+        }
+
+        val requestBody = mViewModel.getIcingReportBody()
+        val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
+        val result = repository.sendIcingReport(requestBody)
+
+        result.observe(viewLifecycleOwner) {
+            Log.e("ORAP", "Icing reported")
+            if (it.success) {
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, success")
+                    param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+                    param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+                }
+
+                val text = getString(R.string.icing_report_sent)
+                val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+                toast.show()
+                Navigation.findNavController(requireView()).navigateUp()
+            } else {
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, error")
+                    param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+                    param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+                }
+
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.icing_report_submit_error) + it.errorMsg,
+                    Snackbar.LENGTH_LONG
+                )
+                    .show()
+            }
+        }
+
+        repository.scheduleUploadImagesOverSftp(requireContext(), mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId)
+
+        return true
     }
 
     private fun reportedIcingValuesAreValid(): Boolean {

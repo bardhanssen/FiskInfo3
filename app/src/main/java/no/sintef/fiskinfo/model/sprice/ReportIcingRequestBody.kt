@@ -192,22 +192,22 @@ class ReportIcingRequestBody internal constructor(
         val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatusForSpriceEndpoint(observationEpoch, Username, VesselCallSign, Latitude, Longitude, ReasonForIcing.getFormIndex(), CurrentIcingDegree.getFormIndex(), SeaIceConditionsAndDevelopmentTheLastThreeHours.getFormIndex(), IceThicknessInCm, ChangeInIce.getFormIndex())
 
         stringBuilder.append(
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TAG, messageTag),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LAT, ""),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LON, ""),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.CAL, ""),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.ACTION, SpriceConstants.FormValues.ACTION_SEND_REPORT),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.TAG, messageTag),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.USER, Username),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.PASSWORD, Password),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.MESSAGE_TYPE, SpriceConstants.FormValues.REPORT_MESSAGE_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.LAT, ""),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.LON, ""),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.CAL, ""),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_FILE, SpriceConstants.FormValues.HIDDEN_FILE_VALUE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_TYPE, SpriceConstants.FormValues.HIDDEN_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.LSTEP, SpriceConstants.FormValues.LSTEP),
             SpriceUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
         )
 
@@ -228,22 +228,22 @@ class ReportIcingRequestBody internal constructor(
 
         val requestBody =  MultipartBody.Builder(getPostRequestContentTypeBoundaryValueAsString(boundary))
             .setType(MediaType.parse("multipart/form-data")!!)
-            .addFormDataPart(OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT)
-            .addFormDataPart(OrapConstants.FormDataNames.TAG, messageTag)
-            .addFormDataPart(OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch.toString())
-            .addFormDataPart(OrapConstants.FormDataNames.USER, Username)
-            .addFormDataPart(OrapConstants.FormDataNames.PASSWORD, Password)
-            .addFormDataPart(OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE)
-            .addFormDataPart(OrapConstants.FormDataNames.LAT, "")
-            .addFormDataPart(OrapConstants.FormDataNames.LON, "")
-            .addFormDataPart(OrapConstants.FormDataNames.CAL, "")
-            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch.toString())
-            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage)
-            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage)
-            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus)
-            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE)
-            .addFormDataPart(OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE)
-            .addFormDataPart(OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP.toString())
+            .addFormDataPart(SpriceConstants.FormDataNames.ACTION, SpriceConstants.FormValues.ACTION_SEND_REPORT)
+            .addFormDataPart(SpriceConstants.FormDataNames.TAG, messageTag)
+            .addFormDataPart(SpriceConstants.FormDataNames.REG_EPOC, reportingTimeEpoch.toString())
+            .addFormDataPart(SpriceConstants.FormDataNames.USER, Username)
+            .addFormDataPart(SpriceConstants.FormDataNames.PASSWORD, Password)
+            .addFormDataPart(SpriceConstants.FormDataNames.MESSAGE_TYPE, SpriceConstants.FormValues.REPORT_MESSAGE_TYPE)
+            .addFormDataPart(SpriceConstants.FormDataNames.LAT, "")
+            .addFormDataPart(SpriceConstants.FormDataNames.LON, "")
+            .addFormDataPart(SpriceConstants.FormDataNames.CAL, "")
+            .addFormDataPart(SpriceConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch.toString())
+            .addFormDataPart(SpriceConstants.FormDataNames.HIDDEN_MESS, hiddenMessage)
+            .addFormDataPart(SpriceConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage)
+            .addFormDataPart(SpriceConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus)
+            .addFormDataPart(SpriceConstants.FormDataNames.HIDDEN_FILE, SpriceConstants.FormValues.HIDDEN_FILE_VALUE)
+            .addFormDataPart(SpriceConstants.FormDataNames.HIDDEN_TYPE, SpriceConstants.FormValues.HIDDEN_TYPE)
+            .addFormDataPart(SpriceConstants.FormDataNames.LSTEP, SpriceConstants.FormValues.LSTEP.toString())
 
         return requestBody.build()
     }
@@ -262,19 +262,19 @@ class ReportIcingRequestBody internal constructor(
         val hiddenKlStatus = SpriceUtils.getFormattedHiddenKlStatus(observationEpoch, Username, HeightOfWindWavesInMeters, PeriodForWindWavesInSeconds, IceThicknessInCm, Latitude, Longitude, AirTemperature)
 
         stringBuilder.append(
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.ACTION, OrapConstants.FormValues.ACTION_SEND_REPORT),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.TAG, messageTag),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.USER, Username),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.PASSWORD, Password),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.MESSAGE_TYPE, OrapConstants.FormValues.REPORT_MESSAGE_TYPE),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_FILE, OrapConstants.FormValues.HIDDEN_FILE_VALUE),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.HIDDEN_TYPE, OrapConstants.FormValues.HIDDEN_TYPE),
-            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, OrapConstants.FormDataNames.LSTEP, OrapConstants.FormValues.LSTEP),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.ACTION, SpriceConstants.FormValues.ACTION_SEND_REPORT),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.TAG, messageTag),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.REG_EPOC, reportingTimeEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.USER, Username),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.PASSWORD, Password),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.MESSAGE_TYPE, SpriceConstants.FormValues.REPORT_MESSAGE_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_TERMIN, observationEpoch),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_MESS, hiddenMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_KL_MESS, hiddenKlMessage),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_KL_STATUS, hiddenKlStatus),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_FILE, SpriceConstants.FormValues.HIDDEN_FILE_VALUE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.HIDDEN_TYPE, SpriceConstants.FormValues.HIDDEN_TYPE),
+            SpriceUtils.getValueAsWebKitForm(WebKitFormBoundaryId, SpriceConstants.FormDataNames.LSTEP, SpriceConstants.FormValues.LSTEP),
             SpriceUtils.getWebFormKitEndTag(WebKitFormBoundaryId)
         )
 

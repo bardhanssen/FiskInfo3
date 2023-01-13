@@ -1,12 +1,14 @@
 package no.sintef.fiskinfo.model.sprice
 
-object OrapConstants {
+object SpriceConstants {
     const val BOUNDARY_ID_LENGTH = 16
     const val HIDDEN_KL_MESSAGE_RECEIVED_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss+00"
     const val HIDDEN_KL_MESSAGE_OBSERVATION_TIMESTAMP = "yyyyMMddHH00"
     const val HIDDEN_KL_MESSAGE_RECEIVED_FILE_NAME_TIMESTAMP = "yyyyMMdd_HHmmss_000"
     const val SYNOP_DAY1_TIMESTAMP = "dd LLL yyyy"
     const val ACTION_TAG_DATE_FORMAT = "yMMdd"
+
+    const val WORK_NAME_UPLOAD_SFTP_IMAGES = "SPRICE_UPLOAD_IMAGES_OVER_SFTP"
 
     object FormDataNames {
         const val ACTION = "Action"
