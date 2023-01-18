@@ -124,6 +124,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         mIsConfirmed = arguments?.getBoolean(IS_CONFIRMED_TOOLS, false) ?: false
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val tools = if (mIsConfirmed) mViewModel.getConfirmedTools() else mViewModel.getUnconfirmedTools()

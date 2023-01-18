@@ -7,9 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.ajhuntsman.ksftp.FilePair
-import com.ajhuntsman.ksftp.SftpClient
-import com.ajhuntsman.ksftp.SftpConnectionParametersBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import no.sintef.fiskinfo.BuildConfig
@@ -23,7 +20,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.util.ArrayList
 
 class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
     private var orapService: OrapService? = null
@@ -86,7 +82,9 @@ class OrapRepository(context: Context, private var username: String, private var
         return result
     }
 
-    fun scheduleUploadImagesOverSftp(context: Context, files: List<File>, webKitFormBoundaryId: String) {
+    fun scheduleImageUploadOverSftp(context: Context, files: List<File>, webKitFormBoundaryId: String) {
+        saveIcingReport(context, files, webKitFormBoundaryId)
+
         WorkManager.getInstance(context)
             .beginUniqueWork(
                 SpriceConstants.WORK_NAME_UPLOAD_SFTP_IMAGES,
@@ -94,6 +92,11 @@ class OrapRepository(context: Context, private var username: String, private var
                 OneTimeWorkRequest.from(SftpUploadFilesWorker::class.java),
             ).enqueue()
     }
+
+    private fun saveIcingReport(context: Context, files: List<File>, webKitFormBoundaryId: String) {
+        TODO("Not yet implemented")
+    }
+
 
     fun initService() {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN) {

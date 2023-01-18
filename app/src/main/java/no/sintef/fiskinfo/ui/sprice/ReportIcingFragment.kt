@@ -40,6 +40,8 @@ import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
 import no.sintef.fiskinfo.model.sprice.ReasonForIcingOnVesselOrPlatformEnum
 import no.sintef.fiskinfo.model.sprice.SeaIceConditionsAndDevelopmentEnum
 import no.sintef.fiskinfo.repository.OrapRepository
+import no.sintef.fiskinfo.ui.layout.DropDownMenuArrayAdapter
+import no.sintef.fiskinfo.ui.layout.IDropDownMenu
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewAdapter
 import no.sintef.fiskinfo.ui.layout.TextInputLayoutGridViewModel
 import no.sintef.fiskinfo.ui.tools.LocationDmsDialogFragment
@@ -404,7 +406,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             }
         }
 
-        repository.scheduleUploadImagesOverSftp(requireContext(), mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId)
+        repository.scheduleImageUploadOverSftp(requireContext(), mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId)
 
         return true
     }

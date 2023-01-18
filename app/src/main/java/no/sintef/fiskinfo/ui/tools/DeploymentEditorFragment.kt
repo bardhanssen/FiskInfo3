@@ -123,7 +123,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
 
         mBinding.toolPositionRecyclerView.layoutManager = LinearLayoutManager(context)
         locAdapter = LocationRecyclerViewAdapter(this)
-        mBinding.toolPositionRecyclerView.setAdapter(locAdapter)
+        mBinding.toolPositionRecyclerView.adapter = locAdapter
 
         mBinding.addPositionButton.setOnClickListener { mViewModel.addLocation() }
         mBinding.removePositionButton.setOnClickListener { mViewModel.removeLastLocation() }
@@ -131,6 +131,7 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
         return mBinding!!.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProviders.of(requireActivity()).get(DeploymentViewModel::class.java)
@@ -160,11 +161,13 @@ class DeploymentEditorFragment : LocationRecyclerViewAdapter.OnLocationInteracti
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.tool_deployment_editor_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.send_tool_report_action) {
 

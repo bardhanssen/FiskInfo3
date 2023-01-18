@@ -77,6 +77,7 @@ class AnalysisFragment : Fragment() {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         }
         webView!!.webViewClient = object : WebViewClient() {
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
                 view?.loadUrl(url)
                 return true

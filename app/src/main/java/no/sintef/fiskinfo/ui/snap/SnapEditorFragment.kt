@@ -99,6 +99,7 @@ class SnapEditorFragment : Fragment() {
         return mBinding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel = ViewModelProvider(requireActivity()).get(SnapViewModel::class.java)
@@ -116,11 +117,13 @@ class SnapEditorFragment : Fragment() {
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.snap_editor_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.send_snap_action) {
             mViewModel.sendSnapAndClear()

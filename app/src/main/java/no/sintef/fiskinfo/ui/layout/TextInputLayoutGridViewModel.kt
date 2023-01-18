@@ -1,13 +1,10 @@
 package no.sintef.fiskinfo.ui.layout
 
-import android.app.ActionBar
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View.TEXT_ALIGNMENT_VIEW_END
 import android.view.ViewGroup
 import android.widget.AdapterView
-import no.sintef.fiskinfo.ui.sprice.DropDownMenuArrayAdapter
-import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 class TextInputLayoutGridViewModel<T : IDropDownMenu>() {
     lateinit var fieldName: String

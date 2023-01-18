@@ -3,7 +3,7 @@ package no.sintef.fiskinfo.model.sprice
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
+import no.sintef.fiskinfo.ui.layout.IDropDownMenu
 
 enum class ConcentrationOfSeaIceEnum(val code : String, val stringResource : Int) : IDropDownMenu {
     @SerializedName("NO_SEA_ICE_IN_SIGHT")

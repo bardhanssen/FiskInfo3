@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.ui.sprice
+package no.sintef.fiskinfo.ui.layout
 
 import android.content.Context
 

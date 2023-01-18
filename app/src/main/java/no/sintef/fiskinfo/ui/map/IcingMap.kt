@@ -97,6 +97,7 @@ class IcingMap : Fragment() {
         authStateManager = AuthStateManager.getInstance(this.requireContext())
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_map, menu)
 
@@ -160,6 +161,7 @@ class IcingMap : Fragment() {
         })
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -177,6 +179,7 @@ class IcingMap : Fragment() {
     }
 
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialogInterface = UtilityDialogs()
@@ -377,6 +380,7 @@ class IcingMap : Fragment() {
             Log.d("barentswatchFiskInfoErr", "$request $error")
         }
 
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             Log.d("URL TEST", url)
             if (url.startsWith("http://") || url.startsWith("https://")) {

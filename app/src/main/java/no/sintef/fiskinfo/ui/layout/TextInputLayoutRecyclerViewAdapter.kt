@@ -12,7 +12,7 @@ package no.sintef.fiskinfo.ui.layout
 //import com.google.android.material.textfield.MaterialAutoCompleteTextView
 //import com.google.android.material.textfield.TextInputLayout
 //import no.sintef.fiskinfo.R
-//import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
+//import no.sintef.fiskinfo.ui.layout.IDropDownMenu
 //
 //
 //class TextInputLayoutRecyclerViewAdapter<T : IDropDownMenu>(context: Context, textInputLayoutArrayList: ArrayList<TextInputLayoutGridViewModel<T>>) :

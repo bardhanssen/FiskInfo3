@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
-import androidx.databinding.adapters.TextViewBindingAdapter
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.ui.sprice.IDropDownMenu
 
 class TextInputLayoutGridViewAdapter<T : IDropDownMenu>(context: Context, textInputLayoutArrayList: ArrayList<TextInputLayoutGridViewModel<T>>) :
     ArrayAdapter<TextInputLayoutGridViewModel<T>>(context, 0, textInputLayoutArrayList) {

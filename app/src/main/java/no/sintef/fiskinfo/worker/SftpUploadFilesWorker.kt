@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.worker
 
 import android.content.Context
 import android.util.Log
+import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import com.ajhuntsman.ksftp.FilePair
@@ -15,8 +16,8 @@ class SftpUploadFilesWorker(appContext: Context, workerParams: WorkerParameters)
 
     override fun startWork(): ListenableFuture<Result> {
         // TODO: Get file names and webKitFormBoundaryId
-        val files: List<File>
-        val webKitFormBoundaryId: String
+        val files: List<File> = listOf()
+        val webKitFormBoundaryId: String = "file.txt"
 
         val orapUsername = BuildConfig.SPRICE_ORAP_SFTP_USER_NAME
         val orapPassword = BuildConfig.SPRICE_ORAP_SFTP_PASSWORD
@@ -52,5 +53,8 @@ class SftpUploadFilesWorker(appContext: Context, workerParams: WorkerParameters)
             .create(connectionParameters)
             .upload(filePairs, 60)
 
+        return CallbackToFutureAdapter.getFuture {
+            it.set(Result.success())
+        }
     }
 }

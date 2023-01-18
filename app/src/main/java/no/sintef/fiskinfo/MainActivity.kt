@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_launcher_background)
 
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val host = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         controller = host!!.navController
@@ -66,10 +66,10 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
 
         drawerLayout = findViewById(R.id.drawer_layout)
 
-        val topLevelDests = HashSet<Int>()
-        topLevelDests.add(R.id.fragment_map)
-        topLevelDests.add(R.id.fragment_overview)
-        topLevelDests.add(R.id.fragment_tools)
+        val topLevelLinks = HashSet<Int>()
+        topLevelLinks.add(R.id.fragment_map)
+        topLevelLinks.add(R.id.fragment_overview)
+        topLevelLinks.add(R.id.fragment_tools)
 
         appBarConfiguration = AppBarConfiguration.Builder(controller.graph)
             .setDrawerLayout(drawerLayout)
@@ -79,25 +79,10 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         //setupActionBarWithNavController(this, controller, drawerLayout)
 
         setupNavigationMenu(controller)
-/*
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        navView.setNavigationItemSelectedListener(this)*/
     }
 
 
-    protected fun setupNavigationMenu(navController: NavController) {
+    private fun setupNavigationMenu(navController: NavController) {
         val view = findViewById<NavigationView>(R.id.navigation_view)
         NavigationUI.setupWithNavController(view, navController)
 
@@ -115,6 +100,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         //return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         //val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.ui.sprice
+package no.sintef.fiskinfo.ui.layout
 
 import android.content.Context
 import android.view.View
@@ -6,21 +6,20 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
-import no.sintef.fiskinfo.model.sprice.MaxMiddleWindTimeEnum
 
-class maxMiddleWindTimeArrayAdapter (context: Context, resource: Int, objects: Array<MaxMiddleWindTimeEnum>) :
-    ArrayAdapter<MaxMiddleWindTimeEnum>(context, resource, objects) {
+class DropDownMenuArrayAdapter<T : IDropDownMenu>  (context: Context, resource: Int, objects: Array<T>) :
+    ArrayAdapter<T>(context, resource, objects) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val theView : TextView = super.getView(position, convertView, parent) as TextView
-        theView.text = getItem(position)?.getLocalizedName(context)
-        return theView
+        val view : TextView = super.getView(position, convertView, parent) as TextView
+        view.text = getItem(position)?.getLocalizedName(context)
+        return view
     }
 
-    private val allWindTimesFilter = object: Filter() {
+    private val allValuesFilter = object: Filter() {
         override fun convertResultToString(resultValue: Any?): CharSequence {
             resultValue?.let {
-                var code = it as MaxMiddleWindTimeEnum
-                return code.getLocalizedName(context!!)
+                val code = it as T
+                return code.getLocalizedName(context)
             }
             return ""
         }
@@ -37,6 +36,6 @@ class maxMiddleWindTimeArrayAdapter (context: Context, resource: Int, objects: A
     }
 
     override fun getFilter(): Filter {
-        return allWindTimesFilter
+        return allValuesFilter
     }
 }
