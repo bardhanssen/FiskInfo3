@@ -20,6 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.util.Collections.list
 
 class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
     private var orapService: OrapService? = null
@@ -94,7 +95,11 @@ class OrapRepository(context: Context, private var username: String, private var
     }
 
     private fun saveIcingReport(context: Context, files: List<File>, webKitFormBoundaryId: String) {
-        TODO("Not yet implemented")
+        val uriList = mutableListOf<ImageUriEntry>()
+
+        for(file in files) {
+            uriList.add(ImageUriEntry(file, webKitFormBoundaryId))
+        }
     }
 
 

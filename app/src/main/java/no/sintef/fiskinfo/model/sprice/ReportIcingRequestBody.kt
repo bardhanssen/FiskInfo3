@@ -17,6 +17,9 @@
  */
 package no.sintef.fiskinfo.model.sprice
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import no.sintef.fiskinfo.util.SpriceUtils
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeBoundaryValueAsString
 import okhttp3.MediaType
@@ -24,41 +27,43 @@ import okhttp3.MultipartBody
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+@Entity
 class ReportIcingRequestBody internal constructor(
-    internal val WebKitFormBoundaryId: String,
-    internal val ReportingTime: ZonedDateTime,
-    internal val Synop: ZonedDateTime,
+    @PrimaryKey
+    @ColumnInfo(name = "WebKitFormBoundaryId") internal val WebKitFormBoundaryId: String,
+    @ColumnInfo(name = "ReportingTime") internal val ReportingTime: ZonedDateTime,
+    @ColumnInfo(name = "Synop") internal val Synop: ZonedDateTime,
 
-    internal val Username: String,
-    internal val Password: String,
+    @ColumnInfo(name = "Username") internal val Username: String,
+    @ColumnInfo(name = "Password") internal val Password: String,
 
-    internal val VesselCallSign: String,
-    internal val Latitude: String,
-    internal val Longitude: String,
+    @ColumnInfo(name = "VesselCallSign") internal val VesselCallSign: String,
+    @ColumnInfo(name = "Latitude") internal val Latitude: String,
+    @ColumnInfo(name = "Longitude") internal val Longitude: String,
 
-    internal val AirTemperature: String,
-    internal val SeaTemperature: String,
+    @ColumnInfo(name = "AirTemperature") internal val AirTemperature: String,
+    @ColumnInfo(name = "SeaTemperature") internal val SeaTemperature: String,
 
-    internal val MaxMiddleWindTime: MaxMiddleWindTimeEnum,
-    internal val MaxMiddelWindInKnots: String,
-    internal val StrongestWindGustInKnots: String,
+    @ColumnInfo(name = "MaxMiddleWindTime") internal val MaxMiddleWindTime: MaxMiddleWindTimeEnum,
+    @ColumnInfo(name = "MaxMiddelWindInKnots") internal val MaxMiddelWindInKnots: String,
+    @ColumnInfo(name = "StrongestWindGustInKnots") internal val StrongestWindGustInKnots: String,
 
-    internal val HeightOfWindWavesInMeters: String,
-    internal val PeriodForWindWavesInSeconds: String,
+    @ColumnInfo(name = "HeightOfWindWavesInMeters") internal val HeightOfWindWavesInMeters: String,
+    @ColumnInfo(name = "PeriodForWindWavesInSeconds") internal val PeriodForWindWavesInSeconds: String,
 
-    internal val HeightForFirstSwellSystemInMeters: String,
-    internal val PeriodForFirstSwellSystemInSeconds: String,
-    internal val DirectionForFirstSwellSystemInDegrees: String,
+    @ColumnInfo(name = "HeightForFirstSwellSystemInMeters") internal val HeightForFirstSwellSystemInMeters: String,
+    @ColumnInfo(name = "PeriodForFirstSwellSystemInSeconds") internal val PeriodForFirstSwellSystemInSeconds: String,
+    @ColumnInfo(name = "DirectionForFirstSwellSystemInDegrees") internal val DirectionForFirstSwellSystemInDegrees: String,
 
-    internal val ConcentrationOfSeaIce: String,
-    internal val OceanIce: String,
-    internal val DirectionToNearestIceEdge: String,
-    internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum,
+    @ColumnInfo(name = "ConcentrationOfSeaIce") internal val ConcentrationOfSeaIce: String,
+    @ColumnInfo(name = "OceanIce") internal val OceanIce: String,
+    @ColumnInfo(name = "DirectionToNearestIceEdge") internal val DirectionToNearestIceEdge: String,
+    @ColumnInfo(name = "SeaIceConditionsAndDevelopmentTheLastThreeHours") internal val SeaIceConditionsAndDevelopmentTheLastThreeHours: SeaIceConditionsAndDevelopmentEnum,
 
-    internal val CurrentIcingDegree: DegreeOfIcingEnum,
-    internal val ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum,
-    internal val IceThicknessInCm: Int,
-    internal val ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum
+    @ColumnInfo(name = "CurrentIcingDegree") internal val CurrentIcingDegree: DegreeOfIcingEnum,
+    @ColumnInfo(name = "ReasonForIcing") internal val ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum,
+    @ColumnInfo(name = "IceThicknessInCm") internal val IceThicknessInCm: Int,
+    @ColumnInfo(name = "ChangeInIce") internal val ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum
 ) {
     private constructor(builder: Builder) : this(
         builder.WebKitFormBoundaryId,
