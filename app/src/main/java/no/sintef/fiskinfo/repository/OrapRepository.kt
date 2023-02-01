@@ -2,6 +2,7 @@ package no.sintef.fiskinfo.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.ExistingWorkPolicy
@@ -9,9 +10,12 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.api.orap.OrapService
+import no.sintef.fiskinfo.dal.sprice.ImageUriEntry
+import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestReferrerAsString
 import no.sintef.fiskinfo.worker.SftpUploadFilesWorker
@@ -20,7 +24,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.util.Collections.list
 
 class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
     private var orapService: OrapService? = null
@@ -83,8 +86,14 @@ class OrapRepository(context: Context, private var username: String, private var
         return result
     }
 
-    fun scheduleImageUploadOverSftp(context: Context, files: List<File>, webKitFormBoundaryId: String) {
-        saveIcingReport(context, files, webKitFormBoundaryId)
+    fun scheduleImageUploadOverSftp(
+        context: Context,
+        files: List<File>,
+        webKitFormBoundaryId: String,
+        repository: SpriceRepository,
+        lifecycleScope: LifecycleCoroutineScope
+    ) {
+        saveIcingReport(context, files, webKitFormBoundaryId, repository, lifecycleScope)
 
         WorkManager.getInstance(context)
             .beginUniqueWork(
@@ -94,12 +103,20 @@ class OrapRepository(context: Context, private var username: String, private var
             ).enqueue()
     }
 
-    private fun saveIcingReport(context: Context, files: List<File>, webKitFormBoundaryId: String) {
+    private fun saveIcingReport(
+        context: Context,
+        files: List<File>,
+        webKitFormBoundaryId: String,
+        repository: SpriceRepository,
+        lifecycleScope: LifecycleCoroutineScope
+    ) {
         val uriList = mutableListOf<ImageUriEntry>()
 
         for(file in files) {
-            uriList.add(ImageUriEntry(file, webKitFormBoundaryId))
+            uriList.add(ImageUriEntry(file.absolutePath, webKitFormBoundaryId))
         }
+
+        lifecycleScope.launch { repository.insertMultiple(uriList) }
     }
 
 

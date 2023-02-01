@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,7 +34,12 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.DegreeOfIcingEnum
 import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
@@ -53,15 +59,13 @@ import no.sintef.fiskinfo.util.DMSLocation
 import java.io.File
 import java.io.InputStream
 import java.util.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint // Dagger-Hilt requirement
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener, FragmentResultListener,
     Fragment(),
     LocationDmsDialogListener {
-
-    companion object {
-        fun newInstance() = ReportIcingFragment()
-    }
+    @Inject lateinit var spriceRepository: SpriceRepository
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
@@ -87,6 +91,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     // This property is only valid between onCreateView and onDestroyView.
     private val mBinding get() = _mBinding!!
     private lateinit var mVesselIcingRecyclerViewGridLayoutManager: GridLayoutManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -325,7 +330,11 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
         mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
         mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
-        mViewModel.init()
+
+        GlobalScope.launch(Dispatchers.Main) { // Dispatchers.Main because only the Main thread can touch UI elements. Otherwise you may wish to use Dispatchers.IO instead!
+            mViewModel.init()
+        }
+
 
         mViewModel.synopDate.observe(viewLifecycleOwner) {
             mBinding.viewmodel = mViewModel
@@ -406,7 +415,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             }
         }
 
-        repository.scheduleImageUploadOverSftp(requireContext(), mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId)
+        repository.scheduleImageUploadOverSftp(requireContext(), mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId, spriceRepository, lifecycleScope)
 
         return true
     }

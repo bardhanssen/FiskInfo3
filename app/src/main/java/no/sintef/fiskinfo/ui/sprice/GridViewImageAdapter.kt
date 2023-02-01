@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import dagger.hilt.android.internal.managers.ViewComponentManager
 import no.sintef.fiskinfo.R
 
 class GridViewImageAdapter(var context: Context, var arrayListImage: ArrayList<Uri>, var name: ArrayList<String>) : BaseAdapter() {
@@ -18,7 +19,8 @@ class GridViewImageAdapter(var context: Context, var arrayListImage: ArrayList<U
 
         if (myView == null) {
 
-            val mInflater = (context as Activity).layoutInflater
+
+            val mInflater = ((context as android.content.ContextWrapper).baseContext as Activity).layoutInflater
             myView = mInflater.inflate(R.layout.sprice_image_grid_view_item, parent, false)
             holder = ViewHolder()
 

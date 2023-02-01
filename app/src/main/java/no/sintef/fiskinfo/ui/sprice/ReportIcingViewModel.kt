@@ -7,9 +7,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.io.File
@@ -17,8 +19,16 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
+import javax.inject.Inject
 
-class ReportIcingViewModel(application: Application) : ObservableAndroidViewModel(application) {
+@HiltViewModel
+class ReportIcingViewModel
+    @Inject constructor(
+    application: Application,
+    repository: SpriceRepository
+): ObservableAndroidViewModel(application) {
+    private val repository: SpriceRepository = repository
+
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
     private val _synopTimeSelect = MutableStateFlow("")
 
@@ -56,10 +66,10 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
 
     val attachedImages = _attachedImages
 
-    fun init() {
+    suspend fun init() {
         reportingTime.value = Date.from(Instant.now())
         synopHourSelect.value = "${Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}:00"
-        attachedImages.value = ArrayList()
+        checkDatabase()
 
         val calendar = Calendar.getInstance()
         calendar.time = Date.from(Instant.now())
@@ -82,6 +92,22 @@ class ReportIcingViewModel(application: Application) : ObservableAndroidViewMode
         viewModelScope.launch {
             _airTemperature.value = ""
             _seaTemperature.value = ""
+        }
+    }
+
+    suspend fun checkDatabase() {
+        val records = repository.getAll()
+
+        if(records.isNotEmpty()) {
+            val images = arrayListOf<File>()
+
+            records.forEach { image ->
+                images.add(File(image.file))
+            }
+
+            this.attachedImages.value = images
+        } else {
+            this.attachedImages.value = arrayListOf()
         }
     }
 

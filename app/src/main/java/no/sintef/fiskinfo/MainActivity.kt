@@ -32,17 +32,25 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import dagger.hilt.android.AndroidEntryPoint
+import no.sintef.fiskinfo.dal.sprice.SpriceDatabase
 import no.sintef.fiskinfo.databinding.MainActivityBinding
+import no.sintef.fiskinfo.dal.sprice.ImageUriEntryDAO
+import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import java.util.*
+import javax.inject.Inject
 
 
+@AndroidEntryPoint // Dagger-Hilt requirement
 class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSelectedListener {
+    @Inject lateinit var repository: SpriceRepository
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var controller : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var binding: MainActivityBinding
+    private lateinit var imageUriDao: ImageUriEntryDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +88,6 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
 
         setupNavigationMenu(controller)
     }
-
 
     private fun setupNavigationMenu(navController: NavController) {
         val view = findViewById<NavigationView>(R.id.navigation_view)
