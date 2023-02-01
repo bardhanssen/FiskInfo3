@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-    @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationCompenent (i.e. everywhere in the application)
+    @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere
     @Provides
     fun provideYourDatabase(
         @ApplicationContext app: Context
@@ -26,4 +26,8 @@ class AppModule {
     @Singleton
     @Provides
     fun provideImageUriEntryDao(db: SpriceDatabase) = db.getImageUriEntryDAO() // The reason we can implement a Dao for the database
+
+    @Singleton
+    @Provides
+    fun provideIcingReportDao(db: SpriceDatabase) = db.getIcingReportDAO() // The reason we can implement a Dao for the database
 }

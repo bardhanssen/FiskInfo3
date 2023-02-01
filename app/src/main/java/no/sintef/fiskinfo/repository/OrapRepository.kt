@@ -5,11 +5,13 @@ import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.api.createService
@@ -17,13 +19,15 @@ import no.sintef.fiskinfo.api.orap.OrapService
 import no.sintef.fiskinfo.dal.sprice.ImageUriEntry
 import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import no.sintef.fiskinfo.model.sprice.*
+import no.sintef.fiskinfo.model.sprice.SpriceConstants.SPRICE_SFTP_WORKER_INPUT_FILES_ID
+import no.sintef.fiskinfo.model.sprice.SpriceConstants.SPRICE_SFTP_WORKER_INPUT_WEBKIT_FORM_ID
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestReferrerAsString
 import no.sintef.fiskinfo.worker.SftpUploadFilesWorker
 import okhttp3.Interceptor
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
     private var orapService: OrapService? = null
@@ -55,11 +59,11 @@ class OrapRepository(context: Context, private var username: String, private var
         return result
     }
 
-    fun sendIcingReport(info: ReportIcingRequestBody): LiveData<SendResult> {
+    fun sendIcingReport(info: ReportIcingRequestPayload): LiveData<SendResult> {
         initService()
 
         val result = MutableLiveData<SendResult>()
-        val requestBody = info.getRequestBodyForSpriceEndpointReportSubmissionAsRequestBody(webKitFormBoundaryId)
+        val requestBody = info.getRequestPayloadForSpriceEndpointReportSubmissionAsRequestPayload(webKitFormBoundaryId)
 
         orapService?.sendIcingReport(requestBody, info.Username, info.Password)
             ?.enqueue(object : Callback<Void?> {
@@ -88,32 +92,41 @@ class OrapRepository(context: Context, private var username: String, private var
 
     fun scheduleImageUploadOverSftp(
         context: Context,
-        files: List<File>,
+        files: List<String>,
         webKitFormBoundaryId: String,
         repository: SpriceRepository,
         lifecycleScope: LifecycleCoroutineScope
     ) {
-        saveIcingReport(context, files, webKitFormBoundaryId, repository, lifecycleScope)
+        saveIcingReport(files, webKitFormBoundaryId, repository, lifecycleScope)
+
+        val worker = OneTimeWorkRequest.Builder(SftpUploadFilesWorker::class.java)
+        val data = Data.Builder()
+
+        JSONArray(files)
+        val filesString = Gson().toJson(files)
+
+        data.putString(SPRICE_SFTP_WORKER_INPUT_FILES_ID, filesString)
+        data.putString(SPRICE_SFTP_WORKER_INPUT_WEBKIT_FORM_ID, webKitFormBoundaryId)
+        worker.setInputData(data.build())
 
         WorkManager.getInstance(context)
             .beginUniqueWork(
                 SpriceConstants.WORK_NAME_UPLOAD_SFTP_IMAGES,
                 ExistingWorkPolicy.APPEND,
-                OneTimeWorkRequest.from(SftpUploadFilesWorker::class.java),
+                worker.build(),
             ).enqueue()
     }
 
     private fun saveIcingReport(
-        context: Context,
-        files: List<File>,
+        filePaths: List<String>,
         webKitFormBoundaryId: String,
         repository: SpriceRepository,
         lifecycleScope: LifecycleCoroutineScope
     ) {
         val uriList = mutableListOf<ImageUriEntry>()
 
-        for(file in files) {
-            uriList.add(ImageUriEntry(file.absolutePath, webKitFormBoundaryId))
+        for(filePath in filePaths) {
+            uriList.add(ImageUriEntry(filePath, webKitFormBoundaryId))
         }
 
         lifecycleScope.launch { repository.insertMultiple(uriList) }

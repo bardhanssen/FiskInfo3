@@ -9,6 +9,8 @@ object SpriceConstants {
     const val ACTION_TAG_DATE_FORMAT = "yMMdd"
 
     const val WORK_NAME_UPLOAD_SFTP_IMAGES = "SPRICE_UPLOAD_IMAGES_OVER_SFTP"
+    const val SPRICE_SFTP_WORKER_INPUT_FILES_ID = "SPRICE_SFTP_FILES_INPUT"
+    const val SPRICE_SFTP_WORKER_INPUT_WEBKIT_FORM_ID = "SPRICE_SFTP_WEBKIT_FORM_INPUT"
 
     object FormDataNames {
         const val ACTION = "Action"

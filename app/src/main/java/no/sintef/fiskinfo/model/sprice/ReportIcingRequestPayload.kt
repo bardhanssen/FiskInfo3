@@ -27,8 +27,8 @@ import okhttp3.MultipartBody
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-@Entity
-class ReportIcingRequestBody internal constructor(
+@Entity(tableName = "IcingReports")
+class ReportIcingRequestPayload internal constructor(
     @PrimaryKey
     @ColumnInfo(name = "WebKitFormBoundaryId") internal val WebKitFormBoundaryId: String,
     @ColumnInfo(name = "ReportingTime") internal val ReportingTime: ZonedDateTime,
@@ -178,12 +178,12 @@ class ReportIcingRequestBody internal constructor(
 
         fun changeInIce(changeInIce: ChangeInIcingOnVesselOrPlatformEnum) = apply { this.ChangeInIce = changeInIce }
 
-        fun build(): ReportIcingRequestBody {
-            return ReportIcingRequestBody(this)
+        fun build(): ReportIcingRequestPayload {
+            return ReportIcingRequestPayload(this)
         }
     }
 
-    fun getRequestBodyForSpriceEndpointReportSubmissionAsString(): String {
+    fun getRequestPayloadForSpriceEndpointReportSubmissionAsString(): String {
         val reportingZonedTime = ReportingTime
         val reportingTimeEpoch = reportingZonedTime.toEpochSecond()
         val observationEpoch = Synop.toEpochSecond()
@@ -219,7 +219,7 @@ class ReportIcingRequestBody internal constructor(
         return stringBuilder.toString()
     }
 
-    fun getRequestBodyForSpriceEndpointReportSubmissionAsRequestBody(boundary: String): MultipartBody {
+    fun getRequestPayloadForSpriceEndpointReportSubmissionAsRequestPayload(boundary: String): MultipartBody {
         val reportingZonedTime = ReportingTime
         val reportingTimeEpoch = reportingZonedTime.toEpochSecond()
         val observationEpoch = Synop.toEpochSecond()
@@ -253,7 +253,7 @@ class ReportIcingRequestBody internal constructor(
         return requestBody.build()
     }
 
-    fun getRequestBodyForReportSubmissionAsString(): String {
+    fun getRequestPayloadForReportSubmissionAsString(): String {
         val reportingZonedTime = ReportingTime
         val reportingTimeEpoch = reportingZonedTime.toEpochSecond()
         val observationEpoch = Synop.toEpochSecond()

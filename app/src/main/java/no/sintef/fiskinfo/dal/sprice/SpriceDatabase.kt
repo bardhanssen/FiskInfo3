@@ -1,24 +1,16 @@
 package no.sintef.fiskinfo.dal.sprice
 
-import android.content.Context
-import android.util.Log
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import no.sintef.fiskinfo.BuildConfig
-import java.io.File
+import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 
 @Database(
-    entities = [ImageUriEntry::class],
+    entities = [ImageUriEntry::class, ReportIcingRequestPayload::class],
     version = 1
 )
 abstract class SpriceDatabase : RoomDatabase() {
     abstract fun getImageUriEntryDAO(): ImageUriEntryDAO
+    abstract fun getIcingReportDAO(): IcingReportDAO
 
 //    companion object {
 //

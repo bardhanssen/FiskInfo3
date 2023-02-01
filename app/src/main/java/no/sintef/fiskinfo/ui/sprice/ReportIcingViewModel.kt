@@ -111,14 +111,14 @@ class ReportIcingViewModel
         }
     }
 
-    internal fun getIcingReportBody(): ReportIcingRequestBody {
+    internal fun getIcingReportBody(): ReportIcingRequestPayload {
         val context: Context = getApplication()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val orapUsername = prefs.getString(context.getString(R.string.pref_sprice_username_key), "") ?: ""
         val orapPassword = prefs.getString(context.getString(R.string.pref_sprice_password_key), "") ?: ""
         val callSign = prefs.getString(context.getString(R.string.pref_sprice_call_sign_key), "") ?: ""
 
-        return ReportIcingRequestBody.Builder()
+        return ReportIcingRequestPayload.Builder()
             .username(orapUsername)
             .password(orapPassword)
             .callSign(callSign)

@@ -24,16 +24,13 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -65,7 +62,8 @@ import javax.inject.Inject
 class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionListener, FragmentResultListener,
     Fragment(),
     LocationDmsDialogListener {
-    @Inject lateinit var spriceRepository: SpriceRepository
+    @Inject
+    lateinit var spriceRepository: SpriceRepository
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
@@ -84,7 +82,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     private lateinit var mSynopHourDropdown: AutoCompleteTextView
 
     private lateinit var locAdapter: LocationRecyclerViewAdapter
-    private lateinit var selectImageIntent:  androidx.activity.result.ActivityResultLauncher<String>
+    private lateinit var selectImageIntent: androidx.activity.result.ActivityResultLauncher<String>
 
     private var _mBinding: SpriceReportIcingFragmentBinding? = null
 
@@ -251,7 +249,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             val imageNamesList = ArrayList<String>()
             val filesList = ArrayList<File>()
 
-            for(imageUri in uriList) {
+            for (imageUri in uriList) {
                 arrayListImage.add(R.drawable.ic_image)
                 imageNamesList.add(imageUri.lastPathSegment!!)
 
@@ -369,7 +367,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     }
 
     fun validateAndSendIcingReport(): Boolean {
-        Log.d("Request", mViewModel.getIcingReportBody().getRequestBodyForSpriceEndpointReportSubmissionAsString())
+        Log.d("Request", mViewModel.getIcingReportBody().getRequestPayloadForSpriceEndpointReportSubmissionAsString())
         Log.d(
             "onOptionsItemSelected",
             "\nSynop date: ${mViewModel.synopDate.value}, synop time: ${mViewModel.synopHourSelect.value}, reporting time: ${mViewModel.reportingTime.value}, synop unix: ${mViewModel.synopDate.value!!.time}\n" +
@@ -378,44 +376,56 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                     "location: (lat: ${mViewModel.location.value?.latitude}, lon: ${mViewModel.location.value?.longitude})"
         )
 
-        if (!reportedIcingValuesAreValid()) {
-            return false
-        }
+//        if (!reportedIcingValuesAreValid()) {
+//            return false
+//        }
 
         val requestBody = mViewModel.getIcingReportBody()
         val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
-        val result = repository.sendIcingReport(requestBody)
+//        val result = repository.sendIcingReport(requestBody)
 
-        result.observe(viewLifecycleOwner) {
-            Log.e("ORAP", "Icing reported")
-            if (it.success) {
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, success")
-                    param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
-                    param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
-                }
+//        result.observe(viewLifecycleOwner) {
+//            Log.e("ORAP", "Icing reported")
+//            if (it.success) {
+//                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+//                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, success")
+//                    param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+//                    param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+//                }
+//
+//                val text = getString(R.string.icing_report_sent)
+//                val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+//                toast.show()
+//                Navigation.findNavController(requireView()).navigateUp()
+//            } else {
+//                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+//                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, error")
+//                    param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
+//                    param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
+//                }
+//
+//                Snackbar.make(
+//                    requireView(),
+//                    getString(R.string.icing_report_submit_error) + it.errorMsg,
+//                    Snackbar.LENGTH_LONG
+//                )
+//                    .show()
+//            }
+//        }
 
-                val text = getString(R.string.icing_report_sent)
-                val toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
-                toast.show()
-                Navigation.findNavController(requireView()).navigateUp()
-            } else {
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Send icing report, error")
-                    param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report")
-                    param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportIcingFragment")
-                }
+        val filePaths = arrayListOf<String>()
 
-                Snackbar.make(
-                    requireView(),
-                    getString(R.string.icing_report_submit_error) + it.errorMsg,
-                    Snackbar.LENGTH_LONG
-                )
-                    .show()
-            }
+        mViewModel.attachedImages.value.forEach { file ->
+            filePaths.add(file.absolutePath)
         }
 
-        repository.scheduleImageUploadOverSftp(requireContext(), mViewModel.attachedImages.value, requestBody.WebKitFormBoundaryId, spriceRepository, lifecycleScope)
+        repository.scheduleImageUploadOverSftp(
+            requireContext(),
+            filePaths,
+            requestBody.WebKitFormBoundaryId,
+            spriceRepository,
+            lifecycleScope
+        )
 
         return true
     }
