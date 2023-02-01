@@ -2,12 +2,14 @@ package no.sintef.fiskinfo.dal.sprice
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 
 @Database(
     entities = [ImageUriEntry::class, ReportIcingRequestPayload::class],
-    version = 1
+    version = 2
 )
+@TypeConverters(ZonedDateTimeConverter::class)
 abstract class SpriceDatabase : RoomDatabase() {
     abstract fun getImageUriEntryDAO(): ImageUriEntryDAO
     abstract fun getIcingReportDAO(): IcingReportDAO

@@ -329,17 +329,14 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
         mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
 
-        GlobalScope.launch(Dispatchers.Main) { // Dispatchers.Main because only the Main thread can touch UI elements. Otherwise you may wish to use Dispatchers.IO instead!
+        lifecycleScope.launch {
             mViewModel.init()
-        }
-
-
-        mViewModel.synopDate.observe(viewLifecycleOwner) {
-            mBinding.viewmodel = mViewModel
-        }
-
-        mViewModel.location.observe(viewLifecycleOwner) {
-            locAdapter.locations = listOf<Location>(it)
+            mViewModel.synopDate.observe(viewLifecycleOwner) {
+                mBinding.viewmodel = mViewModel
+            }
+            mViewModel.location.observe(viewLifecycleOwner) {
+                locAdapter.locations = listOf<Location>(it)
+            }
         }
     }
 
