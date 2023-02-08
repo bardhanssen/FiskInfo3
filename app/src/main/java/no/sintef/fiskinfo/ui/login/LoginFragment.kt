@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,8 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i("Login Activity", "Hello from shared module: " + (Greeting().greeting()))
+
         _binding = LoginFragmentBinding.inflate(inflater, container, false)
 
         authStateManager = AuthStateManager.getInstance(this.requireContext())
