@@ -9,11 +9,17 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     signingConfigs {
+        debug {
+            storeFile file(prod_store_file_path)
+            storePassword prod_store_password
+            keyAlias prod_key_alias
+            keyPassword prod_key_password
+        }
         signing_config {
             storeFile file(prod_store_file_path)
             keyAlias prod_key_alias
-            keyPassword prod_key_password
             storePassword prod_store_password
+            keyPassword prod_key_password
         }
     }
     compileSdkVersion 33

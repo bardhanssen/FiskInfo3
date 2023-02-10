@@ -42,7 +42,9 @@ Thumbs.db
 build/
 
 app/release/output.json
+/app/gradle.properties
 /app/google-services.json
+/shared/gradle.properties
 
 app/debug/
 app/release

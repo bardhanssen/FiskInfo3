@@ -59,4 +59,13 @@ android {
         minSdk = 21
         targetSdk = 33
     }
+    buildTypes {
+        create("DebugabbleRelease") {
+            (this as com.android.build.gradle.internal.dsl.BuildType).isDebuggable = true
+        }
+        create("buildTypes") {
+        }
+    }
+
+
 }

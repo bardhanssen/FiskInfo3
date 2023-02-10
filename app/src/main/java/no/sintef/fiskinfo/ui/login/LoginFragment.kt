@@ -41,6 +41,7 @@ import net.openid.appauth.*
 import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.LoginFragmentBinding
+import no.sintef.fiskinfo.shared.Greeting
 import no.sintef.fiskinfo.util.AuthStateManager
 
 
@@ -72,7 +73,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.i("Login Activity", "Hello from shared module: " + (Greeting().greeting()))
+        Log.i("Login Activity", "Hello from shared module: " + (Greeting().greet()))
 
         _binding = LoginFragmentBinding.inflate(inflater, container, false)
 
