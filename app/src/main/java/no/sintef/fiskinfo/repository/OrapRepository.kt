@@ -129,7 +129,7 @@ class OrapRepository(context: Context, private var username: String, private var
             uriList.add(ImageUriEntry(filePath, webKitFormBoundaryId))
         }
 
-        lifecycleScope.launch { repository.insertMultiple(uriList) }
+        lifecycleScope.launch { repository.insertMultipleImageUris(uriList) }
     }
 
 

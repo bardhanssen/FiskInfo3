@@ -1,17 +1,20 @@
 package no.sintef.fiskinfo.ui.sprice
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.launch
+import no.sintef.fiskinfo.dal.sprice.IcingReportDAO
+import no.sintef.fiskinfo.dal.sprice.ImageUriEntryDAO
+import no.sintef.fiskinfo.dal.sprice.SpriceDatabase
 import no.sintef.fiskinfo.databinding.SpriceFragmentBinding
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -19,9 +22,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SpriceFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var database: SpriceDatabase
+    private lateinit var reportDao: IcingReportDAO
+    private lateinit var imageUriDao: ImageUriEntryDAO
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var _mBinding: SpriceFragmentBinding? = null
@@ -29,11 +32,18 @@ class SpriceFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val mBinding get() = _mBinding!!
 
+    private lateinit var reportLogLinearLayout: LinearLayout
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // TODO: This should be gotten from the activity so we don't have to create additional db objects
+        database = SpriceDatabase.getInstance(requireContext())
+        reportDao = database.getIcingReportDAO()
+        imageUriDao = database.getImageUriEntryDAO()
+
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -41,13 +51,33 @@ class SpriceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("SPRICE", "Loaded SPRICE fragment")
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
         _mBinding = SpriceFragmentBinding.inflate(inflater, container, false)
+
+        reportLogLinearLayout = mBinding.spriceFragmentReportListingLayout
+
+        listReports()
 
         return mBinding.root
     }
 
+    private fun listReports() {
+        lifecycleScope.launch {
+            val reports = reportDao.getAll()
+
+            for(report in reports) {
+                val view = TextView(requireContext())
+                view.text = report.WebKitFormBoundaryId
+
+                // add TextView to LinearLayout
+                reportLogLinearLayout.addView(view)
+            }
+        }
+    }
+
     override fun onDestroyView() {
+        Log.d("SPRICE", "Destroyed SPRICE fragment")
         super.onDestroyView()
         _mBinding = null
     }
@@ -66,8 +96,6 @@ class SpriceFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             SpriceFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

@@ -1,0 +1,222 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "01f2f595ff5635a92f8bd26ffa05bce5",
+    "entities": [
+      {
+        "tableName": "imageUris",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fileUriPath` TEXT NOT NULL, `webKitFormBoundaryId` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "fields": [
+          {
+            "fieldPath": "file",
+            "columnName": "fileUriPath",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "webKitFormBoundaryId",
+            "columnName": "webKitFormBoundaryId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "IcingReports",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`WebKitFormBoundaryId` TEXT NOT NULL, `ReportingTime` TEXT NOT NULL, `Synop` TEXT NOT NULL, `Username` TEXT NOT NULL, `Password` TEXT NOT NULL, `VesselCallSign` TEXT NOT NULL, `Latitude` TEXT NOT NULL, `Longitude` TEXT NOT NULL, `AirTemperature` TEXT NOT NULL, `SeaTemperature` TEXT NOT NULL, `MaxMiddleWindTime` TEXT NOT NULL, `MaxMiddelWindInKnots` TEXT NOT NULL, `StrongestWindGustInKnots` TEXT NOT NULL, `HeightOfWindWavesInMeters` TEXT NOT NULL, `PeriodForWindWavesInSeconds` TEXT NOT NULL, `HeightForFirstSwellSystemInMeters` TEXT NOT NULL, `PeriodForFirstSwellSystemInSeconds` TEXT NOT NULL, `DirectionForFirstSwellSystemInDegrees` TEXT NOT NULL, `ConcentrationOfSeaIce` TEXT NOT NULL, `OceanIce` TEXT NOT NULL, `DirectionToNearestIceEdge` TEXT NOT NULL, `SeaIceConditionsAndDevelopmentTheLastThreeHours` TEXT NOT NULL, `CurrentIcingDegree` TEXT NOT NULL, `ReasonForIcing` TEXT NOT NULL, `IceThicknessInCm` INTEGER NOT NULL, `ChangeInIce` TEXT NOT NULL, `Reported` INTEGER NOT NULL, PRIMARY KEY(`WebKitFormBoundaryId`))",
+        "fields": [
+          {
+            "fieldPath": "WebKitFormBoundaryId",
+            "columnName": "WebKitFormBoundaryId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ReportingTime",
+            "columnName": "ReportingTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Synop",
+            "columnName": "Synop",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Username",
+            "columnName": "Username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Password",
+            "columnName": "Password",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "VesselCallSign",
+            "columnName": "VesselCallSign",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Latitude",
+            "columnName": "Latitude",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Longitude",
+            "columnName": "Longitude",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "AirTemperature",
+            "columnName": "AirTemperature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "SeaTemperature",
+            "columnName": "SeaTemperature",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "MaxMiddleWindTime",
+            "columnName": "MaxMiddleWindTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "MaxMiddelWindInKnots",
+            "columnName": "MaxMiddelWindInKnots",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "StrongestWindGustInKnots",
+            "columnName": "StrongestWindGustInKnots",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "HeightOfWindWavesInMeters",
+            "columnName": "HeightOfWindWavesInMeters",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PeriodForWindWavesInSeconds",
+            "columnName": "PeriodForWindWavesInSeconds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "HeightForFirstSwellSystemInMeters",
+            "columnName": "HeightForFirstSwellSystemInMeters",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PeriodForFirstSwellSystemInSeconds",
+            "columnName": "PeriodForFirstSwellSystemInSeconds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "DirectionForFirstSwellSystemInDegrees",
+            "columnName": "DirectionForFirstSwellSystemInDegrees",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ConcentrationOfSeaIce",
+            "columnName": "ConcentrationOfSeaIce",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "OceanIce",
+            "columnName": "OceanIce",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "DirectionToNearestIceEdge",
+            "columnName": "DirectionToNearestIceEdge",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "SeaIceConditionsAndDevelopmentTheLastThreeHours",
+            "columnName": "SeaIceConditionsAndDevelopmentTheLastThreeHours",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "CurrentIcingDegree",
+            "columnName": "CurrentIcingDegree",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ReasonForIcing",
+            "columnName": "ReasonForIcing",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "IceThicknessInCm",
+            "columnName": "IceThicknessInCm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ChangeInIce",
+            "columnName": "ChangeInIce",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Reported",
+            "columnName": "Reported",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "WebKitFormBoundaryId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '01f2f595ff5635a92f8bd26ffa05bce5')"
+    ]
+  }
+}

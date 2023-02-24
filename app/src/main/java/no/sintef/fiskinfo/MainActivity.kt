@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
     private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var binding: MainActivityBinding
     private lateinit var imageUriDao: ImageUriEntryDAO
+    private lateinit var spriceDatabase: SpriceDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +87,13 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         setupActionBarWithNavController(controller, drawerLayout)
         //setupActionBarWithNavController(this, controller, drawerLayout)
 
+        initSpriceDatabase()
+
         setupNavigationMenu(controller)
+    }
+
+    private fun initSpriceDatabase() {
+        spriceDatabase = SpriceDatabase.getInstance(this);
     }
 
     private fun setupNavigationMenu(navController: NavController) {

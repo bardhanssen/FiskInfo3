@@ -63,7 +63,8 @@ class ReportIcingRequestPayload internal constructor(
     @ColumnInfo(name = "CurrentIcingDegree") internal val CurrentIcingDegree: DegreeOfIcingEnum,
     @ColumnInfo(name = "ReasonForIcing") internal val ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum,
     @ColumnInfo(name = "IceThicknessInCm") internal val IceThicknessInCm: Int,
-    @ColumnInfo(name = "ChangeInIce") internal val ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum
+    @ColumnInfo(name = "ChangeInIce") internal val ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum,
+    @ColumnInfo(name = "Reported") internal val Reported: Boolean
 ) {
     private constructor(builder: Builder) : this(
         builder.WebKitFormBoundaryId,
@@ -91,7 +92,8 @@ class ReportIcingRequestPayload internal constructor(
         builder.CurrentIcingDegree,
         builder.ReasonForIcing,
         builder.IceThicknessInCm,
-        builder.ChangeInIce
+        builder.ChangeInIce,
+        builder.Reported
     )
 
     data class Builder(
@@ -120,7 +122,8 @@ class ReportIcingRequestPayload internal constructor(
         var ReasonForIcing: ReasonForIcingOnVesselOrPlatformEnum = ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED,
         var IceThicknessInCm: Int = 0,
         var CurrentIcingDegree: DegreeOfIcingEnum = DegreeOfIcingEnum.NOT_SELECTED,
-        var ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED
+        var ChangeInIce: ChangeInIcingOnVesselOrPlatformEnum = ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED,
+        var Reported: Boolean = false
     ) {
         fun webKitFormBoundaryId(webKitFormBoundaryId: String) = apply { this.WebKitFormBoundaryId = webKitFormBoundaryId }
         fun reportingTime(reportingTime: ZonedDateTime) = apply { this.ReportingTime = reportingTime }
@@ -177,7 +180,7 @@ class ReportIcingRequestPayload internal constructor(
             }
 
         fun changeInIce(changeInIce: ChangeInIcingOnVesselOrPlatformEnum) = apply { this.ChangeInIce = changeInIce }
-
+        fun reported(reported: Boolean) = apply { this.Reported = reported }
         fun build(): ReportIcingRequestPayload {
             return ReportIcingRequestPayload(this)
         }

@@ -96,7 +96,7 @@ class ReportIcingViewModel
     }
 
     suspend fun checkDatabase() {
-        val records = repository.getAll()
+        val records = repository.getAllImageUris()
 
         if(records.isNotEmpty()) {
             val images = arrayListOf<File>()

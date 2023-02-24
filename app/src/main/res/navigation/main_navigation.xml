@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_sprice"
-        android:name="no.sintef.fiskinfo.ui.snap.SnapFragment"
+        android:name="no.sintef.fiskinfo.ui.sprice.SpriceFragment"
         android:label="@string/fragment_title_sprice"
         tools:layout="@layout/sprice_fragment" >
         <action
