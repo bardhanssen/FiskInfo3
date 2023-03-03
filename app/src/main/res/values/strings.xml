@@ -317,6 +317,7 @@
 
     <string name="report_icing_select_images_title">Add images</string>
 
+    <string name="sprice_database_name" translatable="false">sprice_database.db</string>
 
     <string name="drop_down_menu_error_not_selected">No value chosen</string>
     <string name="drop_down_menu_error_not_selected_for_template_string">No value chosen for %1$s</string>

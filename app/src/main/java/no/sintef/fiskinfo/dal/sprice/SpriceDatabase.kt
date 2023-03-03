@@ -3,22 +3,24 @@ package no.sintef.fiskinfo.dal.sprice
 import android.content.Context
 import android.util.Log
 import androidx.room.*
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import no.sintef.fiskinfo.BuildConfig
+import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.dal.sprice.SpriceDatabase.Companion.VERSION
 import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 import java.io.File
 import javax.inject.Singleton
 
 @Database(
     entities = [ImageUriEntry::class, ReportIcingRequestPayload::class],
-    version = 2,
+    version = VERSION,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
     ]
 )
 @TypeConverters(ZonedDateTimeConverter::class)
@@ -32,7 +34,6 @@ abstract class SpriceDatabase: RoomDatabase() {
         private const val TAG = "AppDatabase"
 
         const val VERSION = 1
-        private const val DATABASE_NAME = "sprice_database.db"
 
         @Volatile
         private var instance: SpriceDatabase? = null
@@ -84,8 +85,9 @@ abstract class SpriceDatabase: RoomDatabase() {
                 Room.databaseBuilder(
                     appContext,
                     SpriceDatabase::class.java,
-                    File(dataDir, DATABASE_NAME).toString()
-                ).fallbackToDestructiveMigration()
+                    File(dataDir, appContext.getString(R.string.sprice_database_name)).toString()
+                ).addMigrations()
+                    .fallbackToDestructiveMigration()
 
             // Execute the callback only in DEBUG mode.
             if (BuildConfig.DEBUG) {
@@ -102,6 +104,13 @@ abstract class SpriceDatabase: RoomDatabase() {
 
             withContext(Dispatchers.IO) {
                 // Populate your database here...
+            }
+
+        }
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("")
             }
 
         }

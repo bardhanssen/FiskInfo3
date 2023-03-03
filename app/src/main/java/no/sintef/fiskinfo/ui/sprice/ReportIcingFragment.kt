@@ -379,7 +379,8 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
         val requestBody = mViewModel.getIcingReportBody()
         val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
-//        val result = repository.sendIcingReport(requestBody)
+        val filePaths = arrayListOf<String>()
+        val result = repository.sendIcingReport(requestBody, spriceRepository, lifecycleScope)
 
 //        result.observe(viewLifecycleOwner) {
 //            Log.e("ORAP", "Icing reported")
@@ -409,8 +410,6 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //                    .show()
 //            }
 //        }
-
-        val filePaths = arrayListOf<String>()
 
         mViewModel.attachedImages.value.forEach { file ->
             filePaths.add(file.absolutePath)

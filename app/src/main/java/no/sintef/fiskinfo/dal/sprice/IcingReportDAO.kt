@@ -13,7 +13,10 @@ interface IcingReportDAO {
     suspend fun getWithId(id: String): List<ReportIcingRequestPayload>
 
     @Insert
-    suspend fun insertAll(reportIcingRequestBody: List<ReportIcingRequestPayload>)
+    suspend fun insert(reportIcingRequestBody: ReportIcingRequestPayload)
+
+    @Insert
+    suspend fun insertMultiple(reportIcingRequestBodyList: List<ReportIcingRequestPayload>)
 
     @Delete()
     suspend fun delete(reportIcingRequestBody: ReportIcingRequestPayload)

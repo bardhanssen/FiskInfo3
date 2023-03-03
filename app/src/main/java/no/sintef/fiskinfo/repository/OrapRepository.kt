@@ -59,35 +59,42 @@ class OrapRepository(context: Context, private var username: String, private var
         return result
     }
 
-    fun sendIcingReport(info: ReportIcingRequestPayload): LiveData<SendResult> {
+    fun sendIcingReport(info: ReportIcingRequestPayload, spriceRepository: SpriceRepository, lifecycleScope: LifecycleCoroutineScope): LiveData<SendResult> {
         initService()
 
         val result = MutableLiveData<SendResult>()
         val requestBody = info.getRequestPayloadForSpriceEndpointReportSubmissionAsRequestPayload(webKitFormBoundaryId)
 
-        orapService?.sendIcingReport(requestBody, info.Username, info.Password)
-            ?.enqueue(object : Callback<Void?> {
-                override fun onFailure(call: Call<Void?>, t: Throwable) {
-                    Log.e("ORAP", "Icing report failed!")
-                    Log.e("ORAP", t.message.toString())
-                    result.value = SendResult(false, 0, t.stackTrace.toString())
-                }
-
-                override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                    Log.e("ORAP", "Icing report response!")
-                    if (response.code() == 200) {
-                        Log.e("ORAP", "Icing reported OK!")
-                        result.value = SendResult(true, response.code(), "")
-                    } else {
-                        // TODO: Replace by more readable error messages
-                        val errorMsg = "Response code " + response.code()
-                        result.value = SendResult(false, response.code(), errorMsg)
-                        Log.e("ORAP", "Icing report response failed!")
-                    }
-                }
-            })
+        saveIcingReportToDatabase(info, spriceRepository, lifecycleScope)
+//        orapService?.sendIcingReport(requestBody, info.Username, info.Password)
+//            ?.enqueue(object : Callback<Void?> {
+//                override fun onFailure(call: Call<Void?>, t: Throwable) {
+//                    Log.e("ORAP", "Icing report failed!")
+//                    Log.e("ORAP", t.message.toString())
+//                    result.value = SendResult(false, 0, t.stackTrace.toString())
+//                }
+//
+//                override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+//                    Log.e("ORAP", "Icing report response!")
+//                    if (response.code() == 200) {
+//                        Log.e("ORAP", "Icing reported OK!")
+//                        result.value = SendResult(true, response.code(), "")
+//                    } else {
+//                        // TODO: Replace by more readable error messages
+//                        val errorMsg = "Response code " + response.code()
+//                        result.value = SendResult(false, response.code(), errorMsg)
+//                        Log.e("ORAP", "Icing report response failed!")
+//                    }
+//                }
+//            })
 
         return result
+    }
+
+    private fun saveIcingReportToDatabase(report: ReportIcingRequestPayload,
+                                          repository: SpriceRepository,
+                                          lifecycleScope: LifecycleCoroutineScope) {
+        lifecycleScope.launch { repository.insertIcingReport(report) }
     }
 
     fun scheduleImageUploadOverSftp(
@@ -97,7 +104,7 @@ class OrapRepository(context: Context, private var username: String, private var
         repository: SpriceRepository,
         lifecycleScope: LifecycleCoroutineScope
     ) {
-        saveIcingReport(files, webKitFormBoundaryId, repository, lifecycleScope)
+        saveIcingReportImageUris(files, webKitFormBoundaryId, repository, lifecycleScope)
 
         val worker = OneTimeWorkRequest.Builder(SftpUploadFilesWorker::class.java)
         val data = Data.Builder()
@@ -117,7 +124,7 @@ class OrapRepository(context: Context, private var username: String, private var
             ).enqueue()
     }
 
-    private fun saveIcingReport(
+    private fun saveIcingReportImageUris(
         filePaths: List<String>,
         webKitFormBoundaryId: String,
         repository: SpriceRepository,

@@ -2,15 +2,18 @@ package no.sintef.fiskinfo.ui.sprice
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import kotlinx.coroutines.launch
+import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.dal.sprice.IcingReportDAO
 import no.sintef.fiskinfo.dal.sprice.ImageUriEntryDAO
 import no.sintef.fiskinfo.dal.sprice.SpriceDatabase
@@ -59,6 +62,19 @@ class SpriceFragment : Fragment() {
 
         listReports()
 
+        val fab = mBinding.spriceNewReportFab
+
+        fab.setOnClickListener { view ->
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                param(FirebaseAnalytics.Param.CONTENT_TYPE, "New icing report")
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report list")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "IcingReportList")
+            }
+
+            Navigation.findNavController(view)
+                .navigate(R.id.action_sprice_fragment_to_icing_report_fragment)
+        }
+
         return mBinding.root
     }
 
@@ -66,7 +82,9 @@ class SpriceFragment : Fragment() {
         lifecycleScope.launch {
             val reports = reportDao.getAll()
 
-            for(report in reports) {
+            Log.d("SPRICE", "Listed ${reports.count()} reports")
+            Log.d("SPRICE", "Found ${imageUriDao.getAll().count()} image URIs")
+            for (report in reports) {
                 val view = TextView(requireContext())
                 view.text = report.WebKitFormBoundaryId
 
