@@ -11,7 +11,6 @@ import no.sintef.fiskinfo.util.locationsToGeoJsonGeometry
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.util.*
 
-@Suppress("unused")
 class GetReportsViewModel(application: Application) : ObservableAndroidViewModel(application) {
     val reportingTime = MutableLiveData<Date>()
     val locations = MutableLiveData<MutableList<Location>>()

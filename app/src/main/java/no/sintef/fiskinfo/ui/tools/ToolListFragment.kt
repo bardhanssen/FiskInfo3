@@ -45,6 +45,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     private val mViewModel: ToolsViewModel by activityViewModels()
 
     private var _binding: ToolListFragmentBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -116,7 +117,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
 
     private var mAdapter: ToolsRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
-    private var mIsConfirmed : Boolean = false
+    private var mIsConfirmed: Boolean = false
     private val IS_CONFIRMED_TOOLS = "IsConfirmedTools"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,7 +130,8 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         super.onActivityCreated(savedInstanceState)
         val tools = if (mIsConfirmed) mViewModel.getConfirmedTools() else mViewModel.getUnconfirmedTools()
 
-        tools?.observe(viewLifecycleOwner
+        tools?.observe(
+            viewLifecycleOwner
         ) { _tools ->
             mAdapter!!.setTools(_tools)
             if (mSwipeLayout != null)
@@ -137,7 +139,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
         }
     }
 
-    private fun isUserProfileValid():Boolean {
+    private fun isUserProfileValid(): Boolean {
         return true
     }
 
@@ -156,7 +158,7 @@ class ToolListFragment : Fragment(), ToolsRecyclerViewAdapter.OnToolInteractionL
     }
 
     override fun onRemoveToolClicked(v: View, tool: ToolViewModel?) {
-        if (mIsConfirmed && (tool != null)){
+        if (mIsConfirmed && (tool != null)) {
             val toolTypeStr = if (tool.toolTypeCode != null) tool.toolTypeCode?.getLocalizedName(requireContext())!!.lowercase() else "tool"
 
             val builder = MaterialAlertDialogBuilder(requireContext())

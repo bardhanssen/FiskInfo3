@@ -19,15 +19,14 @@
 package no.sintef.fiskinfo.ui.tools
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.databinding.ToolsFragmentBinding
 
@@ -72,7 +71,7 @@ class ToolsFragment : Fragment() {
         pageAdapter = ToolPageAdapter(childFragmentManager)
         viewPager = view.findViewById(R.id.toolspager) //TODO
         viewPager.adapter = pageAdapter
-        val tabLayout = view.findViewById<TabLayout>(R.id.toolstab_layout) //TODO
+        val tabLayout = view.findViewById<TabLayout>(R.id.tools_tab_layout) //TODO
         tabLayout.setupWithViewPager(viewPager)
     }
 

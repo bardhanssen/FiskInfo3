@@ -11,8 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import no.sintef.fiskinfo.model.sprice.*
+import no.sintef.fiskinfo.util.SpriceUtils
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.io.File
 import java.time.Instant
@@ -22,12 +22,8 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class ReportIcingViewModel
-    @Inject constructor(
-    application: Application,
-    repository: SpriceRepository
-): ObservableAndroidViewModel(application) {
-    private val repository: SpriceRepository = repository
+class ReportIcingViewModel @Inject constructor(application: Application) : ObservableAndroidViewModel(application) {
+    private var webKitFormBoundaryId: String = ""
 
     private val _reportingTime = MutableStateFlow(Date.from(Instant.now()))
     private val _synopTimeSelect = MutableStateFlow("")
@@ -39,7 +35,8 @@ class ReportIcingViewModel
 
     private val _reasonForVesselIcing = MutableStateFlow(ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED)
     private val _vesselIcingThickness = MutableStateFlow("")
-//    private val _vesselIcingChangeInIcing = MutableStateFlow(ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED)
+
+    //    private val _vesselIcingChangeInIcing = MutableStateFlow(ChangeInIcingOnVesselOrPlatformEnum.NOT_SELECTED)
     private val _currentVesselIcingIcingDegree = MutableStateFlow(DegreeOfIcingEnum.NOT_SELECTED)
 
     private val _maxMiddleWindTime = MutableStateFlow(MaxMiddleWindTimeEnum.NOT_SELECTED)
@@ -57,7 +54,8 @@ class ReportIcingViewModel
 
     val reasonForVesselIcing: MutableStateFlow<ReasonForIcingOnVesselOrPlatformEnum> = _reasonForVesselIcing
     val vesselIcingThickness: MutableStateFlow<String> = _vesselIcingThickness
-//    val vesselIcingChangeInIcing: MutableStateFlow<ChangeInIcingOnVesselOrPlatformEnum> = _vesselIcingChangeInIcing
+
+    //    val vesselIcingChangeInIcing: MutableStateFlow<ChangeInIcingOnVesselOrPlatformEnum> = _vesselIcingChangeInIcing
     val currentVesselIcingIcingDegree: MutableStateFlow<DegreeOfIcingEnum> = _currentVesselIcingIcingDegree
 
     val maxMiddleWindTime: MutableStateFlow<MaxMiddleWindTimeEnum> = _maxMiddleWindTime
@@ -69,7 +67,6 @@ class ReportIcingViewModel
     suspend fun init() {
         reportingTime.value = Date.from(Instant.now())
         synopHourSelect.value = "${Calendar.getInstance().get(Calendar.HOUR_OF_DAY)}:00"
-        checkDatabase()
 
         val calendar = Calendar.getInstance()
         calendar.time = Date.from(Instant.now())
@@ -95,19 +92,25 @@ class ReportIcingViewModel
         }
     }
 
-    suspend fun checkDatabase() {
-        val records = repository.getAllImageUris()
+    constructor(application: Application, report: ReportIcingRequestPayload) : this(application) {
+        webKitFormBoundaryId = report.WebKitFormBoundaryId
+        reportingTime.value = Date.from(report.ReportingTime.toInstant())
+        synopHourSelect.value = "${if(report.Synop.hour < 10) "0" else ""}${report.Synop.hour}:00"
+        synopDate.value = Date.from(report.Synop.toInstant())
 
-        if(records.isNotEmpty()) {
-            val images = arrayListOf<File>()
+        seaIcingConditionsAndDevelopment.value = report.SeaIceConditionsAndDevelopmentTheLastThreeHours
+        reasonForVesselIcing.value = report.ReasonForIcing
+        currentVesselIcingIcingDegree.value = report.CurrentIcingDegree
+        maxMiddleWindTime.value = report.MaxMiddleWindTime
+        val defaultLoc = Location("")
+        defaultLoc.latitude = report.Latitude.toDouble()
+        defaultLoc.longitude = report.Longitude.toDouble()
 
-            records.forEach { image ->
-                images.add(File(image.file))
-            }
+        location.value = defaultLoc
 
-            this.attachedImages.value = images
-        } else {
-            this.attachedImages.value = arrayListOf()
+        viewModelScope.launch {
+            _airTemperature.value = report.AirTemperature
+            _seaTemperature.value = report.SeaTemperature
         }
     }
 
@@ -119,6 +122,7 @@ class ReportIcingViewModel
         val callSign = prefs.getString(context.getString(R.string.pref_sprice_call_sign_key), "") ?: ""
 
         return ReportIcingRequestPayload.Builder()
+            .webKitFormBoundaryId(webKitFormBoundaryId.ifEmpty { SpriceUtils.getBoundaryIdString() })
             .username(orapUsername)
             .password(orapPassword)
             .callSign(callSign)
@@ -155,7 +159,7 @@ class ReportIcingViewModel
 
         try {
             retval = Integer.parseInt(synopHourSelect.value.substring(0, 2))
-        } catch(e: NumberFormatException) {
+        } catch (e: NumberFormatException) {
 
         }
 

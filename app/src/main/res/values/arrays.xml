@@ -53,4 +53,10 @@
         <item>Unconfirmed</item>
         <item>Confirmed</item>
     </string-array>
+
+    <string-array name="sprice_tab_titles">
+        <item>All</item>
+        <item>Unreported</item>
+        <item>Reported</item>
+    </string-array>
 </resources>

@@ -32,16 +32,11 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
-import no.sintef.fiskinfo.model.sprice.DegreeOfIcingEnum
-import no.sintef.fiskinfo.model.sprice.IcingReportHourEnum
-import no.sintef.fiskinfo.model.sprice.ReasonForIcingOnVesselOrPlatformEnum
-import no.sintef.fiskinfo.model.sprice.SeaIceConditionsAndDevelopmentEnum
+import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.layout.DropDownMenuArrayAdapter
 import no.sintef.fiskinfo.ui.layout.IDropDownMenu
@@ -254,7 +249,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 imageNamesList.add(imageUri.lastPathSegment!!)
 
                 val mime: MimeTypeMap = MimeTypeMap.getSingleton()
-                val extension = mime.getExtensionFromMimeType(requireContext().contentResolver.getType(imageUri));
+                val extension = mime.getExtensionFromMimeType(requireContext().contentResolver.getType(imageUri))
                 val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri)
                 val tempFile = File.createTempFile(imageUri.lastPathSegment!!, ".${extension}")
 
@@ -326,18 +321,29 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 
         initMenu()
 
-        mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
-        mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
+        if(savedInstanceState != null && savedInstanceState.containsKey("")) {
+            // TODO: Get view model values from bundle
+//            savedInstanceState.getParcelable("")?.let { populateViewWithGivenReport(it) }
+        } else {
+            mViewModel = ViewModelProvider(requireActivity())[ReportIcingViewModel::class.java]
+            mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
 
-        lifecycleScope.launch {
-            mViewModel.init()
-            mViewModel.synopDate.observe(viewLifecycleOwner) {
-                mBinding.viewmodel = mViewModel
-            }
-            mViewModel.location.observe(viewLifecycleOwner) {
-                locAdapter.locations = listOf<Location>(it)
+            lifecycleScope.launch {
+                mViewModel.init()
+                mViewModel.synopDate.observe(viewLifecycleOwner) {
+                    mBinding.viewmodel = mViewModel
+                }
+                mViewModel.location.observe(viewLifecycleOwner) {
+                    locAdapter.locations = listOf<Location>(it)
+                }
             }
         }
+    }
+
+    fun populateViewWithGivenReport(payload: ReportIcingRequestPayload) {
+        mViewModel = ReportIcingViewModel(requireActivity().application, payload)
+        mLocationViewModel = ViewModelProvider(requireActivity())[LocationDmsViewModel::class.java]
+//        mLocationViewModel.initWithLocation()
     }
 
     private fun initMenu() {

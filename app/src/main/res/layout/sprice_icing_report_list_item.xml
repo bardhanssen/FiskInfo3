@@ -1,0 +1,77 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sprice_icing_report_table_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_border_background"
+    android:gravity="center_vertical"
+    >
+
+    <ImageView
+        android:id="@+id/sprice_icing_report_item_image_view"
+        android:layout_width="@dimen/list_item_icon_width"
+        android:layout_height="@dimen/list_item_icon_height"
+        android:background="@drawable/ic_icing_24"
+        android:contentDescription="@string/sprice_icing_report_list_item_image_description"
+        android:duplicateParentState="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
+        android:layout_weight="4"
+        >
+
+        <TextView
+            android:id="@+id/sprice_icing_report_item_title_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sprice_icing_report_list_item_placeholder_title"
+            android:duplicateParentState="true"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/sprice_icing_report_item_detail_1_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:duplicateParentState="true"
+            android:text="@string/sprice_icing_report_list_item_placeholder_info"
+            />
+
+        <TextView
+            android:id="@+id/sprice_icing_report_item_detail_2_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:duplicateParentState="true"
+            android:text="@string/sprice_icing_report_list_item_placeholder_info"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/sprice_icing_report_status_button"
+        android:visibility="gone"
+        android:layout_width="@dimen/list_item_icon_width"
+        android:layout_height="@dimen/list_item_icon_height" />
+    <ImageButton
+        android:id="@+id/sprice_icing_report_remove_button"
+        android:visibility="gone"
+        android:layout_width="@dimen/list_item_icon_width"
+        android:layout_height="@dimen/list_item_icon_height"
+        app:srcCompat="@drawable/ic_baseline_remove_24" />
+</TableRow>

@@ -185,6 +185,10 @@
     <string name="drop_down_menu_error_not_selected">Ingen verdi valgt</string>
     <string name="drop_down_menu_error_not_selected_for_template_string">Ingen verdi valgt for %1$s</string>
 
+    <string name="sprice_icing_report_list_item_image_description">Image from the report if exists.</string>
+    <string name="sprice_icing_report_list_item_placeholder_title">yyyy-MM-dd hh:mm:ss</string>
+    <string name="sprice_icing_report_list_item_placeholder_info">Report information</string>
+
     // Overview fragment resources
     <string name="overview_card_map_title">Kart</string>
     <string name="overview_card_map_subtitle">Se kart med ressurser</string>

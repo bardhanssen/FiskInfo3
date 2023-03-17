@@ -36,4 +36,10 @@
         <item>Ubekreftet</item>
         <item>Bekreftet</item>
     </string-array>
+
+    <string-array name="sprice_tab_titles">
+    <item>Alle rapporter</item>
+    <item>Urapportert</item>
+    <item>Rapportert</item>
+    </string-array>
 </resources>
