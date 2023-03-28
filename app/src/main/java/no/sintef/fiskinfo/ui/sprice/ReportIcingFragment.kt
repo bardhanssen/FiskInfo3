@@ -34,9 +34,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.dal.sprice.SpriceRepository
+import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.databinding.SpriceReportIcingFragmentBinding
 import no.sintef.fiskinfo.model.sprice.*
+import no.sintef.fiskinfo.model.sprice.enums.IcingReportHourEnum
+import no.sintef.fiskinfo.model.sprice.enums.ReasonForIcingOnVesselOrPlatformEnum
+import no.sintef.fiskinfo.model.sprice.enums.SeaIceConditionsAndDevelopmentEnum
 import no.sintef.fiskinfo.repository.OrapRepository
 import no.sintef.fiskinfo.ui.layout.DropDownMenuArrayAdapter
 import no.sintef.fiskinfo.ui.layout.IDropDownMenu
@@ -58,7 +61,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
     Fragment(),
     LocationDmsDialogListener {
     @Inject
-    lateinit var spriceRepository: SpriceRepository
+    lateinit var spriceDbRepository: SpriceDbRepository
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
@@ -386,7 +389,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         val requestBody = mViewModel.getIcingReportBody()
         val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
         val filePaths = arrayListOf<String>()
-        val result = repository.sendIcingReport(requestBody, spriceRepository, lifecycleScope)
+        val result = repository.sendIcingReport(requestBody, spriceDbRepository, lifecycleScope)
 
 //        result.observe(viewLifecycleOwner) {
 //            Log.e("ORAP", "Icing reported")
@@ -425,7 +428,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
             requireContext(),
             filePaths,
             requestBody.WebKitFormBoundaryId,
-            spriceRepository,
+            spriceDbRepository,
             lifecycleScope
         )
 

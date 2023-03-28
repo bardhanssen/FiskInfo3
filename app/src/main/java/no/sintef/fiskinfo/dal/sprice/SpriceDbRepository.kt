@@ -3,7 +3,7 @@ package no.sintef.fiskinfo.dal.sprice
 import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 import javax.inject.Inject
 
-class SpriceRepository @Inject constructor(
+class SpriceDbRepository @Inject constructor(
 private val imageUriEntryDAO: ImageUriEntryDAO,
 private val icingReportDAO: IcingReportDAO
 ){

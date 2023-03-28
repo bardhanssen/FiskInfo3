@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.sprice.*
+import no.sintef.fiskinfo.model.sprice.enums.MaxMiddleWindTimeEnum
+import no.sintef.fiskinfo.model.sprice.enums.ReasonForIcingOnVesselOrPlatformEnum
+import no.sintef.fiskinfo.model.sprice.enums.SeaIceConditionsAndDevelopmentEnum
 import no.sintef.fiskinfo.util.SpriceUtils
 import no.sintef.fiskinfo.utilities.ui.ObservableAndroidViewModel
 import java.io.File

@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.ui.sprice
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,16 +16,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.logEvent
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
-import no.sintef.fiskinfo.dal.sprice.SpriceRepository
+import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.databinding.SpriceIcingReportListFragmentBinding
+import no.sintef.fiskinfo.model.sprice.SpriceConstants
+import no.sintef.fiskinfo.model.sprice.enums.SpriceReportListTypeEnum
 import javax.inject.Inject
 
 class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapter.OnReportInteractionListener {
-//    @Inject
-//    lateinit var spriceRepository: SpriceRepository
+    @Inject
+    lateinit var spriceDbRepository: SpriceDbRepository
 
     private val mViewModel: SpriceViewModel by activityViewModels()
 
@@ -37,6 +39,7 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
 
     private var mAdapter: SpriceReportRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
+    private lateinit var listType: SpriceReportListTypeEnum
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,20 +58,17 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
 
         reportsLayout = mBinding.spriceFragmentReportListingLayout
 
-        listReports()
-
-        val fab = mBinding.spriceNewReportFab
-
-        fab.setOnClickListener { view ->
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                param(FirebaseAnalytics.Param.CONTENT_TYPE, "New icing report")
-                param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report list")
-                param(FirebaseAnalytics.Param.SCREEN_CLASS, "IcingReportList")
-            }
-
-            Navigation.findNavController(view)
-                .navigate(R.id.action_sprice_fragment_to_icing_report_fragment)
+        if(savedInstanceState != null && savedInstanceState.containsKey(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY)) {
+            @Suppress("DEPRECATION")
+            listType = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                savedInstanceState.getSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY, SpriceReportListTypeEnum::class.java)!! else
+                savedInstanceState.getSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY)!! as SpriceReportListTypeEnum
+        } else {
+            listType = SpriceReportListTypeEnum.ALL
         }
+
+
+        listReports()
 
         return mBinding.root
     }
@@ -82,19 +82,19 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
         mSwipeLayout = mBinding.icingReportListSwipeLayout
         mSwipeLayout!!.setOnRefreshListener { mViewModel.refreshReports() }
 
-//        lifecycleScope.launch {
-//            val reports = spriceRepository.getIcingReports()
-//
-//            Log.d("SPRICE", "Listed ${reports.count()} reports")
-//            Log.d("SPRICE", "Found ${spriceRepository.getAllImageUris().count()} image URIs")
-//            for (report in reports) {
-//                val view = TextView(requireContext())
-//                view.text = report.WebKitFormBoundaryId
-//
-//                // add TextView to LinearLayout
-////                reportsLayout.addView(view)
-//            }
-//        }
+        lifecycleScope.launch {
+            val reports = spriceDbRepository.getIcingReports()
+
+            Log.d("SPRICE", "Listed ${reports.count()} reports")
+            Log.d("SPRICE", "Found ${spriceDbRepository.getAllImageUris().count()} image URIs")
+            for (report in reports) {
+                val view = TextView(requireContext())
+                view.text = report.WebKitFormBoundaryId
+
+                // add TextView to LinearLayout
+//                reportsLayout.addView(view)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -108,15 +108,15 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param listType Parameter 1.
          * @return A new instance of fragment SpriceFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
-            SpriceFragment().apply {
+        fun newInstance(listType: SpriceReportListTypeEnum) =
+            SpriceIcingReportListFragment().apply {
                 arguments = Bundle().apply {
+                    putSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY, listType)
                 }
             }
     }

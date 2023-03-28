@@ -20,6 +20,10 @@ package no.sintef.fiskinfo.model.sprice
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import no.sintef.fiskinfo.model.sprice.enums.ChangeInIcingOnVesselOrPlatformEnum
+import no.sintef.fiskinfo.model.sprice.enums.MaxMiddleWindTimeEnum
+import no.sintef.fiskinfo.model.sprice.enums.ReasonForIcingOnVesselOrPlatformEnum
+import no.sintef.fiskinfo.model.sprice.enums.SeaIceConditionsAndDevelopmentEnum
 import no.sintef.fiskinfo.util.SpriceUtils
 import no.sintef.fiskinfo.util.SpriceUtils.Companion.getPostRequestContentTypeBoundaryValueAsString
 import okhttp3.MediaType

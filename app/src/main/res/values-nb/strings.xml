@@ -370,4 +370,8 @@
     <string name="sea_ice_conditions_and_development_8">Is under tett trykk. Vanskelige forhold som forverres</string>
     <string name="sea_ice_conditions_and_development_9">Skip fast i is</string>
     <string name="sea_ice_conditions_and_development_x">Ikke mulig å raportere</string>
+
+    <string name="sprice_report_list_type_last_24_hours">Siste 24 timer</string>
+    <string name="sprice_report_list_type_all">Alle rapporter</string>
+    <string name="sprice_fragment_fab_new_report_content_description">Knapp for ny isingrapport</string>
 </resources>

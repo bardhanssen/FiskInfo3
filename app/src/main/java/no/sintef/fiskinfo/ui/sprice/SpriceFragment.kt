@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.Navigation
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.databinding.SpriceFragmentBinding
-import no.sintef.fiskinfo.ui.tools.ToolListFragment
+import no.sintef.fiskinfo.model.sprice.enums.SpriceReportListTypeEnum
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
@@ -21,14 +26,18 @@ import no.sintef.fiskinfo.ui.tools.ToolListFragment
  */
 @AndroidEntryPoint // Dagger-Hilt requirement
 class SpriceFragment : Fragment() {
-
     companion object {
         fun newInstance() = SpriceFragment()
     }
 
+    @Inject
+    lateinit var spriceDbRepository: SpriceDbRepository
+
+    private var NUMBER_OF_PAGES = 2
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var viewModel: SpriceViewModel
-    private lateinit var viewPager: ViewPager
-    private lateinit var pageAdapter: IcingReportPageAdapter
+    private lateinit var viewPager: ViewPager2
+    private lateinit var pageAdapter: ScreenSlidePagerAdapter
 
     private var _binding: SpriceFragmentBinding? = null
     // This property is only valid between onCreateView and
@@ -40,8 +49,43 @@ class SpriceFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
         _binding = SpriceFragmentBinding.inflate(inflater, container, false)
+        viewPager = binding.spriceViewPager
+        val pagerAdapter = ScreenSlidePagerAdapter(this)
+        viewPager.adapter = pagerAdapter
+
+        val tabLayout = binding.spriceTabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = if(position == 0) SpriceReportListTypeEnum.LAST_24_HOURS.getLocalizedName(requireContext())  else SpriceReportListTypeEnum.ALL.getLocalizedName(requireContext())
+        }.attach()
+
+        val fab = binding.spriceFab
+
+        fab.setOnClickListener { view ->
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                param(FirebaseAnalytics.Param.CONTENT_TYPE, "New icing report")
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Icing report list")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "IcingReportList")
+            }
+
+            Navigation.findNavController(view)
+                .navigate(R.id.action_sprice_fragment_to_icing_report_fragment)
+        }
+
+
+
         return binding.root
+    }
+
+    /**
+     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * sequence.
+     */
+    private inner class ScreenSlidePagerAdapter(fa: Fragment) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = NUMBER_OF_PAGES
+
+        override fun createFragment(position: Int): Fragment = SpriceIcingReportListFragment.newInstance(if(position == 1) SpriceReportListTypeEnum.LAST_24_HOURS else SpriceReportListTypeEnum.ALL)
     }
 
     override fun onDestroyView() {
@@ -49,33 +93,5 @@ class SpriceFragment : Fragment() {
         _binding = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        pageAdapter = IcingReportPageAdapter(childFragmentManager)
-        viewPager = binding.spriceViewPager
-        viewPager.adapter = pageAdapter
-        val tabLayout = binding.spriceReportsTabLayout
-        tabLayout.setupWithViewPager(viewPager)
-    }
-
-    inner class IcingReportPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return resources.getStringArray(R.array.tool_tab_titles)[position]
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return if (position == 0) {
-                SpriceIcingReportListFragment.newInstance()
-//                UnconfirmedToolsFragment.newInstance() //true)
-            }
-            else {
-                SpriceIcingReportListFragment.newInstance()
-            }
-        }
-
-        override fun getCount(): Int {
-            return 2
-        }
-    }
 
 }

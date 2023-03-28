@@ -1,4 +1,4 @@
-package no.sintef.fiskinfo.model.sprice
+package no.sintef.fiskinfo.model.sprice.enums
 
 import android.content.Context
 import com.google.gson.annotations.SerializedName

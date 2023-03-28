@@ -1,14 +1,14 @@
-package no.sintef.fiskinfo.model.sprice
+package no.sintef.fiskinfo.model.sprice.enums
 
 import com.google.gson.annotations.SerializedName
 
 enum class CardinalDirections(val direction: String) {
     @SerializedName("W")
     W("W"),
-    @SerializedName("W")
+    @SerializedName("E")
     E("E"),
-    @SerializedName("W")
+    @SerializedName("S")
     S("S"),
-    @SerializedName("W")
+    @SerializedName("N")
     N("N")
 }

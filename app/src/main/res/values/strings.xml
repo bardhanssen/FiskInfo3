@@ -279,6 +279,10 @@
     <string name="sprice_icing_reporting_hour_22" translatable="false">22:00</string>
     <string name="sprice_icing_reporting_hour_23" translatable="false">23:00</string>
 
+    <string name="sprice_report_list_type_last_24_hours">Last day</string>
+    <string name="sprice_report_list_type_all">All</string>
+    <string name="sprice_fragment_fab_new_report_content_description">New icing report button</string>
+
     <string name="sprice_icing_reporting_observation_hour">Observation time</string>
     <string name="sprice_icing_reporting_synop">Synop</string>
 

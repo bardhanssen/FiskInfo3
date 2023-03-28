@@ -17,7 +17,7 @@ import no.sintef.fiskinfo.BuildConfig
 import no.sintef.fiskinfo.api.createService
 import no.sintef.fiskinfo.api.orap.OrapService
 import no.sintef.fiskinfo.dal.sprice.ImageUriEntry
-import no.sintef.fiskinfo.dal.sprice.SpriceRepository
+import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.model.sprice.*
 import no.sintef.fiskinfo.model.sprice.SpriceConstants.SPRICE_SFTP_WORKER_INPUT_FILES_ID
 import no.sintef.fiskinfo.model.sprice.SpriceConstants.SPRICE_SFTP_WORKER_INPUT_WEBKIT_FORM_ID
@@ -59,13 +59,13 @@ class OrapRepository(context: Context, private var username: String, private var
         return result
     }
 
-    fun sendIcingReport(info: ReportIcingRequestPayload, spriceRepository: SpriceRepository, lifecycleScope: LifecycleCoroutineScope): LiveData<SendResult> {
+    fun sendIcingReport(info: ReportIcingRequestPayload, spriceDbRepository: SpriceDbRepository, lifecycleScope: LifecycleCoroutineScope): LiveData<SendResult> {
         initService()
 
         val result = MutableLiveData<SendResult>()
         val requestBody = info.getRequestPayloadForSpriceEndpointReportSubmissionAsRequestPayload(webKitFormBoundaryId)
 
-        saveIcingReportToDatabase(info, spriceRepository, lifecycleScope)
+        saveIcingReportToDatabase(info, spriceDbRepository, lifecycleScope)
 //        orapService?.sendIcingReport(requestBody, info.Username, info.Password)
 //            ?.enqueue(object : Callback<Void?> {
 //                override fun onFailure(call: Call<Void?>, t: Throwable) {
@@ -92,7 +92,7 @@ class OrapRepository(context: Context, private var username: String, private var
     }
 
     private fun saveIcingReportToDatabase(report: ReportIcingRequestPayload,
-                                          repository: SpriceRepository,
+                                          repository: SpriceDbRepository,
                                           lifecycleScope: LifecycleCoroutineScope) {
         lifecycleScope.launch { repository.insertIcingReport(report) }
     }
@@ -101,7 +101,7 @@ class OrapRepository(context: Context, private var username: String, private var
         context: Context,
         files: List<String>,
         webKitFormBoundaryId: String,
-        repository: SpriceRepository,
+        repository: SpriceDbRepository,
         lifecycleScope: LifecycleCoroutineScope
     ) {
         saveIcingReportImageUris(files, webKitFormBoundaryId, repository, lifecycleScope)
@@ -127,7 +127,7 @@ class OrapRepository(context: Context, private var username: String, private var
     private fun saveIcingReportImageUris(
         filePaths: List<String>,
         webKitFormBoundaryId: String,
-        repository: SpriceRepository,
+        repository: SpriceDbRepository,
         lifecycleScope: LifecycleCoroutineScope
     ) {
         val uriList = mutableListOf<ImageUriEntry>()

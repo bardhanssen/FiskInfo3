@@ -22,13 +22,4 @@
             tools:listitem="@layout/sprice_icing_report_list_item" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/sprice_new_report_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

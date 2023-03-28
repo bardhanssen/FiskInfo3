@@ -34,23 +34,21 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import no.sintef.fiskinfo.dal.sprice.SpriceDatabase
+import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.databinding.MainActivityBinding
-import no.sintef.fiskinfo.dal.sprice.ImageUriEntryDAO
-import no.sintef.fiskinfo.dal.sprice.SpriceRepository
 import java.util.*
 import javax.inject.Inject
 
 
 @AndroidEntryPoint // Dagger-Hilt requirement
 class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSelectedListener {
-    @Inject lateinit var repository: SpriceRepository
+    @Inject lateinit var repository: SpriceDbRepository
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var controller : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var binding: MainActivityBinding
-    private lateinit var imageUriDao: ImageUriEntryDAO
     private lateinit var spriceDatabase: SpriceDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,11 +79,10 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         topLevelLinks.add(R.id.fragment_tools)
 
         appBarConfiguration = AppBarConfiguration.Builder(controller.graph)
-            .setDrawerLayout(drawerLayout)
+            .setOpenableLayout(drawerLayout)
             .build()
 
         setupActionBarWithNavController(controller, drawerLayout)
-        //setupActionBarWithNavController(this, controller, drawerLayout)
 
         initSpriceDatabase()
 
@@ -93,7 +90,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
     }
 
     private fun initSpriceDatabase() {
-        spriceDatabase = SpriceDatabase.getInstance(this);
+        spriceDatabase = SpriceDatabase.getInstance(this)
     }
 
     private fun setupNavigationMenu(navController: NavController) {
@@ -111,7 +108,6 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
 
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(controller, drawerLayout)
-        //return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
     }
 
     @Deprecated("Deprecated in Java")
@@ -120,7 +116,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            super.getOnBackPressedDispatcher().onBackPressed()
         }
     }
 
@@ -134,7 +130,7 @@ class MainActivity : AppCompatActivity() { //, NavigationView.OnNavigationItemSe
     }
 
     companion object {
-        const val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 0x001
+//        const val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 0x001
         const val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0x002
     }
 }
