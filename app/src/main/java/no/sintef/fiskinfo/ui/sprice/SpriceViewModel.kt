@@ -1,10 +1,11 @@
 package no.sintef.fiskinfo.ui.sprice
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 
-class SpriceViewModel : ViewModel() {
+class SpriceViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
     private val _reports = MutableStateFlow<List<ReportIcingRequestPayload>>(listOf())
 

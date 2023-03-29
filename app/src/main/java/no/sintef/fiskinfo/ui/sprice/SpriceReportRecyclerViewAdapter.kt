@@ -45,7 +45,7 @@ class SpriceReportRecyclerViewAdapter(private val mListener: OnReportInteraction
         reports = ArrayList()
     }
 
-    fun setTools(reports: List<ReportIcingViewModel>) {
+    fun setReports(reports: List<ReportIcingViewModel>) {
         this.reports = reports
 //        this.notifyDataSetChanged()
         this.notifyItemRangeChanged(0, this.reports.size)

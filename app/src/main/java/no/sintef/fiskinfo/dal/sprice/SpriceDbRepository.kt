@@ -17,6 +17,7 @@ private val icingReportDAO: IcingReportDAO
     suspend fun getIcingReports() = icingReportDAO.getAll()
     suspend fun getIcingReportWithId(id: String) = icingReportDAO.getWithId(id)
     suspend fun getUnreportedIcingReports() = icingReportDAO.getUnreportedReports()
+    suspend fun getReportsFromLast24Hours() = icingReportDAO.getReportsFromLast24Hours()
     suspend fun deleteIcingReport(reportIcingRequestBody: ReportIcingRequestPayload) = icingReportDAO.delete(reportIcingRequestBody)
     suspend fun insertIcingReport(reportIcingRequestBody: ReportIcingRequestPayload) = icingReportDAO.insert(reportIcingRequestBody)
     suspend fun insertMultiple(reportIcingRequestBodyList: List<ReportIcingRequestPayload>) = icingReportDAO.insertMultiple(reportIcingRequestBodyList)

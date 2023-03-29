@@ -1,11 +1,15 @@
 package no.sintef.fiskinfo.ui.sprice
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -13,6 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.databinding.SpriceFragmentBinding
@@ -40,6 +45,7 @@ class SpriceFragment : Fragment() {
     private lateinit var pageAdapter: ScreenSlidePagerAdapter
 
     private var _binding: SpriceFragmentBinding? = null
+
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -57,7 +63,10 @@ class SpriceFragment : Fragment() {
 
         val tabLayout = binding.spriceTabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = if(position == 0) SpriceReportListTypeEnum.LAST_24_HOURS.getLocalizedName(requireContext())  else SpriceReportListTypeEnum.ALL.getLocalizedName(requireContext())
+            tab.text =
+                if (position == 0) SpriceReportListTypeEnum.LAST_24_HOURS.getLocalizedName(requireContext()) else SpriceReportListTypeEnum.ALL.getLocalizedName(
+                    requireContext()
+                )
         }.attach()
 
         val fab = binding.spriceFab
@@ -78,6 +87,24 @@ class SpriceFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch {
+            val reports = spriceDbRepository.getIcingReports()
+
+            Log.d("SPRICE", "Listed ${reports.count()} reports")
+            Log.d("SPRICE", "Found ${spriceDbRepository.getAllImageUris().count()} image URIs")
+            for (report in reports) {
+                val view = TextView(requireContext())
+                view.text = report.WebKitFormBoundaryId
+
+                // add TextView to LinearLayout
+//                reportsLayout.addView(view)
+            }
+        }
+    }
+
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
@@ -85,7 +112,10 @@ class SpriceFragment : Fragment() {
     private inner class ScreenSlidePagerAdapter(fa: Fragment) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = NUMBER_OF_PAGES
 
-        override fun createFragment(position: Int): Fragment = SpriceIcingReportListFragment.newInstance(if(position == 1) SpriceReportListTypeEnum.LAST_24_HOURS else SpriceReportListTypeEnum.ALL)
+        override fun createFragment(position: Int): Fragment = SpriceIcingReportListFragment.newInstance(
+            if (position == 1) SpriceReportListTypeEnum.LAST_24_HOURS else SpriceReportListTypeEnum.ALL,
+            spriceDbRepository
+        )
     }
 
     override fun onDestroyView() {

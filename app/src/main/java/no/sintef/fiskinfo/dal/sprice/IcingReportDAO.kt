@@ -23,4 +23,7 @@ interface IcingReportDAO {
 
     @Query("SELECT * FROM IcingReports WHERE Reported = 0")
     suspend fun getUnreportedReports(): List<ReportIcingRequestPayload>
+
+    @Query("SELECT * FROM IcingReports WHERE Synop >= datetime('now','-1 day')")
+    suspend fun getReportsFromLast24Hours(): List<ReportIcingRequestPayload>
 }

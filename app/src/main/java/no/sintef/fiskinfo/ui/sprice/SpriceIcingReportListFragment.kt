@@ -1,5 +1,6 @@
 package no.sintef.fiskinfo.ui.sprice
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
@@ -24,9 +26,8 @@ import no.sintef.fiskinfo.model.sprice.SpriceConstants
 import no.sintef.fiskinfo.model.sprice.enums.SpriceReportListTypeEnum
 import javax.inject.Inject
 
-class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapter.OnReportInteractionListener {
-    @Inject
-    lateinit var spriceDbRepository: SpriceDbRepository
+class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment(), SpriceReportRecyclerViewAdapter.OnReportInteractionListener {
+    var spriceDbRepository: SpriceDbRepository = repository
 
     private val mViewModel: SpriceViewModel by activityViewModels()
 
@@ -35,11 +36,11 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
 
     // This property is only valid between onCreateView and onDestroyView.
     private val mBinding get() = _mBinding!!
-    private lateinit var reportsLayout: RecyclerView
 
     private var mAdapter: SpriceReportRecyclerViewAdapter? = null
     private var mSwipeLayout: SwipeRefreshLayout? = null
     private lateinit var listType: SpriceReportListTypeEnum
+    private lateinit var reportsLayout: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,6 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
         Log.d("SPRICE", "Loaded SPRICE fragment")
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
         _mBinding = SpriceIcingReportListFragmentBinding.inflate(inflater, container, false)
-
         reportsLayout = mBinding.spriceFragmentReportListingLayout
 
         if(savedInstanceState != null && savedInstanceState.containsKey(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY)) {
@@ -66,7 +66,6 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
         } else {
             listType = SpriceReportListTypeEnum.ALL
         }
-
 
         listReports()
 
@@ -82,19 +81,22 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
         mSwipeLayout = mBinding.icingReportListSwipeLayout
         mSwipeLayout!!.setOnRefreshListener { mViewModel.refreshReports() }
 
-        lifecycleScope.launch {
-            val reports = spriceDbRepository.getIcingReports()
-
-            Log.d("SPRICE", "Listed ${reports.count()} reports")
-            Log.d("SPRICE", "Found ${spriceDbRepository.getAllImageUris().count()} image URIs")
-            for (report in reports) {
-                val view = TextView(requireContext())
-                view.text = report.WebKitFormBoundaryId
-
-                // add TextView to LinearLayout
+//        lifecycleScope.launch {
+//            val reports = if(listType == SpriceReportListTypeEnum.ALL) spriceDbRepository.getIcingReports() else spriceDbRepository.getReportsFromLast24Hours()
+//
+//            Log.d("SPRICE", "Listed ${reports.count()} reports")
+//            Log.d("SPRICE", "Found ${spriceDbRepository.getIcingReports().count()} image URIs")
+//            for (report in reports) {
+//                val view = TextView(requireContext())
+//                view.text = report.WebKitFormBoundaryId
+//
+////                 add TextView to LinearLayout
 //                reportsLayout.addView(view)
-            }
-        }
+//            }
+//        }
+
+        mSwipeLayout = mBinding.icingReportListSwipeLayout
+        mSwipeLayout!!.setOnRefreshListener { mViewModel.refreshReports() }
     }
 
     override fun onDestroyView() {
@@ -113,8 +115,8 @@ class SpriceIcingReportListFragment : Fragment(), SpriceReportRecyclerViewAdapte
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(listType: SpriceReportListTypeEnum) =
-            SpriceIcingReportListFragment().apply {
+        fun newInstance(listType: SpriceReportListTypeEnum, repository: SpriceDbRepository) =
+            SpriceIcingReportListFragment(repository).apply {
                 arguments = Bundle().apply {
                     putSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY, listType)
                 }
