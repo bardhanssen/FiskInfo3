@@ -28,6 +28,7 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import no.sintef.fiskinfo.R
+import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 import no.sintef.fiskinfo.util.formatLocation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,13 +40,13 @@ import java.util.*
 class SpriceReportRecyclerViewAdapter(private val mListener: OnReportInteractionListener?) :
     RecyclerView.Adapter<SpriceReportRecyclerViewAdapter.ViewHolder>() {
 
-    private var reports: List<ReportIcingViewModel> = listOf()
+    private var reports: List<ReportIcingRequestPayload> = listOf()
 
     init {
         reports = ArrayList()
     }
 
-    fun setReports(reports: List<ReportIcingViewModel>) {
+    fun setReports(reports: List<ReportIcingRequestPayload>) {
         this.reports = reports
 //        this.notifyDataSetChanged()
         this.notifyItemRangeChanged(0, this.reports.size)
@@ -63,32 +64,32 @@ class SpriceReportRecyclerViewAdapter(private val mListener: OnReportInteraction
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
-        val title = report.reportingTime.value.toString()
+        val title = report.ReportingTime.toString()
         holder.titleView.text = title
 
         val textStyle =  Typeface.BOLD//if (holder.mItem!!.seen) Typeface.NORMAL else Typeface.BOLD
         holder.titleView.setTypeface(null, textStyle)
         //holder.detail1View.setTypeface(null, textStyle)
 
-        if(report.attachedImages.value.isNotEmpty()) {
-            holder.iconView.setImageURI(report.attachedImages.value[0].toUri())
-        }
+//        if(report.attachedImages.value.isNotEmpty()) {
+//            holder.iconView.setImageURI(report.attachedImages.value[0].toUri())
+//        }
 
-        holder.detail1View.text = report.reportingTime.value.toString()
+        holder.detail1View.text = report.ReportingTime.toString()
 
         var locationString = ""
-        if (report.location.value != null) {
-            locationString = formatLocation(report.location.value!!, context)
-        }
+//        if (report.location.value != null) {
+//            locationString = formatLocation(report.location.value!!, context)
+//        }
 
         holder.detail2View.text = locationString
 //        holder.statusButton.visibility = if (mConfirmed) View.GONE else View.VISIBLE
 //        holder.removeButton.visibility = if (mConfirmed) View.VISIBLE else View.GONE
 
 
-        holder.mView.setOnClickListener { v ->
-            mListener?.onReportViewClicked(v, reports[holder.adapterPosition] )
-        }
+//        holder.mView.setOnClickListener { v ->
+//            mListener?.onReportViewClicked(v, reports[holder.adapterPosition] )
+//        }
     }
 
     override fun getItemCount(): Int {

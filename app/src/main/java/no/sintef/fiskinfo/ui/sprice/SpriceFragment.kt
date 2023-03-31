@@ -96,8 +96,8 @@ class SpriceFragment : Fragment() {
             Log.d("SPRICE", "Listed ${reports.count()} reports")
             Log.d("SPRICE", "Found ${spriceDbRepository.getAllImageUris().count()} image URIs")
             for (report in reports) {
-                val view = TextView(requireContext())
-                view.text = report.WebKitFormBoundaryId
+                val textView = TextView(requireContext())
+                textView.text = report.WebKitFormBoundaryId
 
                 // add TextView to LinearLayout
 //                reportsLayout.addView(view)

@@ -11,18 +11,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.dal.sprice.SpriceDbRepository
 import no.sintef.fiskinfo.databinding.SpriceIcingReportListFragmentBinding
+import no.sintef.fiskinfo.model.sprice.ReportIcingRequestPayload
 import no.sintef.fiskinfo.model.sprice.SpriceConstants
+import no.sintef.fiskinfo.model.sprice.enums.ChangeInIcingOnVesselOrPlatformEnum
 import no.sintef.fiskinfo.model.sprice.enums.SpriceReportListTypeEnum
 import javax.inject.Inject
 
@@ -58,9 +65,9 @@ class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment()
         _mBinding = SpriceIcingReportListFragmentBinding.inflate(inflater, container, false)
         reportsLayout = mBinding.spriceFragmentReportListingLayout
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY)) {
             @Suppress("DEPRECATION")
-            listType = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            listType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                 savedInstanceState.getSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY, SpriceReportListTypeEnum::class.java)!! else
                 savedInstanceState.getSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY)!! as SpriceReportListTypeEnum
         } else {
@@ -73,26 +80,51 @@ class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment()
     }
 
     private fun listReports() {
-        val context = mBinding.root.context
-        reportsLayout.layoutManager = LinearLayoutManager(context)
+        var reports = mViewModel.reports.value
+        reportsLayout.layoutManager = LinearLayoutManager(mBinding.root.context)
         mAdapter = SpriceReportRecyclerViewAdapter(this)
         reportsLayout.adapter = mAdapter
 
         mSwipeLayout = mBinding.icingReportListSwipeLayout
         mSwipeLayout!!.setOnRefreshListener { mViewModel.refreshReports() }
 
+        reports = reports.union(
+            listOf(
+                ReportIcingRequestPayload.Builder(WebKitFormBoundaryId = "abc", Latitude = "78.0", Longitude = "19.2", ChangeInIce = ChangeInIcingOnVesselOrPlatformEnum.ICE_THAT_DOESNT_BUILD_UP)
+                    .build(),
+                        ReportIcingRequestPayload.Builder(WebKitFormBoundaryId = "defg", Latitude = "74.0", Longitude = "12.2", ChangeInIce = ChangeInIcingOnVesselOrPlatformEnum.ICE_THAT_BUILDS_UP_SLOWLY)
+                .build()
+            )
+        ).toList()
+
+        lifecycleScope.launchWhenCreated {  }
+
+        mViewModel.reports.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { (it) ->
+                run {
+                    mAdapter!!.setReports(reports)
+                }
+
+            }
+
+
 //        lifecycleScope.launch {
-//            val reports = if(listType == SpriceReportListTypeEnum.ALL) spriceDbRepository.getIcingReports() else spriceDbRepository.getReportsFromLast24Hours()
-//
-//            Log.d("SPRICE", "Listed ${reports.count()} reports")
-//            Log.d("SPRICE", "Found ${spriceDbRepository.getIcingReports().count()} image URIs")
-//            for (report in reports) {
-//                val view = TextView(requireContext())
-//                view.text = report.WebKitFormBoundaryId
-//
-////                 add TextView to LinearLayout
-//                reportsLayout.addView(view)
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                reports.uiState.collect { uiState ->
+//                    when (uiState) {
+//                        is LatestNewsUiState.Success -> showFavoriteNews(uiState.news)
+//                        is LatestNewsUiState.Error -> showError(uiState.exception)
+//                    }
+//                }
 //            }
+//        }
+
+//        tools?.observe(
+//            viewLifecycleOwner
+//        ) { _tools ->
+//            mAdapter!!.setTools(_tools)
+//            if (mSwipeLayout != null)
+//                mSwipeLayout!!.isRefreshing = false
 //        }
 
         mSwipeLayout = mBinding.icingReportListSwipeLayout
