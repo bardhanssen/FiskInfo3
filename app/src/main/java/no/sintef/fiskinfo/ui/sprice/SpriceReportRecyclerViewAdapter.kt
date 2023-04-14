@@ -33,6 +33,10 @@ import no.sintef.fiskinfo.util.formatLocation
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+
+
+
 /**
  * [RecyclerView.Adapter] that can display a icing report and makes call to the
  * specified {@OnReportInteractionListener} callbacks on interaction
@@ -48,7 +52,6 @@ class SpriceReportRecyclerViewAdapter(private val mListener: OnReportInteraction
 
     fun setReports(reports: List<ReportIcingRequestPayload>) {
         this.reports = reports
-//        this.notifyDataSetChanged()
         this.notifyItemRangeChanged(0, this.reports.size)
     }
 

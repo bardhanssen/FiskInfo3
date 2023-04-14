@@ -29,7 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrapRepository(context: Context, private var username: String, private var password: String, private var webKitFormBoundaryId: String) {
+class OrapRepository(context: Context, private var username: String, private var password: String) {
     private var orapService: OrapService? = null
     private var orapServerUrl: String = BuildConfig.SPRICE_ORAP_SERVER_URL
     private var mFirebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
@@ -63,7 +63,7 @@ class OrapRepository(context: Context, private var username: String, private var
         initService()
 
         val result = MutableLiveData<SendResult>()
-        val requestBody = info.getRequestPayloadForSpriceEndpointReportSubmissionAsRequestPayload(webKitFormBoundaryId)
+        val requestBody = info.getRequestPayloadForSpriceEndpointReportSubmissionAsRequestPayload(info.WebKitFormBoundaryId)
 
         saveIcingReportToDatabase(info, spriceDbRepository, lifecycleScope)
 //        orapService?.sendIcingReport(requestBody, info.Username, info.Password)
@@ -172,9 +172,9 @@ class OrapRepository(context: Context, private var username: String, private var
     companion object {
         var instance: OrapRepository? = null
 
-        fun getInstance(context: Context, username: String, password: String, webKitFormBoundaryId: String): OrapRepository {
+        fun getInstance(context: Context, username: String, password: String): OrapRepository {
             if (instance == null)
-                instance = OrapRepository(context, username, password, webKitFormBoundaryId)
+                instance = OrapRepository(context, username, password)
             return instance!!
         }
     }

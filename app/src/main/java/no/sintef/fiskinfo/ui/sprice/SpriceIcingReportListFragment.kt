@@ -34,7 +34,8 @@ import no.sintef.fiskinfo.model.sprice.enums.SpriceReportListTypeEnum
 import javax.inject.Inject
 
 class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment(), SpriceReportRecyclerViewAdapter.OnReportInteractionListener {
-    var spriceDbRepository: SpriceDbRepository = repository
+    @Inject
+    lateinit var spriceDbRepository: SpriceDbRepository
 
     private val mViewModel: SpriceViewModel by activityViewModels()
 
@@ -80,7 +81,6 @@ class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment()
     }
 
     private fun listReports() {
-        var reports = mViewModel.reports.value
         reportsLayout.layoutManager = LinearLayoutManager(mBinding.root.context)
         mAdapter = SpriceReportRecyclerViewAdapter(this)
         reportsLayout.adapter = mAdapter
@@ -88,47 +88,34 @@ class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment()
         mSwipeLayout = mBinding.icingReportListSwipeLayout
         mSwipeLayout!!.setOnRefreshListener { mViewModel.refreshReports() }
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        var reports = mViewModel.reports.value
         reports = reports.union(
             listOf(
                 ReportIcingRequestPayload.Builder(WebKitFormBoundaryId = "abc", Latitude = "78.0", Longitude = "19.2", ChangeInIce = ChangeInIcingOnVesselOrPlatformEnum.ICE_THAT_DOESNT_BUILD_UP)
                     .build(),
-                        ReportIcingRequestPayload.Builder(WebKitFormBoundaryId = "defg", Latitude = "74.0", Longitude = "12.2", ChangeInIce = ChangeInIcingOnVesselOrPlatformEnum.ICE_THAT_BUILDS_UP_SLOWLY)
-                .build()
+                ReportIcingRequestPayload.Builder(WebKitFormBoundaryId = "defg", Latitude = "74.0", Longitude = "12.2", ChangeInIce = ChangeInIcingOnVesselOrPlatformEnum.ICE_THAT_BUILDS_UP_SLOWLY)
+                    .build()
             )
         ).toList()
 
-        lifecycleScope.launchWhenCreated {  }
-
-        mViewModel.reports.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach { (it) ->
-                run {
-                    mAdapter!!.setReports(reports)
-                }
-
-            }
+//        mViewModel.reports.value = reports
 
 
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                reports.uiState.collect { uiState ->
-//                    when (uiState) {
-//                        is LatestNewsUiState.Success -> showFavoriteNews(uiState.news)
-//                        is LatestNewsUiState.Error -> showError(uiState.exception)
-//                    }
+//
+//        lifecycleScope.launchWhenCreated {  }
+//
+//        mViewModel.reports.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach { (it) ->
+//                run {
+//                    mAdapter!!.setReports(reports)
 //                }
+//
 //            }
-//        }
-
-//        tools?.observe(
-//            viewLifecycleOwner
-//        ) { _tools ->
-//            mAdapter!!.setTools(_tools)
-//            if (mSwipeLayout != null)
-//                mSwipeLayout!!.isRefreshing = false
-//        }
-
-        mSwipeLayout = mBinding.icingReportListSwipeLayout
-        mSwipeLayout!!.setOnRefreshListener { mViewModel.refreshReports() }
     }
 
     override fun onDestroyView() {
@@ -151,6 +138,7 @@ class SpriceIcingReportListFragment(repository: SpriceDbRepository) : Fragment()
             SpriceIcingReportListFragment(repository).apply {
                 arguments = Bundle().apply {
                     putSerializable(SpriceConstants.SPRICE_REPORT_LIST_TYPE_BUNDLE_KEY, listType)
+
                 }
             }
     }

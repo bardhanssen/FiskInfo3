@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -82,7 +83,11 @@ class SpriceFragment : Fragment() {
                 .navigate(R.id.action_sprice_fragment_to_icing_report_fragment)
         }
 
+        viewModel = ViewModelProvider(requireActivity())[SpriceViewModel::class.java]
 
+        lifecycleScope.launch {
+            viewModel.reports.value = spriceDbRepository.getIcingReports()
+        }
 
         return binding.root
     }

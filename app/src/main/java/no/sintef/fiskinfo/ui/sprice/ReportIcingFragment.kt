@@ -387,7 +387,7 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
 //        }
 
         val requestBody = mViewModel.getIcingReportBody()
-        val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password, requestBody.WebKitFormBoundaryId)
+        val repository = OrapRepository.getInstance(requireContext(), requestBody.Username, requestBody.Password)
         val filePaths = arrayListOf<String>()
         val result = repository.sendIcingReport(requestBody, spriceDbRepository, lifecycleScope)
 
