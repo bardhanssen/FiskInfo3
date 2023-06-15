@@ -55,6 +55,8 @@ internal class UploadTask(sftpConnectionParameters: SftpConnectionParameters, fi
 
                 // Upload the file
                 sftpChannel?.put(localFilePath, remoteFilePath)
+                // set file permissions to -rw-rw-rw-
+                sftpChannel?.chmod(438, remoteFilePath)
             }
 
             return true
