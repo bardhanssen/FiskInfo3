@@ -27,8 +27,6 @@ import androidx.preference.PreferenceFragmentCompat
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.repository.SnapRepository
 
-//import no.sintef.fiskinfo.repository.SnapRepository
-
 class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -78,7 +76,7 @@ class UserPreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.On
             ?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if ((key == "server_address") && (context != null))
             SnapRepository.getInstance(requireContext()).updateFromPreferences(context)
         else if(key == getString(R.string.pref_sprice_enable_service_key)) {

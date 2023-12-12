@@ -23,7 +23,7 @@ import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import androidx.preference.PreferenceManager
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.fishingfacility.DeploymentInfo
@@ -175,7 +175,7 @@ class DeploymentViewModel(application: Application) : ObservableAndroidViewModel
     }
 
 
-    val toolTypeCodeName: LiveData<String> = Transformations.map(toolTypeCode) { code ->
+    val toolTypeCodeName: LiveData<String> = toolTypeCode.map { code: ToolTypeCode ->
         code.getLocalizedName(getApplication())
     }
 

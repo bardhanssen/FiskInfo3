@@ -18,11 +18,11 @@
 package no.sintef.fiskinfo.ui.snap
 
 import android.app.Application
-import android.preference.PreferenceManager
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 
 import no.sintef.fiskinfo.R
 import no.sintef.fiskinfo.model.SnapMetadata
@@ -36,14 +36,14 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
     private var selectedIsIncomming = MutableLiveData<Boolean>()
     private var inboxSnaps: LiveData<List<SnapMessage>>? = null
     private var outboxSnaps: LiveData<List<SnapMessage>>? = null
-    private val draftMessage = MutableLiveData<SnapMessageDraft>()
+    private val draftMessage = MutableLiveData<SnapMessageDraft?>()
 
     val sharePublicly = MutableLiveData<Boolean>()
     val draftMetadata = MutableLiveData<SnapMetadata>()
 
     val draftSnapReceivers = ObservableField<String>()
 
-    val draft: LiveData<SnapMessageDraft>
+    val draft: LiveData<SnapMessageDraft?>
         get() = draftMessage
 
     fun isIncomming(): LiveData<Boolean> {
@@ -81,14 +81,11 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun sendSnapAndClear() {
-        val draft = draftMessage.value
-        if (draft == null) {
-            return
-        }
+        val draft = draftMessage.value ?: return
 
         if (draftSnapReceivers.get() != null) {
             // TODO: Add validation
-            draft?.receiverEmails = draftSnapReceivers.get()!!
+            draft.receiverEmails = draftSnapReceivers.get()!!
             /*
             val receiverList =
                 Arrays.asList(*draftSnapReceivers.get()!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
@@ -99,11 +96,11 @@ class SnapViewModel(application: Application) : AndroidViewModel(application) {
             }*/
         }
         val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
-        draft?.senderEmail =
+        draft.senderEmail =
             prefs.getString(getApplication<Application>().getString(R.string.pref_user_identity), "ola@fiskinfo.no")!!
 
         SnapRepository.getInstance(getApplication()).sendSnap(draft)
-        draftMessage.setValue(null)
+        draftMessage.value = null
         draftSnapReceivers.set("")
     }
 

@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:baselineAlignBottom="true"
                 app:srcCompat="@drawable/ic_info"
-                android:tint="@color/colorBarentsDarkBlue" />
+                app:tint="@color/colorBarentsDarkBlue" />
 
             <TextView
                 android:id="@+id/card_title_text_view"

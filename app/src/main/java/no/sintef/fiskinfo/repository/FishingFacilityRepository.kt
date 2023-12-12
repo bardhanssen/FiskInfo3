@@ -48,7 +48,7 @@ class FishingFacilityRepository(context: Context) {
         updateFromPreferences()
     }
 
-    fun updateFromPreferences() {}
+    private fun updateFromPreferences() {}
 
 
     fun getConfirmedTools(): LiveData<List<ToolViewModel>> {

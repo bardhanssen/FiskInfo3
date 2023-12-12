@@ -205,7 +205,7 @@
     <string name="overview_card_icing_subtitle">Se isingdetaljer</string>
     <string name="overview_card_view_icing_details">Se ising</string>
 
-    <string name="overview_card_tools_description">Du har %d bekreftede og %d ubekreftede redskap.</string>
+    <string name="overview_card_tools_description">Du har %1$d bekreftede og %2$d ubekreftede redskap.</string>
     <string name="overview_card_tools_overdue_description">%d redskap har stått for lenge.</string>
     <string name="overview_card_tools_title">Redskap</string>
     <string name="overview_card_tools_subtitle">Rapporter redskap du sender og haler</string>
