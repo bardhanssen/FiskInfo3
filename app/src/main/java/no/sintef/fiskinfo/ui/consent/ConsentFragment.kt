@@ -61,6 +61,7 @@ class ConsentFragment : Fragment() {
                 // Responds to switch being checked/unchecked
 
             } else {
+                @Suppress("KotlinConstantConditions")
                 prefs.edit().putBoolean("user_consent_to_terms", isChecked).apply()
                 Navigation.findNavController(binding.root).popBackStack()
             }
@@ -71,6 +72,7 @@ class ConsentFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.text = Html.fromHtml( getString(R.string.user_consent_description), Html.FROM_HTML_MODE_LEGACY)
         } else {
+            @Suppress("DEPRECATION")
             textView.text = Html.fromHtml(getString(R.string.user_consent_description))
         }
 

@@ -177,6 +177,8 @@
     <string name="tool_setup_date">Setup date</string>
 
     // SPRICE and icing
+    <string name="sprice_sftp_remote_path" translatable="false">/incoming/%1$s</string>
+
     <string name="icing_type_code_light_icing">Light icing (0,05 – 0.5 cm/h)</string>
     <string name="icing_type_code_moderate_icing">Light icing (0,5 – 1.34 cm/h)</string>
     <string name="icing_type_code_heavy_icing">Heavy icing (over 1.34 cm/h)</string>

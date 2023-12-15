@@ -310,9 +310,12 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
                 val filenameLength = fileName.lastIndexOf('.', fileName.length)
                 fileName = "${fileName.substring(0, filenameLength)}_${webKitFormBoundaryId}${fileName.substring(fileName.lastIndexOf('.', fileName.length))}".replace("[/<>:\"|?*]".toRegex(), "")
 
-                val remoteFileName = "/dev/${fileName}"
+                val remotePath = String.format(
+                    getString(R.string.sprice_sftp_remote_path),
+                    fileName
+                )
 
-                filePairs.add(FilePair(filePath, remoteFileName))
+                filePairs.add(FilePair(filePath, remotePath))
             } else {
                 Log.d("SPRICE SFTP", "Path does not exist: ${file.path}")
             }
@@ -474,13 +477,13 @@ class ReportIcingFragment : LocationRecyclerViewAdapter.OnLocationInteractionLis
         }
 
         if (mViewModel.vesselIcingThickness.value.isEmpty()) {
-            ((((vesselIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
+            ((((vesselIcingGridViewSecondRow.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
                 .getChildAt(0)) as TextInputEditText).error = getString(R.string.icing_missing_value)
             valid = false
             Log.e("checkReportedValues", "vesselIcingThickness is invalid: '${mViewModel.vesselIcingThickness.value}'")
         } else {
-            ((((vesselIcingGridView.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
-                .getChildAt(0)) as MaterialAutoCompleteTextView).error = null
+            ((((vesselIcingGridViewSecondRow.getChildAt(0) as ViewGroup).getChildAt(0) as ViewGroup)
+                .getChildAt(0)) as TextInputEditText).error = null
         }
 
         if (mViewModel.reasonForVesselIcing.value == ReasonForIcingOnVesselOrPlatformEnum.NOT_SELECTED) {

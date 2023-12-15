@@ -44,7 +44,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-//TEMP import static fiskinfoo.no.sintef.fiskinfoo.MainActivity.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 
 public class TilHavsUtility {
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
